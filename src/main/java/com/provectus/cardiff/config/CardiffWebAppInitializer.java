@@ -1,6 +1,5 @@
-package org.provectus.cardiff.service.config;
+package com.provectus.cardiff.config;
 
-import org.provectus.cardiff.persistence.config.AppConfig;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 /**

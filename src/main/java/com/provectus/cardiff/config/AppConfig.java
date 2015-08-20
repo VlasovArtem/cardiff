@@ -1,4 +1,4 @@
-package org.provectus.cardiff.persistence.config;
+package com.provectus.cardiff.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;

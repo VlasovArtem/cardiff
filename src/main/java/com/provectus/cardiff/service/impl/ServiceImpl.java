@@ -1,8 +1,8 @@
-package org.provectus.cardiff.service.impl;
+package com.provectus.cardiff.service.impl;
 
-import org.provectus.cardiff.entities.User;
-import org.provectus.cardiff.persistence.repository.UserCrudRepository;
-import org.provectus.cardiff.service.ServiceCardiff;
+import com.provectus.cardiff.entities.User;
+import com.provectus.cardiff.persistence.repository.UserCrudRepository;
+import com.provectus.cardiff.service.ServiceCardiff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package org.provectus.cardiff;
+package com.provectus.cardiff;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import org.provectus.cardiff.entities.User;
+import com.provectus.cardiff.entities.User;
 
 import java.util.List;
 

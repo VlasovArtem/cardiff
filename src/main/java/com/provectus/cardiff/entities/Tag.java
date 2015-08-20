@@ -1,4 +1,4 @@
-package org.provectus.cardiff.entities;
+package com.provectus.cardiff.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

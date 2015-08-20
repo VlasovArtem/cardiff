@@ -1,9 +1,11 @@
-package org.provectus.cardiff.entities;
+package com.provectus.cardiff.entities;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.provectus.cardiff.entities.converters.LocalDateTimePersistenceConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,9 +13,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,16 +29,21 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(length = 100)
     private String name;
+    @Column(length = 100, unique = true)
     private String login;
     private byte[] password;
+    @Column(length = 50, unique = true)
     private String email;
     @Column(name = "phone_number")
     private long phoneNumber;
+    @Column(length = 500)
     private String description;
     private boolean deleted;
     @Column(name = "created_date")
-    private Date createdDate;
+    @Convert(converter = LocalDateTimePersistenceConverter.class)
+    private LocalDateTime createdDate;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
     private List<DiscountCard> discountCards;
@@ -113,11 +121,11 @@ public class User {
         this.deleted = deleted;
     }
 
-    public Date getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -127,6 +135,11 @@ public class User {
 
     public void setDiscountCards(List<DiscountCard> discountCards) {
         this.discountCards = discountCards;
+    }
+
+    @PrePersist
+    public void putCreatedDate() {
+
     }
 
     @Override

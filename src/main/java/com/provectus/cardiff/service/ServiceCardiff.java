@@ -1,6 +1,6 @@
-package org.provectus.cardiff.service;
+package com.provectus.cardiff.service;
 
-import org.provectus.cardiff.entities.User;
+import com.provectus.cardiff.entities.User;
 
 import java.util.List;
 

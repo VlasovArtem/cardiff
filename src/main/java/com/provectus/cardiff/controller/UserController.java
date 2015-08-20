@@ -1,7 +1,7 @@
-package org.provectus.cardiff.service.controller;
+package com.provectus.cardiff.controller;
 
-import org.provectus.cardiff.entities.User;
-import org.provectus.cardiff.service.impl.ServiceImpl;
+import com.provectus.cardiff.service.impl.ServiceImpl;
+import com.provectus.cardiff.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;

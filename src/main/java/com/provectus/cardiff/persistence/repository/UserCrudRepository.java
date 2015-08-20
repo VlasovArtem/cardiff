@@ -1,6 +1,6 @@
-package org.provectus.cardiff.persistence.repository;
+package com.provectus.cardiff.persistence.repository;
 
-import org.provectus.cardiff.entities.User;
+import com.provectus.cardiff.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
