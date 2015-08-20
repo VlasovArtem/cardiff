@@ -1,4 +1,4 @@
-package com.provectus.cardiff.entities.converters;
+package com.provectus.cardiff.utils.converters;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

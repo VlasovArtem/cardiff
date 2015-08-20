@@ -13,13 +13,13 @@ import javax.persistence.Table;
 @Table(name = "tag")
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
     private String tag;
 
     public long getId() {
-        return id;
-    }
+    return id;
+}
 
     public void setId(long id) {
         this.id = id;
@@ -31,5 +31,13 @@ public class Tag {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", tag='" + tag + '\'' +
+                '}';
     }
 }

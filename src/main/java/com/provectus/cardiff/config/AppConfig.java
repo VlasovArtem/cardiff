@@ -26,10 +26,10 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableWebMvc
-@EnableJpaRepositories(basePackages = {"org.provectus.cardiff.persistence.repository"}, entityManagerFactoryRef =
+@EnableJpaRepositories(basePackages = {"com.provectus.cardiff.persistence.repository"}, entityManagerFactoryRef =
         "entityManagerFactory")
 @PropertySource("classpath:application.properties")
-@ComponentScan(basePackages = {"org.provectus.cardiff"})
+@ComponentScan(basePackages = {"com.provectus.cardiff"})
 public class AppConfig extends WebMvcConfigurerAdapter{
     @Autowired
     private Environment env;
@@ -54,7 +54,7 @@ public class AppConfig extends WebMvcConfigurerAdapter{
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-        bean.setPackagesToScan("org.provectus.cardiff");
+        bean.setPackagesToScan("com.provectus.cardiff");
         bean.setDataSource(dataSource);
         Properties properties = new Properties();
         properties.put("hibernate.dialect",

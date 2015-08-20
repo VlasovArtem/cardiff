@@ -1,11 +1,11 @@
 package com.provectus.cardiff.entities;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.provectus.cardiff.entities.converters.LocalDateTimePersistenceConverter;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.provectus.cardiff.utils.View;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -27,7 +27,7 @@ import java.util.List;
 @JsonAutoDetect
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
     @Column(length = 100)
     private String name;
@@ -42,10 +42,10 @@ public class User {
     private String description;
     private boolean deleted;
     @Column(name = "created_date")
-    @Convert(converter = LocalDateTimePersistenceConverter.class)
+    @JsonView(View.FirstLevel.class)
     private LocalDateTime createdDate;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<DiscountCard> discountCards;
 
     public User() {
@@ -137,9 +137,12 @@ public class User {
         this.discountCards = discountCards;
     }
 
+    /**
+     * Set current date and time before persist object into database.
+     */
     @PrePersist
     public void putCreatedDate() {
-
+        createdDate = LocalDateTime.now();
     }
 
     @Override
@@ -154,6 +157,7 @@ public class User {
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
                 ", createdDate=" + createdDate +
+//                ", discountCards=" + discountCards +
                 '}';
     }
 }

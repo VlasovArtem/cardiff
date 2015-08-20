@@ -15,7 +15,7 @@ import java.util.Date;
 @Table(name = "discount_card_history")
 public class DiscountCardComment {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
     private String comment;
     @Column(name = "comment_document")

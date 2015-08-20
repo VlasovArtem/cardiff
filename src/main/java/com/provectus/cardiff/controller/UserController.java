@@ -1,7 +1,9 @@
 package com.provectus.cardiff.controller;
 
-import com.provectus.cardiff.service.impl.ServiceImpl;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.entities.User;
+import com.provectus.cardiff.service.impl.ServiceImpl;
+import com.provectus.cardiff.utils.View;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -30,7 +32,10 @@ public class UserController {
 
     @RequestMapping(path = "/all", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @JsonView(View.FirstLevel.class)
     public List<User> getAll() {
-        return service.getUsers();
+        List<User> users = service.getUsers();
+        System.out.println(users);
+        return users;
     }
 }
