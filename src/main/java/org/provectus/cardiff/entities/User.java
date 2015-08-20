@@ -1,17 +1,27 @@
 package org.provectus.cardiff.entities;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by artemvlasov on 19/08/15.
  */
-@Entity(name = "\"user\"")
+@Entity
+@Table(name = "\"user\"")
+@JsonAutoDetect
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +36,9 @@ public class User {
     private boolean deleted;
     @Column(name = "created_date")
     private Date createdDate;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
+    private List<DiscountCard> discountCards;
 
     public User() {
     }
@@ -106,6 +119,14 @@ public class User {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public List<DiscountCard> getDiscountCards() {
+        return discountCards;
+    }
+
+    public void setDiscountCards(List<DiscountCard> discountCards) {
+        this.discountCards = discountCards;
     }
 
     @Override
