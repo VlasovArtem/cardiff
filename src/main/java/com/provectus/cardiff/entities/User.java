@@ -1,6 +1,5 @@
 package com.provectus.cardiff.entities;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.utils.View;
 
@@ -8,14 +7,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,11 +22,14 @@ import java.util.List;
  */
 @Entity
 @Table(name = "\"user\"")
-@JsonAutoDetect
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private long id;
+@NamedQueries({
+        @NamedQuery(name = "User.existsByLogin",
+                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM User p WHERE p.login = ?1"),
+        @NamedQuery(name = "User.existsByEmail",
+                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM User p WHERE p.email = ?1"),
+})
+@NamedEntityGraph(name = "User.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
+public class User extends BaseEntity{
     @Column(length = 100)
     private String name;
     @Column(length = 100, unique = true)
@@ -41,11 +42,9 @@ public class User {
     @Column(length = 500)
     private String description;
     private boolean deleted;
-    @Column(name = "created_date")
-    @JsonView(View.FirstLevel.class)
-    private LocalDateTime createdDate;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonView(View.SecondLevel.class)
     private List<DiscountCard> discountCards;
 
     public User() {
@@ -55,14 +54,6 @@ public class User {
         this.name = name;
         this.login = login;
         this.password = password;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -121,14 +112,6 @@ public class User {
         this.deleted = deleted;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public List<DiscountCard> getDiscountCards() {
         return discountCards;
     }
@@ -137,18 +120,9 @@ public class User {
         this.discountCards = discountCards;
     }
 
-    /**
-     * Set current date and time before persist object into database.
-     */
-    @PrePersist
-    public void putCreatedDate() {
-        createdDate = LocalDateTime.now();
-    }
-
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 ", login='" + login + '\'' +
                 ", password=" + Arrays.toString(password) +
@@ -156,7 +130,6 @@ public class User {
                 ", phoneNumber=" + phoneNumber +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
-                ", createdDate=" + createdDate +
 //                ", discountCards=" + discountCards +
                 '}';
     }

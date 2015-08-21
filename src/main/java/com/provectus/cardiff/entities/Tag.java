@@ -1,5 +1,6 @@
 package com.provectus.cardiff.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,6 +16,7 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
+    @Column(length = 30, unique = true, nullable = false)
     private String tag;
 
     public long getId() {

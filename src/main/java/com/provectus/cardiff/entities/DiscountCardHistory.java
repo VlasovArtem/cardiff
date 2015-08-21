@@ -1,48 +1,52 @@
 package com.provectus.cardiff.entities;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Created by artemvlasov on 20/08/15.
  */
 @Entity
 @Table(name = "discount_card_history")
-public class DiscountCardHistory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    @Column(name = "picked_date")
-    private Date pickedDate;
+@AttributeOverride(name = "createdDate", column = @Column(name = "picked_date", insertable = false, updatable = false))
+public class DiscountCardHistory extends BaseEntity {
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "discount_card_id")
+    private DiscountCard discountCard;
     @Column(name = "return_date")
-    private Date returnDate;
+    private LocalDateTime returnDate;
 
-    public long getId() {
-        return id;
+    public User getUser() {
+        return user;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Date getPickedDate() {
-        return pickedDate;
+    public DiscountCard getDiscountCard() {
+        return discountCard;
     }
 
-    public void setPickedDate(Date pickedDate) {
-        this.pickedDate = pickedDate;
+    public void setDiscountCard(DiscountCard discountCard) {
+        this.discountCard = discountCard;
     }
 
-    public Date getReturnDate() {
+    public LocalDateTime getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(Date returnDate) {
+    public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
     }
 }

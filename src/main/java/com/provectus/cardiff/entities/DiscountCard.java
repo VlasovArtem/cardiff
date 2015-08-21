@@ -1,5 +1,8 @@
 package com.provectus.cardiff.entities;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.provectus.cardiff.utils.View;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,10 +25,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "discount_card")
-public class DiscountCard {
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private long id;
+public class DiscountCard extends BaseEntity {
     @Column(name = "card_number", length = 16, unique = true, nullable = false)
     private long cardNumber;
     @Column(name = "expired_date")
@@ -38,18 +38,18 @@ public class DiscountCard {
     @Column(length = 500)
     private String description;
     private boolean deleted;
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "tag_card",
             joinColumns = @JoinColumn(name = "discount_card_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
+    @JsonView(View.SecondLevel.class)
     private List<DiscountCardComment> discountCardComments;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
+    @JsonView(View.SecondLevel.class)
     private List<DiscountCardHistory> discountCardHistories;
 
     public DiscountCard() {
@@ -58,14 +58,6 @@ public class DiscountCard {
     public DiscountCard(long cardNumber, String companyName) {
         this.cardNumber = cardNumber;
         this.companyName = companyName;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public long getCardNumber() {
@@ -124,14 +116,6 @@ public class DiscountCard {
         this.deleted = deleted;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public Set<Tag> getTags() {
         return tags;
     }
@@ -148,18 +132,17 @@ public class DiscountCard {
         this.discountCardComments = discountCardComments;
     }
 
-    /**
-     * Set current date and time before persist object into database.
-     */
-    @PrePersist
-    public void putCreatedDate() {
-        createdDate = LocalDateTime.now();
+    public List<DiscountCardHistory> getDiscountCardHistories() {
+        return discountCardHistories;
+    }
+
+    public void setDiscountCardHistories(List<DiscountCardHistory> discountCardHistories) {
+        this.discountCardHistories = discountCardHistories;
     }
 
     @Override
     public String toString() {
         return "DiscountCard{" +
-                "id=" + id +
                 ", cardNumber=" + cardNumber +
                 ", expiredDate=" + expiredDate +
                 ", availiable=" + availiable +
@@ -167,7 +150,6 @@ public class DiscountCard {
                 ", amountOfDiscount=" + amountOfDiscount +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
-                ", createdDate=" + createdDate +
                 ", tags=" + tags +
                 '}';
     }

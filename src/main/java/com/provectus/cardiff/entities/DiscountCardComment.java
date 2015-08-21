@@ -1,32 +1,24 @@
 package com.provectus.cardiff.entities;
 
+import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * Created by artemvlasov on 20/08/15.
  */
 @Entity
 @Table(name = "discount_card_history")
-public class DiscountCardComment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    private long id;
+@AttributeOverride(name = "createdDate", column = @Column(name = "comment_date", insertable = false, updatable = false))
+public class DiscountCardComment extends BaseEntity{
+    @Column(length = 500, nullable = false)
     private String comment;
-    @Column(name = "comment_document")
-    private Date commentDocument;
 
-    public long getId() {
-        return id;
-    }
+    public DiscountCardComment() {}
 
-    public void setId(long id) {
-        this.id = id;
+    public DiscountCardComment(String comment) {
+        this.comment = comment;
     }
 
     public String getComment() {
@@ -35,13 +27,5 @@ public class DiscountCardComment {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public Date getCommentDocument() {
-        return commentDocument;
-    }
-
-    public void setCommentDocument(Date commentDocument) {
-        this.commentDocument = commentDocument;
     }
 }
