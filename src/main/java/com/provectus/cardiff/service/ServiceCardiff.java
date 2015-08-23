@@ -12,4 +12,5 @@ public interface ServiceCardiff {
     User loginUser(String email, String login, String password);
     void deleteUserById(long id);
     void addUser(User user);
+    void userRegistration(User user);
 }

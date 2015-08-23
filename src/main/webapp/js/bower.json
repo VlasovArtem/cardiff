@@ -1,0 +1,25 @@
+{
+  "name": "cardiff",
+  "version": "0.0.0",
+  "authors": [
+    "Vlasov Artem <vlasovartem21@gmail.com>"
+  ],
+  "description": "Cardiff project",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-route": "~1.4.4",
+    "angular-resource": "~1.4.4",
+    "angular-underscore-module": "~1.0.1",
+    "angular": "~1.4.4",
+    "bootstrap": "~3.3.5",
+    "underscore": "~1.8.3",
+    "angular-ui-mask": "~1.4.2"
+  }
+}

@@ -1,0 +1,39 @@
+html, body {
+    height: 100%;
+}
+#registration h2, .buttons {
+    text-align: center;
+}
+.main {
+    background-color: #dbdbdb;
+    opacity: 0.5;
+    margin: 0;
+    overflow: hidden;
+}
+.main ul {
+    margin: 0;
+    padding: 0;
+}
+.main ul li{
+    display: inline-block;
+    list-style-type: none;
+}
+.main ul li:hover {
+    background-color: #cccccc;
+}
+.main ul li a {
+    color: black;
+    display: block;
+    line-height: 2em;
+    padding: 0.5em 0.5em;
+    text-decoration: none;
+}
+#sign-in > h2 {
+    text-align: center;
+}
+.main-title {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

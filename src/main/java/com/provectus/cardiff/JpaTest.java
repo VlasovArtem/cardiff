@@ -37,6 +37,8 @@ public class JpaTest {
             em.persist(tag1);
             em.persist(tag2);
             em.getTransaction().commit();
+            em.clear();
+            System.out.println(em.find(User.class, 1l));
         } finally {
             if(em.isOpen()) {
                 em.close();
@@ -53,7 +55,7 @@ public class JpaTest {
         user.setEmail("testemail@mail.com");
         user.setLogin("testlogin");
         user.setName("Test name");
-        user.setPassword("password".getBytes());
+        user.setPassword("password");
         return user;
     }
     private static DiscountCard createDiscountCard(long cardNumber) {

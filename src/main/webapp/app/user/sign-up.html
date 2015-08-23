@@ -1,0 +1,108 @@
+<section id="registration" class="container-fluid">
+    <h2 class="col-md-12">Sign up</h2>
+    <form class="col-md-offset-4 col-md-4" name="signUp">
+        <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
+            <label for="name">Name</label>
+            <input class="form-control"
+                   type="text"
+                   placeholder="Input name"
+                   ng-maxlength="100"
+                   ng-minlength="6"
+                   id="name"
+                   name="name"
+                   ng-model="user.name"/>
+            <div validation-messages
+                 model-controller="signUp.name"
+                 minlength-error="Name is too short"
+                 maxlength-error="Name is too long"></div>
+        </div>
+        <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
+            <label for="login">Login</label>
+            <input type="text"
+                   class="form-control"
+                   name="login"
+                   placeholder="Input login"
+                   id="login"
+                   ng-minlength="6"
+                   ng-maxlength="100"
+                   ng-pattern="/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/"
+                   ng-model="user.login"
+                   autocomplete="off"
+                   required/>
+            <div validation-messages
+                 model-controller="signUp.login"
+                 minlength-error="Login is too short"
+                 maxlength-error="Login is too long"
+                 required-error="Login is required"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true }">
+            <label for="email">Email</label>
+            <input type="email"
+                   class="form-control"
+                   placeholder="Input email"
+                   id="email"
+                   ng-maxlength="50"
+                   ng-minlength="3"
+                   name="email"
+                   ng-model="user.email"
+                   autocomplete="off"
+                   required/>
+            <div validation-messages
+                 model-controller="signUp.email"
+                 required-error="Email is required"
+                 minlength-error="Email is too short"
+                 maxlength-error="Email is too long"
+                 email-error="Email is invalid"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true }">
+            <label for="password">Password</label>
+            <input type="password"
+                   class="form-control"
+                   name="password"
+                   id="password"
+                   placeholder="Input password"
+                   ng-model="user.password"
+                   ng-minlength="6"
+                   ng-maxlength="100"
+                   required/>
+            <div validation-messages
+                 model-controller="signUp.password"
+                 required-error="Password is required"
+                 minlength-error="Password is too short"
+                 maxlength-error="Password is too long"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true }">
+            <label for="phone-number">Phone number</label>
+            <input type="text"
+                   class="form-control"
+                   name="phoneNumber"
+                   id="phone-number"
+                   ng-model="user.phone_number"
+                   ui-mask="+380 (99) 999-99-99"
+                   required/>
+            <div validation-messages
+                 model-controller="signUp.phone_number"
+                 required-error="Phone number is required"></div>
+        </div>
+        <div class="form-group">
+            <label for="description">Info</label>
+            <textarea class="form-control"
+                      id="description"
+                      name="description"
+                      cols="30" rows="10"
+                      ng-minlength="0"
+                      ng-maxlength="500"
+                      ng-model="user.description"></textarea>
+            <div validation-messages
+                 model-controller="signUp.description"
+                 maxlength-error="Description is too long"></div>
+        </div>
+        <div class="form-group buttons">
+            <input type="button" class="btn btn-success" value="Sign up" ng-disabled="signUp.$invalid" ng-click="reg()"/>
+            <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
+        </div>
+    </form>
+</section>

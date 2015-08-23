@@ -1,10 +1,14 @@
 package com.provectus.cardiff.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.utils.View;
+import com.provectus.cardiff.utils.converters.PasswordConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -21,7 +25,7 @@ import java.util.List;
  * Created by artemvlasov on 19/08/15.
  */
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "client")
 @NamedQueries({
         @NamedQuery(name = "User.existsByLogin",
                 query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM User p WHERE p.login = ?1"),
@@ -32,12 +36,14 @@ import java.util.List;
 public class User extends BaseEntity{
     @Column(length = 100)
     private String name;
-    @Column(length = 100, unique = true)
+    @Column(length = 100, unique = true, nullable = false)
     private String login;
-    private byte[] password;
-    @Column(length = 50, unique = true)
+    @Column(nullable = false, columnDefinition = "bytea")
+    @Convert(converter = PasswordConverter.class)
+    private String password;
+    @Column(length = 50, unique = true, nullable = false)
     private String email;
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private long phoneNumber;
     @Column(length = 500)
     private String description;
@@ -50,7 +56,7 @@ public class User extends BaseEntity{
     public User() {
     }
 
-    public User(String name, String login, byte[] password) {
+    public User(String name, String login, String password) {
         this.name = name;
         this.login = login;
         this.password = password;
@@ -72,11 +78,13 @@ public class User extends BaseEntity{
         this.login = login;
     }
 
-    public byte[] getPassword() {
+    @JsonIgnore
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(byte[] password) {
+    @JsonProperty("password")
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -123,14 +131,13 @@ public class User extends BaseEntity{
     @Override
     public String toString() {
         return "User{" +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", login='" + login + '\'' +
-                ", password=" + Arrays.toString(password) +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", description='" + description + '\'' +
                 ", deleted=" + deleted +
-//                ", discountCards=" + discountCards +
                 '}';
     }
 }

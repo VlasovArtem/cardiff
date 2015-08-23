@@ -7,14 +7,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,6 +26,7 @@ public class DiscountCard extends BaseEntity {
     private long cardNumber;
     @Column(name = "expired_date")
     private LocalDateTime expiredDate;
+    @Column(columnDefinition = "boolean default true")
     private boolean availiable;
     @Column(name = "company_name", nullable = false)
     private String companyName;
@@ -47,10 +44,6 @@ public class DiscountCard extends BaseEntity {
     @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
     @JsonView(View.SecondLevel.class)
     private List<DiscountCardComment> discountCardComments;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
-    @JsonView(View.SecondLevel.class)
-    private List<DiscountCardHistory> discountCardHistories;
 
     public DiscountCard() {
     }
@@ -130,27 +123,5 @@ public class DiscountCard extends BaseEntity {
 
     public void setDiscountCardComments(List<DiscountCardComment> discountCardComments) {
         this.discountCardComments = discountCardComments;
-    }
-
-    public List<DiscountCardHistory> getDiscountCardHistories() {
-        return discountCardHistories;
-    }
-
-    public void setDiscountCardHistories(List<DiscountCardHistory> discountCardHistories) {
-        this.discountCardHistories = discountCardHistories;
-    }
-
-    @Override
-    public String toString() {
-        return "DiscountCard{" +
-                ", cardNumber=" + cardNumber +
-                ", expiredDate=" + expiredDate +
-                ", availiable=" + availiable +
-                ", companyName='" + companyName + '\'' +
-                ", amountOfDiscount=" + amountOfDiscount +
-                ", description='" + description + '\'' +
-                ", deleted=" + deleted +
-                ", tags=" + tags +
-                '}';
     }
 }

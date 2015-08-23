@@ -1,0 +1,7 @@
+<jboss-deployment-structure>
+    <deployment>
+        <exclusions>
+            <module name="org.jboss.resteasy.resteasy-jackson2-provider"/>
+        </exclusions>
+    </deployment>
+</jboss-deployment-structure>

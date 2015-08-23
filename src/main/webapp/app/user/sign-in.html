@@ -1,0 +1,22 @@
+<section id="sign-in">
+    <h2 class="col-md-12">Sign in</h2>
+    <form class="col-md-4 col-md-offset-4 form-horizontal">
+        <div class="form-group">
+            <input
+                    class="form-control"
+                    type="text"
+                    ng-model="user.login_data"
+                    placeholder="Input login or email"/>
+        </div>
+        <div class="form-group">
+            <input
+                    class="form-control"
+                    type="password"
+                    ng-model="user.password"
+                    placeholder="Input password"/>
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-lg btn-success btn-block" ng-click="login()" value="Sign in"/>
+        </div>
+    </form>
+</section>
