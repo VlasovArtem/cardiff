@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.provectus.cardiff.controller", "com.provectus.cardiff.service"})
+@ComponentScan("com.provectus.cardiff.controller")
 public class ServletContextConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -29,4 +29,6 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
                 .build();
         converters.add(new MappingJackson2HttpMessageConverter(mapper));
     }
+
+
 }

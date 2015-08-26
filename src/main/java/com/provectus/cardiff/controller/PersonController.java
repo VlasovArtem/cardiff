@@ -3,16 +3,15 @@ package com.provectus.cardiff.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.Person;
-import com.provectus.cardiff.service.impl.ServiceImpl;
+import com.provectus.cardiff.service.ServiceCardiff;
 import com.provectus.cardiff.utils.View;
 import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
@@ -23,18 +22,18 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 /**
  * Created by artemvlasov on 20/08/15.
  */
-@Controller
+@RestController
 @RequestMapping("/person")
 public class PersonController {
     @Autowired
-    private ServiceImpl service;
+    private ServiceCardiff service;
 
     @RequestMapping(path = "/login",
             method = POST,
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
     @JsonView(View.FirstLevel.class)
-    public @ResponseBody ResponseEntity login(
+    public ResponseEntity login(
             @RequestParam(name = "login_data") String loginData,
             @RequestParam(name = "password") String password,
             @RequestParam(name = "remember_me") boolean rememberMe) {
@@ -49,7 +48,7 @@ public class PersonController {
     }
 
     @RequestMapping(path = "/registration", method = POST, consumes = APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity registration(@RequestBody Person person) {
+    public ResponseEntity registration(@RequestBody Person person) {
         try {
             service.personRegistration(person);
         } catch (RuntimeException e) {
@@ -67,7 +66,7 @@ public class PersonController {
      * @return ResponseEntity with status ok or unauthorized
      */
     @RequestMapping(path = "/authentication", method = GET, produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity authentication() {
+    public ResponseEntity authentication() {
         try {
             service.authentication();
             return ResponseEntity.ok().build();
@@ -82,7 +81,7 @@ public class PersonController {
      * @return User
      */
     @RequestMapping(path = "/authenticated", method = GET, produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity authenticated() {
+    public ResponseEntity authenticated() {
         try {
             return ResponseEntity.ok(service.authenticatedPerson());
         } catch (AuthenticationException e) {
@@ -99,7 +98,7 @@ public class PersonController {
             method = POST,
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity changePassword(
+    public ResponseEntity changePassword(
             @RequestParam(name = "old_password", required = false) String oldPassword,
             @RequestParam(name = "new_password", required = false) String newPassword) {
         try {
