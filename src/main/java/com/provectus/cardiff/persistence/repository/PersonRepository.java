@@ -1,6 +1,6 @@
 package com.provectus.cardiff.persistence.repository;
 
-import com.provectus.cardiff.entities.User;
+import com.provectus.cardiff.entities.Person;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,14 +9,14 @@ import org.springframework.stereotype.Repository;
  * Created by artemvlasov on 20/08/15.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
-    @EntityGraph(value = "User.discountCards", type = EntityGraph.EntityGraphType.LOAD)
-    User findById(long id);
-    User findByLogin(String login);
-    User findByEmail(String email);
+public interface PersonRepository extends JpaRepository<Person, Long>{
+    @EntityGraph(value = "Person.discountCards", type = EntityGraph.EntityGraphType.LOAD)
+    Person findById(long id);
+    Person findByLogin(String login);
+    Person findByEmail(String email);
     boolean existsByLogin(String login);
     boolean existsByEmail(String email);
-    User findByEmailOrLogin(String email, String login);
+    Person findByEmailOrLogin(String email, String login);
     void deleteByLogin(String login);
     void deleteByEmail(String email);
 }

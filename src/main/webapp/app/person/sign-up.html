@@ -10,7 +10,7 @@
                    ng-minlength="6"
                    id="name"
                    name="name"
-                   ng-model="user.name"/>
+                   ng-model="person.name"/>
             <div validation-messages
                  model-controller="signUp.name"
                  minlength-error="Name is too short"
@@ -26,7 +26,7 @@
                    ng-minlength="6"
                    ng-maxlength="100"
                    ng-pattern="/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/"
-                   ng-model="user.login"
+                   ng-model="person.login"
                    autocomplete="off"
                    required/>
             <div validation-messages
@@ -45,7 +45,7 @@
                    ng-maxlength="50"
                    ng-minlength="3"
                    name="email"
-                   ng-model="user.email"
+                   ng-model="person.email"
                    autocomplete="off"
                    required/>
             <div validation-messages
@@ -63,7 +63,7 @@
                    name="password"
                    id="password"
                    placeholder="Input password"
-                   ng-model="user.password"
+                   ng-model="person.password"
                    ng-minlength="6"
                    ng-maxlength="100"
                    required/>
@@ -80,12 +80,14 @@
                    class="form-control"
                    name="phoneNumber"
                    id="phone-number"
-                   ng-model="user.phone_number"
+                   ng-minlength="9"
+                   ng-model="person.phone_number"
                    ui-mask="+380 (99) 999-99-99"
                    required/>
             <div validation-messages
-                 model-controller="signUp.phone_number"
-                 required-error="Phone number is required"></div>
+                 model-controller="signUp.phoneNumber"
+                 required-error="Phone number is required"
+                 minlength-error="Phone number should 9 symbols length"></div>
         </div>
         <div class="form-group">
             <label for="description">Info</label>
@@ -95,7 +97,7 @@
                       cols="30" rows="10"
                       ng-minlength="0"
                       ng-maxlength="500"
-                      ng-model="user.description"></textarea>
+                      ng-model="person.description"></textarea>
             <div validation-messages
                  model-controller="signUp.description"
                  maxlength-error="Description is too long"></div>

@@ -1,101 +1,150 @@
 package com.provectus.cardiff.service.impl;
 
-import com.provectus.cardiff.entities.User;
+import com.provectus.cardiff.entities.Person;
+import com.provectus.cardiff.persistence.repository.BookCardRepository;
+import com.provectus.cardiff.persistence.repository.DiscountCardCommentRepository;
+import com.provectus.cardiff.persistence.repository.DiscountCardHistoryRepository;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
-import com.provectus.cardiff.persistence.repository.UserRepository;
+import com.provectus.cardiff.persistence.repository.PersonRepository;
+import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.ServiceCardiff;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * Created by artemvlasov on 20/08/15.
  */
 @Service
+@Transactional
 public class ServiceImpl implements ServiceCardiff {
-    @Qualifier("userRepository")
+    @Qualifier("personRepository")
     @Autowired
-    UserRepository userCrudRepository;
+    PersonRepository personRepository;
     @Autowired
     DiscountCardRepository discountCardRepository;
+    @Autowired
+    DiscountCardCommentRepository discountCardCommentRepository;
+    @Autowired
+    DiscountCardHistoryRepository discountCardHistoryRepository;
+    @Autowired
+    TagRepository tagRepository;
+    @Autowired
+    BookCardRepository bookCardRepository;
+
 
     @Override
-    public User getUserById(long id) {
-        return userCrudRepository.findById(id);
-    }
-
-    @Override
-    public User getUserByLogin(String login) {
-        return userCrudRepository.findByLogin(login);
-    }
-
-    @Override
-    public User getUserByEmail(String email) {
-        return userCrudRepository.findByEmail(email);
-    }
-
-    @Override
-    public User loginUser(String email, String login, String password) {
-        Optional<User> user = Optional.ofNullable(userCrudRepository.findByEmailOrLogin(email, login));
-        if(user.isPresent() && BCrypt.checkpw(password, new String(user.get().getPassword()))) {
-            return user.get();
-        } else {
-            throw new RuntimeException("There is an error in email, login or password");
+    public Person loginPerson(String loginData, String password, boolean rememberMe) {
+        UsernamePasswordToken token = new UsernamePasswordToken();
+        token.setPassword(password.toCharArray());
+        token.setUsername(loginData);
+        token.setRememberMe(rememberMe);
+        try {
+            SecurityUtils.getSubject().login(token);
+        } catch (AuthenticationException e) {
+            throw new AuthenticationException("There is an error in email, login or password");
         }
-    }
-
-    @Override
-    public void deleteUserById(long id) {
-        userCrudRepository.delete(id);
-    }
-
-    @Override
-    public void addUser(User user) {
-        userCrudRepository.save(user);
-    }
-
-    @Override
-    public void userRegistration(User user) {
-        checkUserBeforeRegistration(user);
-        user.setPassword(BCrypt.hashpw(user.getPassword(), BCrypt.gensalt()));
-        userCrudRepository.save(user);
+        return personRepository.findByEmailOrLogin(loginData, loginData);
     }
 
     /**
-     * Check user data on availability of required data
-     * @param user Data that received from registration form
+     * Check that person with current sessionId is successfully passed authentication. Throw exception only if person is
+     * not authenticated or remembered.
      */
-    private void checkUserBeforeRegistration(User user) {
-        if(user == null) {
+    @Override
+    public void authentication() {
+        if(!SecurityUtils.getSubject().isRemembered() && !SecurityUtils.getSubject().isAuthenticated() || !personRepository.exists((long) SecurityUtils.getSubject().getPrincipal())) {
+            throw new AuthenticationException("User is not authenticated");
+        }
+    }
+
+    @Override
+    public void logout() {
+        SecurityUtils.getSubject().logout();
+    }
+
+    /**
+     * Return person that is already successfully passed authentication
+     * @return User
+     */
+    @Override
+    public Person authenticatedPerson() {
+        if(SecurityUtils.getSubject().getPrincipal() == null) {
+            throw new AuthenticationException("User is not authenticated");
+        } else if(!personRepository.exists((long) SecurityUtils
+                .getSubject()
+                .getPrincipal())) {
+            throw new AuthenticationException("User is not authenticated");
+        }
+        return personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
+    }
+
+    @Override
+    public void deletePersonById(long id) {
+        personRepository.delete(id);
+    }
+
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+        if(oldPassword == null || newPassword == null) {
+            throw new IllegalArgumentException("Old or new password cannot be null");
+        } else if(oldPassword.length() == 0 || newPassword.length() == 0) {
+            throw new IllegalArgumentException("Old or new password cannot be empty");
+        }
+        authentication();
+        Person user = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
+        if(BCrypt.checkpw(oldPassword, user.getPassword())) {
+            user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
+        } else {
+            throw new IllegalArgumentException("Old password is not match");
+        }
+    }
+
+    @Override
+    public void personRegistration(Person person) {
+        checkPersonBeforeRegistration(person);
+        person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
+        personRepository.save(person);
+    }
+
+    /**
+     * Check person data on availability of required data
+     * @param person Data that received from registration form
+     */
+    private void checkPersonBeforeRegistration(Person person) {
+        if(person == null) {
             throw new RuntimeException("User cannot be null");
         }
         List<String> requiredData = new ArrayList<>(4);
-        if (user.getEmail() == null) {
+        if (person.getEmail() == null) {
             requiredData.add("email");
         }
-        if (user.getLogin() == null) {
+        if (person.getLogin() == null) {
             requiredData.add("login");
         }
-        if (user.getPassword() == null) {
+        if (person.getPassword() == null) {
             requiredData.add("password");
         }
-        if (user.getPhoneNumber() == 0) {
+        if (person.getPhoneNumber() == 0) {
             requiredData.add("phone number");
         }
         if (requiredData.size() != 0) {
-            throw new RuntimeException("Next user data is required: " + requiredData.stream().collect(Collectors
+            throw new RuntimeException("Next person data is required: " + requiredData.stream().collect(Collectors
                     .joining(", ")));
         }
-        if (userCrudRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("User with this email is already registered");
-        } else if (userCrudRepository.existsByLogin(user.getLogin())) {
-            throw new RuntimeException("User with this login is already registered");
+        if (personRepository.existsByEmail(person.getEmail())) {
+            throw new RuntimeException("Person with this email is already registered");
+        } else if (personRepository.existsByLogin(person.getLogin())) {
+            throw new RuntimeException("Person with this login is already registered");
         }
     }
 }

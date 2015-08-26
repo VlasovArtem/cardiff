@@ -3,6 +3,7 @@ package com.provectus.cardiff.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.provectus.cardiff.enums.RersonRole;
 import com.provectus.cardiff.utils.View;
 import com.provectus.cardiff.utils.converters.PasswordConverter;
 
@@ -18,22 +19,21 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by artemvlasov on 19/08/15.
  */
 @Entity
-@Table(name = "client")
+@Table(name = "person")
 @NamedQueries({
-        @NamedQuery(name = "User.existsByLogin",
-                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM User p WHERE p.login = ?1"),
-        @NamedQuery(name = "User.existsByEmail",
-                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM User p WHERE p.email = ?1"),
+        @NamedQuery(name = "Person.existsByLogin",
+                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.login = ?1"),
+        @NamedQuery(name = "Person.existsByEmail",
+                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.email = ?1"),
 })
-@NamedEntityGraph(name = "User.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
-public class User extends BaseEntity{
+@NamedEntityGraph(name = "Person.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
+public class Person extends BaseEntity{
     @Column(length = 100)
     private String name;
     @Column(length = 100, unique = true, nullable = false)
@@ -47,16 +47,18 @@ public class User extends BaseEntity{
     private long phoneNumber;
     @Column(length = 500)
     private String description;
+    @Column(name = "role", columnDefinition = "varchar default USER")
+    private RersonRole role;
     private boolean deleted;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
     @JsonView(View.SecondLevel.class)
     private List<DiscountCard> discountCards;
 
-    public User() {
+    public Person() {
     }
 
-    public User(String name, String login, String password) {
+    public Person(String name, String login, String password) {
         this.name = name;
         this.login = login;
         this.password = password;
@@ -128,16 +130,11 @@ public class User extends BaseEntity{
         this.discountCards = discountCards;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber=" + phoneNumber +
-                ", description='" + description + '\'' +
-                ", deleted=" + deleted +
-                '}';
+    public RersonRole getRole() {
+        return role;
+    }
+
+    public void setRole(RersonRole role) {
+        this.role = role;
     }
 }

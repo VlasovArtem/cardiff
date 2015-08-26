@@ -8,7 +8,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 public class CardiffAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class<?>[] { AppConfig.class };
+        return new Class<?>[] { AppConfig.class, ShiroSecurityConfig.class };
     }
 
     @Override
@@ -18,6 +18,6 @@ public class CardiffAppInitializer extends AbstractAnnotationConfigDispatcherSer
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { "/rest/*" };
+        return new String[] { "/rest/*", "/cardiff/*" };
     }
 }

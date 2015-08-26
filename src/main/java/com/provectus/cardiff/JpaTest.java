@@ -3,7 +3,7 @@ package com.provectus.cardiff;
 import com.provectus.cardiff.entities.BookCard;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.entities.Tag;
-import com.provectus.cardiff.entities.User;
+import com.provectus.cardiff.entities.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,14 +22,14 @@ public class JpaTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            User user = createUser();
+            Person user = createUser();
             em.persist(user);
             DiscountCard discountCard = createDiscountCard(5456523696535238l);
             user.setDiscountCards(Collections.singletonList(discountCard));
             em.persist(discountCard);
             BookCard bc = createBookCard();
             bc.setDiscountCard(discountCard);
-            bc.setUser(user);
+            bc.setPerson(user);
             em.persist(bc);
             Tag tag1 = createTag("First");
             Tag tag2 = createTag("Second");
@@ -38,7 +38,7 @@ public class JpaTest {
             em.persist(tag2);
             em.getTransaction().commit();
             em.clear();
-            System.out.println(em.find(User.class, 1l));
+            System.out.println(em.find(Person.class, 1l));
         } finally {
             if(em.isOpen()) {
                 em.close();
@@ -47,8 +47,8 @@ public class JpaTest {
         }
         System.exit(0);
     }
-    private static User createUser() {
-        User user = new User();
+    private static Person createUser() {
+        Person user = new Person();
         user.setPhoneNumber(5469896);
         user.setCreatedDate(LocalDateTime.now());
         user.setDescription("Description for this user");

@@ -13,7 +13,7 @@ import java.util.Set;
 public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long> {
     DiscountCard findById(long id);
     List<DiscountCard> findByCompanyName(String companyName);
-    @Query("select d from User u JOIN u.discountCards d where u.id = ?1")
+    @Query("select d from Person u JOIN u.discountCards d where u.id = ?1")
     List<DiscountCard> findByUserId(long id);
     @Query("select d from DiscountCard d, Tag t " +
             "where t member of d.tags " +

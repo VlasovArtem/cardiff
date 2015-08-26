@@ -1,7 +1,7 @@
 /**
  * Created by artemvlasov on 22/08/15.
  */
-var app = angular.module('user-directives', []);
+var app = angular.module('person-directives', []);
 app.directive('validationMessages', function () {
     return {
         scope: {

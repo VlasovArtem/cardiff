@@ -21,8 +21,8 @@ public class BookCard extends BaseEntity {
     @Column(name = "book_date_end")
     private LocalDateTime bookDateEnd;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "person_id")
+    private Person person;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_card_id")
     private DiscountCard discountCard;
@@ -35,12 +35,12 @@ public class BookCard extends BaseEntity {
         this.bookDateEnd = bookDateEnd;
     }
 
-    public User getUser() {
-        return user;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public DiscountCard getDiscountCard() {
@@ -49,14 +49,5 @@ public class BookCard extends BaseEntity {
 
     public void setDiscountCard(DiscountCard discountCard) {
         this.discountCard = discountCard;
-    }
-
-    @Override
-    public String toString() {
-        return "BookCard{" +
-                ", bookDateEnd=" + bookDateEnd +
-                ", user=" + user +
-                ", discountCard=" + discountCard +
-                '}';
     }
 }

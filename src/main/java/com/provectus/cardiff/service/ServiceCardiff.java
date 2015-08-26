@@ -1,16 +1,16 @@
 package com.provectus.cardiff.service;
 
-import com.provectus.cardiff.entities.User;
+import com.provectus.cardiff.entities.Person;
 
 /**
  * Created by artemvlasov on 20/08/15.
  */
 public interface ServiceCardiff {
-    User getUserById(long id);
-    User getUserByLogin(String login);
-    User getUserByEmail(String email);
-    User loginUser(String email, String login, String password);
-    void deleteUserById(long id);
-    void addUser(User user);
-    void userRegistration(User user);
+    Person loginPerson(String loginData, String password, boolean rememberMe);
+    void authentication();
+    void logout();
+    Person authenticatedPerson();
+    void deletePersonById(long id);
+    void changePassword(String oldPassword, String newPassword);
+    void personRegistration(Person user);
 }

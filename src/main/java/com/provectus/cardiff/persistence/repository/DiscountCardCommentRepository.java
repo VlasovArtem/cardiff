@@ -15,7 +15,7 @@ public interface DiscountCardCommentRepository extends JpaRepository<DiscountCar
             "where dcc member of dc.discountCardComments " +
             "and dc.id = ?1")
     List<DiscountCardComment> findByDiscountCardId(long id);
-    @Query("select dcc from DiscountCard dc, DiscountCardComment dcc, User u " +
+    @Query("select dcc from DiscountCard dc, DiscountCardComment dcc, Person u " +
             "where dcc member of dc.discountCardComments " +
             "and dc member of u.discountCards " +
             "and u.id = ?1")

@@ -18,20 +18,20 @@ import java.time.LocalDateTime;
 @AttributeOverride(name = "createdDate", column = @Column(name = "picked_date", insertable = false, updatable = false))
 public class DiscountCardHistory extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "person_id")
+    private Person person;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_card_id")
     private DiscountCard discountCard;
     @Column(name = "return_date")
     private LocalDateTime returnDate;
 
-    public User getUser() {
-        return user;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setPerson(Person person) {
+        this.person = person;
     }
 
     public DiscountCard getDiscountCard() {

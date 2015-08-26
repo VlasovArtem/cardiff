@@ -1,7 +1,7 @@
 html, body {
     height: 100%;
 }
-#registration h2, .buttons {
+h2, .buttons {
     text-align: center;
 }
 .main {
@@ -36,4 +36,27 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+[ng\:cloak], [ng-cloak], .ng-cloak {
+    display: none !important;
+}
+.personal-data {
+    width: 50%;
+}
+.personal-data .key {
+    font-weight: bold;
+}
+hr.style {
+    border: 0;
+    height: 1px;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.75), rgba(0,0,0,0));
+}
+.error {
+    font-style: italic;
+    font-weight: lighter;
+    color: red;
+    text-align: center;
 }

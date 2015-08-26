@@ -11,5 +11,5 @@ import java.util.List;
 public interface DiscountCardHistoryRepository extends JpaRepository<DiscountCardHistory, Long> {
     DiscountCardHistory findById(long id);
     List<DiscountCardHistory> findByDiscountCardId(long id);
-    List<DiscountCardHistory> findByUserId(long id);
+    List<DiscountCardHistory> findByPersonId(long id);
 }
