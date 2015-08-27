@@ -1,7 +1,7 @@
 package com.provectus.cardiff.config;
 
 import com.provectus.cardiff.entities.Person;
-import com.provectus.cardiff.enums.RersonRole;
+import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.utils.BCryptCredentialMatcher;
 import org.apache.shiro.authc.AuthenticationException;
@@ -37,7 +37,7 @@ public class CardiffRealm extends AuthorizingRealm {
         Optional<Person> user = Optional.ofNullable(userRepository.findById(id));
         if(user.isPresent()) {
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            for (RersonRole userRole : RersonRole.values()) {
+            for (PersonRole userRole : PersonRole.values()) {
                 if(user.get().getRole() == userRole) {
                     info.addRole(userRole.name());
                 }

@@ -5,7 +5,7 @@ import com.provectus.cardiff.entities.Person;
 /**
  * Created by artemvlasov on 20/08/15.
  */
-public interface ServiceCardiff {
+public interface PersonService {
     Person loginPerson(String loginData, String password, boolean rememberMe);
     void authentication();
     void logout();
@@ -13,4 +13,5 @@ public interface ServiceCardiff {
     void deletePersonById(long id);
     void changePassword(String oldPassword, String newPassword);
     void personRegistration(Person user);
+    void update(Person src);
 }

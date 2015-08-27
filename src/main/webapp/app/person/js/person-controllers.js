@@ -31,21 +31,22 @@ app.controller('NavCtrl', ['$scope', 'auth', function($scope, auth) {
 }]);
 app.controller('AccountCtrl', ['$scope', 'personData', 'changePassword', '$timeout', '$resource', function($scope, personData, changePassword, $timeout, $resource) {
     $scope.person = personData;
-    $scope.ignoredKeys = ['discount_cards', 'id', 'created_date'];
+    $scope.ignoredKeys = ['discount_cards', 'id', 'created_date', 'role'];
     $scope.changePassword = function() {
-        if(!$scope.old_password || !$scope.new_password) {
+        if(!$scope.data.oldPassword || !$scope.data.newPassword) {
             $scope.errorFn('New or old password cannot be null');
-        } else if(_.isEqual($scope.old_password, $scope.new_password)) {
+        } else if(_.isEqual($scope.data.oldPassword, $scope.data.newPassword)) {
             $scope.errorFn('Old and new password is equals');
         } else {
             changePassword.change($.param({
-                old_password: $scope.old_password,
-                new_password: $scope.new_password
+                oldPassword: $scope.data.oldPassword,
+                newPassword: $scope.data.newPassword
             }), function() {
                 alert('Password successfully changed');
                 $scope.data = null;
             }, function(data) {
-                console.log(data);
+                $scope.errorFn(data.error);
+                $scope.data = null;
             })
         }
     };

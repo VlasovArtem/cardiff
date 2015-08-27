@@ -3,7 +3,7 @@ package com.provectus.cardiff.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.provectus.cardiff.enums.RersonRole;
+import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.utils.View;
 import com.provectus.cardiff.utils.converters.PasswordConverter;
 
@@ -11,6 +11,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedAttributeNode;
@@ -18,6 +20,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.util.List;
 
@@ -31,6 +34,8 @@ import java.util.List;
                 query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.login = ?1"),
         @NamedQuery(name = "Person.existsByEmail",
                 query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.email = ?1"),
+        @NamedQuery(name = "Person.hasRole",
+                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.id = ?1 AND p.role = ?2")
 })
 @NamedEntityGraph(name = "Person.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
 public class Person extends BaseEntity{
@@ -47,8 +52,9 @@ public class Person extends BaseEntity{
     private long phoneNumber;
     @Column(length = 500)
     private String description;
-    @Column(name = "role", columnDefinition = "varchar default USER")
-    private RersonRole role;
+    @Column(name = "role", columnDefinition = "varchar(9) default 'USER'")
+    @Enumerated(EnumType.STRING)
+    private PersonRole role;
     private boolean deleted;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
@@ -130,11 +136,16 @@ public class Person extends BaseEntity{
         this.discountCards = discountCards;
     }
 
-    public RersonRole getRole() {
+    public PersonRole getRole() {
         return role;
     }
 
-    public void setRole(RersonRole role) {
+    public void setRole(PersonRole role) {
         this.role = role;
+    }
+
+    @PrePersist
+    public void setPersonRole() {
+        role = PersonRole.USER;
     }
 }

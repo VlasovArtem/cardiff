@@ -1,32 +1,38 @@
 package com.provectus.cardiff.service.impl;
 
 import com.provectus.cardiff.entities.Person;
+import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.persistence.repository.BookCardRepository;
 import com.provectus.cardiff.persistence.repository.DiscountCardCommentRepository;
 import com.provectus.cardiff.persistence.repository.DiscountCardHistoryRepository;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
-import com.provectus.cardiff.service.ServiceCardiff;
+import com.provectus.cardiff.service.PersonService;
+import com.provectus.cardiff.utils.EntitiesUpdater;
+import com.provectus.cardiff.utils.validators.PersonValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.provectus.cardiff.utils.validators.PersonValidator.*;
 
 /**
  * Created by artemvlasov on 20/08/15.
  */
 @Service
 @Transactional
-public class ServiceImpl implements ServiceCardiff {
+public class PersonServiceImpl implements PersonService {
     @Qualifier("personRepository")
     @Autowired
     PersonRepository personRepository;
@@ -57,7 +63,7 @@ public class ServiceImpl implements ServiceCardiff {
     }
 
     /**
-     * Check that person with current sessionId is successfully passed authentication. Throw exception only if person is
+     * Check that src with current sessionId is successfully passed authentication. Throw exception only if src is
      * not authenticated or remembered.
      */
     @Override
@@ -73,7 +79,7 @@ public class ServiceImpl implements ServiceCardiff {
     }
 
     /**
-     * Return person that is already successfully passed authentication
+     * Return src that is already successfully passed authentication
      * @return User
      */
     @Override
@@ -90,6 +96,9 @@ public class ServiceImpl implements ServiceCardiff {
 
     @Override
     public void deletePersonById(long id) {
+        if(!personRepository.hasRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN.name())) {
+            throw new AuthorizationServiceException("You has no permission");
+        }
         personRepository.delete(id);
     }
 
@@ -99,6 +108,8 @@ public class ServiceImpl implements ServiceCardiff {
             throw new IllegalArgumentException("Old or new password cannot be null");
         } else if(oldPassword.length() == 0 || newPassword.length() == 0) {
             throw new IllegalArgumentException("Old or new password cannot be empty");
+        } else if(!passwordIsValid(newPassword)) {
+            throw new IllegalArgumentException(DataType.EMAIL.getError());
         }
         authentication();
         Person user = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
@@ -111,40 +122,25 @@ public class ServiceImpl implements ServiceCardiff {
 
     @Override
     public void personRegistration(Person person) {
-        checkPersonBeforeRegistration(person);
-        person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
-        personRepository.save(person);
-    }
-
-    /**
-     * Check person data on availability of required data
-     * @param person Data that received from registration form
-     */
-    private void checkPersonBeforeRegistration(Person person) {
         if(person == null) {
             throw new RuntimeException("User cannot be null");
         }
-        List<String> requiredData = new ArrayList<>(4);
-        if (person.getEmail() == null) {
-            requiredData.add("email");
-        }
-        if (person.getLogin() == null) {
-            requiredData.add("login");
-        }
-        if (person.getPassword() == null) {
-            requiredData.add("password");
-        }
-        if (person.getPhoneNumber() == 0) {
-            requiredData.add("phone number");
-        }
-        if (requiredData.size() != 0) {
-            throw new RuntimeException("Next person data is required: " + requiredData.stream().collect(Collectors
-                    .joining(", ")));
+        List<PersonValidator.DataType> data = isValid(person);
+        if(!data.isEmpty()) {
+            throw new IllegalArgumentException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
         }
         if (personRepository.existsByEmail(person.getEmail())) {
             throw new RuntimeException("Person with this email is already registered");
         } else if (personRepository.existsByLogin(person.getLogin())) {
             throw new RuntimeException("Person with this login is already registered");
         }
+        person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
+        personRepository.save(person);
+    }
+
+    @Override
+    public void update(Person src) {
+        Person trg = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
+        EntitiesUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
     }
 }

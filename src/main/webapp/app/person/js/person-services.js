@@ -47,9 +47,9 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
         },
         authenticate: function(credentials, callback) {
             Login.login($.param({
-                login_data: credentials.login_data,
+                loginData: credentials.loginData,
                 password: credentials.password,
-                remember_me: credentials.remember_me ? credentials.remember_me : false
+                rememberMe: credentials.rememberMe ? credentials.rememberMe : false
             }), function() {
                 auth.authenticated = true;
                 $location.path(auth.homePath);
@@ -79,7 +79,7 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
 service.factory('changePassword', ['$resource', function($resource) {
     return $resource('/rest/person/password/update', {}, {
         change: {
-            method: 'POST',
+            method: 'PUT',
             isArray: false,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
