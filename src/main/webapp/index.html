@@ -25,9 +25,9 @@
 <nav class="main" ng-controller="NavCtrl">
     <ul>
         <li><a href="/">Home</a></li>
-        <li ng-hide="authenticated()" class="pull-right"><a href="/cardiff/signin">Sign in</a></li>
-        <li ng-hide="authenticated()" class="pull-right"><a href="/cardiff/signup">Sign up</a></li>
-        <li ng-show="authenticated()" class="pull-right"><a href="/cardiff/account">Account</a></li>
+        <li ng-hide="authenticated()" class="pull-right"><a href="/signin">Sign in</a></li>
+        <li ng-hide="authenticated()" class="pull-right"><a href="/signup">Sign up</a></li>
+        <li ng-show="authenticated()" class="pull-right"><a href="/account">Account</a></li>
         <li ng-show="authenticated()" class="pull-right"><a href="" ng-click="logout()">Logout</a></li>
     </ul>
 </nav>

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.controller.PersonController;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.service.PersonService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import static org.springframework.http.HttpStatus.*;
 public class PersonControllerImpl implements PersonController {
     @Autowired
     private PersonService service;
+    private final static Logger LOGGER = LogManager.getLogger(PersonController.class);
 
     @Override
     public ResponseEntity login(String loginData, String password, boolean
@@ -27,7 +30,7 @@ public class PersonControllerImpl implements PersonController {
         try {
             return ResponseEntity.ok(service.loginPerson(loginData, password, rememberMe));
         } catch (RuntimeException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
             return ResponseEntity
                     .status(FORBIDDEN)
                     .body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
@@ -39,6 +42,7 @@ public class PersonControllerImpl implements PersonController {
         try {
             service.personRegistration(person);
         } catch (RuntimeException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity
                     .status(FORBIDDEN)
                     .body(JsonNodeFactory.instance.objectNode().put("error",e.getMessage()));
@@ -54,6 +58,7 @@ public class PersonControllerImpl implements PersonController {
             service.authentication();
             return ResponseEntity.ok().build();
         } catch(AuthenticationException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(UNAUTHORIZED).body(JsonNodeFactory.instance.objectNode().put("error", e
                     .getMessage()));
         }
@@ -64,6 +69,7 @@ public class PersonControllerImpl implements PersonController {
         try {
             return ResponseEntity.ok(service.authenticatedPerson());
         } catch (AuthenticationException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
         }
     }
@@ -80,6 +86,7 @@ public class PersonControllerImpl implements PersonController {
             service.changePassword(oldPassword, newPassword);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(CONFLICT).body(e.getMessage());
         }
     }
@@ -90,6 +97,7 @@ public class PersonControllerImpl implements PersonController {
             service.deletePersonById(id);
             return ResponseEntity.ok().build();
         } catch (AuthorizationServiceException e) {
+            LOGGER.error(e.getMessage());
             return ResponseEntity.status(UNAUTHORIZED).build();
         }
     }

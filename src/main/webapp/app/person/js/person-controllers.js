@@ -19,17 +19,15 @@ app.controller('NavCtrl', ['$scope', 'auth', function($scope, auth) {
         return auth.authenticated;
     };
     $scope.login = function() {
-        auth.authenticate($scope.person, function(authenticated) {
-            if(authenticated) {
-
-            }
+        auth.authenticate($scope.person, function(error) {
+            $scope.error = error;
         });
     };
     $scope.logout = function() {
         auth.clear();
     }
 }]);
-app.controller('AccountCtrl', ['$scope', 'personData', 'changePassword', '$timeout', '$resource', function($scope, personData, changePassword, $timeout, $resource) {
+app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$timeout', function($scope, $location, personData, changePassword, $timeout) {
     $scope.person = personData;
     $scope.ignoredKeys = ['discount_cards', 'id', 'created_date', 'role'];
     $scope.changePassword = function() {
@@ -56,5 +54,38 @@ app.controller('AccountCtrl', ['$scope', 'personData', 'changePassword', '$timeo
         $timeout(function() {
             $scope.error = null;
         }, 2000);
+    };
+    $scope.changeData = function() {
+        $location.path('/account/update')
+    }
+}]);
+app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'updatePerson', function($scope, personData, $location, updatePerson) {
+    personData.$promise.then(
+        function(person) {
+            $scope.changedPerson = person;
+            $scope.data = angular.copy(person);
+        }
+    );
+    $scope.personIsEquals = function() {
+        if($scope.data != undefined && $scope.changedPerson != undefined) {
+            return _.every(["name", "login", "email", "phone_number"], function(data) {
+                return _.isEqual($scope.data[data], $scope.changedPerson[data]) || $scope.data[data] == $scope.changedPerson[data]
+            });
+        }
+        return true;
+    };
+    $scope.update = function() {
+        console.log("Inside update");
+        updatePerson.updatePerson($scope.changedPerson,
+            function() {
+                alert('Person data successfully changed');
+                $location.path('/account');
+            },
+            function(data) {
+                $scope.error = data.error;
+            })
+    };
+    $scope.reset = function() {
+        $scope.changedPerson = angular.copy($scope.data);
     }
 }]);

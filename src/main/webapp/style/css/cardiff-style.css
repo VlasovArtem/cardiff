@@ -60,3 +60,9 @@ hr.style {
     color: red;
     text-align: center;
 }
+#personal-data input[type="button"] {
+    text-align: center;
+}
+#update-personal-data > .info > span {
+    text-align: center;
+}

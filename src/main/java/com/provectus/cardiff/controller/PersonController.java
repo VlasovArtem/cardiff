@@ -20,7 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
  * Created by artemvlasov on 20/08/15.
  */
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/rest/person")
 public interface PersonController {
 
     @RequestMapping(path = "/login",

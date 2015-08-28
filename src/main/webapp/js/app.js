@@ -6,17 +6,30 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
             .when('/', {
                 templateUrl: 'app/main.html'
             }).
-            when('/cardiff/signin', {
+            when('/signin', {
                 templateUrl: 'app/person/sign-in.html',
                 controller: 'NavCtrl'
             }).
-            when('/cardiff/signup', {
+            when('/signup', {
                 templateUrl: 'app/person/sign-up.html',
                 controller: 'SignUpCtrl'
             }).
-            when('/cardiff/account', {
+            when('/account', {
                 templateUrl: 'app/person/account.html',
                 controller: 'AccountCtrl',
+                resolve: {
+                    personData: function(Authenticated, $location) {
+                        return Authenticated.get(function(data) {
+                            return data;
+                        }, function() {
+                            $location.path('/');
+                        });
+                    }
+                }
+            }).
+            when('/account/update', {
+               templateUrl: 'app/person/update-account.html',
+                controller: 'UpdateAccountCtrl',
                 resolve: {
                     personData: function(Authenticated, $location) {
                         return Authenticated.get(function(data) {
@@ -32,5 +45,5 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
             })
     });
 app.run(function(auth) {
-    auth.init('/', '/cardiff/signin', '/logout')
+    auth.init('/', '/signin', '/logout')
 });

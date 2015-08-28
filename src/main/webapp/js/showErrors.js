@@ -4,8 +4,8 @@
   showErrorsModule = angular.module('ui.bootstrap.showErrors', []);
 
   showErrorsModule.directive('showErrors', [
-    '$timeout', 'showErrorsConfig', '$interpolate', function($timeout, showErrorsConfig, $interpolate) {
-      var getShowSuccess, getTrigger, linkFn;
+    '$timeout', 'showErrorsConfig', '$interpolate', '$filter', function($timeout, showErrorsConfig, $interpolate, $filter) {
+      var getShowSuccess, getShowWarning, getTrigger, linkFn;
       getTrigger = function(options) {
         var trigger;
         trigger = showErrorsConfig.trigger;
@@ -22,11 +22,20 @@
         }
         return showSuccess;
       };
+      getShowWarning = function(options) {
+        var showWarning;
+        showWarning = showErrorsConfig.showWarning;
+        if (options && (options.showWarning != null)) {
+          showWarning = options.showWarning;
+        }
+        return showWarning;
+      };
       linkFn = function(scope, el, attrs, formCtrl) {
-        var blurred, inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses, trigger;
+        var blurred, inputEl, inputName, inputNgEl, options, showSuccess, toggleClasses, showWarning, trigger;
         blurred = false;
         options = scope.$eval(attrs.showErrors);
         showSuccess = getShowSuccess(options);
+        showWarning = getShowWarning(options);
         trigger = getTrigger(options);
         inputEl = el[0].querySelector('.form-control[name]');
         inputNgEl = angular.element(inputEl);
@@ -53,6 +62,7 @@
           return $timeout(function() {
             el.removeClass('has-error');
             el.removeClass('has-success');
+            el.removeClass('has-warning');
             return blurred = false;
           }, 0, false);
         });
@@ -63,8 +73,15 @@
             return el.append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
           } else if(!invalid && showSuccess) {
             el.find("span").remove();
-            el.append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-            return el.toggleClass('has-success', !invalid);
+            el.find(".warning").remove();
+            if(showWarning && (_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue)) {
+              el.append('<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
+              el.append('<small class="help-block warning">Current person ' + $filter('accountFilter')(inputName)  + '</small>');
+              return el.toggleClass('has-warning', !invalid);
+            } else {
+              el.append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+              return el.toggleClass('has-success', !invalid);
+            }
           }
         };
       };

@@ -54,11 +54,9 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 auth.authenticated = true;
                 $location.path(auth.homePath);
                 $route.reload();
-                callback && callback(auth.authenticated);
             }, function(data) {
-                auth.error = data.error;
                 auth.authenticated = false;
-                callback && callback(false);
+                callback && callback(data.error);
             })
         },
         clear: function() {
@@ -86,4 +84,12 @@ service.factory('changePassword', ['$resource', function($resource) {
             }
         }
     });
+}]);
+service.factory('updatePerson', ['$resource', function($resource) {
+    return $resource('/rest/person/update', {}, {
+        updatePerson: {
+            method: 'PUT',
+            isArray: false
+        }
+    })
 }]);

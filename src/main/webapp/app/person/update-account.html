@@ -1,0 +1,94 @@
+<section id="update-personal-data" class="container-fluid">
+    <h2>Update Personal Data</h2>
+    <div class="error col-md-12" ng-if="error" ng-bind="error"></div>
+    <form class="col-md-offset-4 col-md-4" name="updateFrom">
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true, showWarning: true }">
+            <label for="name">Name</label>
+            <input class="form-control"
+                   type="text"
+                   placeholder="Input name"
+                   ng-maxlength="100"
+                   ng-minlength="6"
+                   id="name"
+                   name="name"
+                   ng-model="changedPerson.name"/>
+            <div validation-messages
+                 model-controller="updateFrom.name"
+                 minlength-error="Name is too short"
+                 maxlength-error="Name is too long"></div>
+        </div>
+        <div class="form-group has-feedback" show-errors="{ showSuccess: true, showWarning: true }"">
+        <label for="login">Login</label>
+        <input type="text"
+               class="form-control"
+               name="login"
+               placeholder="Input login"
+               id="login"
+               ng-minlength="6"
+               ng-maxlength="100"
+               ng-pattern="/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/"
+               ng-model="changedPerson.login"
+               autocomplete="off"
+               required/>
+        <div validation-messages
+             model-controller="updateFrom.login"
+             minlength-error="Login is too short"
+             maxlength-error="Login is too long"
+             required-error="Login is required"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true, showWarning: true }">
+            <label for="email">Email</label>
+            <input type="email"
+                   class="form-control"
+                   placeholder="Input email"
+                   id="email"
+                   ng-maxlength="50"
+                   ng-minlength="3"
+                   name="email"
+                   ng-model="changedPerson.email"
+                   autocomplete="off"
+                   required/>
+            <div validation-messages
+                 model-controller="updateFrom.email"
+                 required-error="Email is required"
+                 minlength-error="Email is too short"
+                 maxlength-error="Email is too long"
+                 email-error="Email is invalid"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true, showWarning: true }">
+            <label for="phone-number">Phone number</label>
+            <input type="text"
+                   class="form-control"
+                   name="phone_number"
+                   id="phone-number"
+                   ng-minlength="9"
+                   ng-model="changedPerson.phone_number"
+                   ui-mask="+380 (99) 999-99-99"
+                   required/>
+            <div validation-messages
+                 model-controller="updateFrom.phone_number"
+                 required-error="Phone number is required"
+                 minlength-error="Phone number should 9 symbols length"></div>
+        </div>
+        <div class="form-group">
+            <label for="description">Info</label>
+            <textarea class="form-control"
+                      id="description"
+                      name="description"
+                      cols="30" rows="10"
+                      ng-minlength="0"
+                      ng-maxlength="500"
+                      ng-model="changedPerson.description"></textarea>
+            <div validation-messages
+                 model-controller="updateFrom.description"
+                 maxlength-error="Description is too long"></div>
+        </div>
+        <div class="form-group buttons">
+            <input type="button" class="btn btn-success" value="Update" ng-disabled="personIsEquals() || updateFrom.$invalid" ng-click="update()"/>
+            <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
+        </div>
+    </form>
+</section>

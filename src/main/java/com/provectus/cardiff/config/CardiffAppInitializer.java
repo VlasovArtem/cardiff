@@ -22,7 +22,7 @@ public class CardiffAppInitializer extends AbstractAnnotationConfigDispatcherSer
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { "/rest/*", "/cardiff/*" };
+        return new String[] { "/*" };
     }
 
     @Override

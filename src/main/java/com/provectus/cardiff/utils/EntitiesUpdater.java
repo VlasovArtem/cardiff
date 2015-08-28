@@ -15,8 +15,8 @@ import java.util.Optional;
 public class EntitiesUpdater {
     public static <T> void update(Optional<T> src, Optional<T> trg) {
         if(src.isPresent() && trg.isPresent()) {
-            if(src.get().getClass().isInstance(trg.get().getClass())) {
-                updateEntity(src, trg);
+            if(src.get().getClass().isAssignableFrom(trg.get().getClass())) {
+                updateEntity(src.get(), trg.get());
             } else {
                 throw new IllegalArgumentException("Objects has different types");
             }

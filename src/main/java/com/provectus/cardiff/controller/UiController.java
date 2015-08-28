@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class UiController {
-    @RequestMapping(value = {"/signin", "/signup", "/account"})
-    public String redirect() {
-        System.out.println("Forward");
-        return "forward:/";
+    @RequestMapping({"/", "/signup", "/signin", "/account", "/account/*"})
+    public String index() {
+        return "index";
     }
 }
