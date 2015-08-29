@@ -3,16 +3,19 @@ package com.provectus.cardiff.controller.impl;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.controller.PersonController;
 import com.provectus.cardiff.entities.Person;
+import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.service.PersonService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import static com.provectus.cardiff.utils.ResponseEntityExceptionCreator.create;
 import static org.springframework.http.HttpStatus.*;
 
 /**
@@ -27,26 +30,13 @@ public class PersonControllerImpl implements PersonController {
     @Override
     public ResponseEntity login(String loginData, String password, boolean
             rememberMe) {
-        try {
-            return ResponseEntity.ok(service.loginPerson(loginData, password, rememberMe));
-        } catch (RuntimeException e) {
-            LOGGER.error(e.getMessage());
-            return ResponseEntity
-                    .status(FORBIDDEN)
-                    .body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
-        }
+        service.loginPerson(loginData, password, rememberMe);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity registration(@RequestBody Person person) {
-        try {
-            service.personRegistration(person);
-        } catch (RuntimeException e) {
-            LOGGER.error(e.getMessage());
-            return ResponseEntity
-                    .status(FORBIDDEN)
-                    .body(JsonNodeFactory.instance.objectNode().put("error",e.getMessage()));
-        }
+        service.personRegistration(person);
         return ResponseEntity
                 .status(OK)
                 .body(JsonNodeFactory.instance.objectNode().put("success", "Person successfully registered"));
@@ -54,14 +44,8 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     public ResponseEntity authentication() {
-        try {
-            service.authentication();
-            return ResponseEntity.ok().build();
-        } catch(AuthenticationException e) {
-            LOGGER.error(e.getMessage());
-            return ResponseEntity.status(UNAUTHORIZED).body(JsonNodeFactory.instance.objectNode().put("error", e
-                    .getMessage()));
-        }
+        service.authentication();
+        return ResponseEntity.ok().build();
     }
 
     @Override
@@ -69,8 +53,7 @@ public class PersonControllerImpl implements PersonController {
         try {
             return ResponseEntity.ok(service.authenticatedPerson());
         } catch (AuthenticationException e) {
-            LOGGER.error(e.getMessage());
-            return ResponseEntity.status(NOT_FOUND).body(e.getMessage());
+            return create(NOT_FOUND, "Person is not authenticated");
         }
     }
 
@@ -81,30 +64,35 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     public ResponseEntity changePassword(String oldPassword,
-                                         String newPassword) {
-        try {
-            service.changePassword(oldPassword, newPassword);
-            return ResponseEntity.ok().build();
-        } catch (IllegalArgumentException e) {
-            LOGGER.error(e.getMessage());
-            return ResponseEntity.status(CONFLICT).body(e.getMessage());
+                                         String newPassword, Exception ex) {
+        if(ex != null) {
+            return create(FORBIDDEN, ex.getMessage());
         }
+        service.changePassword(oldPassword, newPassword);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity deletePerson(long id) {
-        try {
-            service.deletePersonById(id);
-            return ResponseEntity.ok().build();
-        } catch (AuthorizationServiceException e) {
-            LOGGER.error(e.getMessage());
-            return ResponseEntity.status(UNAUTHORIZED).build();
-        }
+        service.deletePersonById(id);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity updatePerson(@RequestBody Person person) {
         service.update(person);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity getAll(@RequestParam String property, @RequestParam String direction) {
+        Sort sort = new Sort(Sort.Direction.valueOf(direction), property);
+        return ResponseEntity.ok(service.personAdminPanel(sort));
+    }
+
+    @Override
+    public ResponseEntity personAuthorized(@RequestParam PersonRole role) {
+        service.authorized(role);
         return ResponseEntity.ok().build();
     }
 }

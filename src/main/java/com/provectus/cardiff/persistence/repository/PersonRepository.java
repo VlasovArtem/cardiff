@@ -17,5 +17,6 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
     boolean existsByLogin(String login);
     boolean existsByEmail(String email);
     boolean hasRole(long id, String role);
+    boolean existsByLoginOrEmail(String login, String email);
     Person findByEmailOrLogin(String email, String login);
 }

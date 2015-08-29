@@ -14,18 +14,25 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', function($scope, 
         $scope.person = {};
     }
 }]);
-app.controller('NavCtrl', ['$scope', 'auth', function($scope, auth) {
+
+app.controller('NavCtrl', ['$scope', 'auth', '$timeout', function($scope, auth, $timeout) {
     $scope.authenticated = function () {
         return auth.authenticated;
     };
     $scope.login = function() {
         auth.authenticate($scope.person, function(error) {
-            $scope.error = error;
+            errorFn(error);
         });
     };
     $scope.logout = function() {
         auth.clear();
-    }
+    };
+    var errorFn = function(message) {
+        $scope.error = message;
+        $timeout(function() {
+            $scope.error = null;
+        }, 2000);
+    };
 }]);
 app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$timeout', function($scope, $location, personData, changePassword, $timeout) {
     $scope.person = personData;

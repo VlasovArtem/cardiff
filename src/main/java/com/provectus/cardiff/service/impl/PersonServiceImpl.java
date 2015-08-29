@@ -10,13 +10,16 @@ import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntitiesUpdater;
+import com.provectus.cardiff.utils.exceptions.PersonLoginException;
+import com.provectus.cardiff.utils.exceptions.PersonRegistrationException;
 import com.provectus.cardiff.utils.validators.PersonValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.AuthorizationServiceException;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +52,7 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public Person loginPerson(String loginData, String password, boolean rememberMe) {
+    public boolean loginPerson(String loginData, String password, boolean rememberMe) {
         UsernamePasswordToken token = new UsernamePasswordToken();
         token.setPassword(password.toCharArray());
         token.setUsername(loginData);
@@ -57,9 +60,9 @@ public class PersonServiceImpl implements PersonService {
         try {
             SecurityUtils.getSubject().login(token);
         } catch (AuthenticationException e) {
-            throw new AuthenticationException("There is an error in email, login or password");
+            throw new PersonLoginException(e.getMessage());
         }
-        return personRepository.findByEmailOrLogin(loginData, loginData);
+        return personRepository.existsByLoginOrEmail(loginData, loginData);
     }
 
     /**
@@ -69,7 +72,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void authentication() {
         if(!SecurityUtils.getSubject().isRemembered() && !SecurityUtils.getSubject().isAuthenticated() || !personRepository.exists((long) SecurityUtils.getSubject().getPrincipal())) {
-            throw new AuthenticationException("User is not authenticated");
+            throw new AuthenticationException("Person is no authenticated");
         }
     }
 
@@ -84,9 +87,7 @@ public class PersonServiceImpl implements PersonService {
      */
     @Override
     public Person authenticatedPerson() {
-        if(SecurityUtils.getSubject().getPrincipal() == null) {
-            throw new AuthenticationException("User is not authenticated");
-        } else if(!personRepository.exists((long) SecurityUtils
+        if(SecurityUtils.getSubject().getPrincipal() == null && !personRepository.exists((long) SecurityUtils
                 .getSubject()
                 .getPrincipal())) {
             throw new AuthenticationException("User is not authenticated");
@@ -97,7 +98,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deletePersonById(long id) {
         if(!personRepository.hasRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN.name())) {
-            throw new AuthorizationServiceException("You has no permission");
+            throw new AuthorizationException("You has no permission");
         }
         personRepository.delete(id);
     }
@@ -123,16 +124,14 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void personRegistration(Person person) {
         if(person == null) {
-            throw new RuntimeException("User cannot be null");
+            throw new PersonRegistrationException("User cannot be null");
         }
         List<PersonValidator.DataType> data = isValid(person);
         if(!data.isEmpty()) {
-            throw new IllegalArgumentException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
+            throw new PersonRegistrationException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
         }
-        if (personRepository.existsByEmail(person.getEmail())) {
-            throw new RuntimeException("Person with this email is already registered");
-        } else if (personRepository.existsByLogin(person.getLogin())) {
-            throw new RuntimeException("Person with this login is already registered");
+        if (personRepository.existsByEmail(person.getEmail()) || personRepository.existsByLogin(person.getLogin())) {
+            throw new PersonRegistrationException("Person with this email is already registered");
         }
         person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
         personRepository.save(person);
@@ -142,5 +141,17 @@ public class PersonServiceImpl implements PersonService {
     public void update(Person src) {
         Person trg = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
         EntitiesUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
+    }
+
+    @Override
+    public List<Person> personAdminPanel(Sort sort) {
+        SecurityUtils.getSubject().checkRole("ADMIN");
+        return personRepository.findAll(sort);
+    }
+
+    @Override
+    public void authorized(PersonRole role) {
+        authentication();
+        SecurityUtils.getSubject().checkRole(role.name());
     }
 }

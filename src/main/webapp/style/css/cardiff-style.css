@@ -56,7 +56,6 @@ hr.style {
 }
 .error {
     font-style: italic;
-    font-weight: lighter;
     color: red;
     text-align: center;
 }

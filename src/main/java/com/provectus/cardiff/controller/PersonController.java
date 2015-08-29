@@ -2,11 +2,13 @@ package com.provectus.cardiff.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.entities.Person;
+import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.utils.View;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,9 +65,10 @@ public interface PersonController {
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
     @RequiresAuthentication
+    @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity changePassword(
             @RequestParam String oldPassword,
-            @RequestParam String newPassword);
+            @RequestParam String newPassword, Exception ex);
 
     @RequestMapping(path = "/delete/{id:\\d}",
             method = PUT)
@@ -76,4 +79,18 @@ public interface PersonController {
             method = PUT)
     @RequiresAuthentication
     ResponseEntity updatePerson(@RequestBody Person person);
+
+    @RequestMapping(path = "/admin",
+            method = GET,
+            produces = APPLICATION_JSON_VALUE)
+    @RequiresRoles("ADMIN")
+    @JsonView(View.FirstLevel.class)
+    ResponseEntity getAll(@RequestParam(defaultValue = "createdDate") String property, @RequestParam(defaultValue =
+            "ASC") String direction);
+
+    @RequestMapping(path = "/authorized",
+            method = GET,
+            consumes = APPLICATION_JSON_VALUE)
+    @RequiresAuthentication
+    ResponseEntity personAuthorized(@RequestParam PersonRole role);
 }

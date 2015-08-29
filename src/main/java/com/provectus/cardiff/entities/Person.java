@@ -35,7 +35,10 @@ import java.util.List;
         @NamedQuery(name = "Person.existsByEmail",
                 query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.email = ?1"),
         @NamedQuery(name = "Person.hasRole",
-                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.id = ?1 AND p.role = ?2")
+                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.id = ?1 AND p" +
+                        ".role = ?2"),
+        @NamedQuery(name = "Person.existsByLoginOrEmail",
+                query = "SELECT CASE WHEN (COUNT(p) > 0) THEN true ELSE false END FROM Person p WHERE p.login = ?1 OR p.email = ?2")
 })
 @NamedEntityGraph(name = "Person.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
 public class Person extends BaseEntity{
