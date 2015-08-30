@@ -96,7 +96,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void deletePerson(long id) {
-        if(!personRepository.hasRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN.name())) {
+        if(!personRepository.existsByIdAndRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN.name())) {
             throw new AuthorizationException("Person has no permission");
         }
         Person person = personRepository.findById(id);
@@ -130,7 +130,7 @@ public class PersonServiceImpl implements PersonService {
         if(!data.isEmpty()) {
             throw new PersonRegistrationException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
         }
-        if (personRepository.existsByEmail(person.getEmail()) || personRepository.existsByLogin(person.getLogin())) {
+        if (personRepository.existsByLoginOrEmail(person.getLogin(), person.getEmail())) {
             throw new PersonRegistrationException("Person with this email is already registered");
         }
         person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
