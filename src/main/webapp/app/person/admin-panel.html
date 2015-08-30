@@ -1,0 +1,31 @@
+<section class="admin-persons">
+    <h2 class="col-md-12">Registered Persons</h2>
+    <div class="col-md-offset-1 col-md-10">
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Login</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Created</th>
+                <th colspan="2"></th>
+            </tr>
+            <tr ng-repeat="(index, person) in persons" class="data">
+                <td ng-bind="index + 1"></td>
+                <td ng-bind="person.name"></td>
+                <td ng-bind="person.login"></td>
+                <td ng-bind="person.email"></td>
+                <td ng-bind="person.phone_number | phoneNumberFilter"></td>
+                <td ng-bind="person.role"></td>
+                <td ng-bind="person.created_date | dateFilter"></td>
+                <td class="admin-person-buttons">
+                    <span class="glyphicon glyphicon-remove button-remove" ng-click="removePerson(person.id)"></span>
+                    <span class="glyphicon glyphicon-edit button-edit" ng-click="editPerson(person)"></span>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</section>

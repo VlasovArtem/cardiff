@@ -2,8 +2,8 @@ package com.provectus.cardiff.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.entities.Person;
-import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.utils.View;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -78,6 +78,7 @@ public interface PersonController {
     @RequestMapping(path = "/update",
             method = PUT)
     @RequiresAuthentication
+    @RequiresRoles(value = {"ADMIN", "USER"}, logical = Logical.OR)
     ResponseEntity updatePerson(@RequestBody Person person);
 
     @RequestMapping(path = "/admin",
@@ -85,12 +86,12 @@ public interface PersonController {
             produces = APPLICATION_JSON_VALUE)
     @RequiresRoles("ADMIN")
     @JsonView(View.FirstLevel.class)
-    ResponseEntity getAll(@RequestParam(defaultValue = "createdDate") String property, @RequestParam(defaultValue =
-            "ASC") String direction);
+    ResponseEntity getAll(@RequestParam(defaultValue = "createdDate", required = false) String property,
+                          @RequestParam(defaultValue = "ASC", required = false) String direction);
 
     @RequestMapping(path = "/authorized",
             method = GET,
-            consumes = APPLICATION_JSON_VALUE)
+            produces = APPLICATION_JSON_VALUE)
     @RequiresAuthentication
-    ResponseEntity personAuthorized(@RequestParam PersonRole role);
+    ResponseEntity personAuthorized(@RequestParam(required = false) String role);
 }

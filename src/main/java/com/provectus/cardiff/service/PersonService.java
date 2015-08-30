@@ -10,11 +10,11 @@ import java.util.List;
  * Created by artemvlasov on 20/08/15.
  */
 public interface PersonService {
-    boolean loginPerson(String loginData, String password, boolean rememberMe);
+    void loginPerson(String loginData, String password, boolean rememberMe);
     void authentication();
     void logout();
     Person authenticatedPerson();
-    void deletePersonById(long id);
+    void deletePerson(long id);
     void changePassword(String oldPassword, String newPassword);
     void personRegistration(Person user);
     void update(Person src);

@@ -65,3 +65,19 @@ hr.style {
 #update-personal-data > .info > span {
     text-align: center;
 }
+.button-remove, .button-edit {
+    color: gainsboro;
+}
+.button-remove:hover {
+    color: red;
+}
+.admin-person-buttons span {
+    font-size: x-large;
+}
+.button-edit:hover {
+    color: #00b3ee;
+}
+.admin-persons .data > td {
+    vertical-align: middle;
+
+}

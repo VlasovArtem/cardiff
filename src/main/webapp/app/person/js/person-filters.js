@@ -12,3 +12,16 @@ app.filter('phoneNumberFilter', function() {
         return '+380 (' + phoneNumberString.substr(0, 2) + ') ' + phoneNumberString.substr(2, 3) + '-' + phoneNumberString.substr(5,2) + '-' + phoneNumberString.substr(7,2);
     }
 });
+app.filter('dateFilter', function() {
+    return function(date) {
+        var filteredDate = "";
+        for(var i = 0; i < 3; i++) {
+            if(i == 2) {
+                filteredDate += date[i];
+            } else {
+                filteredDate += date[i] + '-';
+            }
+        }
+        return filteredDate;
+    }
+});

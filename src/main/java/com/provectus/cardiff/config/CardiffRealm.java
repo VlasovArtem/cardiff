@@ -51,7 +51,8 @@ public class CardiffRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authcToken) throws AuthenticationException {
         UsernamePasswordToken token = (UsernamePasswordToken) authcToken;
         String tokenUsername = token.getUsername();
-        Optional<Person> user = Optional.ofNullable(userRepository.findByEmailOrLogin(tokenUsername, tokenUsername));
+        Optional<Person> user = Optional.ofNullable(userRepository.findByEmailOrLoginAndDeleted(tokenUsername,
+                tokenUsername, false));
         if(user.isPresent()) {
             return new SimpleAuthenticationInfo(user.get().getId(), user.get().getPassword(), getName());
         }

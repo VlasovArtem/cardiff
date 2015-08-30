@@ -74,7 +74,7 @@ public class PersonControllerImpl implements PersonController {
 
     @Override
     public ResponseEntity deletePerson(long id) {
-        service.deletePersonById(id);
+        service.deletePerson(id);
         return ResponseEntity.ok().build();
     }
 
@@ -85,14 +85,15 @@ public class PersonControllerImpl implements PersonController {
     }
 
     @Override
-    public ResponseEntity getAll(@RequestParam String property, @RequestParam String direction) {
+    public ResponseEntity getAll(@RequestParam(defaultValue = "createdDate", required = false) String property,
+                                 @RequestParam(defaultValue = "ASC", required = false) String direction) {
         Sort sort = new Sort(Sort.Direction.valueOf(direction), property);
         return ResponseEntity.ok(service.personAdminPanel(sort));
     }
 
     @Override
-    public ResponseEntity personAuthorized(@RequestParam PersonRole role) {
-        service.authorized(role);
+    public ResponseEntity personAuthorized(@RequestParam(required = false) String role) {
+        service.authorized(PersonRole.valueOf(role));
         return ResponseEntity.ok().build();
     }
 }

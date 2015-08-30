@@ -28,15 +28,36 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                 }
             }).
             when('/account/update', {
-               templateUrl: 'app/person/update-account.html',
+                templateUrl: 'app/person/update-account.html',
                 controller: 'UpdateAccountCtrl',
                 resolve: {
-                    personData: function(Authenticated, $location) {
-                        return Authenticated.get(function(data) {
-                            return data;
-                        }, function() {
-                            $location.path('/');
-                        });
+                    personData: function(Authenticated, $location, UpdatePerson) {
+                        var person = angular.copy(UpdatePerson.getPerson());
+                        if(person) {
+                            UpdatePerson.setPerson(null);
+                            return person
+                        } else {
+                            return Authenticated.get().$promise.then(
+                                function(data) {
+                                    return data;
+                                }, function() {
+                                    $location.path('/');
+                                });
+                        }
+                    }
+                }
+            }).
+            when('/admin/persons', {
+                templateUrl: 'app/person/admin-panel.html',
+                controller: 'AdminPersonsCtrl',
+                resolve: {
+                    persons: function(AdminPersons, $location) {
+                        return AdminPersons.query(
+                            function(data) {
+                                return data;
+                            }, function() {
+                                $location.path('/');
+                            })
                     }
                 }
             }).

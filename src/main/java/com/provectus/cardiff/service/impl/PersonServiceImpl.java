@@ -52,7 +52,7 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public boolean loginPerson(String loginData, String password, boolean rememberMe) {
+    public void loginPerson(String loginData, String password, boolean rememberMe) {
         UsernamePasswordToken token = new UsernamePasswordToken();
         token.setPassword(password.toCharArray());
         token.setUsername(loginData);
@@ -62,7 +62,6 @@ public class PersonServiceImpl implements PersonService {
         } catch (AuthenticationException e) {
             throw new PersonLoginException(e.getMessage());
         }
-        return personRepository.existsByLoginOrEmail(loginData, loginData);
     }
 
     /**
@@ -96,11 +95,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void deletePersonById(long id) {
+    public void deletePerson(long id) {
         if(!personRepository.hasRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN.name())) {
-            throw new AuthorizationException("You has no permission");
+            throw new AuthorizationException("Person has no permission");
         }
-        personRepository.delete(id);
+        Person person = personRepository.findById(id);
+        person.setDeleted(true);
     }
 
     @Override
@@ -139,7 +139,14 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void update(Person src) {
-        Person trg = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
+        Person trg;
+        if(src.getId() == (long) SecurityUtils.getSubject().getPrincipal()) {
+            trg = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
+        } else if(SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())) {
+            trg = personRepository.findById(src.getId());
+        } else {
+            throw new AuthenticationException("Person has no permission");
+        }
         EntitiesUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
     }
 

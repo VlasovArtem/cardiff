@@ -24,7 +24,7 @@ service.factory('Authentication', ['$resource', function($resource) {
 service.factory('Authenticated', ['$resource', function($resource) {
     return $resource('/rest/person/authenticated');
 }]);
-service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentication', function($resource, $location, $route, Login, Authentication) {
+service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentication', 'PersonFactory', function($resource, $location, $route, Login, Authentication, PersonFactory) {
     var enter = function() {
         if($location.path() != auth.loginPath) {
             auth.path = $location.path();
@@ -35,13 +35,22 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
     };
     var auth = {
         authenticated: false,
+        admin: false,
         loginPath: '/signin',
         logoutPath: '/logout',
         homePath: '/',
         error: null,
         authentication: function() {
             Authentication.get(
-                function() { auth.authenticated = true },
+                function() {
+                    PersonFactory.get({
+                            authorized: 'authorized',
+                            role: 'ADMIN'
+                        },
+                        function() {auth.admin = true;},
+                        function() {auth.admin = false;});
+                    auth.authenticated = true
+                },
                 function() { auth.authenticated = false }
             )
         },
@@ -93,4 +102,33 @@ service.factory('updatePerson', ['$resource', function($resource) {
             isArray: false
         }
     })
+}]);
+service.factory('AdminPersons', ['$resource', function($resource) {
+    return $resource('/rest/person/admin');
+}]);
+service.factory('AdminRemovePerson', ['$resource', function($resource) {
+    return $resource('/rest/person/delete/:id', {
+        id: '@id'
+    })
+}]);
+service.factory('PersonFactory', ['$resource', function($resource) {
+    return $resource('/rest/person/:delete/:get/:authorized/:id', {
+        delete: '@delete',
+        get: '@get',
+        authorized: '@authorized',
+        id: '@id'
+    })
+}]);
+service.factory('UpdatePerson', [function() {
+    var person = null;
+    var setPerson = function(data) {
+        person = data;
+    };
+    var getPerson = function() {
+        return person;
+    };
+    return {
+        setPerson: setPerson,
+        getPerson: getPerson
+    }
 }]);
