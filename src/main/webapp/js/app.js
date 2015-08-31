@@ -61,6 +61,10 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                     }
                 }
             }).
+             when('/Add', {
+                templateUrl: 'app/DiscountCard/Add.html',
+                controller: 'AddCtrl'
+             }).
             otherwise({
                 redirectTo: '/'
             })
