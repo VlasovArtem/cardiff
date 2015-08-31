@@ -4,6 +4,14 @@
 
 CREATE SCHEMA cardiff;
 
+--
+-- Name: role; Type: TABLE; Schema: cardiff; Owner: postgres;
+--
+
+CREATE TABLE cardiff.role (
+  id  INT PRIMARY KEY    NOT NULL,
+  name VARCHAR(50)       NOT NULL UNIQUE
+);
 
 --
 -- Name: person; Type: TABLE; Schema: cardiff; Owner: postgres;
@@ -12,14 +20,15 @@ CREATE SCHEMA cardiff;
 CREATE TABLE cardiff.person (
   id           INT PRIMARY KEY    NOT NULL,
   name         VARCHAR(100)       NOT NULL,
-  login        VARCHAR(100)       NOT NULL,
+  login        VARCHAR(100)       NOT NULL  UNIQUE,
   password     BYTEA              NOT NULL,
-  email        VARCHAR(50)        NOT NULL,
-  phone_number BIGSERIAL,
+  email        VARCHAR(50)        NOT NULL  UNIQUE,
+  created_date DATE,
+  phone_number BIGINT,
   description  VARCHAR(500),
-  deleted      BOOLEAN            NOT NULL
+  deleted      BOOLEAN            NOT NULL,
+  role_id      INT REFERENCES cardiff.role (id)
 );
-
 
 --
 -- Name: discount_card; Type: TABLE; Schema: cardiff; Owner: postgres;
@@ -27,7 +36,7 @@ CREATE TABLE cardiff.person (
 
 CREATE TABLE cardiff.discount_card (
   id                 INT PRIMARY KEY      NOT NULL,
-  card_number        BIGINT               NOT NULL,
+  card_number        BIGINT               NOT NULL UNIQUE,
   expired_date       DATE,
   available          BOOLEAN              NOT NULL,
   company_name       VARCHAR(50)          NOT NULL,
@@ -38,6 +47,7 @@ CREATE TABLE cardiff.discount_card (
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
+
 --
 -- Name: book_card; Type: TABLE; Schema: cardiff; Owner: postgres;
 --
@@ -84,8 +94,9 @@ CREATE TABLE cardiff.discount_card_history (
 
 CREATE TABLE cardiff.tag (
   id  INT PRIMARY KEY    NOT NULL,
-  tag VARCHAR(50)        NOT NULL
+  tag VARCHAR(50)        NOT NULL UNIQUE
 );
+
 --
 -- Name: tag_card; Type: TABLE; Schema: cardiff; Owner: postgres;
 --
@@ -95,5 +106,4 @@ CREATE TABLE cardiff.tag_card (
   discount_card_id INT REFERENCES cardiff.discount_card (id),
   tag_id          INT REFERENCES cardiff.tag (id)
 );
-
 
