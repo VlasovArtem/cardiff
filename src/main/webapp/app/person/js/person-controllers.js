@@ -100,13 +100,50 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'updat
         $scope.changedPerson = angular.copy($scope.data);
     }
 }]);
-app.controller('AdminPersonsCtrl', ['$scope', '$location', 'persons', 'PersonFactory', 'UpdatePerson', function($scope, $location, persons, PersonFactory, UpdatePerson) {
-    $scope.persons = persons;
+app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', 'persons', 'PersonFactory', 'UpdatePerson', 'AdminPersons', function($scope, $location, $filter, persons, PersonFactory, UpdatePerson, AdminPersons) {
+    persons.$promise.then(function(data) {
+        $scope.persons = data.content;
+        $scope.totalItems = data.total_elements;
+    });
+    $scope.initialSort = {
+        direction: 'DESC',
+        property: 'createdDate'
+    };
+    $scope.head = [
+        {name : 'Name', property : 'name', width: '15%'},
+        {name : 'Login', property: 'login', width: '10%'},
+        {name : 'Email', property: 'email', width: '20%'},
+        {name : 'Phone', property: 'phone_number', width: '15%'},
+        {name : 'Role', property: 'role', width: '5%'},
+        {name : 'Created', property: 'created_date', width: '10%'},
+        {name : 'Deleted', property: 'deleted', width: '5%'}
+    ];
     $scope.removePerson = function(id) {
         PersonFactory.remove({delete: 'delete', id : id})
     };
     $scope.editPerson = function(person) {
         UpdatePerson.setPerson(person);
         $location.path('/account/update');
+    };
+    $scope.restorePerson = function(personId) {
+        PersonFactory.restore({id: personId});
+    };
+    $scope.changeRole = function(personId) {
+        PersonFactory.updateRole({id: personId});
+    };
+    $scope.getData = function(pageable) {
+        AdminPersons.get(pageable).$promise.then(function(data) {
+            $scope.persons = data.content;
+            $scope.totalItems = data.total_elements;
+        });
+    };
+    $scope.setData = function(dIndex, pIndex) {
+        if($scope.head[dIndex].property == 'created_date') {
+            return $filter('dateFilter')($scope.persons[pIndex][$scope.head[dIndex].property])
+        } else if($scope.head[dIndex].property == 'phone_number') {
+            return $filter('phoneNumberFilter')($scope.persons[pIndex][$scope.head[dIndex].property])
+        } else {
+            return $scope.persons[pIndex][$scope.head[dIndex].property]
+        }
     }
 }]);

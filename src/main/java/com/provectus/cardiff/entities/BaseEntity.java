@@ -40,6 +40,8 @@ public abstract class BaseEntity {
      */
     @PrePersist
     public void putCreatedDate() {
-        createdDate = LocalDateTime.now();
+        if(createdDate == null) {
+            createdDate = LocalDateTime.now();
+        }
     }
 }

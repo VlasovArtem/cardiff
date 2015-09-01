@@ -2,22 +2,23 @@ package com.provectus.cardiff.service;
 
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
-import org.springframework.data.domain.Sort;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * Created by artemvlasov on 20/08/15.
  */
 public interface PersonService {
-    void loginPerson(String loginData, String password, boolean rememberMe);
+    void login(String loginData, String password, boolean rememberMe);
     void authentication();
     void logout();
-    Person authenticatedPerson();
-    void deletePerson(long id);
+    Person authenticated();
+    void delete(long id);
     void changePassword(String oldPassword, String newPassword);
-    void personRegistration(Person user);
+    void registration(Person user);
     void update(Person src);
-    List<Person> personAdminPanel(Sort sort);
+    Page<Person> getAll(Pageable pageable);
     void authorized(PersonRole role);
+    void restore(long id);
+    void changeRole(long id);
 }

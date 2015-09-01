@@ -65,19 +65,27 @@ hr.style {
 #update-personal-data > .info > span {
     text-align: center;
 }
-.button-remove, .button-edit {
+.button-remove, .button-edit, .button-restore, .button-role {
     color: gainsboro;
 }
 .button-remove:hover {
     color: red;
 }
-.admin-person-buttons span {
-    font-size: x-large;
+.button-restore:hover {
+    color: #d5d633
 }
 .button-edit:hover {
     color: #00b3ee;
 }
+.button-role:hover {
+    color: #3fd634
+}
+.admin-person-buttons {
+    text-align: center;
+}
+.admin-person-buttons span {
+    font-size: x-large;
+}
 .admin-persons .data > td {
     vertical-align: middle;
-
 }

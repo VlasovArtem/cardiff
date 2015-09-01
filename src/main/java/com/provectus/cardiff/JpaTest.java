@@ -1,17 +1,11 @@
 package com.provectus.cardiff;
 
-import com.provectus.cardiff.entities.BookCard;
-import com.provectus.cardiff.entities.DiscountCard;
-import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.entities.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by artemvlasov on 20/08/15.
@@ -22,23 +16,21 @@ public class JpaTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            Person user = createUser();
-            em.persist(user);
-            DiscountCard discountCard = createDiscountCard(5456523696535238l);
-            user.setDiscountCards(Collections.singletonList(discountCard));
-            em.persist(discountCard);
-            BookCard bc = createBookCard();
-            bc.setDiscountCard(discountCard);
-            bc.setPerson(user);
-            em.persist(bc);
-            Tag tag1 = createTag("First");
-            Tag tag2 = createTag("Second");
-            discountCard.setTags(Stream.of(tag1, tag2).collect(Collectors.toSet()));
-            em.persist(tag1);
-            em.persist(tag2);
+            for (int i = 0; i < 20; i++) {
+                Person person = new Person();
+                person.setPassword("testuser" + i);
+                person.setEmail("testuser" + i + "@mail.com");
+                person.setLogin("testuser" + i);
+                person.setName("test user " + i);
+                person.setPhoneNumber(637472072 + i);
+                if(i % 2 == 0) {
+                    person.setCreatedDate(LocalDateTime.now().plusMinutes(i * 10));
+                } else {
+                    person.setCreatedDate(LocalDateTime.now().minusMinutes(i * 10));
+                }
+                em.persist(person);
+            }
             em.getTransaction().commit();
-            em.clear();
-            System.out.println(em.find(Person.class, 1l));
         } finally {
             if(em.isOpen()) {
                 em.close();
@@ -47,35 +39,4 @@ public class JpaTest {
         }
         System.exit(0);
     }
-    private static Person createUser() {
-        Person user = new Person();
-        user.setPhoneNumber(5469896);
-        user.setCreatedDate(LocalDateTime.now());
-        user.setDescription("Description for this user");
-        user.setEmail("testemail@mail.com");
-        user.setLogin("testlogin");
-        user.setName("Test name");
-        user.setPassword("password");
-        return user;
-    }
-    private static DiscountCard createDiscountCard(long cardNumber) {
-        DiscountCard discountCard = new DiscountCard();
-        discountCard.setDescription("This is the first discount card");
-        discountCard.setAmountOfDiscount(10);
-        discountCard.setCardNumber(cardNumber);
-        discountCard.setCompanyName("Robin Bobin");
-        discountCard.setExpiredDate(LocalDateTime.now().plusYears(2l));
-        return discountCard;
-    }
-    public static BookCard createBookCard() {
-        BookCard bookCard = new BookCard();
-        bookCard.setBookDateEnd(LocalDateTime.now().plusDays(5));
-        return bookCard;
-    }
-    public static Tag createTag(String myTag) {
-        Tag tag = new Tag();
-        tag.setTag(myTag);
-        return tag;
-    }
-
 }

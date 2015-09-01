@@ -19,7 +19,8 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +53,7 @@ public class PersonServiceImpl implements PersonService {
 
 
     @Override
-    public void loginPerson(String loginData, String password, boolean rememberMe) {
+    public void login(String loginData, String password, boolean rememberMe) {
         UsernamePasswordToken token = new UsernamePasswordToken();
         token.setPassword(password.toCharArray());
         token.setUsername(loginData);
@@ -85,17 +86,17 @@ public class PersonServiceImpl implements PersonService {
      * @return User
      */
     @Override
-    public Person authenticatedPerson() {
+    public Person authenticated() {
         if(SecurityUtils.getSubject().getPrincipal() == null && !personRepository.exists((long) SecurityUtils
                 .getSubject()
                 .getPrincipal())) {
-            throw new AuthenticationException("User is not authenticated");
+            throw new AuthenticationException("Person is not authenticated");
         }
         return personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
     }
 
     @Override
-    public void deletePerson(long id) {
+    public void delete(long id) {
         if(!personRepository.existsByIdAndRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN.name())) {
             throw new AuthorizationException("Person has no permission");
         }
@@ -122,7 +123,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void personRegistration(Person person) {
+    public void registration(Person person) {
         if(person == null) {
             throw new PersonRegistrationException("User cannot be null");
         }
@@ -151,14 +152,27 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<Person> personAdminPanel(Sort sort) {
+    public Page<Person> getAll(Pageable pageable) {
         SecurityUtils.getSubject().checkRole("ADMIN");
-        return personRepository.findAll(sort);
+        return personRepository.findAll(pageable);
     }
 
     @Override
     public void authorized(PersonRole role) {
-        authentication();
         SecurityUtils.getSubject().checkRole(role.name());
+    }
+
+    @Override
+    public void restore(long id) {
+        Person person = personRepository.findById(id);
+        if(person.isDeleted()) {
+            person.setDeleted(false);
+        }
+    }
+
+    @Override
+    public void changeRole(long id) {
+        Person person = personRepository.findById(id);
+        person.setRole(PersonRole.USER == person.getRole() ? PersonRole.ADMIN : PersonRole.USER);
     }
 }

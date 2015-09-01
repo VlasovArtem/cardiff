@@ -45,7 +45,7 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 function() {
                     PersonFactory.get({
                             authorized: 'authorized',
-                            role: 'ADMIN'
+                            hasRole: 'ADMIN'
                         },
                         function() {auth.admin = true;},
                         function() {auth.admin = false;});
@@ -112,11 +112,28 @@ service.factory('AdminRemovePerson', ['$resource', function($resource) {
     })
 }]);
 service.factory('PersonFactory', ['$resource', function($resource) {
-    return $resource('/rest/person/:delete/:get/:authorized/:id', {
+    return $resource('/rest/person/:delete/:get/:authorized/:restore/:update/:role/:id', {
         delete: '@delete',
         get: '@get',
         authorized: '@authorized',
+        restore: '@restore',
+        update: '@update',
+        role: '@role',
         id: '@id'
+    }, {
+        restore: {
+            method: 'PUT',
+            params: {
+                restore: 'restore'
+            }
+        },
+        updateRole: {
+            method: 'PUT',
+            params: {
+                update: 'update',
+                role: 'role'
+            }
+        }
     })
 }]);
 service.factory('UpdatePerson', [function() {

@@ -51,3 +51,64 @@ app.directive('ensureUnique', ["$http", function($http) {
         }
     }
 }]);
+app.directive('entitySorting', function($filter) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            _.each(scope.head, function(data) {
+                data.direction = 'DESC'
+            });
+            var dataSorting = [];
+            scope.$watch("head", function() {
+                Array.prototype.push.apply(dataSorting, scope.head);
+            });
+            scope.currentPage = 1;
+            scope.maxSize = 5;
+            scope.pageSize = [
+                {label: '15', value: 15},
+                {label: '25', value: 25},
+                {label: '50', value: 50},
+                {label: '100', value: 100}
+            ];
+            scope.currentPageSize = scope.pageSize[0];
+            var pageable = {
+                direction: scope.initialSort.direction,
+                property: scope.initialSort.property,
+                size: scope.currentPageSize.value,
+                page: scope.currentPage - 1
+            };
+            scope.$watch(
+                "currentPageSize.value",
+                function(newValue, oldValue) {
+                    if(newValue === oldValue) return;
+                    pageable.size = newValue;
+                    scope.getData(pageable);
+                }
+            );
+            scope.changePage = function() {
+                pageable.page = scope.currentPage - 1;
+                scope.getData(pageable);
+            };
+            scope.sorting = function(type){
+                if(pageable.property == $filter('camelCase')(type)) {
+                    pageable.direction = pageable.direction == 'ASC' ? 'DESC' : 'ASC';
+                } else {
+                    pageable.property = $filter('camelCase')(type);
+                    pageable.direction = 'DESC';
+                }
+                scope.getData(pageable);
+            };
+            scope.selectSort = function(index) {
+                if(pageable.property == $filter('camelCase')(scope.head[index].property)) {
+                    if(pageable.direction != 'DESC') {
+                        return 'glyphicon glyphicon-sort-by-alphabet'
+                    } else {
+                        return 'glyphicon glyphicon-sort-by-alphabet-alt'
+                    }
+                } else {
+                    return ''
+                }
+            };
+        }
+    }
+});

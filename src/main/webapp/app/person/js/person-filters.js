@@ -25,3 +25,12 @@ app.filter('dateFilter', function() {
         return filteredDate;
     }
 });
+app.filter('camelCase', function() {
+    return function(input) {
+        input = input.replace(/_.*/g, function(txt) {
+            txt = txt.replace("_", "");
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+        });
+        return input;
+    }
+});
