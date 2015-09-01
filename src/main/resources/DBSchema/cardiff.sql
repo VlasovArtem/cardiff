@@ -7,15 +7,6 @@ CREATE SCHEMA cardiff;
 SET search_path = cardiff;
 
 --
--- Name: role; Type: TABLE; Schema: cardiff; Owner: postgres;
---
-
-CREATE TABLE cardiff.role (
-  id  INT PRIMARY KEY    NOT NULL,
-  name VARCHAR(50)       NOT NULL UNIQUE
-);
-
---
 -- Name: person; Type: TABLE; Schema: cardiff; Owner: postgres;
 --
 
@@ -29,7 +20,7 @@ CREATE TABLE cardiff.person (
   phone_number BIGINT,
   description  VARCHAR(500),
   deleted      BOOLEAN            NOT NULL,
-  role_id      INT REFERENCES cardiff.role (id)
+  role         VARCHAR(10) NOT NULL DEFAULT 'USER'
 );
 
 --
@@ -46,8 +37,8 @@ CREATE TABLE cardiff.discount_card (
   description        VARCHAR(500),
   deleted            BOOLEAN              NOT NULL,
   person_id          INT REFERENCES cardiff.person (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 --
@@ -59,8 +50,8 @@ CREATE TABLE cardiff.book_card (
   book_date_start TIMESTAMP              NOT NULL,
   book_date_end   TIMESTAMP              NOT NULL,
   discount_card_id INT REFERENCES cardiff.discount_card (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
   person_id       INT REFERENCES cardiff.person (id)
 );
 
@@ -73,8 +64,8 @@ CREATE TABLE cardiff.discount_card_comment (
   comment_text    VARCHAR(500)           NOT NULL,
   comment_date    TIMESTAMP              NOT NULL,
   discount_card_id INT REFERENCES cardiff.discount_card (id)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
   person_id       INT REFERENCES cardiff.person (id)
 );
 

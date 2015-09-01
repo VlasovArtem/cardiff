@@ -3,12 +3,8 @@
     "name": "Cardiff",
     "properties": {
       "property": {
-        "name":"Directory",
-        "value":"/logs"
-      },
-      "property": {
         "name":"FileName",
-        "value":"cardiff.log"
+        "value":"logs/cardiff.log"
       }
     },
     "appenders": {
@@ -21,8 +17,8 @@
       },
       "RollingFile": {
         "name":"File",
-        "fileName":"${Directory}/${FileName}",
-        "filePattern":"${Directory}/${date:yyyy-MM}/test-%d{MM-dd-yyyy}-%i.log.gz",
+        "fileName":"${FileName}",
+        "filePattern":"${date:yyyy-MM}/test-%d{MM-dd-yyyy}-%i.log.gz",
         "PatternLayout": {
           "pattern":"%d %p %logger{36} [%t] %m%n"
         },
