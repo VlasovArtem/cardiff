@@ -1,14 +1,18 @@
-﻿INSERT INTO cardiff.person (id, name, login, password, email, phone_number, description, deleted) VALUES
-(1,'Gordon Trick','chuhcha', 'dfasf','chuhcha@mail.ru',380698745232,'Likes to eat', false),
-(2,'Symson Drul','gena', 'trer','gena@mail.ru',380675258565,'Likes to music', false),
-(3,'Vadimiy Vadimiyavich','putin', 'yt15GThg','putinka@gmail.rcom',3800000000,'Likes to erotic', false),
-(4,'Pordon Pordonovich','gore', 'OtUma','roremica@mail.ru',380786056065,'Likes to mobilephones', false),
-(5,'Butoterbrod Dubovkiy','buter', 'dub','bub@mail.ru',380623211232,'Likes to cars', false),
-(6,'Rostick Tostick','bogema', 'oLubvi','boge@ukr.net',380698745742,'Newby', false),
-(7,'Chick Reshetkin','recheto', 'utu','tutu@mail.ru',380698745221,'Newby', false),
-(8,'GTR Trol','trol', 'gtr','GTRtrol@mail.ru',380696545232,'Newby', true),
-(9,'Blonda Blond','tymophei', 'iytew','blonda@mail.ru',380698825232,'Beauty', false),
-(10,'Yric Chmirik','Chmir', 'dfasf','chmir@mail.ru',380696660000,'Newby', true);
+﻿INSERT INTO cardiff.role (id, name) VALUES
+(1,'admin'),
+(2,'user');
+
+INSERT INTO cardiff.person (id, name, login, password, email, phone_number, description, deleted, role_id) VALUES
+(1,'Gordon Trick','chuhcha', 'dfasf','chuhcha@mail.ru',380698745232,'Likes to eat', false,1),
+(2,'Symson Drul','gena', 'trer','gena@mail.ru',380675258565,'Likes to music', false,1),
+(3,'Vadimiy Vadimiyavich','putin', 'yt15GThg','putinka@gmail.rcom',3800000000,'Likes to erotic', false,1),
+(4,'Pordon Pordonovich','gore', 'OtUma','roremica@mail.ru',380786056065,'Likes to mobilephones', false,1),
+(5,'Butoterbrod Dubovkiy','buter', 'dub','bub@mail.ru',380623211232,'Likes to cars', false,1),
+(6,'Rostick Tostick','bogema', 'oLubvi','boge@ukr.net',380698745742,'Newby', false,2),
+(7,'Chick Reshetkin','recheto', 'utu','tutu@mail.ru',380698745221,'Newby', false,2),
+(8,'GTR Trol','trol', 'gtr','GTRtrol@mail.ru',380696545232,'Newby', true,2),
+(9,'Blonda Blond','tymophei', 'iytew','blonda@mail.ru',380698825232,'Beauty', false,2),
+(10,'Yric Chmirik','Chmir', 'dfasf','chmir@mail.ru',380696660000,'Newby', true,2);
 
 INSERT INTO cardiff.tag (id, tag) VALUES
 (1,'cheese'),
@@ -23,6 +27,7 @@ INSERT INTO cardiff.tag (id, tag) VALUES
 (10,'repair'),
 (11,'films'),
 (12,'books');
+
 
 INSERT INTO cardiff.discount_card (id, card_number, expired_date, available, company_name, amount_of_discount, description, deleted, person_id) VALUES
     (1, 00000000, '10/02/2016', true, 'Cheese', 5,'скидка', false,1),

@@ -1,0 +1,96 @@
+<section id="Addition" class="container-fluid">
+    <h2 class="col-md-12">Add</h2>
+    <form class="col-md-offset-4 col-md-4" name="Add">
+        <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
+            <label for="cardNumber">Card Number</label>
+            <input class="form-control"
+                   type="text"
+                   placeholder="Input name"
+                   ng-maxlength="16"
+                   ng-minlength="8"
+                   id="cardNumber"
+                   name="cardNumber"
+                   ng-model="card.cardNumber"/>
+            <div validation-messages
+                 model-controller="addition.cardNumber"
+                 minlength-error="Card Number is too short"
+                 maxlength-error="Card Number is too long"></div>
+        </div>
+        <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
+            <label for="companyName">Company name</label>
+            <input type="text"
+                   class="form-control"
+                   name="companyName"
+                   placeholder="Input Company Name"
+                   id="companyName"
+                   ng-minlength="6"
+                   ng-maxlength="100"
+                   ng-pattern="/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/"
+                   ng-model="card.companyName"
+                   autocomplete="off"
+                   required/>
+            <div validation-messages
+                 model-controller="addition.companyName"
+                 minlength-error="Company name is too short"
+                 maxlength-error="Company name is too long"
+                 required-error="Company name is required"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true }">
+            <label for="amountOfDiscount">Amount of discount</label>
+            <input type="amountOfDiscount"
+                   class="form-control"
+                   placeholder="Input amount of discount"
+                   id="amountOfDiscount"
+                   ng-maxlength="50"
+                   ng-minlength="3"
+                   name="amountOfDiscount"
+                   ng-model="card.amountOfDiscount"
+                   autocomplete="off"
+                   required/>
+            <div validation-messages
+                 model-controller="addition.amountOfDiscount"
+                 required-error="Amount of discount is required"
+                 minlength-error="Amount of discount is too short"
+                 maxlength-error="Amount of discount is too long"
+                 email-error="Amount of discount is invalid"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true }">
+            <label for="expiredDate">Expired date</label>
+            <input type="expiredDate"
+                   class="form-control"
+                   placeholder="Input Expired date"
+                   id="expiredDate"
+                   ng-maxlength="50"
+                   ng-minlength="3"
+                   name="expiredDate"
+                   ng-model="card.expiredDate"
+                   autocomplete="off"
+                   required/>
+            <div validation-messages
+                 model-controller="addition.expiredDate"
+                 required-error="Amount of discount is required"
+                 minlength-error="Amount of discount is too short"
+                 maxlength-error="Amount of discount is too long"
+                 email-error="Amount of discount is invalid"></div>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control"
+                      id="description"
+                      name="description"
+                      cols="30" rows="10"
+                      ng-minlength="0"
+                      ng-maxlength="500"
+                      ng-model="card.description"></textarea>
+            <div validation-messages
+                 model-controller="addition.description"
+                 maxlength-error="Description is too long"></div>
+        </div>
+        <div class="form-group buttons">
+            <input type="button" class="btn btn-success" value="Add" ng-disabled="Add.$invalid" ng-click="reg()"/>
+            <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
+        </div>
+    </form>
+</section>
