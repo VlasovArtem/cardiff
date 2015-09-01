@@ -27,7 +27,7 @@ public class DiscountCard extends BaseEntity {
     @Column(name = "expired_date")
     private LocalDateTime expiredDate;
     @Column(columnDefinition = "boolean default true")
-    private boolean availiable;
+    private boolean available;
     @Column(name = "company_name", nullable = false)
     private String companyName;
     @Column(name = "amount_of_discount", length = 3)
@@ -69,12 +69,12 @@ public class DiscountCard extends BaseEntity {
         this.expiredDate = expiredDate;
     }
 
-    public boolean isAvailiable() {
-        return availiable;
+    public boolean isAvailable() {
+        return available;
     }
 
-    public void setAvailiable(boolean availiable) {
-        this.availiable = availiable;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public String getCompanyName() {

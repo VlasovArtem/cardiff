@@ -9,10 +9,11 @@ import javax.persistence.Table;
  * Created by artemvlasov on 20/08/15.
  */
 @Entity
-@Table(name = "discount_card_history")
-@AttributeOverride(name = "createdDate", column = @Column(name = "comment_date", insertable = false, updatable = false))
+@Table(name = "discount_card_comment")
+@AttributeOverride(name = "createdDate", column = @Column(name = "comment_date", insertable = false, updatable =
+        false))
 public class DiscountCardComment extends BaseEntity{
-    @Column(length = 500, nullable = false)
+    @Column(name = "comment_text", length = 500, nullable = false)
     private String comment;
 
     public DiscountCardComment() {}

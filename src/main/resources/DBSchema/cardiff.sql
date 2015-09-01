@@ -11,7 +11,7 @@ SET search_path = cardiff;
 --
 
 CREATE TABLE cardiff.person (
-  id           INT PRIMARY KEY    NOT NULL,
+  id           BIGSERIAL PRIMARY KEY    NOT NULL,
   name         VARCHAR(100)       NOT NULL,
   login        VARCHAR(100)       NOT NULL  UNIQUE,
   password     BYTEA              NOT NULL,
@@ -28,15 +28,16 @@ CREATE TABLE cardiff.person (
 --
 
 CREATE TABLE cardiff.discount_card (
-  id                 INT PRIMARY KEY      NOT NULL,
+  id                 BIGSERIAL PRIMARY KEY      NOT NULL,
   card_number        BIGINT               NOT NULL UNIQUE,
+  created_date       DATE,
   expired_date       DATE,
   available          BOOLEAN              NOT NULL,
   company_name       VARCHAR(50)          NOT NULL,
   amount_of_discount INT                  NOT NULL,
   description        VARCHAR(500),
   deleted            BOOLEAN              NOT NULL,
-  person_id          INT REFERENCES cardiff.person (id)
+  person_id          BIGINT REFERENCES cardiff.person (id)
   ON DELETE CASCADE
   ON UPDATE CASCADE
 );
@@ -46,13 +47,13 @@ CREATE TABLE cardiff.discount_card (
 --
 
 CREATE TABLE cardiff.book_card (
-  id              INT PRIMARY KEY        NOT NULL,
+  id              BIGSERIAL PRIMARY KEY        NOT NULL,
   book_date_start TIMESTAMP              NOT NULL,
   book_date_end   TIMESTAMP              NOT NULL,
-  discount_card_id INT REFERENCES cardiff.discount_card (id)
+  discount_card_id BIGINT REFERENCES cardiff.discount_card (id)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  person_id       INT REFERENCES cardiff.person (id)
+  person_id       BIGINT REFERENCES cardiff.person (id)
 );
 
 --
@@ -60,13 +61,13 @@ CREATE TABLE cardiff.book_card (
 --
 
 CREATE TABLE cardiff.discount_card_comment (
-  id              INT PRIMARY KEY        NOT NULL,
+  id              BIGSERIAL PRIMARY KEY        NOT NULL,
   comment_text    VARCHAR(500)           NOT NULL,
   comment_date    TIMESTAMP              NOT NULL,
-  discount_card_id INT REFERENCES cardiff.discount_card (id)
+  discount_card_id BIGINT REFERENCES cardiff.discount_card (id)
   ON DELETE CASCADE
   ON UPDATE CASCADE,
-  person_id       INT REFERENCES cardiff.person (id)
+  person_id       BIGINT REFERENCES cardiff.person (id)
 );
 
 --
@@ -74,11 +75,11 @@ CREATE TABLE cardiff.discount_card_comment (
 --
 
 CREATE TABLE cardiff.discount_card_history (
-  id              INT PRIMARY KEY    NOT NULL,
+  id              BIGSERIAL PRIMARY KEY    NOT NULL,
   picked_date     TIMESTAMP          NOT NULL,
   return_date     TIMESTAMP          NOT NULL,
-  discount_card_id INT REFERENCES cardiff.discount_card (id),
-  person_id       INT REFERENCES cardiff.person (id)
+  discount_card_id BIGINT REFERENCES cardiff.discount_card (id),
+  person_id       BIGINT REFERENCES cardiff.person (id)
 );
 
 --
@@ -86,7 +87,7 @@ CREATE TABLE cardiff.discount_card_history (
 --
 
 CREATE TABLE cardiff.tag (
-  id  INT PRIMARY KEY    NOT NULL,
+  id  BIGSERIAL PRIMARY KEY    NOT NULL,
   tag VARCHAR(50)        NOT NULL UNIQUE
 );
 
@@ -95,9 +96,9 @@ CREATE TABLE cardiff.tag (
 --
 
 CREATE TABLE cardiff.tag_card (
-  id              INT PRIMARY KEY    NOT NULL,
-  discount_card_id INT REFERENCES cardiff.discount_card (id),
-  tag_id          INT REFERENCES cardiff.tag (id)
+  id              BIGSERIAL PRIMARY KEY    NOT NULL,
+  discount_card_id BIGINT REFERENCES cardiff.discount_card (id),
+  tag_id          BIGINT REFERENCES cardiff.tag (id)
 );
 
 ALTER database cardiff SET search_path TO cardiff;
