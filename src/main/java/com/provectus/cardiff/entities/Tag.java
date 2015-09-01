@@ -19,6 +19,13 @@ public class Tag {
     @Column(length = 30, unique = true, nullable = false)
     private String tag;
 
+    public Tag() {
+    }
+
+    public Tag(String tag) {
+        this.tag = tag;
+    }
+
     public long getId() {
     return id;
 }

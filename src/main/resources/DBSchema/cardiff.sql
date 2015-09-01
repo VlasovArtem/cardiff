@@ -4,6 +4,8 @@
 
 CREATE SCHEMA cardiff;
 
+SET search_path = cardiff;
+
 --
 -- Name: role; Type: TABLE; Schema: cardiff; Owner: postgres;
 --
@@ -107,3 +109,4 @@ CREATE TABLE cardiff.tag_card (
   tag_id          INT REFERENCES cardiff.tag (id)
 );
 
+ALTER database cardiff SET search_path TO cardiff;
