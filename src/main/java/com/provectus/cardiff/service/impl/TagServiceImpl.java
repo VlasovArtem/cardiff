@@ -33,7 +33,8 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public void addTag(String tag) {
-        new Tag(tag);
+        checkTagBeforeAdding(tag);
+        tagRepository.save(new Tag(tag));
     }
 
     @Override
@@ -45,5 +46,18 @@ public class TagServiceImpl implements TagService {
     @Override
     public void deleteTag(Long id) {
         tagRepository.deleteById(id);
+    }
+
+    private void checkTagBeforeAdding(String tag) {
+        if(tag == null) {
+            throw new RuntimeException("Discount card cannot be null.");
+        }
+        if (tag.equals("")) {
+            throw new RuntimeException("Tag name is required.");
+        }
+
+        if (tagRepository.existsByTag(tag)) {
+            throw new RuntimeException("This tag name is already exist.");
+        }
     }
 }
