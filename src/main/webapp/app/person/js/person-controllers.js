@@ -100,7 +100,7 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'updat
         $scope.changedPerson = angular.copy($scope.data);
     }
 }]);
-app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', 'persons', 'PersonFactory', 'UpdatePerson', 'AdminPersons', function($scope, $location, $filter, persons, PersonFactory, UpdatePerson, AdminPersons) {
+app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 'persons', 'PersonFactory', 'UpdatePerson', 'AdminPersons', function($scope, $location, $filter, $route, persons, PersonFactory, UpdatePerson, AdminPersons) {
     persons.$promise.then(function(data) {
         $scope.persons = data.content;
         $scope.totalItems = data.total_elements;
@@ -112,24 +112,24 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', 'persons',
     $scope.head = [
         {name : 'Name', property : 'name', width: '15%'},
         {name : 'Login', property: 'login', width: '10%'},
-        {name : 'Email', property: 'email', width: '20%'},
+        {name : 'Email', property: 'email', width: '18%'},
         {name : 'Phone', property: 'phone_number', width: '15%'},
         {name : 'Role', property: 'role', width: '5%'},
         {name : 'Created', property: 'created_date', width: '10%'},
-        {name : 'Deleted', property: 'deleted', width: '5%'}
+        {name : 'Deleted', property: 'deleted', width: '7%'}
     ];
     $scope.removePerson = function(id) {
-        PersonFactory.remove({delete: 'delete', id : id})
+        PersonFactory.remove({delete: 'delete', id : id}, function() {$route.reload()});
     };
     $scope.editPerson = function(person) {
         UpdatePerson.setPerson(person);
         $location.path('/account/update');
     };
     $scope.restorePerson = function(personId) {
-        PersonFactory.restore({id: personId});
+        PersonFactory.restore({id: personId}, function() {$route.reload()});
     };
     $scope.changeRole = function(personId) {
-        PersonFactory.updateRole({id: personId});
+        PersonFactory.updateRole({id: personId}, function() {$route.reload()});
     };
     $scope.getData = function(pageable) {
         AdminPersons.get(pageable).$promise.then(function(data) {

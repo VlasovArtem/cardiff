@@ -17,6 +17,7 @@
                     <span tooltip="Mark Person as deleted."
                           tooltip-trigger="mouseenter"
                           tooltip-placement="top"
+                          ng-hide="person.deleted"
                           class="glyphicon glyphicon-remove button-remove"
                           ng-click="removePerson(person.id)"></span>
                     <span tooltip="Edit person."
