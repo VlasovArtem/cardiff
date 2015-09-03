@@ -97,7 +97,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void delete(long id) {
-        if(!personRepository.existsByIdAndRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN.name())) {
+        if(!personRepository.existsByIdAndRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN)) {
             throw new AuthorizationException("Person has no permission");
         }
         Person person = personRepository.findById(id);

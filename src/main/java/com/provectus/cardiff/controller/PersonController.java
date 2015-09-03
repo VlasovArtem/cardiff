@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -105,11 +106,11 @@ public class PersonController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(path = "/delete/{id:\\d}",
-            method = PUT)
+    @RequestMapping(path = "/delete/{id:\\d*}",
+            method = DELETE)
     @RequiresRoles("ADMIN")
     @ResponseStatus(value = OK)
-    public void deletePerson(@RequestParam long id) {
+    public void deletePerson(@PathVariable Long id) {
         service.delete(id);
     }
 
@@ -142,17 +143,17 @@ public class PersonController {
         service.authorized(PersonRole.valueOf(hasRole));
     }
 
-    @RequestMapping(path = "/restore", method = PUT)
+    @RequestMapping(path = "/restore/{id:\\d*}", method = PUT)
     @RequiresRoles("ADMIN")
     @ResponseStatus(value = OK)
-    public void restore(@RequestParam long id) {
+    public void restore(@PathVariable Long id) {
         service.restore(id);
     }
 
-    @RequestMapping(path = "/update/role", method = PUT)
+    @RequestMapping(path = "/update/role/{id:\\d*}", method = PUT)
     @RequiresRoles("ADMIN")
     @ResponseStatus(value = OK)
-    public void changeRole(@RequestParam long id) {
+    public void changeRole(@PathVariable Long id) {
         service.changeRole(id);
     }
 }
