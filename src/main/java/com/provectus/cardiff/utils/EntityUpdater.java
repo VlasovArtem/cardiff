@@ -12,7 +12,13 @@ import java.util.Optional;
 /**
  * Created by artemvlasov on 27/08/15.
  */
-public class EntitiesUpdater {
+public class EntityUpdater {
+    /**
+     * Update two equals type data before update in database
+     * @param src Source Object
+     * @param trg Target Object
+     * @param <T> Entity object type
+     */
     public static <T> void update(Optional<T> src, Optional<T> trg) {
         if(src.isPresent() && trg.isPresent()) {
             if(src.get().getClass().isAssignableFrom(trg.get().getClass())) {
@@ -22,6 +28,7 @@ public class EntitiesUpdater {
             }
         }
     }
+
     private static <T> void updateEntity(T source, T target) {
         List<String> updatedFields = getUpdatedFields(target);
         if(updatedFields != null) {
@@ -37,12 +44,19 @@ public class EntitiesUpdater {
             }
         }
     }
+
+    /**
+     * Return updated fields for each entity
+     * @param updatedObject Entity object
+     * @return List of updated fields if object class name matches with switch case.
+     */
     private static List<String> getUpdatedFields(Object updatedObject) {
         String className = updatedObject.getClass().getSimpleName();
         List<String> updatedFields = null;
         switch(className) {
             case "Person":
                 updatedFields = Arrays.asList("name", "login", "email", "phoneNumber", "description");
+                break;
         }
         return updatedFields;
     }

@@ -11,7 +11,16 @@ import java.util.regex.Pattern;
  * Created by artemvlasov on 27/08/15.
  */
 public class PersonValidator {
+    /**
+     * Validate <tt>Persons<tt/> entity
+     * @param person <tt>Person</tt> for validation.
+     * @return List<DataType> will return empty List if Person path all validation method otherwise return List of
+     * DataType enum that contains error information for each invalid field
+     */
     public static List<DataType> validate(Person person) {
+        if(person == null) {
+            throw new RuntimeException("Validate object cannot be null");
+        }
         List<Data> personData = new ArrayList<>(6);
         personData.add(DataFactory.emailData(person.getEmail()));
         personData.add(DataFactory.loginData(person.getLogin()));
@@ -25,32 +34,38 @@ public class PersonValidator {
         }
         return validate(personData);
     }
+
+    /**
+     * Validate user data with help of Data class.
+     * @param validateData List of Data class
+     * @return List of DataType. It will return empty list if and only if all Data object is valid.
+     */
     public static List<DataType> validate(List<Data> validateData) {
         List<DataType> invalidData = new ArrayList<>(validateData.size());
         for (Data data : validateData) {
             switch (data.getDataType()) {
                 case NAME:
-                    if(!nameIsValid(data.getData())) {
+                    if(!validateName(data.getData())) {
                         invalidData.add(DataType.NAME);
                     }
                     break;
                 case LOGIN:
-                    if(!loginIsValid(data.getData())) {
+                    if(!validateLogin(data.getData())) {
                         invalidData.add(DataType.LOGIN);
                     }
                     break;
                 case PASSWORD:
-                    if(!passwordIsValid(data.getData())) {
+                    if(!validatePassword(data.getData())) {
                         invalidData.add(DataType.PASSWORD);
                     }
                     break;
                 case PHONE_NUMBER:
-                    if(!phoneNumberIsValid(data.getData())) {
+                    if(!validatePhoneNumber(data.getData())) {
                         invalidData.add(DataType.PHONE_NUMBER);
                     }
                     break;
                 case DESCRIPTION:
-                    if(!descriptionNumberIsValid(data.getData())) {
+                    if(!validateDescription(data.getData())) {
                         invalidData.add(DataType.DESCRIPTION);
                     }
                     break;
@@ -62,29 +77,36 @@ public class PersonValidator {
         }
         return invalidData;
     }
-    public static boolean nameIsValid(String name) {
+
+    public static boolean validateName(String name) {
         String NAME_PATTERN = "^([A-Za-z]+\\s?)+[A-Za-z]$";
         return validateData(name, NAME_PATTERN) && name.length() >= 6 && name.length() <= 100;
     }
-    public static boolean loginIsValid(String login) {
+
+    public static boolean validateLogin(String login) {
         String LOGIN_PATTERN = "^[A-Za-z0-9_-]{6,100}$";
         return validateData(login, LOGIN_PATTERN);
     }
-    public static boolean passwordIsValid(String password) {
+
+    public static boolean validatePassword(String password) {
         String PASSWORD_PATTERN = "^.{8,}$";
         return validateData(password, PASSWORD_PATTERN) && password.length() >= 8;
     }
-    public static boolean phoneNumberIsValid(String phoneNumber) {
+
+    public static boolean validatePhoneNumber(String phoneNumber) {
         String PHONE_NUMBER_PATTERN = "[0-9]{9}";
         return validateData(phoneNumber, PHONE_NUMBER_PATTERN);
     }
-    public static boolean descriptionNumberIsValid(String description) {
+
+    public static boolean validateDescription(String description) {
         String DESCRIPTION_PATTERN = ".{0,500}";
         return validateData(description, DESCRIPTION_PATTERN);
     }
+
     private static boolean validateData(String data, String pattern) {
-        return Pattern.compile(pattern).matcher(data).matches();
+        return !(data == null || pattern == null) && Pattern.compile(pattern).matcher(data).matches();
     }
+
     public enum DataType {
         NAME("Name should not contains any digital and length should be 6 - 100"),
         LOGIN("Login should contains next characters: a-z 0-9 _ -. And length should be 6 - 100"),
@@ -102,14 +124,17 @@ public class PersonValidator {
             return error;
         }
     }
-    private static class Data {
+
+    public static class Data {
         private final DataType dataType;
         private final String data;
 
 
         public Data(DataType dataType, String data) {
-            if(data == null || dataType == null) {
-                throw new RuntimeException("Validation data or data type cannot be null");
+            if(dataType == null) {
+                throw new RuntimeException("Data type cannot be null");
+            } else if(data == null) {
+                throw new RuntimeException("Data of " + dataType.name().toLowerCase() + " cannot be null");
             }
             this.dataType = dataType;
             this.data = data;
@@ -123,6 +148,7 @@ public class PersonValidator {
             return data;
         }
     }
+
     public static class DataFactory {
         public static Data emailData(String email) {
             return new Data(DataType.EMAIL, email);

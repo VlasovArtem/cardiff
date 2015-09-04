@@ -10,6 +10,13 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
  * Created by artemvlasov on 24/08/15.
  */
 public class BCryptCredentialMatcher implements CredentialsMatcher {
+
+    /**
+     * Match password from login with password from database, that was crypted by BCrypt
+     * @param token Object created during login
+     * @param info Object created during successful authentication or login
+     * @return true when password is matches
+     */
     @Override
     public boolean doCredentialsMatch(AuthenticationToken token, AuthenticationInfo info) {
         String password;
@@ -26,6 +33,7 @@ public class BCryptCredentialMatcher implements CredentialsMatcher {
             throw new RuntimeException("You aren't passing in passwords");
         }
     }
+
     private String getCredentials(AuthenticationInfo info) {
         Object credentials = info.getCredentials();
         return toString(credentials);

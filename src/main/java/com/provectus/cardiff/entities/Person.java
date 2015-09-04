@@ -138,4 +138,37 @@ public class Person extends BaseEntity{
     public void setPersonRole() {
         role = PersonRole.USER;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Person)) return false;
+
+        Person person = (Person) o;
+
+        if (phoneNumber != person.phoneNumber) return false;
+        if (deleted != person.deleted) return false;
+        if (name != null ? !name.equals(person.name) : person.name != null) return false;
+        if (!login.equals(person.login)) return false;
+        if (!password.equals(person.password)) return false;
+        if (!email.equals(person.email)) return false;
+        if (description != null ? !description.equals(person.description) : person.description != null) return false;
+        if (role != person.role) return false;
+        return !(discountCards != null ? !discountCards.equals(person.discountCards) : person.discountCards != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + (int) (phoneNumber ^ (phoneNumber >>> 32));
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (deleted ? 1 : 0);
+        result = 31 * result + (discountCards != null ? discountCards.hashCode() : 0);
+        return result;
+    }
 }

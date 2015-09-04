@@ -16,6 +16,7 @@ import java.util.Properties;
 
 /**
  * Created by artemvlasov on 20/08/15.
+ * Base configuration for database connection and enabling spring data jpa repositories
  */
 @Configuration
 @EnableTransactionManagement

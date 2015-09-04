@@ -9,7 +9,7 @@ import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.PersonService;
-import com.provectus.cardiff.utils.EntitiesUpdater;
+import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import com.provectus.cardiff.utils.validator.PersonValidator;
@@ -57,21 +57,19 @@ public class PersonServiceImpl implements PersonService {
     public void login(String loginData, String password, boolean rememberMe) {
         try {
             Subject currentUser = SecurityUtils.getSubject();
-//            Session session = currentUser.getSession();
-//            session.setAttribute("someKey", "aValue");
             if (!currentUser.isAuthenticated()) {
                 UsernamePasswordToken token = new UsernamePasswordToken(loginData, password);
                 token.setRememberMe(rememberMe);
                 currentUser.login(token);
             }
         } catch (AuthenticationException ae) {
-            throw new PersonLoginException(ae);
+            throw new PersonLoginException(ae.getMessage());
         }
     }
 
     /**
-     * Check that src with current sessionId is successfully passed authentication. Throw exception only if src is
-     * not authenticated or remembered.
+     * Check current subject is authenticated, remembered and person that authenticated is exists in database
+     * otherwise throw Authentication exception
      */
     @Override
     public void authentication() {
@@ -86,9 +84,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     /**
-     * Return src that is already successfully passed authentication
-     *
-     * @return User
+     * Check if current subject is successfully login and person with authenticated credentials (id) is exists in
+     * database
+     * @return Person that successfully authenticated in application.
      */
     @Override
     public Person authenticated() {
@@ -115,7 +113,7 @@ public class PersonServiceImpl implements PersonService {
             throw new IllegalArgumentException("Old or new password cannot be null");
         } else if (oldPassword.length() == 0 || newPassword.length() == 0) {
             throw new IllegalArgumentException("Old or new password cannot be empty");
-        } else if (!passwordIsValid(newPassword)) {
+        } else if (!validatePassword(newPassword)) {
             throw new IllegalArgumentException(DataType.EMAIL.getError());
         }
         authentication();
@@ -130,7 +128,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void registration(Person person) {
         if (person == null) {
-            throw new PersonRegistrationException("User cannot be null");
+            throw new PersonRegistrationException("Person cannot be null");
         }
         List<PersonValidator.DataType> data = validate(person);
         if (!data.isEmpty()) {
@@ -153,7 +151,7 @@ public class PersonServiceImpl implements PersonService {
         } else {
             throw new AuthenticationException("Person has no permission");
         }
-        EntitiesUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
+        EntityUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
     }
 
     @Override
@@ -162,11 +160,19 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.findAll(pageable);
     }
 
+    /**
+     * Check that authenticated person has authorization permission by role.
+     * @param role The role for which the {@code Person} should be allowed
+     */
     @Override
     public void authorized(PersonRole role) {
         SecurityUtils.getSubject().checkRole(role.name());
     }
 
+    /**
+     * Restore person in database set deleted field to false
+     * @param id {@code Person} id that need to be restored
+     */
     @Override
     public void restore(long id) {
         Person person = personRepository.findById(id);
