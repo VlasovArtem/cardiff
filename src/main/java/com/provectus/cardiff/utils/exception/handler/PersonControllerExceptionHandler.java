@@ -1,7 +1,7 @@
-package com.provectus.cardiff.utils.exceptions.handlers;
+package com.provectus.cardiff.utils.exception.handler;
 
-import com.provectus.cardiff.utils.exceptions.PersonLoginException;
-import com.provectus.cardiff.utils.exceptions.PersonRegistrationException;
+import com.provectus.cardiff.utils.exception.PersonLoginException;
+import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.http.ResponseEntity;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.utils.View;
-import com.provectus.cardiff.utils.converters.PasswordConverter;
+import com.provectus.cardiff.utils.converter.PasswordConverter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,8 +17,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;

@@ -1,4 +1,4 @@
-package com.provectus.cardiff.utils.exceptions;
+package com.provectus.cardiff.utils.exception;
 
 /**
  * Created by artemvlasov on 28/08/15.

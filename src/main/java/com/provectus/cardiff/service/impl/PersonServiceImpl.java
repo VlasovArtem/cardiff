@@ -10,20 +10,18 @@ import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntitiesUpdater;
-import com.provectus.cardiff.utils.exceptions.PersonLoginException;
-import com.provectus.cardiff.utils.exceptions.PersonRegistrationException;
-import com.provectus.cardiff.utils.validators.PersonValidator;
+import com.provectus.cardiff.utils.exception.PersonLoginException;
+import com.provectus.cardiff.utils.exception.PersonRegistrationException;
+import com.provectus.cardiff.utils.validator.PersonValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.provectus.cardiff.utils.validators.PersonValidator.*;
+import static com.provectus.cardiff.utils.validator.PersonValidator.*;
 
 /**
  * Created by artemvlasov on 20/08/15.
@@ -57,41 +55,17 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void login(String loginData, String password, boolean rememberMe) {
-//        UsernamePasswordToken token = new UsernamePasswordToken();
-//        token.setPassword(password.toCharArray());
-//        token.setUsername(loginData);
-//        token.setRememberMe(rememberMe);
-//        try {
-//            SecurityUtils.getSubject().login(token);
-//        } catch (AuthenticationException e) {
-//            throw new PersonLoginException(e.getMessage());
-//        }
         try {
             Subject currentUser = SecurityUtils.getSubject();
-            Session session = currentUser.getSession();
-            session.setAttribute("someKey", "aValue");
+//            Session session = currentUser.getSession();
+//            session.setAttribute("someKey", "aValue");
             if (!currentUser.isAuthenticated()) {
-                //collect user principals and credentials in a gui specific manner
-                //such as username/password html form, X509 certificate, OpenID, etc.
-                //We'll use the username/password example here since it is the most common.
-                //(do you know what movie this is from? ;)
                 UsernamePasswordToken token = new UsernamePasswordToken(loginData, password);
-                //this is all you have to do to support 'remember me' (no config - built in!):
-                token.setRememberMe(true);
-                try {
-                    currentUser.login(token);
-                    //if no exception, that's it, we're done!
-                } catch (Exception uae) {
-                    System.out.println("qqqqqqqqqqq" + uae.getMessage());
-                }
-//                } catch (IncorrectCredentialsException ice) {
-//                    //password didn't match, try again?
-//                } catch (LockedAccountException lae) {
-//                    //account for that username is locked - can't login.  Show them a message?
-//                }
+                token.setRememberMe(rememberMe);
+                currentUser.login(token);
             }
         } catch (AuthenticationException ae) {
-            System.out.println("AAAAAAAAAAAAAA!!!!!!" + ae.getMessage());
+            throw new PersonLoginException(ae);
         }
     }
 
@@ -158,7 +132,7 @@ public class PersonServiceImpl implements PersonService {
         if (person == null) {
             throw new PersonRegistrationException("User cannot be null");
         }
-        List<PersonValidator.DataType> data = isValid(person);
+        List<PersonValidator.DataType> data = validate(person);
         if (!data.isEmpty()) {
             throw new PersonRegistrationException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
         }

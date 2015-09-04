@@ -12,7 +12,7 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', function($scope, 
     };
     $scope.reset = function() {
         $scope.person = {};
-    };
+    }
 }]);
 
 app.controller('NavCtrl', ['$scope', 'auth', '$timeout', function($scope, auth, $timeout) {

@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan({"com.provectus.cardiff.controller", "com.provectus.cardiff.utils.exceptions.handlers"})
+@ComponentScan({"com.provectus.cardiff.controller", "com.provectus.cardiff.utils.exception.handler"})
 public class ServletContextConfig extends WebMvcConfigurerAdapter {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {

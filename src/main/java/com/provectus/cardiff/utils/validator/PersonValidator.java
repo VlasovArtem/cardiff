@@ -1,4 +1,4 @@
-package com.provectus.cardiff.utils.validators;
+package com.provectus.cardiff.utils.validator;
 
 import com.provectus.cardiff.entities.Person;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * Created by artemvlasov on 27/08/15.
  */
 public class PersonValidator {
-    public static List<DataType> isValid(Person person) {
+    public static List<DataType> validate(Person person) {
         List<Data> personData = new ArrayList<>(6);
         personData.add(DataFactory.emailData(person.getEmail()));
         personData.add(DataFactory.loginData(person.getLogin()));
@@ -23,9 +23,9 @@ public class PersonValidator {
         if(person.getName() != null) {
             personData.add(DataFactory.nameData(person.getName()));
         }
-        return isValid(personData);
+        return validate(personData);
     }
-    public static List<DataType> isValid(List<Data> validateData) {
+    public static List<DataType> validate(List<Data> validateData) {
         List<DataType> invalidData = new ArrayList<>(validateData.size());
         for (Data data : validateData) {
             switch (data.getDataType()) {
@@ -64,25 +64,25 @@ public class PersonValidator {
     }
     public static boolean nameIsValid(String name) {
         String NAME_PATTERN = "^([A-Za-z]+\\s?)+[A-Za-z]$";
-        return validate(name, NAME_PATTERN) && name.length() >= 6 && name.length() <= 100;
+        return validateData(name, NAME_PATTERN) && name.length() >= 6 && name.length() <= 100;
     }
     public static boolean loginIsValid(String login) {
         String LOGIN_PATTERN = "^[A-Za-z0-9_-]{6,100}$";
-        return validate(login, LOGIN_PATTERN);
+        return validateData(login, LOGIN_PATTERN);
     }
     public static boolean passwordIsValid(String password) {
         String PASSWORD_PATTERN = "^.{8,}$";
-        return validate(password, PASSWORD_PATTERN) && password.length() >= 8;
+        return validateData(password, PASSWORD_PATTERN) && password.length() >= 8;
     }
     public static boolean phoneNumberIsValid(String phoneNumber) {
         String PHONE_NUMBER_PATTERN = "[0-9]{9}";
-        return validate(phoneNumber, PHONE_NUMBER_PATTERN);
+        return validateData(phoneNumber, PHONE_NUMBER_PATTERN);
     }
     public static boolean descriptionNumberIsValid(String description) {
-        String DESCRIPTION_PATTERN = ".{,500}";
-        return validate(description, DESCRIPTION_PATTERN);
+        String DESCRIPTION_PATTERN = ".{0,500}";
+        return validateData(description, DESCRIPTION_PATTERN);
     }
-    private static boolean validate(String data, String pattern) {
+    private static boolean validateData(String data, String pattern) {
         return Pattern.compile(pattern).matcher(data).matches();
     }
     public enum DataType {
