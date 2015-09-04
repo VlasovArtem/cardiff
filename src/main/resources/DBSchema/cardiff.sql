@@ -12,7 +12,7 @@ SET search_path = cardiff;
 
 CREATE TABLE cardiff.person (
   id           BIGSERIAL PRIMARY KEY    NOT NULL,
-  name         VARCHAR(100)       NOT NULL,
+  name         VARCHAR(100),
   login        VARCHAR(100)       NOT NULL  UNIQUE,
   password     BYTEA              NOT NULL,
   email        VARCHAR(50)        NOT NULL  UNIQUE,
@@ -54,6 +54,8 @@ CREATE TABLE cardiff.book_card (
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   person_id       BIGINT REFERENCES cardiff.person (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 --
@@ -68,6 +70,8 @@ CREATE TABLE cardiff.discount_card_comment (
   ON DELETE CASCADE
   ON UPDATE CASCADE,
   person_id       BIGINT REFERENCES cardiff.person (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 --
@@ -78,8 +82,12 @@ CREATE TABLE cardiff.discount_card_history (
   id              BIGSERIAL PRIMARY KEY    NOT NULL,
   picked_date     TIMESTAMP          NOT NULL,
   return_date     TIMESTAMP          NOT NULL,
-  discount_card_id BIGINT REFERENCES cardiff.discount_card (id),
+  discount_card_id BIGINT REFERENCES cardiff.discount_card (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
   person_id       BIGINT REFERENCES cardiff.person (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 --
@@ -97,8 +105,12 @@ CREATE TABLE cardiff.tag (
 
 CREATE TABLE cardiff.tag_card (
   id              BIGSERIAL PRIMARY KEY    NOT NULL,
-  discount_card_id BIGINT REFERENCES cardiff.discount_card (id),
+  discount_card_id BIGINT REFERENCES cardiff.discount_card (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE,
   tag_id          BIGINT REFERENCES cardiff.tag (id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
 );
 
 ALTER database cardiff SET search_path TO cardiff;

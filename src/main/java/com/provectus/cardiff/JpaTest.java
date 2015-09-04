@@ -1,6 +1,5 @@
 package com.provectus.cardiff;
 
-import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.entities.Person;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import java.util.List;
 
 /**
  * Created by artemvlasov on 20/08/15.
@@ -21,11 +19,7 @@ public class JpaTest {
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            DiscountCard dc = em.find(DiscountCard.class, 12l);
             Person person = em.find(Person.class, 1l);
-            List<DiscountCard> discountCards = person.getDiscountCards();
-            discountCards.add(dc);
-            person.setDiscountCards(discountCards);
             em.getTransaction().commit();
         } finally {
             if(em.isOpen()) {
