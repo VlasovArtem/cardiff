@@ -15,11 +15,14 @@ app.filter('phoneNumberFilter', function() {
 app.filter('dateFilter', function() {
     return function(date) {
         var filteredDate = "";
+        var convertNumbers = function(date) {
+            return date > 9 ? date : "0" + date;
+        };
         for(var i = 0; i < 3; i++) {
             if(i == 2) {
-                filteredDate += date[i];
+                filteredDate += convertNumbers(date[i]);
             } else {
-                filteredDate += date[i] + '-';
+                filteredDate += convertNumbers(date[i]) + '-';
             }
         }
         return filteredDate;
