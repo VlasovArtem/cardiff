@@ -17,6 +17,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationException;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -55,14 +57,41 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void login(String loginData, String password, boolean rememberMe) {
-        UsernamePasswordToken token = new UsernamePasswordToken();
-        token.setPassword(password.toCharArray());
-        token.setUsername(loginData);
-        token.setRememberMe(rememberMe);
+//        UsernamePasswordToken token = new UsernamePasswordToken();
+//        token.setPassword(password.toCharArray());
+//        token.setUsername(loginData);
+//        token.setRememberMe(rememberMe);
+//        try {
+//            SecurityUtils.getSubject().login(token);
+//        } catch (AuthenticationException e) {
+//            throw new PersonLoginException(e.getMessage());
+//        }
         try {
-            SecurityUtils.getSubject().login(token);
-        } catch (AuthenticationException e) {
-            throw new PersonLoginException(e.getMessage());
+            Subject currentUser = SecurityUtils.getSubject();
+            Session session = currentUser.getSession();
+            session.setAttribute("someKey", "aValue");
+            if (!currentUser.isAuthenticated()) {
+                //collect user principals and credentials in a gui specific manner
+                //such as username/password html form, X509 certificate, OpenID, etc.
+                //We'll use the username/password example here since it is the most common.
+                //(do you know what movie this is from? ;)
+                UsernamePasswordToken token = new UsernamePasswordToken(loginData, password);
+                //this is all you have to do to support 'remember me' (no config - built in!):
+                token.setRememberMe(true);
+                try {
+                    currentUser.login(token);
+                    //if no exception, that's it, we're done!
+                } catch (Exception uae) {
+                    System.out.println("qqqqqqqqqqq" + uae.getMessage());
+                }
+//                } catch (IncorrectCredentialsException ice) {
+//                    //password didn't match, try again?
+//                } catch (LockedAccountException lae) {
+//                    //account for that username is locked - can't login.  Show them a message?
+//                }
+            }
+        } catch (AuthenticationException ae) {
+            System.out.println("AAAAAAAAAAAAAA!!!!!!" + ae.getMessage());
         }
     }
 
@@ -72,7 +101,7 @@ public class PersonServiceImpl implements PersonService {
      */
     @Override
     public void authentication() {
-        if(!SecurityUtils.getSubject().isRemembered() && !SecurityUtils.getSubject().isAuthenticated() || !personRepository.exists((long) SecurityUtils.getSubject().getPrincipal())) {
+        if (!SecurityUtils.getSubject().isRemembered() && !SecurityUtils.getSubject().isAuthenticated() || !personRepository.exists((long) SecurityUtils.getSubject().getPrincipal())) {
             throw new AuthenticationException("Person is no authenticated");
         }
     }
@@ -84,11 +113,12 @@ public class PersonServiceImpl implements PersonService {
 
     /**
      * Return src that is already successfully passed authentication
+     *
      * @return User
      */
     @Override
     public Person authenticated() {
-        if(SecurityUtils.getSubject().getPrincipal() == null && !personRepository.exists((long) SecurityUtils
+        if (SecurityUtils.getSubject().getPrincipal() == null && !personRepository.exists((long) SecurityUtils
                 .getSubject()
                 .getPrincipal())) {
             throw new AuthenticationException("Person is not authenticated");
@@ -98,7 +128,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void delete(long id) {
-        if(!personRepository.existsByIdAndRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN)) {
+        if (!personRepository.existsByIdAndRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN)) {
             throw new AuthorizationException("Person has no permission");
         }
         Person person = personRepository.findById(id);
@@ -107,16 +137,16 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        if(oldPassword == null || newPassword == null) {
+        if (oldPassword == null || newPassword == null) {
             throw new IllegalArgumentException("Old or new password cannot be null");
-        } else if(oldPassword.length() == 0 || newPassword.length() == 0) {
+        } else if (oldPassword.length() == 0 || newPassword.length() == 0) {
             throw new IllegalArgumentException("Old or new password cannot be empty");
-        } else if(!passwordIsValid(newPassword)) {
+        } else if (!passwordIsValid(newPassword)) {
             throw new IllegalArgumentException(DataType.EMAIL.getError());
         }
         authentication();
         Person user = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
-        if(BCrypt.checkpw(oldPassword, user.getPassword())) {
+        if (BCrypt.checkpw(oldPassword, user.getPassword())) {
             user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
         } else {
             throw new IllegalArgumentException("Old password is not match");
@@ -125,11 +155,11 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void registration(Person person) {
-        if(person == null) {
+        if (person == null) {
             throw new PersonRegistrationException("User cannot be null");
         }
         List<PersonValidator.DataType> data = isValid(person);
-        if(!data.isEmpty()) {
+        if (!data.isEmpty()) {
             throw new PersonRegistrationException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
         }
         if (personRepository.existsByLoginOrEmail(person.getLogin(), person.getEmail())) {
@@ -142,9 +172,9 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void update(Person src) {
         Person trg;
-        if(src.getId() == (long) SecurityUtils.getSubject().getPrincipal()) {
+        if (src.getId() == (long) SecurityUtils.getSubject().getPrincipal()) {
             trg = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
-        } else if(SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())) {
+        } else if (SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())) {
             trg = personRepository.findById(src.getId());
         } else {
             throw new AuthenticationException("Person has no permission");
@@ -166,7 +196,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void restore(long id) {
         Person person = personRepository.findById(id);
-        if(person.isDeleted()) {
+        if (person.isDeleted()) {
             person.setDeleted(false);
         }
     }
