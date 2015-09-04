@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -50,6 +49,16 @@ public class TagController {
         return ResponseEntity
                 .status(OK)
                 .body(JsonNodeFactory.instance.objectNode().put("success", "Tag successfully added"));
+    }
+
+    @RequestMapping(path = "/get/all", method = GET, produces = APPLICATION_JSON_VALUE)
+    public  ResponseEntity getAll() {
+        try {
+            service.findAll();
+        } catch (Exception e) {
+            return ResponseEntity.status(FORBIDDEN).body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
+        }
+        return ResponseEntity.ok(service.findAll());
     }
 
 }

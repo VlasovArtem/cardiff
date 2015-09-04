@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by blupashko on 26.08.2015.
  */
@@ -32,6 +35,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public List<Tag> findAll() {
+        List<Tag> tags = new ArrayList<>();
+        return tagRepository.findAll();
+    }
+
+
+    @Override
     public void addTag(String tag) {
         checkTagBeforeAdding(tag);
         tagRepository.save(new Tag(tag));
@@ -49,7 +59,7 @@ public class TagServiceImpl implements TagService {
     }
 
     private void checkTagBeforeAdding(String tag) {
-        if(tag == null) {
+        if (tag == null) {
             throw new RuntimeException("Discount card cannot be null.");
         }
         if (tag.equals("")) {

@@ -1,0 +1,16 @@
+2015-09-02 10:35:55,467 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1120682507-19] get tag
+2015-09-02 10:35:55,468 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1120682507-19] id=1
+2015-09-02 10:35:55,498 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1120682507-19] get tag
+2015-09-02 10:35:55,498 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1120682507-19] id=1
+2015-09-02 12:00:45,185 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp344633656-19] get tag
+2015-09-02 12:00:45,186 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp344633656-19] id=1
+2015-09-02 12:00:45,216 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp344633656-19] get tag
+2015-09-02 12:00:45,216 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp344633656-19] id=1
+2015-09-03 14:44:37,460 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-27] get tag
+2015-09-03 14:44:37,482 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-27] id=null
+2015-09-03 14:44:37,841 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-27] get tag
+2015-09-03 14:44:37,845 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-27] id=null
+2015-09-03 14:44:44,513 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-19] get tag
+2015-09-03 14:44:44,518 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-19] id=1
+2015-09-03 14:44:44,838 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-19] get tag
+2015-09-03 14:44:44,842 ERROR com.provectus.cardiff.service.impl.TagServiceImpl [qtp1369885738-19] id=1
