@@ -12,6 +12,26 @@ html, body {
 h2, .buttons {
     text-align: center;
 }
+.navbar-default {
+    background-color: rgba(72, 110, 143, 1) !important;
+    border-radius: 0 !important;
+    border: none !important;
+}
+.navbar-default .navbar-brand,
+.navbar-nav > li > a,
+.dropdown-menu > li > a {
+    color: rgba(248, 248, 248, 1) !important;
+}
+.dropdown-menu {
+    background-color: rgba(72, 110, 143, 1);
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus,
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+    background-color: #8b8d8f !important;
+}
 input[type=search] {
     -webkit-appearance: textfield;
     border-radius: 20px;
@@ -71,7 +91,7 @@ input[type=search]:focus {
     display: none !important;
 }
 .personal-data {
-    width: 50%;
+    width: 33%;
 }
 .personal-data .key {
     font-weight: bold;

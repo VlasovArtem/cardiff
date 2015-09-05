@@ -1,6 +1,6 @@
 <section id="personal-data">
     <h2 class="col-md-12">Your personal data</h2>
-    <table class="table col-md-offset-3 personal-data">
+    <table class="table col-md-offset-4 personal-data">
         <tr ng-repeat="(key, data) in person" ng-if="data && ignoredKeys.indexOf(key) == -1">
             <td ng-bind="key | accountFilter" class="key"></td>
             <td ng-bind="data" ng-if="key != 'phone_number'"></td>
@@ -11,7 +11,7 @@
         <input type="button" class="btn btn-danger" value="Change data" ng-click="changeData()"/>
     </div>
 </section>
-<hr class="style col-md-offset-4 col-md-4"/>
+<hr class="style col-md-offset-3 col-md-6"/>
 <section id="change-password">
     <h2 class="col-md-12">Change password</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error"></div>
@@ -37,7 +37,7 @@
         </div>
     </form>
 </section>
-<hr class="style col-md-offset-4 col-md-4"/>
+<hr class="style col-md-offset-3 col-md-6"/>
 <section id="discount-cards" ng-if="person.discount_cards.length > 0">
     <h2 class="col-md-12">Your Discount cards.</h2>
 </section>
