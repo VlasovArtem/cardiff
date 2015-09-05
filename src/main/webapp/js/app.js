@@ -4,7 +4,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
-                templateUrl: 'app/main.html'
+                templateUrl: 'app/main.html',
+                controller: 'SearchCtrl'
             }).
             when('/signin', {
                 templateUrl: 'app/person/sign-in.html',
@@ -69,6 +70,15 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                 redirectTo: '/'
             })
     });
-app.run(function(auth) {
+app.run(['$rootScope', 'auth', function($root, auth) {
+    $root.$on('$routeChangeStart', function(event, next, current) {
+        if(next) {
+            if(_.isEqual(next.$$route.originalPath, '/')) {
+                $('body').addClass('background');
+            } else {
+                $('body').removeClass('background');
+            }
+        }
+    });
     auth.init('/', '/signin', '/logout')
-});
+}]);

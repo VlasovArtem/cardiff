@@ -147,3 +147,9 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
         }
     }
 }]);
+app.controller('SearchCtrl', ['$scope', function($scope) {
+    $scope.companies = [{name: 'Alhimiya'}, {name: 'Robin Bobin'}, {name: 'Maxmara'}, {name: 'Adidas'}];
+    $scope.search = function() {
+        alert($scope.searchData);
+    }
+}]);

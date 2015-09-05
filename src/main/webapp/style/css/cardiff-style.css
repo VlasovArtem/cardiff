@@ -1,8 +1,38 @@
 html, body {
     height: 100%;
 }
+.background {
+    height: 100%;
+    background: url('../images/main-img.jpg') no-repeat center center fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+}
 h2, .buttons {
     text-align: center;
+}
+input[type=search] {
+    -webkit-appearance: textfield;
+    border-radius: 20px;
+    border: 1px solid rgba(27, 157, 214, .5) !important;
+    width: 30%;
+    height: 7%;
+    padding: 0 0 0 20px;
+    font-size: large;
+}
+input[type=search]::-webkit-calendar-picker-indicator {
+    display: none;
+}
+#companies {
+    border: none;
+}
+input[type=search]:focus {
+    box-shadow: 0 0 3pt 2pt rgba(27, 157, 214, .5);
+    outline: none;
+}
+.hide {
+    display: none;
 }
 .main {
     background-color: #dbdbdb;
