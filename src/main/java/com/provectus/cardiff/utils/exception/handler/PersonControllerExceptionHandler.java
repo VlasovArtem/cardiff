@@ -2,6 +2,7 @@ package com.provectus.cardiff.utils.exception.handler;
 
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
+import com.provectus.cardiff.utils.exception.PersonUpdateException;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,10 @@ public class PersonControllerExceptionHandler {
     @ExceptionHandler(PersonLoginException.class)
     public ResponseEntity loginHandler() {
         return create(NOT_FOUND, "There is an error in email, login or password");
+    }
+
+    @ExceptionHandler(PersonUpdateException.class)
+    public ResponseEntity updateHandler(Exception ex) {
+        return create(FORBIDDEN, ex.getMessage());
     }
 }

@@ -12,6 +12,7 @@ import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
+import com.provectus.cardiff.utils.exception.PersonUpdateException;
 import com.provectus.cardiff.utils.validator.PersonValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -150,6 +151,10 @@ public class PersonServiceImpl implements PersonService {
             trg = personRepository.findById(src.getId());
         } else {
             throw new AuthenticationException("Person has no permission");
+        }
+        List<PersonValidator.DataType> data = validate(src);
+        if (!data.isEmpty()) {
+            throw new PersonUpdateException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
         }
         EntityUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
     }

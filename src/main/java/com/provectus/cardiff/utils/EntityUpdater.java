@@ -14,7 +14,7 @@ import java.util.Optional;
  */
 public class EntityUpdater {
     /**
-     * Update two equals type data before update in database
+     * Update the same to classes before update in database
      * @param src Source Object
      * @param trg Target Object
      * @param <T> Entity object type
@@ -29,6 +29,12 @@ public class EntityUpdater {
         }
     }
 
+    /**
+     * Update matched entities with help of {@code BeanWrapper}
+     * @param source Source object
+     * @param target Target object
+     * @param <T>
+     */
     private static <T> void updateEntity(T source, T target) {
         List<String> updatedFields = getUpdatedFields(target);
         if(updatedFields != null) {
