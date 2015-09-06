@@ -6,6 +6,6 @@ import com.provectus.cardiff.entities.DiscountCard;
  * Created by Дмитрий on 27/08/15.
  */
 public interface DiscountCardService {
-    void cardAdding(DiscountCard card);
+    void add(DiscountCard card);
     DiscountCard findCardByNumber(long number);
 }

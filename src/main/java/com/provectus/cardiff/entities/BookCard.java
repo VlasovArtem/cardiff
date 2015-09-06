@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -49,5 +50,13 @@ public class BookCard extends BaseEntity {
 
     public void setDiscountCard(DiscountCard discountCard) {
         this.discountCard = discountCard;
+    }
+
+    /**
+     * Set Book Date End plus 7 days from now.
+     */
+    @PrePersist
+    public void setBookDateEnd() {
+        bookDateEnd = LocalDateTime.now().plusDays(7l);
     }
 }

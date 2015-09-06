@@ -37,145 +37,145 @@ public class PersonRepositoryTest {
     private PersonRepository personRepository;
 
     @Test
-    public void findById_ExistingIdGiven_ShouldReturnPerson() {
+    public void findByIdWithExistingIdTest() {
         Person person = personRepository.findById(1l);
         assertNotNull(person);
         assertThat(person, hasProperty("email", is("vadimguliaev@gmail.com")));
     }
 
     @Test
-    public void findById_NotExistingIdGiven_ShouldReturnNull() {
+    public void findByIdWIthNotExistingIdTest() {
         Person person = personRepository.findById(4l);
         assertNull(person);
     }
 
     @Test
-    public void findByLogin_ExistingLoginGiven_ShouldReturnPerson() {
+    public void findByLoginWithExistingLoginTest() {
         Person person = personRepository.findByLogin("alexandrmahnov");
         assertNotNull(person);
         assertThat(person, hasProperty("id", is(3l)));
     }
 
     @Test
-    public void findByEmail_ExistingEmailGiven_ShouldReturnPerson() {
+    public void findByEmailWithExistingEmailTest() {
         Person person = personRepository.findByEmail("dmitriyvalnov@gmail.com");
         assertNotNull(person);
         assertThat(person, hasProperty("phoneNumber", is(632563263l)));
     }
 
     @Test
-    public void existsByLogin_ExistingLoginGiven_ShouldReturnTrue() {
+    public void existsByLoginWithExistingLoginTest() {
         boolean exists = personRepository.existsByLogin("vadimguliaev");
         assertTrue(exists);
     }
 
     @Test
-    public void existsByEmail_ExistingEmailGiven_ShouldReturnTrue() {
+    public void existsByEmailWithExistingEmailTest() {
         boolean exists = personRepository.existsByEmail("alexandrmahnov@gmail.com");
         assertTrue(exists);
     }
 
     @Test
-    public void existsByIdAndRole_ExistingIdAndRoleGiven_ShouldReturnTrue() {
+    public void existsByIdAndRoleWithExistingIdAndRoleTest() {
         boolean exists = personRepository.existsByIdAndRole(2l, PersonRole.ADMIN);
         assertTrue(exists);
     }
 
     @Test
-    public void existsByIdAndRole_ExistingIdAndNotAvailableRoleGiven_ShouldReturnFalse() {
+    public void existsByIdAndRoleWithExistingIdAndNotAvailableRoleTest() {
         boolean exists = personRepository.existsByIdAndRole(1l, PersonRole.ADMIN);
         assertFalse(exists);
     }
 
     @Test
-    public void existsByLoginOrEmailAndDeleted_ExistingLoginAndDeletedFalse_ShouldReturnTrue() {
+    public void existsByLoginOrEmailAndDeletedWithExistingLoginAndDeletedFalseTest() {
         boolean exists = personRepository.existsByLoginOrEmailAndDeleted("vadimguliaev", null, false);
         assertTrue(exists);
     }
 
     @Test
-    public void existsByLoginOrEmailAndDeleted_ExistingEmailAndDeletedFalse_ShouldReturnTrue() {
+    public void existsByLoginOrEmailAndDeletedWithExistingEmailAndDeletedFalseTest() {
         boolean exists = personRepository.existsByLoginOrEmailAndDeleted(null, "dmitriyvalnov@gmail.com", false);
         assertTrue(exists);
     }
 
     @Test
-    public void existsByLoginOrEmailAndDeleted_ExistingEmailAndDeletedTrue_ShouldReturnTrue() {
+    public void existsByLoginOrEmailAndDeletedExistingEmailAndDeletedTrueTest() {
         boolean exists = personRepository.existsByLoginOrEmailAndDeleted(null, "alexandrmahnov@gmail.com", true);
         assertTrue(exists);
     }
     @Test
-    public void existsByLoginOrEmailAndDeleted_ExistingLoginAndDeletedFalse_ShouldReturnFalse() {
+    public void existsByLoginOrEmailAndDeletedWithExistingLoginAndDeletedFalseShouldReturnFalseTest() {
         boolean exists = personRepository.existsByLoginOrEmailAndDeleted("alexandrmahnov", null, false);
         assertFalse(exists);
     }
 
     @Test
-    public void existsByLoginOrEmail_ExistingLogin_ShouldReturnTrue() {
+    public void existsByLoginOrEmailWithExistingLoginTest() {
         boolean exists = personRepository.existsByLoginOrEmail("alexandrmahnov", null);
         assertTrue(exists);
     }
 
     @Test
-    public void existsByLoginOrEmail_ExistingEmail_ShouldReturnTrue() {
+    public void existsByLoginOrEmailWithExistingEmailTest() {
         boolean exists = personRepository.existsByLoginOrEmail(null, "dmitriyvalnov@gmail.com");
         assertTrue(exists);
     }
 
     @Test
-    public void existsByLoginOrEmail_NotExistingEmail_ShouldReturnFalse() {
+    public void existsByLoginOrEmailWithNotExistingEmailTest() {
         boolean exists = personRepository.existsByLoginOrEmail(null, "notavailableemail@gmail.com");
         assertFalse(exists);
     }
 
     @Test
-    public void findByEmailOrLogin_ExistingEmail_ShouldReturnPerson() {
+    public void findByEmailOrLoginWithExistingEmailTest() {
         Person person = personRepository.findByEmailOrLogin("vadimguliaev@gmail.com", null);
         assertNotNull(person);
         assertThat(person, hasProperty("login", is("vadimguliaev")));
     }
 
     @Test
-    public void findByEmailOrLogin_ExistingLogin_ShouldReturnPerson() {
+    public void findByEmailOrLogin_ExistingLogin_ShouldReturnPersonTest() {
         Person person = personRepository.findByEmailOrLogin(null, "dmitriyvalnov");
         assertNotNull(person);
         assertThat(person, hasProperty("email", is("dmitriyvalnov@gmail.com")));
     }
 
     @Test
-    public void findByEmailOrLogin_NotExistingLogin_ShouldReturnNull() {
+    public void findByEmailOrLoginWithNotExistingLoginTest() {
         Person person = personRepository.findByEmailOrLogin(null, "testnotavailablelogin");
         assertNull(person);
     }
 
     @Test
-    public void findByEmailOrLoginAndDeleted_ExistingLoginAndDeletedFalse_ShouldReturnPerson() {
+    public void findByEmailOrLoginAndDeletedWithExistingLoginAndDeletedFalseTest() {
         Person person = personRepository.findByEmailOrLoginAndDeleted(null, "dmitriyvalnov", false);
         assertNotNull(person);
         assertThat(person, hasProperty("email", is("dmitriyvalnov@gmail.com")));
     }
 
     @Test
-    public void findByEmailOrLoginAndDeleted_ExistingEmailAndDeletedTrue_ShouldReturnPerson() {
+    public void findByEmailOrLoginAndDeletedWithExistingEmailAndDeletedTrueTest() {
         Person person = personRepository.findByEmailOrLoginAndDeleted("alexandrmahnov@gmail.com", null, true);
         assertNotNull(person);
         assertThat(person, hasProperty("login", is("alexandrmahnov")));
     }
 
     @Test
-    public void findByEmailOrLoginAndDeleted_ExistingEmailAndDeletedTrue_ShouldReturnNull() {
+    public void findByEmailOrLoginAndDeletedWithExistingEmailAndDeletedTrueReturnNullTest() {
         Person person = personRepository.findByEmailOrLoginAndDeleted("alexandrmahnov@gmail.com", null, false);
         assertNull(person);
     }
 
     @Test
-    public void findAll_ShouldReturnList() {
+    public void findAllTest() {
         List<Person> persons = personRepository.findAll();
         assertThat(persons.size(), is(3));
     }
 
     @Test
-    public void save_ShouldSavePerson() {
+    public void saveTest() {
         Person person = new Person();
         person.setPhoneNumber(563256963);
         person.setId(10l);
@@ -189,21 +189,21 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void deleteById_ShouldRemovePerson() {
+    public void deleteByIdTest() {
         personRepository.delete(1l);
         Person person = personRepository.findById(1l);
         assertNull(person);
     }
 
     @Test
-    public void deleteAll_ShouldRemoveAllPerson() {
+    public void deleteAllTest() {
         personRepository.deleteAll();
         List<Person> persons = personRepository.findAll();
         assertThat(persons.size(), is(0));
     }
 
     @Test
-    public void deleteEntity_ShouldRemovePerson() {
+    public void deleteEntityTest() {
         Person person = personRepository.findById(2l);
         personRepository.delete(person);
         long count = personRepository.count();
@@ -211,7 +211,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void count_ShouldReturnLong() {
+    public void countTest() {
         long count = personRepository.count();
         assertThat(count, is(3l));
     }

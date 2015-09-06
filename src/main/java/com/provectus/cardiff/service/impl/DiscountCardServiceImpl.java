@@ -21,7 +21,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     DiscountCardRepository discountCardRepository;
 
     @Override
-    public void cardAdding(DiscountCard card) {
+    public void add(DiscountCard card) {
         checkCardBeforeAdding(card);
         discountCardRepository.save(card);
     }

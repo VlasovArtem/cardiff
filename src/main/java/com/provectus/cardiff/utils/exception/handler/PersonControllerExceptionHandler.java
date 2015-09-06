@@ -1,5 +1,6 @@
 package com.provectus.cardiff.utils.exception.handler;
 
+import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import com.provectus.cardiff.utils.exception.PersonUpdateException;
@@ -10,9 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import static com.provectus.cardiff.utils.ResponseEntityExceptionCreator.create;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * Created by artemvlasov on 29/08/15.
@@ -42,5 +41,10 @@ public class PersonControllerExceptionHandler {
     @ExceptionHandler(PersonUpdateException.class)
     public ResponseEntity updateHandler(Exception ex) {
         return create(FORBIDDEN, ex.getMessage());
+    }
+
+    @ExceptionHandler(EntityValidationException.class)
+    public ResponseEntity validatorHandler(Exception ex) {
+        return create(NOT_ACCEPTABLE, ex.getMessage());
     }
 }

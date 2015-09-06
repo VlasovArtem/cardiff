@@ -1,0 +1,81 @@
+package com.provectus.cardiff.utils.validator;
+
+import com.provectus.cardiff.entities.DiscountCard;
+import com.provectus.cardiff.utils.exception.EntityValidationException;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.Random;
+
+import static com.provectus.cardiff.utils.validator.DiscountCardValidator.validate;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+/**
+ * Created by artemvlasov on 06/09/15.
+ */
+public class DiscountCardValidatorTest {
+    private DiscountCard discountCard;
+    @Before
+    public void createDiscountCard() {
+        discountCard = new DiscountCard();
+        discountCard.setDescription("Discount card description");
+        discountCard.setAmountOfDiscount(10);
+        discountCard.setExpiredDate(LocalDateTime.now().plusYears(1));
+        discountCard.setCardNumber(325);
+        discountCard.setCompanyName("Famous Pizza");
+    }
+
+    @Test
+    public void validateTest() {
+        assertTrue(validate(Optional.ofNullable(discountCard)));
+    }
+
+    @Test
+    public void validateWithNullTest() {
+        assertFalse(validate(Optional.ofNullable(null)));
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidCardNumberLessThanMinLengthTest() {
+        discountCard.setCardNumber(0);
+        validate(Optional.ofNullable(discountCard));
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidCardNumberGreaterThanMaxLengthTest() {
+        discountCard.setCardNumber(25635698563475211l);
+        validate(Optional.ofNullable(discountCard));
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidExpiredDateTest() {
+        discountCard.setExpiredDate(LocalDateTime.now().minusDays(1));
+        validate(Optional.ofNullable(discountCard));
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidCompanyNameNullTest() {
+        discountCard.setCompanyName(null);
+        validate(Optional.ofNullable(discountCard));
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidAmountOfDiscountTest() {
+        discountCard.setAmountOfDiscount(110);
+        validate(Optional.ofNullable(discountCard));
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidDescriptionTest() {
+        Random r = new Random();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 600; i++) {
+            builder.append((char)(r.nextInt(26) + 'a'));
+        }
+        discountCard.setDescription(builder.toString());
+        validate(Optional.ofNullable(discountCard));
+    }
+}

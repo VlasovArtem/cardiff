@@ -1,22 +1,45 @@
 package com.provectus.cardiff.controller;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.DiscountCard;
+import com.provectus.cardiff.service.DiscountCardService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
- * Created by Дмитрий on 27.08.2015.
+ * Created by Дмитрий on 27/08/15.
  */
 @RestController
-@RequestMapping("/card")
-public interface DiscountCardController {
-    @RequestMapping(path = "/addition", method = POST, consumes = APPLICATION_JSON_VALUE)
+@RequestMapping("/rest/card")
+public class DiscountCardController {
+    @Autowired
+    private DiscountCardService service;
+
+    @RequestMapping(path = "/add", method = POST, consumes = APPLICATION_JSON_VALUE)
     @RequiresAuthentication
-    public ResponseEntity addition(@RequestBody DiscountCard card);
+    @ResponseStatus(OK)
+    public ResponseEntity add(@RequestBody DiscountCard card) {
+        try {
+            service.add(card);
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(FORBIDDEN)
+                    .body(JsonNodeFactory.instance.objectNode().put("error",e.getMessage()));
+        }
+        return ResponseEntity
+                .status(OK)
+                .body(JsonNodeFactory.instance.objectNode().put("success", "Discount card successfully added"));
+    }
+
+
 }

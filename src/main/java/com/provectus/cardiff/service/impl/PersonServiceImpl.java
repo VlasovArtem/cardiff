@@ -10,10 +10,9 @@ import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntityUpdater;
+import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
-import com.provectus.cardiff.utils.exception.PersonUpdateException;
-import com.provectus.cardiff.utils.validator.PersonValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -27,11 +26,10 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static com.provectus.cardiff.utils.validator.PersonValidator.*;
+import static com.provectus.cardiff.utils.validator.PersonValidator.PersonValidationInfo;
+import static com.provectus.cardiff.utils.validator.PersonValidator.validate;
 
 /**
  * Created by artemvlasov on 20/08/15.
@@ -110,14 +108,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        if (oldPassword == null || newPassword == null) {
-            throw new IllegalArgumentException("Old or new password cannot be null");
-        } else if (oldPassword.length() == 0 || newPassword.length() == 0) {
-            throw new IllegalArgumentException("Old or new password cannot be empty");
-        } else if (!validatePassword(newPassword)) {
-            throw new IllegalArgumentException(DataType.EMAIL.getError());
+        if(validate(newPassword, PersonValidationInfo.PASSWORD.getPattern())) {
+            throw new EntityValidationException(PersonValidationInfo.PASSWORD.getError());
         }
-        authentication();
         Person user = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
         if (BCrypt.checkpw(oldPassword, user.getPassword())) {
             user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
@@ -128,12 +121,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void registration(Person person) {
-        if (person == null) {
+        if (validate(Optional.ofNullable(person))) {
             throw new PersonRegistrationException("Person cannot be null");
-        }
-        List<PersonValidator.DataType> data = validate(person);
-        if (!data.isEmpty()) {
-            throw new PersonRegistrationException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
         }
         if (personRepository.existsByLoginOrEmail(person.getLogin(), person.getEmail())) {
             throw new PersonRegistrationException("Person with this email is already registered");
@@ -152,10 +141,7 @@ public class PersonServiceImpl implements PersonService {
         } else {
             throw new AuthenticationException("Person has no permission");
         }
-        List<PersonValidator.DataType> data = validate(src);
-        if (!data.isEmpty()) {
-            throw new PersonUpdateException(data.stream().map(DataType::getError).collect(Collectors.joining(", ")));
-        }
+        validate(Optional.ofNullable(src));
         EntityUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
     }
 
