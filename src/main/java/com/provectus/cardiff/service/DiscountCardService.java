@@ -14,4 +14,6 @@ public interface DiscountCardService {
 
     List<DiscountCard> findByTags (Set<String> tags);
 
+    List<DiscountCard> findByName (String name);
+
 }

@@ -65,4 +65,11 @@ public class DiscountCardServiceImpl implements DiscountCardService {
             throw new RuntimeException("Tag cannot be null");
         return  discountCardRepository.findByTags(tags);
     }
+
+    @Override
+    public List<DiscountCard> findByName(String name) {
+        if(discountCardRepository.findByCompanyName(name).equals(""))
+            throw new RuntimeException("Tag cannot be null");
+        return  discountCardRepository.findByCompanyName(name);
+    }
 }

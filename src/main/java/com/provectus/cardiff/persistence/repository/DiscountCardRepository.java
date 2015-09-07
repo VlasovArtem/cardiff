@@ -14,6 +14,7 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
 
     DiscountCard findById(long id);
 
+    @Query("select d from DiscountCard d where lower(d.companyName) LIKE %?1%")
     List<DiscountCard> findByCompanyName(String companyName);
 
     @Query("select d from Person u JOIN u.discountCards d where u.id = ?1")

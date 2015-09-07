@@ -43,9 +43,21 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/getbytags", method = GET, produces = APPLICATION_JSON_VALUE)
   //  @RequiresAuthentication
-    public ResponseEntity add(@RequestParam Set<String> tags) {
+    public ResponseEntity getByTags(@RequestParam Set<String> tags) {
         try {
             return ResponseEntity.ok(service.findByTags(tags));
+        } catch (RuntimeException e) {
+            return ResponseEntity
+                    .status(FORBIDDEN)
+                    .body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
+        }
+    }
+
+    @RequestMapping(path = "/getbyname", method = GET, produces = APPLICATION_JSON_VALUE)
+    //  @RequiresAuthentication
+    public ResponseEntity getByName(@RequestParam String name) {
+        try {
+            return ResponseEntity.ok(service.findByName(name.toLowerCase()));
         } catch (RuntimeException e) {
             return ResponseEntity
                     .status(FORBIDDEN)
