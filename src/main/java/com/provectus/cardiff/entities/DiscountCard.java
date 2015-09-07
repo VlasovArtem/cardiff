@@ -40,7 +40,7 @@ public class DiscountCard extends BaseEntity {
             joinColumns = @JoinColumn(name = "discount_card_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
     @JsonView(View.SecondLevel.class)
     private List<DiscountCardComment> discountCardComments;

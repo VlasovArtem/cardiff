@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -56,5 +57,12 @@ public class DiscountCardServiceImpl implements DiscountCardService {
             throw new RuntimeException("Discount card cannot be null");
 
         return discountCardRepository.findById(number);
+    }
+
+    @Override
+    public List<DiscountCard> findByTags(Set<String> tags) {
+        if(discountCardRepository.findByTags(tags).equals(""))
+            throw new RuntimeException("Tag cannot be null");
+        return  discountCardRepository.findByTags(tags);
     }
 }

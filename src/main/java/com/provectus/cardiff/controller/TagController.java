@@ -28,16 +28,17 @@ public class TagController {
     private TagService service;
 
     @RequestMapping(path = "/get", method = GET, produces = APPLICATION_JSON_VALUE)
+    //  @RequiresAuthentication
     public  ResponseEntity getTag( @RequestParam(required = false) Long id) {
         try {
-            service.getTag(id);
+            return ResponseEntity.ok(service.getTag(id));
         } catch (Exception e) {
             return ResponseEntity.status(FORBIDDEN).body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
         }
-        return ResponseEntity.ok(service.getTag(id));
     }
 
     @RequestMapping(path = "/add", method = POST, consumes = APPLICATION_JSON_VALUE,  produces = APPLICATION_JSON_VALUE)
+    //  @RequiresAuthentication
     public ResponseEntity add(@RequestParam String tag) {
         try {
             service.addTag(tag);
@@ -52,13 +53,12 @@ public class TagController {
     }
 
     @RequestMapping(path = "/get/all", method = GET, produces = APPLICATION_JSON_VALUE)
+    //  @RequiresAuthentication
     public  ResponseEntity getAll() {
         try {
-            service.findAll();
+            return ResponseEntity.ok(service.findAll());
         } catch (Exception e) {
             return ResponseEntity.status(FORBIDDEN).body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
         }
-        return ResponseEntity.ok(service.findAll());
     }
-
 }

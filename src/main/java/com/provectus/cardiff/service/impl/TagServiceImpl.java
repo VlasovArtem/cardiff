@@ -60,7 +60,7 @@ public class TagServiceImpl implements TagService {
 
     private void checkTagBeforeAdding(String tag) {
         if (tag == null) {
-            throw new RuntimeException("Discount card cannot be null.");
+            throw new RuntimeException("Tag can't be null.");
         }
         if (tag.equals("")) {
             throw new RuntimeException("Tag name is required.");
