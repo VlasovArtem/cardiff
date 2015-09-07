@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.utils.View;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,7 @@ import java.util.Set;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
  * Created by Дмитрий on 27/08/15.
@@ -47,6 +47,30 @@ public class DiscountCardController {
                 .body(JsonNodeFactory.instance.objectNode().put("success", "Discount card successfully added"));
     }
 
+    @RequestMapping(path = "/getByNumber", method = GET, produces = APPLICATION_JSON_VALUE)
+    @RequiresAuthentication
+    public  ResponseEntity getByCardNumber( @RequestParam(required = false) Long number) {
+        try {
+            service.findCardByNumber(number);
+        } catch (Exception e) {
+            return ResponseEntity.status(FORBIDDEN).body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
+        }
+        return ResponseEntity.ok(service.findCardByNumber(number));
+    }
+
+    @RequestMapping(path = "/update", method = PUT)
+    @RequiresAuthentication
+    @RequiresRoles(value = {"ADMIN", "USER"}, logical = Logical.OR)
+    @ResponseStatus(value = OK)
+    public  void update( @RequestBody DiscountCard card) {
+        service.update(card);
+    }
+
+    @RequestMapping(path = "/delete", method = DELETE, produces = APPLICATION_JSON_VALUE)
+    @RequiresAuthentication
+    public  void delete( @RequestBody DiscountCard card) {
+        service.delete(card);
+    }
     @RequestMapping(path = "/getbytags", method = GET, produces = APPLICATION_JSON_VALUE)
     @RequiresAuthentication
     public ResponseEntity getByTags(@RequestParam Set<String> tags) {

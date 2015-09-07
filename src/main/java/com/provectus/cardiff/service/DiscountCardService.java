@@ -13,6 +13,11 @@ import java.util.Set;
 public interface DiscountCardService {
     void add(DiscountCard card);
     DiscountCard findCardByNumber(long number);
+    void update(DiscountCard card);
+    void delete(DiscountCard card);
+
+    DiscountCard getCard(long id);
+
 
     List<DiscountCard> findByTags (Set<String> tags);
 

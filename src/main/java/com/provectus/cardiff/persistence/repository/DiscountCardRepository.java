@@ -13,6 +13,7 @@ import java.util.Set;
 public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long> {
 
     DiscountCard findById(long id);
+    DiscountCard findByCardNumber(long cardNumber);
 
     @Query("select d from DiscountCard d where lower(d.companyName) LIKE %?1%")
     List<DiscountCard> findByCompanyName(String companyName);
