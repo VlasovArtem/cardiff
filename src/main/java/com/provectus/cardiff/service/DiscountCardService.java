@@ -1,6 +1,8 @@
 package com.provectus.cardiff.service;
 
 import com.provectus.cardiff.entities.DiscountCard;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Set;
@@ -15,5 +17,7 @@ public interface DiscountCardService {
     List<DiscountCard> findByTags (Set<String> tags);
 
     List<DiscountCard> findByName (String name);
+
+    Page<DiscountCard> getAll(Pageable pageable);
 
 }

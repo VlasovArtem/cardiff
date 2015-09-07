@@ -17,16 +17,19 @@
     <script src="js/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="js/showErrors.js"></script>
     <script src="js/bower_components/angular-ui-mask/dist/mask.js"></script>
-    <script src="js/app.js"></script>
     <script src="app/person/js/person-controllers.js"></script>
     <script src="app/person/js/person-directives.js"></script>
     <script src="app/person/js/person-services.js"></script>
     <script src="app/person/js/person-filters.js"></script>
+    <script src="app/DiscountCard/js/DC-controllers.js"></script>
+    <script src="app/DiscountCard/js/DC-services.js"></script>
+    <script src="js/app.js"></script>
 </head>
 <body ng-cloak class="ng-cloak">
 <h1 class="hide">Cardiff Application</h1>
 <nav class="navbar navbar-default" ng-controller="NavCtrl">
     <h2 class="hide">Cardiff Navigation</h2>
+
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button"
@@ -53,6 +56,9 @@
                     <ul class="dropdown-menu">
                         <li><a href="/admin/persons">Persons</a></li>
                     </ul>
+                </li>
+                <li>
+                    <a href="/card/get/all">Cards</a>
                 </li>
                 <li>
                     <a href="/account">Account</a>

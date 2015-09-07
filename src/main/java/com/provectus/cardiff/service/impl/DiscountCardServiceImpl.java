@@ -3,7 +3,10 @@ package com.provectus.cardiff.service.impl;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.service.DiscountCardService;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,5 +74,11 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         if(discountCardRepository.findByCompanyName(name).equals(""))
             throw new RuntimeException("Tag cannot be null");
         return  discountCardRepository.findByCompanyName(name);
+    }
+
+    @Override
+    public Page<DiscountCard> getAll(Pageable pageable) {
+        SecurityUtils.getSubject().checkRole("ADMIN");
+        return discountCardRepository.findAll(pageable);
     }
 }

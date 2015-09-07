@@ -1,10 +1,16 @@
 package com.provectus.cardiff.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.service.DiscountCardService;
+import com.provectus.cardiff.utils.View;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +48,7 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/getbytags", method = GET, produces = APPLICATION_JSON_VALUE)
-  //  @RequiresAuthentication
+    @RequiresAuthentication
     public ResponseEntity getByTags(@RequestParam Set<String> tags) {
         try {
             return ResponseEntity.ok(service.findByTags(tags));
@@ -54,7 +60,7 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/getbyname", method = GET, produces = APPLICATION_JSON_VALUE)
-    //  @RequiresAuthentication
+    @RequiresAuthentication
     public ResponseEntity getByName(@RequestParam String name) {
         try {
             return ResponseEntity.ok(service.findByName(name.toLowerCase()));
@@ -63,6 +69,17 @@ public class DiscountCardController {
                     .status(FORBIDDEN)
                     .body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
         }
+    }
+
+    @RequestMapping(path = "/getAll", method = GET)
+    @RequiresRoles("ADMIN")
+    @JsonView(View.FirstLevel.class)
+    @ResponseStatus(value = OK)
+    public Page<DiscountCard> getAll(@RequestParam(defaultValue = "0", required = false) int page,
+                                     @RequestParam(defaultValue = "15", required = false) int size,
+                                     @RequestParam(defaultValue = "DESC", required = false) String direction,
+                                     @RequestParam(defaultValue = "createdDate", required = false) String property) {
+        return service.getAll(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
 

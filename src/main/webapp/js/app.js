@@ -1,5 +1,5 @@
 var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap',
-    'person-controllers', 'person-services', 'person-directives', 'person-filters']).config(
+    'person-controllers', 'person-services', 'person-directives', 'person-filters', 'DC-controllers', 'DC-services']).config(
     function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $routeProvider
@@ -54,6 +54,20 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                 resolve: {
                     persons: function(AdminPersons, $location) {
                         return AdminPersons.get(
+                            function(data) {
+                                return data;
+                            }, function() {
+                                $location.path('/');
+                            })
+                    }
+                }
+            }).
+            when('/card/get/all', {
+                templateUrl: 'app/DiscountCard/DiscountCards.html',
+                controller: 'DiscountCardsCtrl',
+                resolve: {
+                    discountCards: function(getAll, $location) {
+                        return getAll.get(
                             function(data) {
                                 return data;
                             }, function() {

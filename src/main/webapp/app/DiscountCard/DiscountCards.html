@@ -1,0 +1,48 @@
+<section class="discount-cards" entity-sorting>
+    <h2 class="col-md-12">Discount Cards</h2>
+
+    <div class="col-md-offset-1 col-md-10">
+        <table class="table">
+            <tr>
+                <th>#</th>
+                <th ng-repeat="(index, value) in head"  width="{{value.width}}">
+                    {{value.name}}
+                    <!--<span ng-class="selectSort(index)"></span>-->
+                </th>
+                <th colspan="2"></th>
+            </tr>
+            <tr ng-repeat="(dcIndex, discountCard) in discountCards" class="data">
+                <td ng-bind="dcIndex + 1"></td>
+                <td ng-repeat="(dIndex, data) in head" ng-bind="setData(dIndex, dcIndex)"></td>
+
+                <td></td>
+            </tr>
+        </table>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-inline">
+                    <label for="size">Items per page:</label>
+                    <select class="form-control"
+                            id="size"
+                            ng-model="currentPageSize"
+                            ng-options="size as size.label for size in pageSize"
+                            style="width: 25%"></select>
+                </div>
+            </div>
+            <div class="col-md-7" style="text-align: right;">
+                <pagination
+                        total-items="totalItems"
+                        items-per-page="currentPageSize.value"
+                        ng-model="currentPage"
+                        class="pagination-sm"
+                        max-size="maxSize"
+                        boundary-links="true"
+                        rotate="false"
+                        num-pages="numPages"
+                        style="margin: 0;"
+                        ng-click="changePage()">
+                </pagination>
+            </div>
+        </div>
+    </div>
+</section>
