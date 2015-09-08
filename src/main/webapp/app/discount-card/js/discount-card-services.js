@@ -12,6 +12,6 @@ service.factory('addition', ['$resource', function($resource) {
     })
 }]);
 
-service.factory('getAll', ['$resource', function($resource) {
-    return $resource('/rest/card/getAll');
+service.factory('CardsCtrl', ['$resource', function($resource) {
+    return $resource('/rest/card/get/all');
 }]);

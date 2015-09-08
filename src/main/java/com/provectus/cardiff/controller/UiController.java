@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 public class UiController {
-    @RequestMapping({"/", "/signup", "/signin", "/account", "/account/*", "/admin/*"})
+    @RequestMapping({"/", "/signup", "/signin", "/account", "/account/*", "/admin/*", "/cards"})
     public String index() {
         return "index";
     }

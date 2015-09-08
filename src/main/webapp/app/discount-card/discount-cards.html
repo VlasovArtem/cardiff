@@ -5,9 +5,9 @@
         <table class="table">
             <tr>
                 <th>#</th>
-                <th ng-repeat="(index, value) in head"  width="{{value.width}}">
+                <th ng-repeat="(index, value) in head"  width="{{value.width}}" ng-click="sorting(value.property)">
                     {{value.name}}
-                    <!--<span ng-class="selectSort(index)"></span>-->
+                    <span ng-class="selectSort(index)"></span>
                 </th>
                 <th colspan="2"></th>
             </tr>

@@ -62,12 +62,12 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                     }
                 }
             }).
-            when('/card/get/all', {
-                templateUrl: 'app/DiscountCard/DiscountCards.html',
+            when('/cards', {
+                templateUrl: 'app/discount-card/discount-cards.html',
                 controller: 'DiscountCardsCtrl',
                 resolve: {
-                    discountCards: function(getAll, $location) {
-                        return getAll.get(
+                    discountCards: function(CardsCtrl, $location) {
+                        return CardsCtrl.get(
                             function(data) {
                                 return data;
                             }, function() {
@@ -76,8 +76,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                     }
                 }
             }).
-            when('/Add', {
-                templateUrl: 'app/DiscountCard/Add.html',
+            when('/add', {
+                templateUrl: 'app/discount-card/add.html',
                 controller: 'AddCtrl'
             }).
             otherwise({

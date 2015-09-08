@@ -95,7 +95,7 @@ public class DiscountCardController {
         }
     }
 
-    @RequestMapping(path = "/getAll", method = GET)
+    @RequestMapping(path = "/get/all", method = GET)
     @RequiresRoles("ADMIN")
     @JsonView(View.FirstLevel.class)
     @ResponseStatus(value = OK)

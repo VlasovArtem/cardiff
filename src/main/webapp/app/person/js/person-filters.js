@@ -30,10 +30,15 @@ app.filter('dateFilter', function() {
 });
 app.filter('camelCase', function() {
     return function(input) {
-        input = input.replace(/_.*/g, function(txt) {
-            txt = txt.replace("_", "");
-            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-        });
+        var replace = function(text) {
+            return text.replace(/_.*/g, function(txt) {
+                txt = txt.replace("_", "");
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+            });
+        };
+        do {
+            input = replace(input)
+        } while(input.indexOf("_") > -1);
         return input;
     }
 });
