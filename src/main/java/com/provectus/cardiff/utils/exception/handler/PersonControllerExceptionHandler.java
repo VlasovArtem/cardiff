@@ -44,7 +44,11 @@ public class PersonControllerExceptionHandler {
     }
 
     @ExceptionHandler(EntityValidationException.class)
-    public ResponseEntity validatorHandler(Exception ex) {
-        return create(NOT_ACCEPTABLE, ex.getMessage());
+    public ResponseEntity validatorHandler(EntityValidationException ex) {
+        if(ex.getObjectNode() != null) {
+            return create(NOT_ACCEPTABLE, ex.getMessage(), ex.getObjectNode());
+        } else {
+            return create(NOT_ACCEPTABLE, ex.getMessage());
+        }
     }
 }

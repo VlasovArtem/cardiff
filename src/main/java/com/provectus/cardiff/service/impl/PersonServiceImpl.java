@@ -2,12 +2,7 @@ package com.provectus.cardiff.service.impl;
 
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
-import com.provectus.cardiff.persistence.repository.BookCardRepository;
-import com.provectus.cardiff.persistence.repository.DiscountCardCommentRepository;
-import com.provectus.cardiff.persistence.repository.DiscountCardHistoryRepository;
-import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
-import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
@@ -16,10 +11,8 @@ import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -37,20 +30,8 @@ import static com.provectus.cardiff.utils.validator.PersonValidator.validate;
 @Service
 @Transactional
 public class PersonServiceImpl implements PersonService {
-    @Qualifier("personRepository")
     @Autowired
     PersonRepository personRepository;
-    @Autowired
-    DiscountCardRepository discountCardRepository;
-    @Autowired
-    DiscountCardCommentRepository discountCardCommentRepository;
-    @Autowired
-    DiscountCardHistoryRepository discountCardHistoryRepository;
-    @Autowired
-    TagRepository tagRepository;
-    @Autowired
-    BookCardRepository bookCardRepository;
-
 
     @Override
     public void login(String loginData, String password, boolean rememberMe) {
@@ -89,21 +70,16 @@ public class PersonServiceImpl implements PersonService {
      */
     @Override
     public Person authenticated() {
-        if (SecurityUtils.getSubject().getPrincipal() == null && !personRepository.exists((long) SecurityUtils
-                .getSubject()
-                .getPrincipal())) {
-            throw new AuthenticationException("Person is not authenticated");
-        }
         return personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
     }
 
     @Override
     public void delete(long id) {
-        if (!personRepository.existsByIdAndRole((long) SecurityUtils.getSubject().getPrincipal(), PersonRole.ADMIN)) {
-            throw new AuthorizationException("Person has no permission");
-        }
         Person person = personRepository.findById(id);
-        person.setDeleted(true);
+        if(person != null) {
+            person.setDeleted(true);
+            SecurityUtils.getSubject().logout();
+        }
     }
 
     @Override
@@ -121,11 +97,12 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void registration(Person person) {
-        if (validate(Optional.ofNullable(person))) {
+        if (!validate(Optional.ofNullable(person))) {
             throw new PersonRegistrationException("Person cannot be null");
         }
-        if (personRepository.existsByLoginOrEmail(person.getLogin(), person.getEmail())) {
-            throw new PersonRegistrationException("Person with this email is already registered");
+        if (personRepository.existsByLoginOrEmailOrPhoneNumber(person.getLogin(), person.getEmail(), person.getPhoneNumber())) {
+            throw new PersonRegistrationException("Person with this email, login or phone number is already " +
+                    "registered");
         }
         person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
         personRepository.save(person);
@@ -147,7 +124,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Page<Person> getAll(Pageable pageable) {
-        SecurityUtils.getSubject().checkRole("ADMIN");
         return personRepository.findAll(pageable);
     }
 

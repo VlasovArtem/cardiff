@@ -57,6 +57,6 @@ public class BookCard extends BaseEntity {
      */
     @PrePersist
     public void setBookDateEnd() {
-        bookDateEnd = LocalDateTime.now().plusDays(7l);
+        bookDateEnd = getCreatedDate() == null ? LocalDateTime.now().plusDays(7l) : getCreatedDate().plusDays(7l);
     }
 }

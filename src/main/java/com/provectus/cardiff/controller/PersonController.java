@@ -110,7 +110,7 @@ public class PersonController {
             method = DELETE)
     @RequiresRoles("ADMIN")
     @ResponseStatus(value = OK)
-    public void deletePerson(@PathVariable Long id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 
@@ -119,7 +119,7 @@ public class PersonController {
     @RequiresAuthentication
     @RequiresRoles(value = {"ADMIN", "USER"}, logical = Logical.OR)
     @ResponseStatus(value = OK)
-    public void updatePerson(@RequestBody Person person) {
+    public void update(@RequestBody Person person) {
         service.update(person);
     }
 

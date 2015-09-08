@@ -1,5 +1,7 @@
 package com.provectus.cardiff.utils.validator;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 
@@ -21,12 +23,20 @@ public class DiscountCardValidator extends EntityValidator {
      * @return true if all validate data matches their patterns otherwise throw {@code EntityValidationException}
      */
     public static boolean validate(Optional<DiscountCard> card) {
-        return card.isPresent() && Arrays.stream(DiscountCardValidationInfo.values()).allMatch(dc -> {
-            if (!validate(dc, card.get())) {
-                throw new EntityValidationException(dc.getError());
+        if(card.isPresent()) {
+            ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+            Arrays.stream(DiscountCardValidationInfo.values()).allMatch(dc -> {
+                if (!validate(dc, card.get())) {
+                    objectNode.put(dc.name().toLowerCase(), dc.getError());
+                }
+                return true;
+            });
+            if(objectNode.size() != 0) {
+                throw new EntityValidationException(objectNode, "Person form contains invalid data");
             }
             return true;
-        });
+        }
+        return false;
     }
 
     /**

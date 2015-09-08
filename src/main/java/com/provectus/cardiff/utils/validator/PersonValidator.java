@@ -1,5 +1,7 @@
 package com.provectus.cardiff.utils.validator;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -17,22 +19,30 @@ public class PersonValidator extends EntityValidator {
 
     /**
      * Validate {@code PersonValidator}
-     * @param card Optional of {@code PersonValidator}
+     * @param person Optional of {@code PersonValidator}
      * @return true if all validate data matches their patterns otherwise throw {@code EntityValidationException}
      */
     public static boolean validate(Optional<Person> person) {
-        return person.isPresent() && Arrays.stream(PersonValidationInfo.values()).allMatch(dc -> {
-            if (!validate(dc, person.get())) {
-                throw new EntityValidationException(dc.getError());
+        if(person.isPresent()) {
+            ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+            Arrays.stream(PersonValidationInfo.values()).allMatch(dc -> {
+                if (!validate(dc, person.get())) {
+                    objectNode.put(dc.name().toLowerCase(), dc.getError());
+                }
+                return true;
+            });
+            if(objectNode.size() != 0) {
+                throw new EntityValidationException(objectNode, "Person form contains invalid data");
             }
             return true;
-        });
+        }
+        return false;
     }
 
     /**
      * Validate {@code PersonValidator} data
      * @param info Enum for one of validated data
-     * @param discountCard Validated object
+     * @param person Validated object
      * @return true if validated data is matches pattern
      */
     private static boolean validate(PersonValidationInfo info, Person person) {

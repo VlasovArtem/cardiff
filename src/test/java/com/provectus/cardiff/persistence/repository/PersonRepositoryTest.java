@@ -76,6 +76,37 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    public void existsByPhoneNumberWithExistingPhoneNumberTest() {
+        assertTrue(personRepository.existsByPhoneNumber(568965236l));
+    }
+
+    @Test
+    public void existingByPhoneNumberWithoutExistingPhoneNumberTest() {
+        assertFalse(personRepository.existsByPhoneNumber(562358956l));
+    }
+
+    @Test
+    public void existsByLoginOrEmailOrPhoneNumberWithExistingPhoneNumberTest() {
+        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumber(null, null, 632563263l));
+    }
+
+    @Test
+    public void existsByLoginOrEmailOrPhoneNumberWithExistingEmailTest() {
+        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumber(null, "alexandrmahnov@gmail.com", 0));
+    }
+
+    @Test
+    public void existsByLoginOrEmailOrPhoneNumberWithExistingLoginTest() {
+        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumber("vadimguliaev", null, 0));
+    }
+
+    @Test
+    public void existsByLoginOrEmailOrPhoneNumberWithoutExistingDataTest() {
+        assertFalse(personRepository.existsByLoginOrEmailOrPhoneNumber("notexistslogin", "notexists@mail.com",
+                897586890l));
+    }
+
+    @Test
     public void existsByIdAndRoleWithExistingIdAndRoleTest() {
         boolean exists = personRepository.existsByIdAndRole(2l, PersonRole.ADMIN);
         assertTrue(exists);
