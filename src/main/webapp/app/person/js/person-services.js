@@ -61,6 +61,7 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 rememberMe: credentials.rememberMe ? credentials.rememberMe : false
             }), function() {
                 auth.authenticated = true;
+                auth.authentication();
                 $location.path(auth.homePath);
                 $route.reload();
             }, function(data) {
