@@ -6,6 +6,7 @@ import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
+import com.provectus.cardiff.utils.exception.PersonDataUniqueException;
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import org.apache.shiro.SecurityUtils;
@@ -152,5 +153,26 @@ public class PersonServiceImpl implements PersonService {
     public void changeRole(long id) {
         Person person = personRepository.findById(id);
         person.setRole(PersonRole.USER == person.getRole() ? PersonRole.ADMIN : PersonRole.USER);
+    }
+
+    @Override
+    public void checkLogin(String login) {
+        if(personRepository.existsByLogin(login)) {
+            throw new PersonDataUniqueException();
+        }
+    }
+
+    @Override
+    public void checkEmail(String email) {
+        if(personRepository.existsByEmail(email)) {
+            throw new PersonDataUniqueException();
+        }
+    }
+
+    @Override
+    public void checkPhoneNumber(long phoneNumber) {
+        if(personRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new PersonDataUniqueException();
+        }
     }
 }

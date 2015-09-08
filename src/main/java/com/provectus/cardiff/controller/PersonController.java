@@ -51,7 +51,7 @@ public class PersonController {
     @ResponseStatus(value = OK)
     public void login(@RequestParam String loginData,
                       @RequestParam String password,
-                      @RequestParam boolean rememberMe) {
+                      @RequestParam(defaultValue = "false") boolean rememberMe) {
         service.login(loginData, password, rememberMe);
     }
 
@@ -66,7 +66,6 @@ public class PersonController {
 
     /**
      * Check if use is already authenticated
-     * @return ResponseEntity with status ok or unauthorized
      */
     @RequestMapping(path = "/authentication", method = GET, produces = APPLICATION_JSON_VALUE)
     @RequiresRoles(value = {"USER", "ADMIN"})
@@ -155,5 +154,23 @@ public class PersonController {
     @ResponseStatus(value = OK)
     public void changeRole(@PathVariable Long id) {
         service.changeRole(id);
+    }
+
+    @RequestMapping(path = "/check/email", method = POST)
+    @ResponseStatus(value = OK)
+    public void checkEmail(@RequestParam String email) {
+        service.checkEmail(email);
+    }
+
+    @RequestMapping(path = "/check/login", method = POST)
+    @ResponseStatus(value = OK)
+    public void checkLogin(@RequestParam String login) {
+        service.checkLogin(login);
+    }
+
+    @RequestMapping(path = "/check/phone", method = POST)
+    @ResponseStatus(value = OK)
+    public void checkPhoneNumber(@RequestParam long phone) {
+        service.checkPhoneNumber(phone);
     }
 }

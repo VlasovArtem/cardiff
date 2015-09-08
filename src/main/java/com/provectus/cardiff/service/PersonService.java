@@ -21,4 +21,7 @@ public interface PersonService {
     void authorized(PersonRole role);
     void restore(long id);
     void changeRole(long id);
+    void checkLogin(String login);
+    void checkEmail(String email);
+    void checkPhoneNumber(long phoneNumber);
 }

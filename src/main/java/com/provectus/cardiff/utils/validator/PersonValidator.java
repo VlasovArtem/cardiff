@@ -70,7 +70,7 @@ public class PersonValidator extends EntityValidator {
      * Enum contains error messages and patterns for validating data
      */
     public enum PersonValidationInfo {
-        NAME("Name should not contains any digital and length should be 6 - 100",
+        NAME("Name should not contains any digits and length should be 6 - 100",
                 "^[\\p{L} .'-]{6,100}$"),
         LOGIN("Login should contains next characters: a-z 0-9 _ -. And length should be 6 - 100",
                 "^[A-Za-z0-9_-]{6,100}$"),

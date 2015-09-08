@@ -139,3 +139,10 @@ hr.style {
 .admin-persons .data > td {
     vertical-align: middle;
 }
+.field-error {
+    color: #a94442;
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-size: 85%;
+}

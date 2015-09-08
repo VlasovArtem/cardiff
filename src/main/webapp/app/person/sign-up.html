@@ -1,5 +1,6 @@
 <section id="registration" class="container-fluid">
     <h2 class="col-md-12">Sign up</h2>
+    <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
     <form class="col-md-offset-4 col-md-4" name="signUp">
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="name">Name</label>
@@ -8,13 +9,16 @@
                    placeholder="Input name"
                    ng-maxlength="100"
                    ng-minlength="6"
+                   ng-pattern="/^[A-Za-z .'-]*$/"
                    id="name"
                    name="name"
                    ng-model="person.name"/>
             <div validation-messages
                  model-controller="signUp.name"
                  minlength-error="Name is too short"
-                 maxlength-error="Name is too long"></div>
+                 maxlength-error="Name is too long"
+                 pattern-error="Name should not contains any digits"></div>
+            <form-error error="error.data.name" form="signUp.name"></form-error>
         </div>
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="login">Login</label>
@@ -25,15 +29,18 @@
                    id="login"
                    ng-minlength="6"
                    ng-maxlength="100"
-                   ng-pattern="/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/"
+                   ng-pattern="/^[A-Za-z0-9_-]{6,100}$/"
                    ng-model="person.login"
                    autocomplete="off"
+                   ensure-unique
                    required/>
             <div validation-messages
                  model-controller="signUp.login"
                  minlength-error="Login is too short"
                  maxlength-error="Login is too long"
-                 required-error="Login is required"></div>
+                 required-error="Login is required"
+                 unique-error="Login is already exists"></div>
+            <form-error error="error.data.login" form="signUp.login"></form-error>
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
@@ -42,10 +49,12 @@
                    class="form-control"
                    placeholder="Input email"
                    id="email"
+                   pattern="{{emailPattern}}"
                    ng-maxlength="50"
                    ng-minlength="3"
                    name="email"
                    ng-model="person.email"
+                   ensure-unique
                    autocomplete="off"
                    required/>
             <div validation-messages
@@ -53,7 +62,9 @@
                  required-error="Email is required"
                  minlength-error="Email is too short"
                  maxlength-error="Email is too long"
-                 email-error="Email is invalid"></div>
+                 pattern-error="Email is invalid"
+                 unique-error="Email is already exists"></div>
+            <form-error error="error.data.email" form="signUp.email"></form-error>
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
@@ -72,6 +83,7 @@
                  required-error="Password is required"
                  minlength-error="Password is too short"
                  maxlength-error="Password is too long"></div>
+            <form-error error="error.data.password" form="signUp.password"></form-error>
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
@@ -83,11 +95,14 @@
                    ng-minlength="9"
                    ng-model="person.phone_number"
                    ui-mask="+380 (99) 999-99-99"
+                   ensure-unique=""
                    required/>
             <div validation-messages
                  model-controller="signUp.phoneNumber"
                  required-error="Phone number is required"
-                 minlength-error="Phone number should 9 symbols length"></div>
+                 minlength-error="Phone number should 9 symbols length"
+                 unique-error="Phone number is already exists"></div>
+            <form-error error="error.data.phone_number" form="signUp.phoneNumber"></form-error>
         </div>
         <div class="form-group">
             <label for="description">Info</label>
@@ -101,6 +116,7 @@
             <div validation-messages
                  model-controller="signUp.description"
                  maxlength-error="Description is too long"></div>
+            <form-error error="error.data.description" form="signUp.description"></form-error>
         </div>
         <div class="form-group buttons">
             <input type="button" class="btn btn-success" value="Sign up" ng-disabled="signUp.$invalid" ng-click="reg()"/>

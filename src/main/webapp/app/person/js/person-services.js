@@ -64,7 +64,6 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 $location.path(auth.homePath);
                 $route.reload();
             }, function(data) {
-                console.log(data);
                 auth.authenticated = false;
                 callback && callback(data.data.error);
             })

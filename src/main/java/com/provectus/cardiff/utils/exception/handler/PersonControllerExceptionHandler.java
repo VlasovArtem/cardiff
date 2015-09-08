@@ -1,6 +1,7 @@
 package com.provectus.cardiff.utils.exception.handler;
 
 import com.provectus.cardiff.utils.exception.EntityValidationException;
+import com.provectus.cardiff.utils.exception.PersonDataUniqueException;
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import com.provectus.cardiff.utils.exception.PersonUpdateException;
@@ -18,6 +19,11 @@ import static org.springframework.http.HttpStatus.*;
  */
 @ControllerAdvice
 public class PersonControllerExceptionHandler {
+    @ExceptionHandler(PersonDataUniqueException.class)
+    public ResponseEntity personDataUniqueHandler() {
+        return ResponseEntity.status(CONFLICT).build();
+    }
+
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity authenticationHandler(Exception ex) {
         return create(FORBIDDEN, ex.getMessage());

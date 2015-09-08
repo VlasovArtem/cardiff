@@ -1,21 +1,30 @@
 var app = angular.module('person-controllers', ['ngResource']);
-app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', function($scope, $location, SignUp) {
+app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', function($scope, $location, SignUp, auth) {
     $scope.reg = function() {
         SignUp.registration($scope.person,
-            function(data) {
-                alert(data.success);
-                $location.path('/');
+            function() {
+                $scope.login = {
+                    loginData: $scope.person.email,
+                    password: $scope.person.password,
+                    rememberMe: false
+                };
+                auth.authenticate($scope.login, function(error) {
+                    $scope.error = error;
+                });
             }, function(data) {
-                $scope.error = data.error;
+                $scope.person.password = null;
+                $scope.error = data.data;
+
             }
         )
     };
     $scope.reset = function() {
         $scope.person = {};
-    }
+    };
+    $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+"
 }]);
 
-app.controller('NavCtrl', ['$scope', 'auth', '$timeout', function($scope, auth, $timeout) {
+app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($scope, auth, $timeout, $route) {
     $scope.adminPermission = function() {
         return auth.admin;
     };
@@ -26,6 +35,7 @@ app.controller('NavCtrl', ['$scope', 'auth', '$timeout', function($scope, auth, 
         auth.authenticate($scope.person, function(error) {
             errorFn(error);
         });
+        $route.reload();
     };
     $scope.logout = function() {
         auth.clear();

@@ -28,7 +28,7 @@ import java.util.List;
 @Entity
 @Table(name = "person")
 @NamedEntityGraph(name = "Person.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
-public class Person extends BaseEntity{
+public class Person extends BaseEntity {
     @Column(length = 100)
     private String name;
     @Column(length = 100, unique = true, nullable = false)

@@ -26,6 +26,26 @@ app.directive('validationMessages', function () {
         template: '<small class="help-block test" ng-repeat="message in errorMessages" ng-show= "!modelController.$pristine && $first" class="warning">{{message}}</small>'
     }
 });
+app.directive('formError', function() {
+    return {
+        scope: {
+            error: '=',
+            form: '='
+        },
+        restrict: 'E',
+        link: function(scope, elm, attrs) {
+            scope.$watch('error', function(newValue) {
+                if(newValue) {
+                    scope.form.$error = {
+                        pattern: true
+                    };
+                    scope.form.$invalid = true;
+                }
+            }, true)
+        },
+        template: '<small class="help-block" ng-show="error" ng-bind="error"></small>'
+    }
+});
 app.directive('ensureUnique', ["$http", function($http) {
     var toId;
     return {
@@ -37,8 +57,9 @@ app.directive('ensureUnique', ["$http", function($http) {
                 if(toId) clearTimeout(toId);
                 if(!ctrl.$pristine) {
                     toId = setTimeout(function () {
-                        $http.get('/rest/persons/check/' + attr.name
-                            + '?' + attr.name + '=' + value)
+                        var attributeName = attr.name == "phoneNumber" ? "phone" : attr.name;
+                        $http.post('/rest/person/check/' + attributeName
+                            + '?' + attributeName + '=' + value)
                             .success(function () {
                                 ctrl.$setValidity('unique', true);
                             }).error(function() {
