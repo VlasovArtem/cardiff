@@ -1,10 +1,8 @@
 <section id="personal-data">
     <h2 class="col-md-12">Your personal data</h2>
     <table class="table col-md-offset-4 personal-data">
-        <tr ng-repeat="(key, data) in person" ng-if="data && ignoredKeys.indexOf(key) == -1">
-            <td ng-bind="key | accountFilter" class="key"></td>
-            <td ng-bind="data" ng-if="key != 'phone_number'"></td>
-            <td ng-bind="data | phoneNumberFilter" ng-if="key == 'phone_number'"></td>
+        <tr ng-repeat="(key, data) in person | accountTable" account-data label="key"
+            data="data">
         </tr>
     </table>
     <div class="buttons">

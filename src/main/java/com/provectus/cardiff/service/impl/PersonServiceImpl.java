@@ -3,6 +3,7 @@ package com.provectus.cardiff.service.impl;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
+import com.provectus.cardiff.service.LocationService;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
@@ -32,7 +33,10 @@ import static com.provectus.cardiff.utils.validator.PersonValidator.validate;
 @Transactional
 public class PersonServiceImpl implements PersonService {
     @Autowired
-    PersonRepository personRepository;
+    private PersonRepository personRepository;
+    @Autowired
+    private LocationService locationService;
+
 
     @Override
     public void login(String loginData, String password, boolean rememberMe) {
@@ -98,12 +102,14 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void registration(Person person) {
-        if (!validate(Optional.ofNullable(person))) {
-            throw new PersonRegistrationException("Person cannot be null");
-        }
+        validate(Optional.ofNullable(person).orElseThrow(() -> new PersonRegistrationException("Person cannot be " +
+                "null")), false);
         if (personRepository.existsByLoginOrEmailOrPhoneNumber(person.getLogin(), person.getEmail(), person.getPhoneNumber())) {
             throw new PersonRegistrationException("Person with this email, login or phone number is already " +
                     "registered");
+        }
+        if (!locationService.exists(person.getLocation().getCity(), person.getLocation().getCountry())) {
+            throw new PersonRegistrationException("Person location is invalid");
         }
         person.setPassword(BCrypt.hashpw(person.getPassword(), BCrypt.gensalt()));
         personRepository.save(person);
@@ -119,7 +125,7 @@ public class PersonServiceImpl implements PersonService {
         } else {
             throw new AuthenticationException("Person has no permission");
         }
-        validate(Optional.ofNullable(src));
+        validate(src, true);
         EntityUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
     }
 
@@ -158,21 +164,21 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void checkLogin(String login) {
         if(personRepository.existsByLogin(login)) {
-            throw new PersonDataUniqueException();
+            throw new PersonDataUniqueException("Person with this login is already exists");
         }
     }
 
     @Override
     public void checkEmail(String email) {
         if(personRepository.existsByEmail(email)) {
-            throw new PersonDataUniqueException();
+            throw new PersonDataUniqueException("Person with this email is already exists");
         }
     }
 
     @Override
     public void checkPhoneNumber(long phoneNumber) {
         if(personRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new PersonDataUniqueException();
+            throw new PersonDataUniqueException("Person with this phone number is already exists");
         }
     }
 }

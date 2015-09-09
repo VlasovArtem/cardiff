@@ -149,3 +149,6 @@ service.factory('UpdatePerson', [function() {
         getPerson: getPerson
     }
 }]);
+service.factory('Locations', ['$resource', function($resource) {
+    return $resource('/rest/location/get/all')
+}]);

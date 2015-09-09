@@ -35,6 +35,8 @@ import static org.junit.Assert.*;
 public class PersonRepositoryTest {
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private LocationRepository locationRepository;
 
     @Test
     public void findByIdWithExistingIdTest() {
@@ -206,6 +208,7 @@ public class PersonRepositoryTest {
     }
 
     @Test
+    @DatabaseSetup("/META-INF/dbtest/empty-database.xml")
     public void saveTest() {
         Person person = new Person();
         person.setPhoneNumber(563256963);
@@ -214,6 +217,7 @@ public class PersonRepositoryTest {
         person.setEmail("testemail@email.com");
         person.setLogin("testlogin");
         person.setPassword("testpassword");
+        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
         personRepository.save(person);
         long personCount = personRepository.count();
         assertThat(personCount, is(4l));

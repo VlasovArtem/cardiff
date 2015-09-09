@@ -6,7 +6,6 @@ import com.provectus.cardiff.utils.exception.EntityValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Optional;
 import java.util.Random;
 
 import static com.provectus.cardiff.utils.validator.PersonValidator.validate;
@@ -33,42 +32,42 @@ public class PersonValidatorTest {
 
     @Test
     public void validateTest() {
-        assertTrue(validate(Optional.ofNullable(person)));
+        assertTrue(validate(person, false));
     }
 
     @Test
     public void validateWithNullTest() {
-        assertFalse(validate(Optional.ofNullable(null)));
+        assertFalse(validate(null, false));
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidLoginTest() {
         person.setLogin("h");
-        validate(Optional.ofNullable(person));
+        validate(person, false);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidEmailTest() {
         person.setEmail("fdsafdsfs@dsadfsd");
-        validate(Optional.ofNullable(person));
+        validate(person, false);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidPasswordTest() {
         person.setPassword("gd12");
-        validate(Optional.ofNullable(person));
+        validate(person, false);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidPhoneNumberTest() {
         person.setPhoneNumber(32l);
-        validate(Optional.ofNullable(person));
+        validate(person, false);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidNameTest() {
         person.setName("fsdfds3434");
-        validate(Optional.ofNullable(person));
+        validate(person, false);
     }
 
     @Test(expected = EntityValidationException.class)
@@ -79,7 +78,7 @@ public class PersonValidatorTest {
             builder.append((char)(r.nextInt(26) + 'a'));
         }
         person.setDescription(builder.toString());
-        validate(Optional.ofNullable(person));
+        validate(person, false);
     }
 
 }

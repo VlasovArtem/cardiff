@@ -13,7 +13,14 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
             }).
             when('/signup', {
                 templateUrl: 'app/person/sign-up.html',
-                controller: 'SignUpCtrl'
+                controller: 'SignUpCtrl',
+                resolve: {
+                    locations: function(Locations) {
+                        return Locations.query().$promise.then(function (data) {
+                            return data;
+                        })
+                    }
+                }
             }).
             when('/account', {
                 templateUrl: 'app/person/account.html',
@@ -45,6 +52,11 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                                     $location.path('/');
                                 });
                         }
+                    },
+                    locations: function(Locations) {
+                        return Locations.query().$promise.then(function (data) {
+                            return data;
+                        })
                     }
                 }
             }).

@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.util.List;
@@ -50,6 +51,9 @@ public class Person extends BaseEntity {
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     @JsonView(View.SecondLevel.class)
     private List<DiscountCard> discountCards;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
+    private Location location;
 
     public Person() {
     }
@@ -132,6 +136,14 @@ public class Person extends BaseEntity {
 
     public void setRole(PersonRole role) {
         this.role = role;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @PrePersist

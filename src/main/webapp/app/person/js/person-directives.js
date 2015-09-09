@@ -46,32 +46,58 @@ app.directive('formError', function() {
         template: '<small class="help-block" ng-show="error" ng-bind="error"></small>'
     }
 });
-app.directive('ensureUnique', ["$http", function($http) {
+app.directive('ensureUnique', ["$http", "$location", function($http, $location) {
     var toId;
     return {
         restrict: 'A',
         require: 'ngModel',
         link: function(scope, elem, attr, ctrl) {
-            scope.$watch(attr.ngModel, function(value) {
-                ctrl.$setValidity('unique', null);
-                if(toId) clearTimeout(toId);
-                if(!ctrl.$pristine) {
-                    toId = setTimeout(function () {
-                        var attributeName = attr.name == "phoneNumber" ? "phone" : attr.name;
-                        $http.post('/rest/person/check/' + attributeName
-                            + '?' + attributeName + '=' + value)
-                            .success(function () {
+            scope.$watch(attr.ngModel, function(value, oldValue) {
+                if(!_.isEqual(value, oldValue) && value != oldValue) {
+                    ctrl.$setValidity('unique', null);
+                    if (toId) clearTimeout(toId);
+                    if (!ctrl.$pristine) {
+                        toId = setTimeout(function () {
+                            var attributeName = attr.name == "phone_number" ? "phone" : attr.name;
+                            if ($location.path() == '/account/update' && _.isEqual(scope.data[attributeName], value)) {
                                 ctrl.$setValidity('unique', true);
-                            }).error(function() {
-                                ctrl.$setValidity('unique', false);
-                            });
+                            } else {
+                                $http.post('/rest/person/check/' + attributeName
+                                    + '?' + attributeName + '=' + value)
+                                    .success(function () {
+                                        ctrl.$setValidity('unique', true);
+                                    }).error(function () {
+                                        ctrl.$setValidity('unique', false);
+                                    });
 
-                    }, 1000);
+                            }
+                        }, 1000);
+                    }
                 }
             })
         }
     }
 }]);
+app.directive('accountData', function($filter) {
+   return {
+       restrict: 'A',
+       scope: {
+           label: '=',
+           data: '='
+       },
+       link: function(scope, element, attrs) {
+           if(scope.label == 'phone_number') {
+               scope.data = $filter('phoneNumberFilter')(scope.data)
+           } else if(scope.label == 'location') {
+               scope.data = scope.data.city + ', ' + scope.data.country;
+           }
+           scope.label = $filter('accountFilter')(scope.label);
+       },
+       template: '<td ng-bind="label" class="key"></td>' +
+       '<td ng-bind="data"></td>'
+
+   }
+});
 app.directive('entitySorting', function($filter) {
     return {
         restrict: 'A',

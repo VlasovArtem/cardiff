@@ -7,6 +7,7 @@ import com.provectus.cardiff.config.CardiffAppInitializer;
 import com.provectus.cardiff.config.RootContextConfig;
 import com.provectus.cardiff.config.ShiroSecurityConfig;
 import com.provectus.cardiff.entities.Person;
+import com.provectus.cardiff.persistence.repository.LocationRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import org.apache.shiro.subject.Subject;
@@ -49,15 +50,17 @@ public class PersonServiceImplTest extends AbstractShiroTest {
     @Autowired
     private PersonService service;
     @Autowired
-    private PersonRepository repository;
+    private PersonRepository personRepository;
+    @Autowired
+    private LocationRepository locationRepository;
     @Mock
     private Subject subject = createNiceMock(Subject.class);
 
     @Before
     public void dataset() {
-        Person person1 = repository.findById(1l);
-        Person person2 = repository.findById(2l);
-        Person person3 = repository.findById(3l);
+        Person person1 = personRepository.findById(1l);
+        Person person2 = personRepository.findById(2l);
+        Person person3 = personRepository.findById(3l);
         person1.setPassword(BCrypt.hashpw("testpassword", BCrypt.gensalt()));
         person2.setPassword(BCrypt.hashpw("testpassword2", BCrypt.gensalt()));
         person3.setPassword(BCrypt.hashpw("testpassword3", BCrypt.gensalt()));
@@ -81,8 +84,9 @@ public class PersonServiceImplTest extends AbstractShiroTest {
         person.setPassword("password");
         person.setEmail("newaemail@mail.com");
         person.setName("new user");
+        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
         service.registration(person);
-        assertThat(repository.count(), is(4l));
+        assertThat(personRepository.count(), is(4l));
     }
 
     @Test(expected = PersonRegistrationException.class)
@@ -98,6 +102,7 @@ public class PersonServiceImplTest extends AbstractShiroTest {
         person.setPhoneNumber(562354869l);
         person.setPassword("password");
         person.setEmail("dmitriyvalnov@gmail.com");
+        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
         person.setName("new user");
         service.registration(person);
     }
@@ -110,6 +115,7 @@ public class PersonServiceImplTest extends AbstractShiroTest {
         person.setPhoneNumber(562354869l);
         person.setPassword("password");
         person.setEmail("newaemail@mail.com");
+        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
         person.setName("new user");
         service.registration(person);
     }

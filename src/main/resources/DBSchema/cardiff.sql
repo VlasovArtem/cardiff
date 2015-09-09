@@ -10,6 +10,14 @@ SET search_path = cardiff;
 -- Name: person; Type: TABLE; Schema: cardiff; Owner: postgres;
 --
 
+CREATE TABLE cardiff.location (
+  id BIGSERIAL PRIMARY KEY NOT NULL,
+  created_date DATE,
+  city VARCHAR(50) NOT NULL,
+  country VARCHAR(50) NOT NULL,
+  CONSTRAINT city_county UNIQUE (city, country)
+);
+
 CREATE TABLE cardiff.person (
   id           BIGSERIAL PRIMARY KEY    NOT NULL,
   name         VARCHAR(100),
@@ -20,7 +28,10 @@ CREATE TABLE cardiff.person (
   phone_number BIGINT,
   description  VARCHAR(500),
   deleted      BOOLEAN            NOT NULL,
-  role         VARCHAR(10) NOT NULL DEFAULT 'USER'
+  role         VARCHAR(10) NOT NULL DEFAULT 'USER',
+  location_id BIGINT REFERENCES cardiff.location (id)
+  ON DELETE NO ACTION
+  ON UPDATE CASCADE
 );
 
 --

@@ -42,3 +42,17 @@ app.filter('camelCase', function() {
         return input;
     }
 });
+app.filter('accountTable', function() {
+    return function(data) {
+        var person = {};
+        if(data.$resolved) {
+            var ignoredKeys = ['discount_cards', 'id', 'created_date', 'role', 'deleted'];
+            _.each(data, function(value, key) {
+                if(ignoredKeys.indexOf(key) == -1) {
+                    person[key] = value;
+                }
+            });
+        }
+        return person;
+    }
+});

@@ -67,21 +67,21 @@
           }, 0, false);
         });
         return toggleClasses = function(invalid) {
-          el.toggleClass('has-error', invalid);
-          if(invalid) {
+          if(invalid && !(_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue)) {
             el.find("span").remove();
-            return el.append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+            el.append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+            return el.toggleClass('has-error', invalid);
+          } else if(showWarning && (_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue)) {
+            el.find("span").remove();
+            el.find(".warning").remove();
+            el.append('<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
+            el.append('<small class="help-block warning">Current person ' + $filter('accountFilter')(inputName)  + '</small>');
+            return el.toggleClass('has-warning', !invalid);
           } else if(!invalid && showSuccess) {
             el.find("span").remove();
             el.find(".warning").remove();
-            if(showWarning && (_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue)) {
-              el.append('<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
-              el.append('<small class="help-block warning">Current person ' + $filter('accountFilter')(inputName)  + '</small>');
-              return el.toggleClass('has-warning', !invalid);
-            } else {
-              el.append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
-              return el.toggleClass('has-success', !invalid);
-            }
+            el.append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
+            return el.toggleClass('has-success', !invalid);
           }
         };
       };

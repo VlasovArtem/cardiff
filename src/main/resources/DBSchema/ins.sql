@@ -1,14 +1,21 @@
-﻿INSERT INTO cardiff.person (name, login, password, email, created_date, phone_number, description, deleted, role) VALUES
-('Gordon Trick','chuhcha', 'dfasf','chuhcha@mail.ru', NOW(),698745232,'Likes to eat', false, 'USER'),
-('Symson Drul','gena', 'trer','gena@mail.ru', NOW(),675258565,'Likes to music', false, 'USER'),
-('Vadimiy Vadimiyavich','putin', 'yt15GThg','putinka@gmail.rcom', NOW(),563255696,'Likes to erotic', false, 'USER'),
-('Pordon Pordonovich','gore', 'OtUma','roremica@mail.ru', NOW(),786056065,'Likes to mobilephones', false, 'USER'),
-('Butoterbrod Dubovkiy','buter', 'dub','bub@mail.ru', NOW(),623211232,'Likes to cars', false, 'USER'),
-('Rostick Tostick','bogema', 'oLubvi','boge@ukr.net', NOW(),698745742,'Newby', false, 'ADMIN'),
-('Chick Reshetkin','recheto', 'utu','tutu@mail.ru', NOW(),698745221,'Newby', false, 'ADMIN'),
-('GTR Trol','trol', 'gtr','GTRtrol@mail.ru', NOW(),696545232,'Newby', true, 'ADMIN'),
-('Blonda Blond','tymophei', 'iytew','blonda@mail.ru', NOW(),698825232,'Beauty', false, 'ADMIN'),
-('Yric Chmirik','Chmir', 'dfasf','chmir@mail.ru', NOW(),696660000,'Newby', true, 'ADMIN');
+﻿INSERT INTO cardiff.location (id, city, country, created_date) VALUES
+(1, 'Odessa', 'Ukraine', NOW()),
+(2, 'Kazan', 'Russia', NOW()),
+(3, 'Palo Alto', 'United States', NOW()),
+(4, 'Burgas', 'Bulgaria', NOW());
+
+INSERT INTO cardiff.person (name, login, password, email, created_date, phone_number, description, deleted, role,
+location_id) VALUES
+('Gordon Trick','chuhcha', 'dfasf','chuhcha@mail.ru', NOW(),698745232,'Likes to eat', false, 'USER', 1),
+('Symson Drul','gena', 'trer','gena@mail.ru', NOW(),675258565,'Likes to music', false, 'USER', 1),
+('Vadimiy Vadimiyavich','putin', 'yt15GThg','putinka@gmail.rcom', NOW(),563255696,'Likes to erotic', false, 'USER', 3),
+('Pordon Pordonovich','gore', 'OtUma','roremica@mail.ru', NOW(),786056065,'Likes to mobilephones', false, 'USER', 2),
+('Butoterbrod Dubovkiy','buter', 'dub','bub@mail.ru', NOW(),623211232,'Likes to cars', false, 'USER', 4),
+('Rostick Tostick','bogema', 'oLubvi','boge@ukr.net', NOW(),698745742,'Newby', false, 'ADMIN', 2),
+('Chick Reshetkin','recheto', 'utu','tutu@mail.ru', NOW(),698745221,'Newby', false, 'ADMIN', 4),
+('GTR Trol','trol', 'gtr','GTRtrol@mail.ru', NOW(),696545232,'Newby', true, 'ADMIN', 1),
+('Blonda Blond','tymophei', 'iytew','blonda@mail.ru', NOW(),698825232,'Beauty', false, 'ADMIN', 4),
+('Yric Chmirik','Chmir', 'dfasf','chmir@mail.ru', NOW(),696660000,'Newby', true, 'ADMIN', 3);
 
 INSERT INTO cardiff.tag (tag) VALUES
 ('cheese'),

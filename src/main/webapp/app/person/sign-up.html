@@ -105,6 +105,20 @@
             <form-error error="error.data.phone_number" form="signUp.phoneNumber"></form-error>
         </div>
         <div class="form-group">
+            <label for="location">Location</label>
+            <select
+                    class="form-control"
+                    name="location"
+                    id="location"
+                    ng-model="person.location"
+                    required
+                    ng-options="location.city group by location.country for location in locations track by location.id">
+            </select>
+            <div validation-messages
+                 model-controller="signUp.location"
+                 required-error="Location is required"></div>
+        </div>
+        <div class="form-group">
             <label for="description">Info</label>
             <textarea class="form-control"
                       id="description"

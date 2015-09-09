@@ -1,6 +1,6 @@
 <section id="update-personal-data" class="container-fluid">
     <h2>Update Personal Data</h2>
-    <div class="error col-md-12" ng-if="error" ng-bind="error"></div>
+    <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
     <form class="col-md-offset-4 col-md-4" name="updateFrom">
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true, showWarning: true }">
@@ -10,13 +10,16 @@
                    placeholder="Input name"
                    ng-maxlength="100"
                    ng-minlength="6"
+                   ng-pattern="/^[A-Za-z .'-]*$/"
                    id="name"
                    name="name"
                    ng-model="changedPerson.name"/>
             <div validation-messages
                  model-controller="updateFrom.name"
                  minlength-error="Name is too short"
-                 maxlength-error="Name is too long"></div>
+                 maxlength-error="Name is too long"
+                 pattern-error="Name should not contains any digits"></div>
+            <form-error error="error.data.name" form="updateFrom.name"></form-error>
         </div>
         <div class="form-group has-feedback" show-errors="{ showSuccess: true, showWarning: true }"">
         <label for="login">Login</label>
@@ -27,15 +30,18 @@
                id="login"
                ng-minlength="6"
                ng-maxlength="100"
-               ng-pattern="/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/"
+               ng-pattern="/^[A-Za-z0-9_-]{6,100}$/"
                ng-model="changedPerson.login"
                autocomplete="off"
+               ensure-unique
                required/>
         <div validation-messages
              model-controller="updateFrom.login"
              minlength-error="Login is too short"
              maxlength-error="Login is too long"
-             required-error="Login is required"></div>
+             required-error="Login is required"
+             unique-error="Login is already exists"></div>
+        <form-error error="error.data.login" form="updateFrom.login"></form-error>
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true, showWarning: true }">
@@ -44,10 +50,12 @@
                    class="form-control"
                    placeholder="Input email"
                    id="email"
+                   pattern="{{emailPattern}}"
                    ng-maxlength="50"
                    ng-minlength="3"
                    name="email"
                    ng-model="changedPerson.email"
+                   ensure-unique
                    autocomplete="off"
                    required/>
             <div validation-messages
@@ -55,7 +63,9 @@
                  required-error="Email is required"
                  minlength-error="Email is too short"
                  maxlength-error="Email is too long"
-                 email-error="Email is invalid"></div>
+                 pattern-error="Email is invalid"
+                 unique-error="Email is already exists"></div>
+            <form-error error="error.data.email" form="updateFrom.email"></form-error>
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true, showWarning: true }">
@@ -67,11 +77,28 @@
                    ng-minlength="9"
                    ng-model="changedPerson.phone_number"
                    ui-mask="+380 (99) 999-99-99"
+                   ensure-unique
                    required/>
             <div validation-messages
                  model-controller="updateFrom.phone_number"
                  required-error="Phone number is required"
-                 minlength-error="Phone number should 9 symbols length"></div>
+                 minlength-error="Phone number should 9 symbols length"
+                 unique-error="Phone number is already exists"></div>
+            <form-error error="error.data.phone_number" form="updateFrom.phone_number"></form-error>
+        </div>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <select
+                    class="form-control"
+                    name="location"
+                    id="location"
+                    ng-model="changedPerson.location"
+                    required
+                    ng-options="location.city group by location.country for location in locations track by location.id">
+            </select>
+            <div validation-messages
+                 model-controller="updateFrom.location"
+                 required-error="Location is required"></div>
         </div>
         <div class="form-group">
             <label for="description">Info</label>

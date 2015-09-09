@@ -1,5 +1,5 @@
 var app = angular.module('person-controllers', ['ngResource']);
-app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', function($scope, $location, SignUp, auth) {
+app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations', function($scope, $location, SignUp, auth, locations) {
     $scope.reg = function() {
         SignUp.registration($scope.person,
             function() {
@@ -18,6 +18,7 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', function(
             }
         )
     };
+    $scope.locations = locations;
     $scope.reset = function() {
         $scope.person = {};
     };
@@ -50,7 +51,6 @@ app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($sco
 }]);
 app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$timeout', function($scope, $location, personData, changePassword, $timeout) {
     $scope.person = personData;
-    $scope.ignoredKeys = ['discount_cards', 'id', 'created_date', 'role'];
     $scope.changePassword = function() {
         if(!$scope.data.oldPassword || !$scope.data.newPassword) {
             $scope.errorFn('New or old password cannot be null');
@@ -81,12 +81,12 @@ app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassw
     };
     $scope.location = $location.path == '/account';
 }]);
-app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'updatePerson', function($scope, personData, $location, updatePerson) {
+app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'updatePerson', 'locations', function($scope, personData, $location, updatePerson, locations) {
     $scope.changedPerson = personData;
     $scope.data = angular.copy(personData);
     $scope.personIsEquals = function() {
         if($scope.data != undefined && $scope.changedPerson != undefined) {
-            return _.every(["name", "login", "email", "phone_number"], function(data) {
+            return _.every(["name", "login", "email", "phone_number", "location", "description"], function(data) {
                 return _.isEqual($scope.data[data], $scope.changedPerson[data]) || $scope.data[data] == $scope.changedPerson[data]
             });
         }
@@ -103,9 +103,10 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'updat
                 }
             },
             function(data) {
-                $scope.error = data.error;
+                $scope.error = data.data;
             })
     };
+    $scope.locations = locations;
     $scope.reset = function() {
         $scope.changedPerson = angular.copy($scope.data);
     }

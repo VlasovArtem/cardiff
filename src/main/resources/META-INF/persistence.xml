@@ -10,6 +10,7 @@
         <class>com.provectus.cardiff.entities.DiscountCardHistory</class>
         <class>com.provectus.cardiff.entities.DiscountCardComment</class>
         <class>com.provectus.cardiff.entities.Tag</class>
+        <class>com.provectus.cardiff.entities.Location</class>
         <properties>
             <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
             <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/cardiff" />

@@ -22,21 +22,27 @@ public class PersonValidator extends EntityValidator {
      * @param person Optional of {@code PersonValidator}
      * @return true if all validate data matches their patterns otherwise throw {@code EntityValidationException}
      */
-    public static boolean validate(Optional<Person> person) {
-        if(person.isPresent()) {
-            ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
-            Arrays.stream(PersonValidationInfo.values()).allMatch(dc -> {
-                if (!validate(dc, person.get())) {
-                    objectNode.put(dc.name().toLowerCase(), dc.getError());
+    public static boolean validate(Person person, boolean update) {
+        try {
+            Optional.of(person).ifPresent(p -> {
+                ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+                Arrays.stream(PersonValidationInfo.values()).allMatch(dc -> {
+                    if(update && dc.equals(PersonValidationInfo.PASSWORD)) {
+                        return true;
+                    }
+                    if (!validate(dc, p)) {
+                        objectNode.put(dc.name().toLowerCase(), dc.getError());
+                    }
+                    return true;
+                });
+                if (objectNode.size() != 0) {
+                    throw new EntityValidationException(objectNode, "Person form contains invalid data");
                 }
-                return true;
             });
-            if(objectNode.size() != 0) {
-                throw new EntityValidationException(objectNode, "Person form contains invalid data");
-            }
-            return true;
+        } catch (NullPointerException e) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
