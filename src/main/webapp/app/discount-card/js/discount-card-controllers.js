@@ -1,15 +1,8 @@
 var app = angular.module('discount-card-controllers', ['ngResource']);
-app.controller('AddCtrl', ['$scope', '$location', 'addition', function ($scope, $location, addition) {
+app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', function ($scope, $location, AddDiscountCardFactory) {
     $scope.currentDate = new Date();
-    $scope.reg = function () {
-        AddCtrl.addition($scope.card,
-            function (data) {
-                alert(data.success);
-                $location.path('/');
-            }, function (data) {
-                $scope.error = data.error;
-            }
-        )
+    $scope.add = function () {
+        AddDiscountCardFactory.add($scope.card)
     };
     $scope.reset = function () {
         $scope.card = {};

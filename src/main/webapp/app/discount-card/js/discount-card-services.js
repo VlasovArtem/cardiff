@@ -1,15 +1,15 @@
 var service = angular.module('discount-card-services', ['ngResource']);
 
-service.factory('addition', ['$resource', function($resource) {
+service.factory('AddDiscountCardFactory', ['$resource', function($resource) {
     return $resource('/rest/card/add', {}, {
-        login: {
+        add: {
             method: 'POST',
             isArray: false,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         }
-    })
+    });
 }]);
 
 service.factory('CardsCtrl', ['$resource', function($resource) {
