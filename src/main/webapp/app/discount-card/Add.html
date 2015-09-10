@@ -1,11 +1,11 @@
-<section id="Addition" class="container-fluid">
-    <h2 class="col-md-12">Add</h2>
-    <form class="col-md-offset-4 col-md-4" name="Add">
+<section id="add" class="container-fluid">
+    <h2 class="col-md-12">Addition</h2>
+    <form class="col-md-offset-4 col-md-4" name="Addition">
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="cardNumber">Card Number</label>
             <input class="form-control"
                    type="text"
-                   placeholder="Input name"
+                   placeholder="Input card number"
                    ng-maxlength="16"
                    ng-minlength="8"
                    id="cardNumber"
@@ -89,7 +89,7 @@
                  maxlength-error="Description is too long"></div>
         </div>
         <div class="form-group buttons">
-            <input type="button" class="btn btn-success" value="Add" ng-disabled="Add.$invalid" ng-click="reg()"/>
+            <input type="button" class="btn btn-success" value="Add" ng-disabled="Add.$invalid" ng-click="input()"/>
             <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
         </div>
     </form>

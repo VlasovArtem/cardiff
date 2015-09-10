@@ -1,7 +1,7 @@
 var app = angular.module('DC-controllers', ['ngResource']);
 app.controller('AddCtrl', ['$scope', '$location', 'addition', function ($scope, $location, addition) {
-    $scope.reg = function () {
-        AddCtrl.addition($scope.card,
+    $scope.input = function () {
+        AddCtrl.add($scope.card,
             function (data) {
                 alert(data.success);
                 $location.path('/');
