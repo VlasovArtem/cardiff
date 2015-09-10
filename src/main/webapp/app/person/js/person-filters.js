@@ -8,8 +8,12 @@ app.filter('accountFilter', function() {
 });
 app.filter('phoneNumberFilter', function() {
     return function(phoneNumber) {
-        var phoneNumberString = phoneNumber.toString();
-        return '+380 (' + phoneNumberString.substr(0, 2) + ') ' + phoneNumberString.substr(2, 3) + '-' + phoneNumberString.substr(5,2) + '-' + phoneNumberString.substr(7,2);
+        if(phoneNumber != undefined) {
+            var phoneNumberString = phoneNumber.toString();
+            return '+380 (' + phoneNumberString.substr(0, 2) + ') ' + phoneNumberString.substr(2, 3) + '-' + phoneNumberString.substr(5, 2) + '-' + phoneNumberString.substr(7, 2);
+        } else {
+            return "";
+        }
     }
 });
 app.filter('dateFilter', function() {

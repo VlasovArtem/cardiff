@@ -1,5 +1,6 @@
-var app = angular.module('DC-controllers', ['ngResource']);
+var app = angular.module('discount-card-controllers', ['ngResource']);
 app.controller('AddCtrl', ['$scope', '$location', 'addition', function ($scope, $location, addition) {
+    $scope.currentDate = new Date();
     $scope.reg = function () {
         AddCtrl.addition($scope.card,
             function (data) {
@@ -50,6 +51,45 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Ca
         } else {
             return $scope.discountCards[dcIndex][$scope.head[dIndex].property]
         }
+    }
+
+}]);
+
+app.controller('SearchCtrl', ['$scope', 'DiscountCardSearchFactory', '$sessionStorage', '$location', function($scope, DiscountCardSearchFactory, $sessionStorage, $location) {
+    $scope.ENTER_BUTTON = 13;
+    $scope.searchData = {};
+    $scope.search = function() {
+        $scope.$storage = $sessionStorage.$default({
+            cardId: $scope.searchData.selected[0]
+        });
+        $location.path('/card/info');
+    };
+    $scope.refreshData = function(data) {
+        if(data != "") {
+            DiscountCardSearchFactory.searchByName({company_name: data}).$promise.then(
+                function(data) { $scope.companies = data; },
+                function() { $scope.companies = []; })
+        } else {
+            $scope.companies = []
+        }
+    }
+}]);
+
+app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFactory', 'auth', function($scope, discountCardInfo, PersonFactory, auth) {
+    $scope.cardInfo = discountCardInfo;
+    do {
+        $scope.authenticated = auth.authenticated;
+    } while(!auth.resolved);
+    if(auth.authenticated) {
+         do {
+            if(discountCardInfo.$resolved) {
+                PersonFactory.get({get: 'get', cardId: discountCardInfo.id}, function(person) {
+                    $scope.owner = person;
+                }, function() {
+                    $scope.error = "Required user is unavailable or deleted"
+                })
+            }
+        } while (!discountCardInfo.$resolved)
     }
 
 }]);

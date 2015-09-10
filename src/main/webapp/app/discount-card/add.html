@@ -1,6 +1,6 @@
 <section id="Addition" class="container-fluid">
-    <h2 class="col-md-12">Add</h2>
-    <form class="col-md-offset-4 col-md-4" name="Add">
+    <h2 class="col-md-12">Add Discount Card</h2>
+    <form class="col-md-offset-4 col-md-4" name="add">
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="cardNumber">Card Number</label>
             <input class="form-control"
@@ -10,11 +10,13 @@
                    ng-minlength="8"
                    id="cardNumber"
                    name="cardNumber"
+                   required
                    ng-model="card.cardNumber"/>
             <div validation-messages
-                 model-controller="addition.cardNumber"
+                 model-controller="add.cardNumber"
                  minlength-error="Card Number is too short"
-                 maxlength-error="Card Number is too long"></div>
+                 maxlength-error="Card Number is too long"
+                 required-error="Card Number is required"></div>
         </div>
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="companyName">Company name</label>
@@ -30,7 +32,7 @@
                    autocomplete="off"
                    required/>
             <div validation-messages
-                 model-controller="addition.companyName"
+                 model-controller="add.companyName"
                  minlength-error="Company name is too short"
                  maxlength-error="Company name is too long"
                  required-error="Company name is required"></div>
@@ -49,7 +51,7 @@
                    autocomplete="off"
                    required/>
             <div validation-messages
-                 model-controller="addition.amountOfDiscount"
+                 model-controller="add.amountOfDiscount"
                  required-error="Amount of discount is required"
                  minlength-error="Amount of discount is too short"
                  maxlength-error="Amount of discount is too long"
@@ -58,22 +60,22 @@
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
             <label for="expiredDate">Expired date</label>
-            <input type="expiredDate"
+            <input type="date"
                    class="form-control"
                    placeholder="Input Expired date"
                    id="expiredDate"
-                   ng-maxlength="50"
-                   ng-minlength="3"
+                   ng-min="currentDate"
                    name="expiredDate"
                    ng-model="card.expiredDate"
                    autocomplete="off"
                    required/>
             <div validation-messages
-                 model-controller="addition.expiredDate"
+                 model-controller="add.expiredDate"
                  required-error="Amount of discount is required"
                  minlength-error="Amount of discount is too short"
                  maxlength-error="Amount of discount is too long"
-                 email-error="Amount of discount is invalid"></div>
+                 email-error="Amount of discount is invalid"
+                 min-error="Expire date should be greater than today"></div>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
@@ -85,11 +87,11 @@
                       ng-maxlength="500"
                       ng-model="card.description"></textarea>
             <div validation-messages
-                 model-controller="addition.description"
+                 model-controller="add.description"
                  maxlength-error="Description is too long"></div>
         </div>
         <div class="form-group buttons">
-            <input type="button" class="btn btn-success" value="Add" ng-disabled="Add.$invalid" ng-click="reg()"/>
+            <input type="button" class="btn btn-success" value="Add" ng-disabled="add.$invalid" ng-click="reg()"/>
             <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
         </div>
     </form>

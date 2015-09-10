@@ -1,7 +1,7 @@
 package com.provectus.cardiff.entities;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.provectus.cardiff.utils.View;
+import com.provectus.cardiff.utils.view.DiscountCardView;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "discount_card")
+@NamedEntityGraph(name = "DiscountCard.discountCardComments", attributeNodes = @NamedAttributeNode("discountCardComments"))
 public class DiscountCard extends BaseEntity {
     @Column(name = "card_number", length = 16, unique = true, nullable = false)
     private long cardNumber;
@@ -40,9 +43,9 @@ public class DiscountCard extends BaseEntity {
             joinColumns = @JoinColumn(name = "discount_card_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private Set<Tag> tags;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
-    @JsonView(View.SecondLevel.class)
+    @JsonView(DiscountCardView.DiscountCardCommentsLevel.class)
     private List<DiscountCardComment> discountCardComments;
 
     public DiscountCard() {

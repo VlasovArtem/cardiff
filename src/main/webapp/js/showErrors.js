@@ -67,7 +67,7 @@
           }, 0, false);
         });
         return toggleClasses = function(invalid) {
-          if(invalid && !(_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue)) {
+          if(invalid && (scope.data == undefined || !(_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue))) {
             el.find("span").remove();
             el.append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
             return el.toggleClass('has-error', invalid);

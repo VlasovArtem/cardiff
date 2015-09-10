@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.service.PersonService;
-import com.provectus.cardiff.utils.View;
+import com.provectus.cardiff.utils.view.PersonView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.shiro.authz.annotation.Logical;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.provectus.cardiff.utils.ResponseEntityExceptionCreator.create;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -46,7 +47,6 @@ public class PersonController {
             method = POST,
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    @JsonView(View.FirstLevel.class)
     @RequiresGuest
     @ResponseStatus(value = OK)
     public void login(@RequestParam String loginData,
@@ -125,7 +125,7 @@ public class PersonController {
     @RequestMapping(path = "/admin",
             method = GET)
     @RequiresRoles("ADMIN")
-    @JsonView(View.FirstLevel.class)
+    @JsonView(PersonView.TableLevel.class)
     @ResponseStatus(value = OK)
     public Page<Person> getAll(@RequestParam(defaultValue = "0", required = false) int page,
                                @RequestParam(defaultValue = "15", required = false) int size,
@@ -172,5 +172,17 @@ public class PersonController {
     @ResponseStatus(value = OK)
     public void checkPhoneNumber(@RequestParam long phone) {
         service.checkPhoneNumber(phone);
+    }
+
+    @RequestMapping(path = "/get/{cardId}", method = GET)
+    @RequiresAuthentication
+    @JsonView(PersonView.BasicLevel.class)
+    public ResponseEntity find(@PathVariable long cardId) {
+        Person person = service.find(cardId);
+        if (person == null) {
+            return ResponseEntity.status(NOT_FOUND).build();
+        } else {
+            return ResponseEntity.ok(person);
+        }
     }
 }

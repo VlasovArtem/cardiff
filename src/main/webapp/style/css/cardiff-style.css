@@ -12,44 +12,59 @@ html, body {
 h2, .buttons {
     text-align: center;
 }
-.navbar-default {
+.navbar-cardiff {
     background-color: rgba(72, 110, 143, 1) !important;
     border-radius: 0 !important;
     border: none !important;
 }
-.navbar-default .navbar-brand,
-.navbar-nav > li > a,
-.dropdown-menu > li > a {
+.navbar-cardiff .navbar-brand,
+.navbar-cardiff .navbar-nav > li > a,
+.navbar-cardiff .dropdown-menu > li > a {
     color: rgba(248, 248, 248, 1) !important;
 }
-.dropdown-menu {
+.navbar-cardiff .dropdown-menu {
     background-color: rgba(72, 110, 143, 1);
 }
-.navbar-default .navbar-nav > .open > a,
-.navbar-default .navbar-nav > .open > a:hover,
-.navbar-default .navbar-nav > .open > a:focus,
-.dropdown-menu > li > a:hover,
-.dropdown-menu > li > a:focus {
+.navbar-cardiff .navbar-nav > .open > a,
+.navbar-cardiff .navbar-nav > .open > a:hover,
+.navbar-cardiff .navbar-nav > .open > a:focus,
+.navbar-cardiff .dropdown-menu > li > a:hover,
+.navbar-cardiff .dropdown-menu > li > a:focus {
     background-color: #8b8d8f !important;
 }
-input[type=search] {
+input[type=search], .ui-select-match > span:first-child, .ui-select-search {
+    display: inline;
     -webkit-appearance: textfield;
     border-radius: 20px;
     border: 1px solid rgba(27, 157, 214, .5) !important;
-    width: 30%;
-    height: 7%;
+    width: 100%;
+    height: 100%;
     padding: 0 0 0 20px;
     font-size: large;
 }
-input[type=search]::-webkit-calendar-picker-indicator {
+.ui-select-match {
+    height: 100%;
+}
+.ui-select-toggle > i {
     display: none;
+}
+.ui-select-toggle {
+    display: flex !important;
+    justify-content: flex-start;
+    align-items: center;
+}
+.ui-select-container {
+    width: 30%;
+    height: 7%;
+    text-align: center;
 }
 #companies {
     border: none;
 }
-input[type=search]:focus {
-    box-shadow: 0 0 3pt 2pt rgba(27, 157, 214, .5);
-    outline: none;
+input[type=search]:focus, .btn-default-focus {
+    box-shadow: 0 0 3pt 2pt rgba(27, 157, 214, .5) !important;
+    border-radius: 20px;
+    outline: none !important;
 }
 .hide {
     display: none;
@@ -145,4 +160,51 @@ hr.style {
     margin-top: 5px;
     margin-bottom: 10px;
     font-size: 85%;
+}
+
+/*Discount card info page*/
+.tags > span {
+    margin: 0 10px 0 0;
+}
+#discount-card-info > article > p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#comments .comment-date {
+    padding-top: 10px;
+    font-size: small;
+    color: #888888;
+    text-align: center;
+}
+#comments .comment {
+    padding: 5px 0 5px 0;
+    display: inline-block;
+    vertical-align: top;
+    background-color: #eee;
+}
+.auth-info > .buttons {
+    text-align: center;
+    padding: 20px;
+}
+#discount-card-info .buttons {
+    text-align: center;
+    padding: 10px;
+}
+#discount-card-info .buttons > input {
+    width: 5%;
+    margin-right: 10px;
+}
+.auth-info > div:first-child {
+    font-size: large;
+}
+.auth-info > div:first-child > p {
+    float: right;
+    font-style: italic;
+    padding: 5px;
+}
+#owner-card-info > .error {
+    font-size: larger;
+    font-style: oblique;
+    text-align: center;
 }

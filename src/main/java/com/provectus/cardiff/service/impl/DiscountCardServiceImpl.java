@@ -29,14 +29,14 @@ import static com.provectus.cardiff.utils.validator.DiscountCardValidator.valida
 @Transactional
 public class DiscountCardServiceImpl implements DiscountCardService {
     @Autowired
-    DiscountCardRepository discountCardRepository;
+    private DiscountCardRepository discountCardRepository;
 
     @Override
-    public void add(DiscountCard card) {
+    public void add (DiscountCard card) {
         checkCardBeforeAdding(card);
         discountCardRepository.save(card);
     }
-    private void checkCardBeforeAdding(DiscountCard discount_card) {
+    private void checkCardBeforeAdding (DiscountCard discount_card) {
         if(discount_card == null) {
             throw new RuntimeException("Discount card cannot be null");
         }
@@ -62,7 +62,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         }
     }
     @Override
-    public void update(DiscountCard card) {
+    public void update (DiscountCard card) {
         DiscountCard trg;
         Person person=(Person) SecurityUtils.getSubject().getPrincipal();
         if (SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())) {
@@ -76,7 +76,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         EntityUpdater.update(Optional.ofNullable(card), Optional.ofNullable(trg));
     }
     @Override
-    public void delete(DiscountCard card) {
+    public void delete (DiscountCard card) {
         Person person=(Person) SecurityUtils.getSubject().getPrincipal();
         if (!SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())||person.getDiscountCards().contains(discountCardRepository.findById(card.getId())))
         {
@@ -85,39 +85,32 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         card.setDeleted(true);
     }
     @Override
-    public DiscountCard getCard(long id)
-    {
-        if(discountCardRepository.findById(id)==null)
-            throw new RuntimeException("Discount card cannot be null");
+    public DiscountCard getCard (long id) {
         return discountCardRepository.findById(id);
-
     }
 
     @Override
-    public DiscountCard findCardByNumber(long number)
-    {
-        if(discountCardRepository.findByCardNumber(number)==null)
-            throw new RuntimeException("Discount card cannot be null");
-        return discountCardRepository.findByCardNumber(number);
+    public DiscountCard findAvailable(long id) {
+        return discountCardRepository.findByIdAndAvailableTrue(id);
     }
 
     @Override
-    public List<DiscountCard> findByTags(Set<String> tags) {
-        if(discountCardRepository.findByTags(tags).equals(""))
-            throw new RuntimeException("Discount card cannot be null");
-        return  discountCardRepository.findByTags(tags);
+    public Optional<DiscountCard> search (long cardNumber) {
+        return discountCardRepository.findByCardNumber(cardNumber);
     }
 
     @Override
-    public List<DiscountCard> findByName(String name) {
-        if(discountCardRepository.findByCompanyName(name).equals(""))
-            throw new RuntimeException("Discount card cannot be null");
-        return  discountCardRepository.findByCompanyName(name);
+    public Optional<List<DiscountCard>> search (Set<String> tags) {
+        return discountCardRepository.findByTags(tags);
     }
 
     @Override
-    public Page<DiscountCard> getAll(Pageable pageable) {
-        SecurityUtils.getSubject().checkRole("ADMIN");
+    public Optional<List<DiscountCard>> search (String name) {
+        return discountCardRepository.findByCompanyName(name);
+    }
+
+    @Override
+    public Page<DiscountCard> getAll (Pageable pageable) {
         return discountCardRepository.findAll(pageable);
     }
 }

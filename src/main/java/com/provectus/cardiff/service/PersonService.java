@@ -24,4 +24,5 @@ public interface PersonService {
     void checkLogin(String login);
     void checkEmail(String email);
     void checkPhoneNumber(long phoneNumber);
+    Person find (long discountCardId);
 }

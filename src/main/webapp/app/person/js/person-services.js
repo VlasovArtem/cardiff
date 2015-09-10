@@ -36,6 +36,7 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
     var auth = {
         authenticated: false,
         admin: false,
+        resolved: false,
         loginPath: '/signin',
         logoutPath: '/logout',
         homePath: '/',
@@ -49,9 +50,13 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                         },
                         function() {auth.admin = true;},
                         function() {auth.admin = false;});
-                    auth.authenticated = true
+                    auth.authenticated = true;
+                    auth.resolved = true;
                 },
-                function() { auth.authenticated = false }
+                function() {
+                    auth.authenticated = false;
+                    auth.resolved = true;
+                }
             )
         },
         authenticate: function(credentials, callback) {
@@ -112,10 +117,11 @@ service.factory('AdminRemovePerson', ['$resource', function($resource) {
     })
 }]);
 service.factory('PersonFactory', ['$resource', function($resource) {
-    return $resource('/rest/person/:delete/:get/:authorized/:restore/:update/:role/:id', {
+    return $resource('/rest/person/:delete/:get/:authorized/:cardId/:restore/:update/:role/:id', {
         delete: '@delete',
         get: '@get',
         authorized: '@authorized',
+        cardId: '@cardId',
         restore: '@restore',
         update: '@update',
         role: '@role',

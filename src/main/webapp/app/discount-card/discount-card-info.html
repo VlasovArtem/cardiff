@@ -1,0 +1,60 @@
+<section id="discount-card-info">
+    <h2>Discount Card Info</h2>
+    <article class="well col-md-12">
+        <p class="text-left col-md-3 col-md-offset-1">
+            This section contains most useful information about selected Discount Card. We think that information
+            about Company name that will give you specified amount of discount, expired date and description will be
+            very useful to you.
+        </p>
+        <ul class="list-group col-md-7">
+            <li class="list-group-item"><b>Company:</b> {{cardInfo.company_name}}</li>
+            <li class="list-group-item"><b>Description:</b> {{cardInfo.description}}</li>
+            <li class="list-group-item"><b>Discount:</b> {{cardInfo.amount_of_discount}}%</li>
+            <li class="list-group-item"><b>Expired Date:</b> {{cardInfo.expired_date | dateFilter}}</li>
+            <li class="list-group-item tags">
+                <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
+            </li>
+        </ul>
+        <div class="col-md-12 buttons">
+            <input type="button" value="Book" class="btn btn-primary"/>
+            <input type="button" value="Pick" class="btn btn-success"/>
+        </div>
+    </article>
+</section>
+<section ng-if="!authenticated" class="container auth-info">
+    <div class="col-md-8 col-md-offset-2">
+        To get full information about owner of discount card and ability to book or pick card that you prefer.
+        Please Sign In or Sign Up if you do not do this already.
+        <p>Thank you and welcome to Cardiff Project.</p>
+    </div>
+    <div class="col-md-8 col-md-offset-2 buttons">
+        <a class="btn btn-success" href="/signin">Sign In</a>
+        <a class="btn btn-primary" href="/signup">Sign Up</a>
+    </div>
+</section>
+<section id="owner-card-info" ng-if="authenticated">
+    <h2>Owner Card Info</h2>
+    <div class="col-md-12 error" ng-show="error" ng-bind="error"></div>
+    <article class="well col-md-12" ng-hide="error">
+        <p class="text-left col-md-3 col-md-offset-1">
+            If you already book or pick selected card, please contact with owner of the card to get complete
+            information. Thank you.
+        </p>
+        <ul class="list-group col-md-7">
+            <li class="list-group-item"><b>Name:</b> {{owner.name}}</li>
+            <li class="list-group-item"><b>Email:</b> {{owner.email}}</li>
+            <li class="list-group-item"><b>Phone Number:</b> {{owner.phone_number | phoneNumberFilter}}</li>
+            <li class="list-group-item"><b>Location:</b> {{owner.location.city + ', ' + owner.location.country}}</li>
+        </ul>
+    </article>
+</section>
+<hr class="style"/>
+<section id="comments">
+    <h2>Comments</h2>
+    <div class="container">
+        <div class="col-md-3 comment" ng-repeat="comment in cardInfo.discount_card_comments">
+            <span class="col-md-12" ng-bind="comment.comment"></span>
+            <span class="col-md-12 comment-date" ng-bind="comment.created_date | dateFilter"></span>
+        </div>
+    </div>
+</section>

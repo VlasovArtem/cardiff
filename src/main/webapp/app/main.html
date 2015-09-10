@@ -1,10 +1,15 @@
 <section>
     <h1 class="hide">Search</h1>
     <article class="main-title">
-        <input type="search" id="search" ng-model="searchData" placeholder="Search..." result="5" autofocus
-               list="companies" ng-keypress="$event.keyCode == 13 && search()"/>
-        <datalist id="companies">
-            <option ng-repeat="company in companies" value="{{company.name}}"/>
-        </datalist>
+        <ui-select ng-model="searchData.selected"
+                   autofocus="true"
+                   reset-search-input="false" ng-keypress="$event.keyCode == ENTER_BUTTON && search()">
+            <ui-select-match placeholder="Search...">{{$select.selected[1]}}</ui-select-match>
+            <ui-select-choices repeat="company in companies"
+                               refresh="refreshData($select.search)"
+                               refresh-delay="1000">
+                <div ng-bind="company[1] + ' - ' + company[2] + '%'"></div>
+            </ui-select-choices>
+        </ui-select>
     </article>
 </section>

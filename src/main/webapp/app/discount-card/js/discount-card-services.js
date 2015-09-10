@@ -1,7 +1,7 @@
-var service = angular.module('DC-services', ['ngResource']);
+var service = angular.module('discount-card-services', ['ngResource']);
 
 service.factory('addition', ['$resource', function($resource) {
-    return $resource('/rest/card/addition', {}, {
+    return $resource('/rest/card/add', {}, {
         login: {
             method: 'POST',
             isArray: false,
@@ -14,4 +14,39 @@ service.factory('addition', ['$resource', function($resource) {
 
 service.factory('CardsCtrl', ['$resource', function($resource) {
     return $resource('/rest/card/get/all');
+}]);
+
+service.factory('DiscountCardSearchFactory', ['$resource', function($resource) {
+    return $resource('/rest/card/get/by/:name/:number/:tags', {
+        name: '@name',
+        number: '@number',
+        tags: '@tags'
+    }, {
+        searchByName: {
+            method: 'GET',
+            params: {
+                name: 'name'
+            },
+            isArray: true
+        },
+        searchByTags: {
+            method: 'GET',
+            params: {
+                tags: 'tags'
+            },
+            isArray: true
+        },
+        searchByNumber: {
+            method: 'GET',
+            params: {
+                number: 'number'
+            }
+        }
+    })
+}]);
+
+service.factory('DiscountCardOwner', ['$resource', function($resource) {
+    return $resource('/rest/card/get/:cardId/available', {
+        cardId: '@cardId'
+    })
 }]);

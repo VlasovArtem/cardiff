@@ -181,4 +181,9 @@ public class PersonServiceImpl implements PersonService {
             throw new PersonDataUniqueException("Person with this phone number is already exists");
         }
     }
+
+    @Override
+    public Person find(long discountCardId) {
+        return personRepository.findByDiscountCardId(discountCardId);
+    }
 }

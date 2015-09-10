@@ -45,4 +45,13 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Person p WHERE p.login = ?1 OR p.email = ?2 OR p.phoneNumber = ?3")
     boolean existsByLoginOrEmailOrPhoneNumber(String login, String email, long phoneNumber);
 
+    /**
+     * Find {@link Person} with only one {@link com.provectus.cardiff.entities.DiscountCard} in Person Discount card
+     * list.
+     * @param discountCardId Id of the discount card
+     * @return Return {@link Person} with one find
+     */
+    @Query("SELECT p FROM Person p, DiscountCard dc WHERE dc MEMBER OF p.discountCards AND dc.id = ?1 AND p.deleted = false")
+    Person findByDiscountCardId(long discountCardId);
+
 }

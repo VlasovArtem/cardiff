@@ -1,5 +1,7 @@
-var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap',
-    'person-controllers', 'person-services', 'person-directives', 'person-filters', 'DC-controllers', 'DC-services']).config(
+var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
+    'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select',
+    'person-controllers', 'person-services', 'person-directives', 'person-filters',
+    'discount-card-controllers', 'discount-card-services', 'discount-card-directives']).config(
     function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $routeProvider
@@ -88,7 +90,22 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ui.bootstrap.show
                     }
                 }
             }).
-            when('/add', {
+            when('/card/info', {
+                templateUrl: 'app/discount-card/discount-card-info.html',
+                controller: 'DiscountCardInfoCtrl',
+                resolve: {
+                    discountCardInfo: function(DiscountCardOwner, $sessionStorage, $location) {
+                        return DiscountCardOwner.get({cardId : $sessionStorage.cardId})
+                            .$promise.then(
+                            function (data) {
+                                return data;
+                            }, function () {
+                                $location.path('/');
+                            })
+                    }
+                }
+            }).
+            when('/card/add', {
                 templateUrl: 'app/discount-card/add.html',
                 controller: 'AddCtrl'
             }).

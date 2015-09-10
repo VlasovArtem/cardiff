@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.enums.PersonRole;
-import com.provectus.cardiff.utils.View;
+import com.provectus.cardiff.utils.view.PersonView;
 import com.provectus.cardiff.utils.converter.PasswordConverter;
 
 import javax.persistence.CascadeType;
@@ -31,28 +31,36 @@ import java.util.List;
 @NamedEntityGraph(name = "Person.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
 public class Person extends BaseEntity {
     @Column(length = 100)
+    @JsonView(PersonView.BasicLevel.class)
     private String name;
     @Column(length = 100, unique = true, nullable = false)
+    @JsonView(PersonView.TableLevel.class)
     private String login;
     @Column(nullable = false, columnDefinition = "bytea")
     @Convert(converter = PasswordConverter.class)
     private String password;
     @Column(length = 50, unique = true, nullable = false)
+    @JsonView(PersonView.BasicLevel.class)
     private String email;
     @Column(name = "phone_number", nullable = false)
+    @JsonView(PersonView.BasicLevel.class)
     private long phoneNumber;
     @Column(length = 500)
+    @JsonView(PersonView.TableLevel.class)
     private String description;
     @Column(name = "role", columnDefinition = "varchar(9) default 'USER'")
     @Enumerated(EnumType.STRING)
+    @JsonView(PersonView.TableLevel.class)
     private PersonRole role;
+    @JsonView(PersonView.TableLevel.class)
     private boolean deleted;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
-    @JsonView(View.SecondLevel.class)
+    @JsonView(PersonView.DiscountCardsLevel.class)
     private List<DiscountCard> discountCards;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
+    @JsonView(PersonView.BasicLevel.class)
     private Location location;
 
     public Person() {
