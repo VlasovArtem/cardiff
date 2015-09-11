@@ -3,6 +3,7 @@ package com.provectus.cardiff.service.impl;
 import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.TagService;
+import com.provectus.cardiff.utils.validator.TagValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by blupashko on 26.08.2015.
@@ -35,16 +36,15 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> findAll() {
-        List<Tag> tags = new ArrayList<>();
-        return tagRepository.findAll();
+    public Set<Tag> findAll() {
+        return tagRepository.findAll().stream().collect(Collectors.toSet());
     }
 
 
     @Override
-    public void addTag(String tag) {
-        checkTagBeforeAdding(tag);
-        tagRepository.save(new Tag(tag));
+    public void addTag(Tag tag) {
+        TagValidator.validate(tag);
+        tagRepository.save(tag);
     }
 
     @Override
@@ -56,18 +56,5 @@ public class TagServiceImpl implements TagService {
     @Override
     public void deleteTag(Long id) {
         tagRepository.deleteById(id);
-    }
-
-    private void checkTagBeforeAdding(String tag) {
-        if (tag == null) {
-            throw new RuntimeException("Tag can't be null.");
-        }
-        if (tag.equals("")) {
-            throw new RuntimeException("Tag name is required.");
-        }
-
-        if (tagRepository.existsByTag(tag)) {
-            throw new RuntimeException("This tag name is already exist.");
-        }
     }
 }

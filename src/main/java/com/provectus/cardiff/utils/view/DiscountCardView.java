@@ -5,5 +5,6 @@ package com.provectus.cardiff.utils.view;
  */
 public class DiscountCardView {
     public interface BasicLevel {}
-    public interface DiscountCardCommentsLevel extends BasicLevel {}
+    public interface DiscountCardTagsLevel extends BasicLevel {}
+    public interface DiscountCardInfoLevel extends DiscountCardTagsLevel {}
 }

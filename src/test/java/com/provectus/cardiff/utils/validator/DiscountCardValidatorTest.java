@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Random;
 
 import static com.provectus.cardiff.utils.validator.DiscountCardValidator.validate;
@@ -30,42 +29,42 @@ public class DiscountCardValidatorTest {
 
     @Test
     public void validateTest() {
-        assertTrue(validate(Optional.ofNullable(discountCard)));
+        assertTrue(validate(discountCard));
     }
 
     @Test
     public void validateWithNullTest() {
-        assertFalse(validate(Optional.ofNullable(null)));
+        assertFalse(validate(null));
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidCardNumberLessThanMinLengthTest() {
         discountCard.setCardNumber(0);
-        validate(Optional.ofNullable(discountCard));
+        validate(discountCard);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidCardNumberGreaterThanMaxLengthTest() {
         discountCard.setCardNumber(25635698563475211l);
-        validate(Optional.ofNullable(discountCard));
+        validate(discountCard);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidExpiredDateTest() {
         discountCard.setExpiredDate(LocalDateTime.now().minusDays(1));
-        validate(Optional.ofNullable(discountCard));
+        validate(discountCard);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidCompanyNameNullTest() {
         discountCard.setCompanyName(null);
-        validate(Optional.ofNullable(discountCard));
+        validate(discountCard);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidAmountOfDiscountTest() {
         discountCard.setAmountOfDiscount(110);
-        validate(Optional.ofNullable(discountCard));
+        validate(discountCard);
     }
 
     @Test(expected = EntityValidationException.class)
@@ -76,6 +75,6 @@ public class DiscountCardValidatorTest {
             builder.append((char)(r.nextInt(26) + 'a'));
         }
         discountCard.setDescription(builder.toString());
-        validate(Optional.ofNullable(discountCard));
+        validate(discountCard);
     }
 }

@@ -1,22 +1,24 @@
-<section id="add" class="container-fluid">
+<section id="add-discount-card" class="container-fluid">
     <h2 class="col-md-12">Add Discount Card</h2>
     <form class="col-md-offset-4 col-md-4" name="add">
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="cardNumber">Card Number</label>
             <input class="form-control"
-                   type="text"
+                   type="number"
                    placeholder="Input card number"
                    ng-maxlength="16"
-                   ng-minlength="8"
+                   ng-minlength="1"
+                   pattern="^[1-9][0-9]{0,15}$"
                    id="cardNumber"
                    name="cardNumber"
                    required
-                   ng-model="card.cardNumber"/>
+                   ng-model="card.card_number"/>
             <div validation-messages
                  model-controller="add.cardNumber"
-                 minlength-error="Card Number is too short"
-                 maxlength-error="Card Number is too long"
-                 required-error="Card Number is required"></div>
+                 minlength-error="Card number is too short"
+                 maxlength-error="Card number is too long"
+                 required-error="Card number is required"
+                 patter-error="Card number should contains only numbers and starts with 1"></div>
         </div>
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="companyName">Company name</label>
@@ -25,11 +27,9 @@
                    name="companyName"
                    placeholder="Input Company Name"
                    id="companyName"
-                   ng-minlength="6"
-                   ng-maxlength="100"
-                   ng-pattern="/^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$/"
-                   ng-model="card.companyName"
-                   autocomplete="off"
+                   ng-minlength="1"
+                   ng-maxlength="50"
+                   ng-model="card.company_name"
                    required/>
             <div validation-messages
                  model-controller="add.companyName"
@@ -39,48 +39,36 @@
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
-            <label for="amountOfDiscount">Amount of discount</label>
-            <input type="amountOfDiscount"
+            <label for="amountOfDiscount">Discount</label>
+            <input type="number"
                    class="form-control"
-                   placeholder="Input amount of discount"
+                   placeholder="Input discount"
                    id="amountOfDiscount"
-                   ng-maxlength="50"
-                   ng-minlength="3"
+                   pattern="^[1-9][0-9]$|^100$"
                    name="amountOfDiscount"
-                   ng-model="card.amountOfDiscount"
-                   autocomplete="off"
-                   required/>
+                   ng-model="card.amount_of_discount"/>
             <div validation-messages
                  model-controller="add.amountOfDiscount"
-                 required-error="Amount of discount is required"
-                 minlength-error="Amount of discount is too short"
-                 maxlength-error="Amount of discount is too long"
-                 email-error="Amount of discount is invalid"></div>
+                 patter-error="Amount of discount could be only for 1 - 100%"></div>
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
             <label for="expiredDate">Expired date</label>
             <input type="date"
                    class="form-control"
-                   placeholder="Input Expired date"
                    id="expiredDate"
                    ng-min="currentDate"
                    name="expiredDate"
-                   ng-model="card.expiredDate"
-                   autocomplete="off"
-                   required/>
+                   ng-model="card.expired_date"/>
             <div validation-messages
                  model-controller="add.expiredDate"
-                 required-error="Amount of discount is required"
-                 minlength-error="Amount of discount is too short"
-                 maxlength-error="Amount of discount is too long"
-                 email-error="Amount of discount is invalid"
-                 min-error="Expire date should be greater than today"></div>
+                 min-error="Expired date should be greater than today"></div>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control"
                       id="description"
+                      placeholder="Discount card description"
                       name="description"
                       cols="30" rows="10"
                       ng-minlength="0"
@@ -90,9 +78,29 @@
                  model-controller="add.description"
                  maxlength-error="Description is too long"></div>
         </div>
+        <div class="form-group">
+            <label>Tags</label>
+            <ui-select multiple ng-model="card.tags">
+                <ui-select-match placeholder="Select tags...">{{$item.tag}}</ui-select-match>
+                <ui-select-choices repeat="tag in tags | filter: $select.search">
+                    {{tag.tag}}
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="form-group custom-tag" >
+            <label>New Tag</label>
+            <input class="form-control col-md-8"
+                   type="text"
+                   ng-model="customTag"
+                   name="customTag"
+                   placeholder="Input your tag"/>
+            <input class="col-md-offset-1 col-md-3 btn btn-success" type="button" value="Add new"
+                   ng-click="addCustomTag()" ng-disabled="add.customTag.$invalid || add.customTag.$modelValue == null"/>
+            <small class="hint">You can add multiple custom tags by separating them with , or multiple spaces</small>
+        </div>
         <div class="form-group buttons">
-            <input type="button" class="btn btn-success" value="Add" ng-disabled="add.$invalid" ng-click="add()"/>
-            <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
+            <input type="button" class="btn btn-success btn-lg" value="Add" ng-disabled="add.$invalid" ng-click="addNewCard()"/>
+            <input type="button" class="btn btn-primary btn-lg" value="Reset" ng-click="reset()"/>
         </div>
     </form>
 </section>

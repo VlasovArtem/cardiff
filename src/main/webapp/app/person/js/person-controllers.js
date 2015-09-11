@@ -125,7 +125,7 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
         {name : 'Login', property: 'login', width: '10%'},
         {name : 'Email', property: 'email', width: '18%'},
         {name : 'Phone', property: 'phone_number', width: '15%'},
-        {name : 'Role', property: 'role', width: '5%'},
+        {name : 'Role', property: 'role', width: '7%'},
         {name : 'Created', property: 'created_date', width: '10%'},
         {name : 'Deleted', property: 'deleted', width: '7%'}
     ];

@@ -107,7 +107,12 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
             }).
             when('/card/add', {
                 templateUrl: 'app/discount-card/add.html',
-                controller: 'AddCtrl'
+                controller: 'AddCtrl',
+                resolve: {
+                    tags: function(TagFactory) {
+                        return TagFactory.query();
+                    }
+                }
             }).
             otherwise({
                 redirectTo: '/'

@@ -3,12 +3,36 @@ html, body {
 }
 .background {
     height: 100%;
-    background: url('../images/main-img.jpg') no-repeat center center fixed;
+    background: url('../images/main-img.jpg') no-repeat center center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
 }
+.view {
+    min-height: 100%;
+    height: auto;
+    margin: 0 auto -200px;
+    padding: 0 0 300px
+}
+footer {
+    margin: 50px 0 0 0;
+    height: 300px;
+    background-color: #5A778F;
+    -webkit-box-shadow: inset 0px 6px 10px -3px rgba(0,0,0,0.75);
+    -moz-box-shadow: inset 0px 6px 10px -3px rgba(0,0,0,0.75);
+    box-shadow: inset 0px 6px 10px -3px rgba(0,0,0,0.75);
+}
+footer > h2 {
+    margin: 0;
+    color: #f6f6f6;
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font: bold 4em Arial, sans-serif;
+}
+
 h2, .buttons {
     text-align: center;
 }
@@ -32,7 +56,7 @@ h2, .buttons {
 .navbar-cardiff .dropdown-menu > li > a:focus {
     background-color: #8b8d8f !important;
 }
-input[type=search], .ui-select-match > span:first-child, .ui-select-search {
+input[type=search], .search .ui-select-match > span:first-child, .search .ui-select-search {
     display: inline;
     -webkit-appearance: textfield;
     border-radius: 20px;
@@ -42,18 +66,18 @@ input[type=search], .ui-select-match > span:first-child, .ui-select-search {
     padding: 0 0 0 20px;
     font-size: large;
 }
-.ui-select-match {
+.search .ui-select-match {
     height: 100%;
 }
-.ui-select-toggle > i {
+.search .ui-select-toggle > i {
     display: none;
 }
-.ui-select-toggle {
+.search .ui-select-toggle {
     display: flex !important;
     justify-content: flex-start;
     align-items: center;
 }
-.ui-select-container {
+.search .ui-select-container {
     width: 30%;
     height: 7%;
     text-align: center;
@@ -61,7 +85,7 @@ input[type=search], .ui-select-match > span:first-child, .ui-select-search {
 #companies {
     border: none;
 }
-input[type=search]:focus, .btn-default-focus {
+input[type=search]:focus, .search .btn-default-focus {
     box-shadow: 0 0 3pt 2pt rgba(27, 157, 214, .5) !important;
     border-radius: 20px;
     outline: none !important;
@@ -96,8 +120,8 @@ input[type=search]:focus, .btn-default-focus {
 #sign-in > h2 {
     text-align: center;
 }
-.main-title {
-    height: 80vh;
+.search {
+    height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -162,6 +186,17 @@ hr.style {
     font-size: 85%;
 }
 
+/*Account info page*/
+#discount-cards .company-name {
+    width: 100%;
+    text-align: center;
+    font-size: large;
+}
+.person-discount-card {
+    padding: 10px 20px 10px 20px !important;
+}
+
+
 /*Discount card info page*/
 .tags > span {
     margin: 0 10px 0 0;
@@ -177,7 +212,7 @@ hr.style {
     color: #888888;
     text-align: center;
 }
-#comments .comment {
+#comments .comment, .person-discount-card {
     padding: 5px 0 5px 0;
     display: inline-block;
     vertical-align: top;
@@ -207,4 +242,30 @@ hr.style {
     font-size: larger;
     font-style: oblique;
     text-align: center;
+}
+
+/*Add Discount card page*/
+.custom-tag {
+    width: 100%;
+    display: inline-block;
+}
+.custom-tag > label {
+    width: 100%;
+}
+.custom-tag input[type=text] {
+    width: 70% !important;
+}
+.custom-tag input[type=button] {
+    width: 25% !important;
+    float: right;
+    margin-left: 5px;
+}
+.custom-tag small {
+    padding-bottom: 5px;
+    color: lightgrey;
+    text-align: center;
+    font-style: italic;
+}
+#add-discount-card .buttons {
+    padding: 30px 0 0 0;
 }

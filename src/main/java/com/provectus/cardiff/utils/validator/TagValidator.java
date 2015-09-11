@@ -20,13 +20,16 @@ public class TagValidator extends EntityValidator {
      * @param tag Optional of {@code Tag}
      * @return return true if tag matches pattern
      */
-    public static boolean validate(Optional<Tag> tag) {
-        if(tag.isPresent()) {
-            if(!validate(tag.get().getTag(), PATTERN)) {
-                throw new EntityValidationException(ERROR);
-            }
-            return true;
+    public static boolean validate(Tag tag) {
+        try {
+            Optional.of(tag).ifPresent(t -> {
+                if(!validate(t.getTag(), PATTERN)) {
+                    throw new EntityValidationException(ERROR);
+                }
+            });
+        } catch (NullPointerException e) {
+            return false;
         }
-        return false;
+        return true;
     }
 }

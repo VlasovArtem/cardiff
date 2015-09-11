@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.enums.PersonRole;
-import com.provectus.cardiff.utils.view.PersonView;
 import com.provectus.cardiff.utils.converter.PasswordConverter;
+import com.provectus.cardiff.utils.view.PersonView;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,18 +17,26 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 
 /**
  * Created by artemvlasov on 19/08/15.
  */
 @Entity
 @Table(name = "person")
-@NamedEntityGraph(name = "Person.discountCards", attributeNodes = @NamedAttributeNode("discountCards"))
+@NamedEntityGraph(name = "Person.discountCards",
+        attributeNodes = @NamedAttributeNode(
+                value = "discountCards",
+                subgraph = "tagsGraph"),
+        subgraphs = @NamedSubgraph(
+                name = "tagsGraph",
+                attributeNodes = {@NamedAttributeNode(value = "tags")})
+)
 public class Person extends BaseEntity {
     @Column(length = 100)
     @JsonView(PersonView.BasicLevel.class)
@@ -54,10 +62,9 @@ public class Person extends BaseEntity {
     private PersonRole role;
     @JsonView(PersonView.TableLevel.class)
     private boolean deleted;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "owner")
     @JsonView(PersonView.DiscountCardsLevel.class)
-    private List<DiscountCard> discountCards;
+    private Set<DiscountCard> discountCards;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
     @JsonView(PersonView.BasicLevel.class)
@@ -130,11 +137,11 @@ public class Person extends BaseEntity {
         this.deleted = deleted;
     }
 
-    public List<DiscountCard> getDiscountCards() {
+    public Set<DiscountCard> getDiscountCards() {
         return discountCards;
     }
 
-    public void setDiscountCards(List<DiscountCard> discountCards) {
+    public void setDiscountCards(Set<DiscountCard> discountCards) {
         this.discountCards = discountCards;
     }
 

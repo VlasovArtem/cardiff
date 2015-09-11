@@ -1,7 +1,6 @@
 package com.provectus.cardiff.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.utils.view.DiscountCardView;
@@ -24,7 +23,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
@@ -40,17 +40,8 @@ public class DiscountCardController {
     @RequestMapping(path = "/add", method = POST, consumes = APPLICATION_JSON_VALUE)
     @RequiresAuthentication
     @ResponseStatus(OK)
-    public ResponseEntity add(@RequestBody DiscountCard card) {
-        try {
-            service.add(card);
-        } catch (RuntimeException e) {
-            return ResponseEntity
-                    .status(FORBIDDEN)
-                    .body(JsonNodeFactory.instance.objectNode().put("error", e.getMessage()));
-        }
-        return ResponseEntity
-                .status(OK)
-                .body(JsonNodeFactory.instance.objectNode().put("success", "Discount card successfully added"));
+    public void add(@RequestBody DiscountCard card) {
+        service.add(card);
     }
 
     @RequestMapping(path = "/get/by/number", method = GET, produces = APPLICATION_JSON_VALUE)

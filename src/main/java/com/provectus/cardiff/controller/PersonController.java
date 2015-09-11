@@ -26,9 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import static com.provectus.cardiff.utils.ResponseEntityExceptionCreator.create;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -80,6 +78,7 @@ public class PersonController {
      */
     @RequestMapping(path = "/authenticated", method = GET, produces = APPLICATION_JSON_VALUE)
     @RequiresAuthentication
+    @JsonView(PersonView.DiscountCardsLevel.class)
     public ResponseEntity authenticated() {
         return ResponseEntity.ok(service.authenticated());
     }

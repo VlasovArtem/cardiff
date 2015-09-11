@@ -7,5 +7,6 @@ public class PersonView {
     public interface BasicLevel {}
     public interface TableLevel extends BasicLevel {}
     public interface DiscountCardsLevel extends TableLevel {}
+    public interface DiscountCardCommentsLevel extends DiscountCardsLevel {}
 
 }

@@ -4,8 +4,11 @@ import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
+import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.service.DiscountCardService;
-import com.provectus.cardiff.utils.EntityUpdater;
+import com.provectus.cardiff.utils.exception.EntityValidationException;
+import com.provectus.cardiff.utils.validator.DiscountCardValidator;
+import com.provectus.cardiff.utils.validator.TagValidator;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.provectus.cardiff.utils.validator.DiscountCardValidator.validate;
 
 /**
  * Created by Дмитрий on 27/08/15.
@@ -30,51 +30,43 @@ import static com.provectus.cardiff.utils.validator.DiscountCardValidator.valida
 public class DiscountCardServiceImpl implements DiscountCardService {
     @Autowired
     private DiscountCardRepository discountCardRepository;
+    @Autowired
+    private PersonRepository personRepository;
 
     @Override
     public void add (DiscountCard card) {
-        checkCardBeforeAdding(card);
+        if (discountCardRepository.existsByNumberAndCompanyName(card.getCardNumber(), card.getCompanyName())) {
+            throw new EntityValidationException("Card with this company name and number already exist");
+        }
+        if(card.getExpiredDate() == null) {
+            card.setExpiredDate(LocalDateTime.now().plusYears(10));
+        }
+        DiscountCardValidator.validate(card);
+        card.getTags().stream().forEach(TagValidator::validate);
+        card.setOwner(personRepository.findById((long) SecurityUtils.getSubject().getPrincipal()));
         discountCardRepository.save(card);
+//        discountCardRepository.save(card);
+//        Person person = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
+//        List<DiscountCard> discountCards = person.getDiscountCards();
+//        discountCards.add(card);
+//        person.setDiscountCards(discountCards);
     }
-    private void checkCardBeforeAdding (DiscountCard discount_card) {
-        if(discount_card == null) {
-            throw new RuntimeException("Discount card cannot be null");
-        }
-        List<String> requiredData = new ArrayList<>(4);
-        if (discount_card.getCardNumber() == 0) {
-            requiredData.add("Card number");
-        }
-        if (discount_card.getExpiredDate() == null) {
-            requiredData.add("Expiration date");
-        }
-        if (discount_card.getCompanyName() == null) {
-            requiredData.add("Company name");
-        }
-        if (discount_card.getAmountOfDiscount() == 0) {
-            requiredData.add("Amount of discount");
-        }
-        if (requiredData.size() != 0) {
-            throw new RuntimeException("Next person data is required: " + requiredData.stream().collect(Collectors
-                    .joining(", ")));
-        }
-        if (discountCardRepository.existsByNumberAndCompanyName(discount_card.getCardNumber(), discount_card.getCompanyName())) {
-            throw new RuntimeException("Card with this company name and number already exist");
-        }
-    }
+
     @Override
     public void update (DiscountCard card) {
-        DiscountCard trg;
-        Person person=(Person) SecurityUtils.getSubject().getPrincipal();
-        if (SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())) {
-            trg = discountCardRepository.findById(card.getId());
-        } else if (person.getDiscountCards().contains(discountCardRepository.findById(card.getId())))
-            trg=discountCardRepository.findById((card.getId()));
-        else {
-            throw new AuthenticationException("Person has no permission");
-        }
-        validate(Optional.ofNullable(card));
-        EntityUpdater.update(Optional.ofNullable(card), Optional.ofNullable(trg));
+//        DiscountCard trg;
+//        if (SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())) {
+//            trg = discountCardRepository.findById(card.getId());
+//        } else if (person.getDiscountCards().contains(discountCardRepository.findById(card.getId())))
+//            trg =  discountCardRepository.findById((card.getId()));
+//        else {
+//            throw new AuthenticationException("Person has no permission");
+//        }
+//        validate(card);
+//        EntityUpdater.update(Optional.ofNullable(card), Optional.ofNullable(trg));
+        throw new UnsupportedOperationException();
     }
+
     @Override
     public void delete (DiscountCard card) {
         Person person=(Person) SecurityUtils.getSubject().getPrincipal();

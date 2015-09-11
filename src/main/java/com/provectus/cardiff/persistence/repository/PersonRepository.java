@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long>{
     @EntityGraph(value = "Person.discountCards", type = EntityGraph.EntityGraphType.LOAD)
+    @Query("from Person p where p.id = ?1")
     Person findById(long id);
 
     Person findByLogin(String login);

@@ -8,7 +8,6 @@ import org.junit.Test;
 import java.util.Random;
 
 import static com.provectus.cardiff.utils.validator.TagValidator.validate;
-import static java.util.Optional.ofNullable;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -25,24 +24,24 @@ public class TagValidatorTest {
 
     @Test
     public void validateTest() {
-        assertTrue(validate(ofNullable(tag)));
+        assertTrue(validate(tag));
     }
 
     @Test
     public void validateNullTest() {
-        assertFalse(validate(ofNullable(null)));
+        assertFalse(validate(null));
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithTagNullTest() {
         tag.setTag(null);
-        validate(ofNullable(tag));
+        validate(tag);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidTagLessThanMinLengthTest() {
         tag.setTag("Ta");
-        validate(ofNullable(tag));
+        validate(tag);
     }
 
     @Test(expected = EntityValidationException.class)
@@ -53,12 +52,12 @@ public class TagValidatorTest {
             builder.append((char)(r.nextInt(26) + 'a'));
         }
         tag.setTag(builder.toString());
-        validate(ofNullable(tag));
+        validate(tag);
     }
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidTagUnacceptableCharactersTest() {
         tag.setTag("dfs35f");
-        validate(ofNullable(tag));
+        validate(tag);
     }
 }

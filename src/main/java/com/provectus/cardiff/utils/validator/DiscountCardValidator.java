@@ -22,21 +22,24 @@ public class DiscountCardValidator extends EntityValidator {
      * @param card Optional of {@code DiscountCard}
      * @return true if all validate data matches their patterns otherwise throw {@code EntityValidationException}
      */
-    public static boolean validate(Optional<DiscountCard> card) {
-        if(card.isPresent()) {
-            ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
-            Arrays.stream(DiscountCardValidationInfo.values()).allMatch(dc -> {
-                if (!validate(dc, card.get())) {
-                    objectNode.put(dc.name().toLowerCase(), dc.getError());
+    public static boolean validate(DiscountCard card) {
+        try {
+            Optional.of(card).ifPresent(dCard -> {
+                ObjectNode objectNode = JsonNodeFactory.instance.objectNode();
+                Arrays.stream(DiscountCardValidationInfo.values()).allMatch(info -> {
+                    if (!validate(info, dCard)) {
+                        objectNode.put(info.name().toLowerCase(), info.getError());
+                    }
+                    return true;
+                });
+                if(objectNode.size() != 0) {
+                    throw new EntityValidationException(objectNode, "Discount card form contains invalid data");
                 }
-                return true;
             });
-            if(objectNode.size() != 0) {
-                throw new EntityValidationException(objectNode, "Person form contains invalid data");
-            }
-            return true;
+        } catch (NullPointerException e) {
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**

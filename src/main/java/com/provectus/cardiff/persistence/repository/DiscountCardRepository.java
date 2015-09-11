@@ -13,10 +13,10 @@ import java.util.Set;
  * Created by artemvlasov on 21/08/15.
  */
 public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long> {
-    @EntityGraph(value = "DiscountCard.discountCardComments", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "DiscountCard.discountCardInfo", type = EntityGraph.EntityGraphType.LOAD)
     DiscountCard findById(long id);
 
-    @EntityGraph(value = "DiscountCard.discountCardComments", type = EntityGraph.EntityGraphType.LOAD)
+    @EntityGraph(value = "DiscountCard.discountCardInfo", type = EntityGraph.EntityGraphType.LOAD)
     DiscountCard findByIdAndAvailableTrue(long id);
 
     Optional<DiscountCard> findByCardNumber(long cardNumber);
@@ -32,6 +32,6 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
             "and t.tag in ?1")
     Optional<List<DiscountCard>> findByTags(Set<String> tags);
 
-    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.cardNumber = ?1 AND cd.companyName = ?2")
+    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.cardNumber = ?1 AND UPPER(cd.companyName) = ?2")
     boolean existsByNumberAndCompanyName(long number, String companyName);
 }

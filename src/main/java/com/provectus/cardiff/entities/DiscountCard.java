@@ -1,7 +1,9 @@
 package com.provectus.cardiff.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.utils.view.DiscountCardView;
+import com.provectus.cardiff.utils.view.PersonView;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,12 +12,12 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,7 +25,13 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "discount_card")
-@NamedEntityGraph(name = "DiscountCard.discountCardComments", attributeNodes = @NamedAttributeNode("discountCardComments"))
+@NamedEntityGraph(
+        name = "DiscountCard.discountCardInfo",
+        attributeNodes = {
+                @NamedAttributeNode("discountCardComments"),
+                @NamedAttributeNode("tags")
+        }
+)
 public class DiscountCard extends BaseEntity {
     @Column(name = "card_number", length = 16, unique = true, nullable = false)
     private long cardNumber;
@@ -38,15 +46,20 @@ public class DiscountCard extends BaseEntity {
     @Column(length = 500)
     private String description;
     private boolean deleted;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "tag_card",
             joinColumns = @JoinColumn(name = "discount_card_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    @JsonView(DiscountCardView.DiscountCardTagsLevel.class)
     private Set<Tag> tags;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "discount_card_id", referencedColumnName = "id")
-    @JsonView(DiscountCardView.DiscountCardCommentsLevel.class)
-    private List<DiscountCardComment> discountCardComments;
+    @JsonView(value = {DiscountCardView.DiscountCardInfoLevel.class, PersonView.DiscountCardCommentsLevel.class})
+    private Set<DiscountCardComment> discountCardComments;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "person_id", referencedColumnName = "id")
+    @JsonIgnore
+    private Person owner;
 
     public DiscountCard() {
     }
@@ -120,11 +133,18 @@ public class DiscountCard extends BaseEntity {
         this.tags = tags;
     }
 
-    public List<DiscountCardComment> getDiscountCardComments() {
+    public Set<DiscountCardComment> getDiscountCardComments() {
         return discountCardComments;
     }
 
-    public void setDiscountCardComments(List<DiscountCardComment> discountCardComments) {
+    public void setDiscountCardComments(Set<DiscountCardComment> discountCardComments) {
         this.discountCardComments = discountCardComments;
+    }
+    public Person getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 }

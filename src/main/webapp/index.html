@@ -61,8 +61,13 @@
                         <li><a href="/admin/persons">Persons</a></li>
                     </ul>
                 </li>
-                <li>
-                    <a href="/cards">Cards</a>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Cards <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/cards">Show</a></li>
+                        <li><a href="/card/add">Add</a></li>
+                    </ul>
                 </li>
                 <li>
                     <a href="/account">Account</a>
@@ -74,6 +79,9 @@
         </div>
     </div>
 </nav>
-<div ng-view></div>
+<div class="view" ng-view></div>
+<footer class="footer">
+    <h2 class="depth" title="Welcome to Cardiff Project">Welcome to Cardiff Project</h2>
+</footer>
 </body>
 </html>

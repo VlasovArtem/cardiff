@@ -1,15 +1,7 @@
 var service = angular.module('discount-card-services', ['ngResource']);
 
 service.factory('AddDiscountCardFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/add', {}, {
-        add: {
-            method: 'POST',
-            isArray: false,
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }
-    });
+    return $resource('/rest/card/add');
 }]);
 
 service.factory('CardsCtrl', ['$resource', function($resource) {
@@ -49,4 +41,8 @@ service.factory('DiscountCardOwner', ['$resource', function($resource) {
     return $resource('/rest/card/get/:cardId/available', {
         cardId: '@cardId'
     })
+}]);
+
+service.factory('TagFactory', ['$resource', function($resource) {
+    return $resource('/rest/tag/get/all')
 }]);
