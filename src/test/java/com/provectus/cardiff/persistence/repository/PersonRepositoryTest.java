@@ -3,12 +3,15 @@ package com.provectus.cardiff.persistence.repository;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.provectus.cardiff.config.AppConfig;
+import com.provectus.cardiff.config.DevelopmentDataSourceConfig;
 import com.provectus.cardiff.config.RootContextConfig;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,13 +29,15 @@ import static org.junit.Assert.*;
  * Created by artemvlasov on 03/09/15.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {AppConfig.class, RootContextConfig.class})
+@ContextConfiguration(classes = {DevelopmentDataSourceConfig.class, AppConfig.class, RootContextConfig.class})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class })
 @DatabaseSetup("/META-INF/dbtest/person-data.xml")
+@ActiveProfiles(profiles = "development")
 public class PersonRepositoryTest {
+    @Qualifier("personRepository")
     @Autowired
     private PersonRepository personRepository;
     @Autowired

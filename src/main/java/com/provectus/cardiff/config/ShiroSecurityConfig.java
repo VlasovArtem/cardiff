@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by artemvlasov on 24/08/15.
  */
@@ -63,6 +66,21 @@ public class ShiroSecurityConfig {
     public ShiroFilterFactoryBean shiroFilter() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
+        shiroFilterFactoryBean.setLoginUrl("/signin");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/");
+        Map<String, String> chainDefinitionMap = new HashMap<>();
+        chainDefinitionMap.put("/rest/person/login", "anon");
+        chainDefinitionMap.put("/rest/person/registration", "anon");
+        chainDefinitionMap.put("/rest/person/admin", "authc, roles[ADMIN]");
+        chainDefinitionMap.put("/rest/person/delete/*", "authc, roles[ADMIN]");
+        chainDefinitionMap.put("/rest/person/restore/*", "authc, roles[ADMIN]");
+        chainDefinitionMap.put("/rest/person/update/role/*", "authc, roles[ADMIN]");
+        chainDefinitionMap.put("/rest/person/authenticated", "authc");
+        chainDefinitionMap.put("/rest/person/password/update", "authc");
+        chainDefinitionMap.put("/rest/person/update", "authc");
+        chainDefinitionMap.put("/rest/person/authorized", "authc");
+        chainDefinitionMap.put("/rest/person/get/*", "authc");
+        shiroFilterFactoryBean.setFilterChainDefinitionMap(chainDefinitionMap);
         return shiroFilterFactoryBean;
     }
 }

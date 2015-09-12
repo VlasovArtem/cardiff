@@ -46,4 +46,5 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
         resolver.setSuffix(".html");
         return resolver;
     }
+
 }

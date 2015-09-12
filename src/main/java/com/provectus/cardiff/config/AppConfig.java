@@ -1,6 +1,5 @@
 package com.provectus.cardiff.config;
 
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +11,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -30,20 +30,11 @@ public class AppConfig {
     private DataSource dataSource;
 
     @Bean
-    public BasicDataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setPassword(env.getProperty("db.password"));
-        dataSource.setUrl(env.getProperty("db.url"));
-        dataSource.setUsername(env.getProperty("db.user"));
-        dataSource.setDriverClassName(env.getProperty("db.driver"));
-        return dataSource;
-    }
-
-    @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setPackagesToScan("com.provectus.cardiff");
         bean.setDataSource(dataSource);
+        System.out.println("Profiles" + Arrays.toString(env.getActiveProfiles()));
         Properties properties = new Properties();
         properties.put("hibernate.dialect",
                 env.getProperty("hibernate.dialect"));

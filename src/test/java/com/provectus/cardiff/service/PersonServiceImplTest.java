@@ -4,6 +4,7 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.provectus.cardiff.config.AppConfig;
 import com.provectus.cardiff.config.CardiffAppInitializer;
+import com.provectus.cardiff.config.DevelopmentDataSourceConfig;
 import com.provectus.cardiff.config.RootContextConfig;
 import com.provectus.cardiff.config.ShiroSecurityConfig;
 import com.provectus.cardiff.entities.Person;
@@ -17,7 +18,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -37,18 +40,20 @@ import static org.junit.Assert.assertThat;
  * Created by artemvlasov on 07/09/15.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CardiffAppInitializer.class, AppConfig.class, RootContextConfig.class,
+@ContextConfiguration(classes = {DevelopmentDataSourceConfig.class, CardiffAppInitializer.class, AppConfig.class, RootContextConfig.class,
         ShiroSecurityConfig.class})
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
         DirtiesContextTestExecutionListener.class,
         TransactionalTestExecutionListener.class,
         DbUnitTestExecutionListener.class, ServletTestExecutionListener.class})
+@ActiveProfiles(profiles = "development")
 @DatabaseSetup("/META-INF/dbtest/person-service-data.xml")
 @Transactional
 public class PersonServiceImplTest extends AbstractShiroTest {
     @TestSubject
     @Autowired
     private PersonService service;
+    @Qualifier("personRepository")
     @Autowired
     private PersonRepository personRepository;
     @Autowired

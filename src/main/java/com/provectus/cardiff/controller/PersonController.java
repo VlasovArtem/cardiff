@@ -8,10 +8,7 @@ import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.view.PersonView;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresGuest;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,7 +42,6 @@ public class PersonController {
             method = POST,
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    @RequiresGuest
     @ResponseStatus(value = OK)
     public void login(@RequestParam String loginData,
                       @RequestParam String password,
@@ -54,7 +50,6 @@ public class PersonController {
     }
 
     @RequestMapping(path = "/registration", method = POST, consumes = APPLICATION_JSON_VALUE)
-    @RequiresGuest
     public ResponseEntity registration(@RequestBody Person person) {
         service.registration(person);
         return ResponseEntity
@@ -66,7 +61,6 @@ public class PersonController {
      * Check if use is already authenticated
      */
     @RequestMapping(path = "/authentication", method = GET, produces = APPLICATION_JSON_VALUE)
-    @RequiresRoles(value = {"USER", "ADMIN"})
     @ResponseStatus(value = OK)
     public void authentication() {
         service.authentication();
@@ -77,14 +71,15 @@ public class PersonController {
      * @return User
      */
     @RequestMapping(path = "/authenticated", method = GET, produces = APPLICATION_JSON_VALUE)
-    @RequiresAuthentication
     @JsonView(PersonView.DiscountCardsLevel.class)
     public ResponseEntity authenticated() {
-        return ResponseEntity.ok(service.authenticated());
+        if(SecurityUtils.getSubject().isAuthenticated()) {
+            return ResponseEntity.ok(service.authenticated());
+        }
+        return create(FORBIDDEN, "Person is not authenticated");
     }
 
     @RequestMapping(path = "/logout", method = GET)
-    @RequiresAuthentication
     public void logout() {
         service.logout();
     }
@@ -93,7 +88,6 @@ public class PersonController {
             method = PUT,
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    @RequiresAuthentication
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity changePassword(@RequestParam String oldPassword,
                                          @RequestParam String newPassword, Exception ex) {
@@ -104,26 +98,19 @@ public class PersonController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(path = "/delete/{id:\\d*}",
-            method = DELETE)
-    @RequiresRoles("ADMIN")
+    @RequestMapping(path = "/delete/{id:\\d*}", method = DELETE)
     @ResponseStatus(value = OK)
     public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 
-    @RequestMapping(path = "/update",
-            method = PUT)
-    @RequiresAuthentication
-    @RequiresRoles(value = {"ADMIN", "USER"}, logical = Logical.OR)
+    @RequestMapping(path = "/update", method = PUT)
     @ResponseStatus(value = OK)
     public void update(@RequestBody Person person) {
         service.update(person);
     }
 
-    @RequestMapping(path = "/admin",
-            method = GET)
-    @RequiresRoles("ADMIN")
+    @RequestMapping(path = "/admin", method = GET)
     @JsonView(PersonView.TableLevel.class)
     @ResponseStatus(value = OK)
     public Page<Person> getAll(@RequestParam(defaultValue = "0", required = false) int page,
@@ -133,23 +120,19 @@ public class PersonController {
         return service.getAll(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
-    @RequestMapping(path = "/authorized",
-            method = GET)
-    @RequiresAuthentication
+    @RequestMapping(path = "/authorized", method = GET)
     @ResponseStatus(value = OK)
     public void personAuthorized(@RequestParam(required = false) String hasRole) {
         service.authorized(PersonRole.valueOf(hasRole));
     }
 
     @RequestMapping(path = "/restore/{id:\\d*}", method = PUT)
-    @RequiresRoles("ADMIN")
     @ResponseStatus(value = OK)
     public void restore(@PathVariable Long id) {
         service.restore(id);
     }
 
     @RequestMapping(path = "/update/role/{id:\\d*}", method = PUT)
-    @RequiresRoles("ADMIN")
     @ResponseStatus(value = OK)
     public void changeRole(@PathVariable Long id) {
         service.changeRole(id);
@@ -174,7 +157,6 @@ public class PersonController {
     }
 
     @RequestMapping(path = "/get/{cardId}", method = GET)
-    @RequiresAuthentication
     @JsonView(PersonView.BasicLevel.class)
     public ResponseEntity find(@PathVariable long cardId) {
         Person person = service.find(cardId);

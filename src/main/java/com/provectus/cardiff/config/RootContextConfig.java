@@ -1,6 +1,5 @@
 package com.provectus.cardiff.config;
 
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +14,9 @@ import javax.persistence.EntityManagerFactory;
 @Configuration
 @ComponentScan({"com.provectus.cardiff.service"})
 public class RootContextConfig {
-    @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf, BasicDataSource dataSource) {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(emf);
-        transactionManager.setDataSource(dataSource);
-        return transactionManager;
+
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
 }

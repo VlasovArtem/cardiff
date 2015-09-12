@@ -34,20 +34,13 @@ app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($sco
     };
     $scope.login = function() {
         auth.authenticate($scope.person, function(error) {
-            errorFn(error);
+            $scope.error = error;
         });
-        $route.reload();
     };
     $scope.logout = function() {
         auth.clear();
     };
 
-    var errorFn = function(message) {
-        $scope.error = message;
-        $timeout(function() {
-            $scope.error = null;
-        }, 2000);
-    };
 }]);
 app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$timeout', function($scope, $location, personData, changePassword, $timeout) {
     $scope.person = personData;

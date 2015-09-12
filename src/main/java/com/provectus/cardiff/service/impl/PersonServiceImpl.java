@@ -59,7 +59,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void authentication() {
         if (!SecurityUtils.getSubject().isRemembered() && !SecurityUtils.getSubject().isAuthenticated() || !personRepository.exists((long) SecurityUtils.getSubject().getPrincipal())) {
-            throw new AuthenticationException("Person is no authenticated");
+            throw new AuthenticationException("Person is not authenticated");
         }
     }
 

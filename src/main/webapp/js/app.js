@@ -55,10 +55,12 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                                 });
                         }
                     },
-                    locations: function(Locations) {
-                        return Locations.query().$promise.then(function (data) {
-                            return data;
-                        })
+                    locations: function(Locations, auth) {
+                        if(auth.authenticated) {
+                            return Locations.query().$promise.then(function (data) {
+                                return data;
+                            })
+                        }
                     }
                 }
             }).
@@ -66,13 +68,17 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/person/admin-panel.html',
                 controller: 'AdminPersonsCtrl',
                 resolve: {
-                    persons: function(AdminPersons, $location) {
-                        return AdminPersons.get(
-                            function(data) {
-                                return data;
-                            }, function() {
-                                $location.path('/');
-                            })
+                    persons: function(AdminPersons, $location, auth) {
+                        if(auth.admin) {
+                            return AdminPersons.get(
+                                function (data) {
+                                    return data;
+                                }, function () {
+                                    $location.path('/');
+                                })
+                        } else {
+                            $location.path('/');
+                        }
                     }
                 }
             }).
@@ -118,15 +124,21 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 redirectTo: '/'
             })
     });
-app.run(['$rootScope', 'auth', function($root, auth) {
+app.run(['$rootScope', 'auth', '$location', function($root, auth, $location) {
+    auth.init('/', '/signin', '/logout');
     $root.$on('$routeChangeStart', function(event, next, current) {
+        var authenticatedRequiredPath = ['/account', '/account/update', '/admin/persons', '/card/add'];
         if(next) {
             if(_.isEqual(next.$$route.originalPath, '/')) {
                 $('body').addClass('background');
             } else {
                 $('body').removeClass('background');
             }
+            if(_.contains(authenticatedRequiredPath, next.$$route.originalPath)) {
+                if(!auth.authenticated) {
+                    $location.path('/')
+                }
+            }
         }
     });
-    auth.init('/', '/signin', '/logout')
 }]);
