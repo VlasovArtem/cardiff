@@ -58,7 +58,7 @@ app.directive('ensureUnique', ["$http", "$location", function($http, $location) 
                     if (toId) clearTimeout(toId);
                     if (!ctrl.$pristine) {
                         toId = setTimeout(function () {
-                            var attributeName = attr.name == "phone_number" ? "phone" : attr.name;
+                            var attributeName = attr.name == "phoneNumber" ? "phone" : attr.name;
                             if ($location.path() == '/account/update' && _.isEqual(scope.data[attributeName], value)) {
                                 ctrl.$setValidity('unique', true);
                             } else {
