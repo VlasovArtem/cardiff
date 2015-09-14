@@ -1,9 +1,9 @@
 package com.provectus.cardiff.config;
 
+import com.provectus.cardiff.config.security.SecurityConfig;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.filter.HttpPutFormContentFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -20,7 +20,7 @@ public class CardiffAppInitializer extends AbstractAnnotationConfigDispatcherSer
                 DevelopmentDataSourceConfig.class,
                 RootContextConfig.class,
                 AppConfig.class,
-                ShiroSecurityConfig.class};
+                SecurityConfig.class};
     }
 
     @Override
@@ -37,10 +37,8 @@ public class CardiffAppInitializer extends AbstractAnnotationConfigDispatcherSer
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
-        DelegatingFilterProxy delegatingFilterProxy = new DelegatingFilterProxy("shiroFilter");
-        delegatingFilterProxy.setTargetFilterLifecycle(true);
         return new Filter[] {
-                characterEncodingFilter, new HttpPutFormContentFilter(), delegatingFilterProxy
+                characterEncodingFilter, new HttpPutFormContentFilter()
         };
     }
 

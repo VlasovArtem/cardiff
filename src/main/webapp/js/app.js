@@ -68,9 +68,9 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/person/admin-panel.html',
                 controller: 'AdminPersonsCtrl',
                 resolve: {
-                    persons: function(AdminPersons, $location, auth) {
+                    persons: function(AdminPersonFactory, $location, auth) {
                         if(auth.admin) {
-                            return AdminPersons.get(
+                            return AdminPersonFactory.getAll(
                                 function (data) {
                                     return data;
                                 }, function () {
@@ -134,11 +134,13 @@ app.run(['$rootScope', 'auth', '$location', function($root, auth, $location) {
             } else {
                 $('body').removeClass('background');
             }
-            if(_.contains(authenticatedRequiredPath, next.$$route.originalPath)) {
-                if(!auth.authenticated) {
-                    $location.path('/')
-                }
-            }
+            //if(_.contains(authenticatedRequiredPath, next.$$route.originalPath)) {
+            //    console.log('Inside rerirect');
+            //    console.log(auth.authenticated);
+            //    if(!auth.authenticated) {
+            //        $location.path('/')
+            //    }
+            //}
         }
     });
 }]);

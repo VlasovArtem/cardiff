@@ -3,7 +3,6 @@ package com.provectus.cardiff.controller;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.service.TagService;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +28,6 @@ public class TagController {
     private TagService service;
 
     @RequestMapping(path = "/get", method = GET, produces = APPLICATION_JSON_VALUE)
-    //  @RequiresAuthentication
     public  ResponseEntity getTag( @RequestParam(required = false) Long id) {
         try {
             return ResponseEntity.ok(service.getTag(id));
@@ -39,7 +37,6 @@ public class TagController {
     }
 
     @RequestMapping(path = "/add", method = POST, consumes = APPLICATION_JSON_VALUE,  produces = APPLICATION_JSON_VALUE)
-    @RequiresAuthentication
     public ResponseEntity add(@RequestBody Tag tag) {
         try {
             service.addTag(tag);
@@ -54,7 +51,6 @@ public class TagController {
     }
 
     @RequestMapping(path = "/get/all", method = GET, produces = APPLICATION_JSON_VALUE)
-    @RequiresAuthentication
     public  ResponseEntity getAll() {
         return ResponseEntity.ok(service.findAll());
     }
