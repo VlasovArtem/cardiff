@@ -68,17 +68,13 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/person/admin-panel.html',
                 controller: 'AdminPersonsCtrl',
                 resolve: {
-                    persons: function(AdminPersons, $location, auth) {
-                        if(auth.admin) {
-                            return AdminPersons.get(
-                                function (data) {
-                                    return data;
-                                }, function () {
-                                    $location.path('/');
-                                })
-                        } else {
-                            $location.path('/');
-                        }
+                    persons: function(AdminPersonFactory) {
+                        return AdminPersonFactory.getAll();
+                    },
+                    admin: function(PersonFactory) {
+                        return PersonFactory.get({
+                            authorized: 'authorized',
+                            hasRole: 'ADMIN'});
                     }
                 }
             }).
@@ -101,6 +97,7 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 controller: 'DiscountCardInfoCtrl',
                 resolve: {
                     discountCardInfo: function(DiscountCardOwner, $sessionStorage, $location) {
+                        console.log($sessionStorage);
                         return DiscountCardOwner.get({cardId : $sessionStorage.cardId})
                             .$promise.then(
                             function (data) {
@@ -124,21 +121,18 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 redirectTo: '/'
             })
     });
-app.run(['$rootScope', 'auth', '$location', function($root, auth, $location) {
+app.run(['$rootScope', 'auth', function($root, auth) {
     auth.init('/', '/signin', '/logout');
     $root.$on('$routeChangeStart', function(event, next, current) {
-        var authenticatedRequiredPath = ['/account', '/account/update', '/admin/persons', '/card/add'];
         if(next) {
             if(_.isEqual(next.$$route.originalPath, '/')) {
                 $('body').addClass('background');
             } else {
                 $('body').removeClass('background');
             }
-            if(_.contains(authenticatedRequiredPath, next.$$route.originalPath)) {
-                if(!auth.authenticated) {
-                    $location.path('/')
-                }
-            }
         }
+    });
+    $root.$on('$viewContentLoaded', function(event){
+        $('.footer').fadeIn(500);
     });
 }]);

@@ -96,7 +96,8 @@
                    placeholder="Input your tag"/>
             <input class="col-md-offset-1 col-md-3 btn btn-success" type="button" value="Add new"
                    ng-click="addCustomTag()" ng-disabled="add.customTag.$invalid || add.customTag.$modelValue == null"/>
-            <small class="hint">You can add multiple custom tags by separating them with , or multiple spaces</small>
+            <small class="hint col-md-12">You can add multiple custom tags by separating them with , or multiple
+                spaces</small>
         </div>
         <div class="form-group buttons">
             <input type="button" class="btn btn-success btn-lg" value="Add" ng-disabled="add.$invalid" ng-click="addNewCard()"/>

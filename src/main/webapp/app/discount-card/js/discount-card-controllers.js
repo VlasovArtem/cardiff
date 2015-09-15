@@ -45,7 +45,7 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
     }
 }]);
 
-app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'CardsCtrl', '$filter', function ($scope, $location, discountCards, CardsCtrl, $filter) {
+app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'CardsCtrl', '$filter', '$sessionStorage', function ($scope, $location, discountCards, CardsCtrl, $filter, $sessionStorage) {
     discountCards.$promise.then(function (data) {
         $scope.discountCards = data.content;
         $scope.totalItems = data.total_elements;
@@ -65,6 +65,11 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Ca
         {name: 'Expired', property: 'expired_date', width: '10%'},
         {name: 'Available', property: 'available', width: '10%'}
     ];
+
+    $scope.findDiscountCard = function(discountCardId) {
+        $sessionStorage.cardId = discountCardId;
+        $location.path('/card/info');
+    };
 
     $scope.getData = function (pageable) {
         CardsCtrl.get(pageable).$promise.then(function (data) {
@@ -88,9 +93,7 @@ app.controller('SearchCtrl', ['$scope', 'DiscountCardSearchFactory', '$sessionSt
     $scope.ENTER_BUTTON = 13;
     $scope.searchData = {};
     $scope.search = function() {
-        $scope.$storage = $sessionStorage.$default({
-            cardId: $scope.searchData.selected[0]
-        });
+        $sessionStorage.cardId = $scope.searchData.selected[0];
         $location.path('/card/info');
     };
     $scope.refreshData = function(data) {

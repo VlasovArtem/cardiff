@@ -1,12 +1,12 @@
 package com.provectus.cardiff.utils.exception.handler;
 
 import com.provectus.cardiff.utils.exception.EntityValidationException;
+import com.provectus.cardiff.utils.exception.PersonAuthenticationException;
+import com.provectus.cardiff.utils.exception.PersonAuthorizationException;
 import com.provectus.cardiff.utils.exception.PersonDataUniqueException;
 import com.provectus.cardiff.utils.exception.PersonLoginException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import com.provectus.cardiff.utils.exception.PersonUpdateException;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authz.AuthorizationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,12 +24,12 @@ public class PersonControllerExceptionHandler {
         return ResponseEntity.status(CONFLICT).build();
     }
 
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler(PersonAuthenticationException.class)
     public ResponseEntity authenticationHandler(Exception ex) {
         return create(FORBIDDEN, ex.getMessage());
     }
 
-    @ExceptionHandler(AuthorizationException.class)
+    @ExceptionHandler(PersonAuthorizationException.class)
     public ResponseEntity authorizationHandler() {
         return create(UNAUTHORIZED, "Person has no permission");
     }

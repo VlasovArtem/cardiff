@@ -1,16 +1,15 @@
 package com.provectus.cardiff.service.impl;
 
 import com.provectus.cardiff.entities.DiscountCard;
-import com.provectus.cardiff.entities.Person;
-import com.provectus.cardiff.enums.PersonRole;
+import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
+import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
+import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import com.provectus.cardiff.utils.validator.DiscountCardValidator;
 import com.provectus.cardiff.utils.validator.TagValidator;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -31,6 +31,8 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     @Autowired
     private DiscountCardRepository discountCardRepository;
     @Autowired
+    private TagRepository tagRepository;
+    @Autowired
     private PersonRepository personRepository;
 
     @Override
@@ -43,13 +45,18 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         }
         DiscountCardValidator.validate(card);
         card.getTags().stream().forEach(TagValidator::validate);
-        card.setOwner(personRepository.findById((long) SecurityUtils.getSubject().getPrincipal()));
+        card.setAvailable(true);
+        Set<Tag> persistedTags = new HashSet<>(card.getTags().size());
+        card.getTags().stream().forEach(t -> {
+            if(t.getId() > 0) {
+                persistedTags.add(t);
+            } else {
+                persistedTags.add(tagRepository.save(t));
+            }
+        });
+        card.setTags(persistedTags);
+        card.setOwner(personRepository.findById(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()));
         discountCardRepository.save(card);
-//        discountCardRepository.save(card);
-//        Person person = personRepository.findById((long) SecurityUtils.getSubject().getPrincipal());
-//        List<DiscountCard> discountCards = person.getDiscountCards();
-//        discountCards.add(card);
-//        person.setDiscountCards(discountCards);
     }
 
     @Override
@@ -69,11 +76,6 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public void delete (DiscountCard card) {
-        Person person=(Person) SecurityUtils.getSubject().getPrincipal();
-        if (!SecurityUtils.getSubject().hasRole(PersonRole.ADMIN.name())||person.getDiscountCards().contains(discountCardRepository.findById(card.getId())))
-        {
-            throw new AuthenticationException("Person has no permission");
-        }
         card.setDeleted(true);
     }
     @Override
@@ -82,13 +84,13 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
-    public DiscountCard findAvailable(long id) {
+    public Optional<DiscountCard> findAvailable(long id) {
         return discountCardRepository.findByIdAndAvailableTrue(id);
     }
 
     @Override
     public Optional<DiscountCard> search (long cardNumber) {
-        return discountCardRepository.findByCardNumber(cardNumber);
+        return discountCardRepository.findByCardNumberAndAvailableTrue(cardNumber);
     }
 
     @Override

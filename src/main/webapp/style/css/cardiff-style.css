@@ -10,12 +10,12 @@ html, body {
     -o-background-size: cover;
 }
 .view {
-    min-height: 100%;
     height: auto;
     margin: 0 auto -200px;
     padding: 0 0 300px
 }
 footer {
+    display: none;
     margin: 50px 0 0 0;
     height: 300px;
     background-color: #5A778F;
@@ -263,7 +263,7 @@ hr.style {
 .custom-tag small {
     padding-bottom: 5px;
     color: lightgrey;
-    text-align: center;
+    text-align: left;
     font-style: italic;
 }
 #add-discount-card .buttons {

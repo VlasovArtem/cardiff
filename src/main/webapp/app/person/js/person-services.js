@@ -46,8 +46,7 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 function() {
                     PersonFactory.get({
                             authorized: 'authorized',
-                            hasRole: 'ADMIN'
-                        },
+                            hasRole: 'ADMIN'},
                         function() {auth.admin = true;},
                         function() {auth.admin = false;});
                     auth.authenticated = true;
@@ -69,9 +68,9 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 auth.authentication();
                 $location.path(auth.homePath);
                 $route.reload();
-            }, function(data) {
+            }, function() {
                 auth.authenticated = false;
-                callback && callback(data.data.error);
+                callback && callback("You have an error in email, login, password or person deleted.");
             })
         },
         clear: function() {
@@ -100,31 +99,15 @@ service.factory('changePassword', ['$resource', function($resource) {
         }
     });
 }]);
-service.factory('updatePerson', ['$resource', function($resource) {
-    return $resource('/rest/person/update', {}, {
-        updatePerson: {
-            method: 'PUT',
-            isArray: false
-        }
-    })
-}]);
-service.factory('AdminPersons', ['$resource', function($resource) {
-    return $resource('/rest/person/admin');
-}]);
-service.factory('AdminRemovePerson', ['$resource', function($resource) {
-    return $resource('/rest/person/delete/:id', {
-        id: '@id'
-    })
-}]);
-service.factory('PersonFactory', ['$resource', function($resource) {
-    return $resource('/rest/person/:delete/:get/:authorized/:cardId/:restore/:update/:role/:id', {
-        delete: '@delete',
+
+service.factory('AdminPersonFactory', ['$resource', function($resource) {
+    return $resource('/rest/person/admin/:get/:all/:delete/:update/:role/:restore/:id', {
         get: '@get',
-        authorized: '@authorized',
-        cardId: '@cardId',
-        restore: '@restore',
+        all: '@all',
+        delete: '@delete',
         update: '@update',
         role: '@role',
+        restore: '@restore',
         id: '@id'
     }, {
         restore: {
@@ -139,6 +122,29 @@ service.factory('PersonFactory', ['$resource', function($resource) {
                 update: 'update',
                 role: 'role'
             }
+        },
+        getAll: {
+            method: 'GET',
+            params: {
+                get: 'get',
+                all: 'all'
+            }
+        }
+    })
+}]);
+
+service.factory('PersonFactory', ['$resource', function($resource) {
+    return $resource('/rest/person/:update/:delete/:get/:authorized/:cardId/:id', {
+        update: '@update',
+        delete: '@delete',
+        get: '@get',
+        authorized: '@authorized',
+        cardId: '@cardId',
+        id: '@id'
+    }, {
+        updatePerson: {
+            method: 'PUT',
+            isArray: false
         }
     })
 }]);

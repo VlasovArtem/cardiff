@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.utils.view.DiscountCardView;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,7 +35,6 @@ public class DiscountCardController {
     private DiscountCardService service;
 
     @RequestMapping(path = "/add", method = POST, consumes = APPLICATION_JSON_VALUE)
-    @RequiresAuthentication
     @ResponseStatus(OK)
     public void add(@RequestBody DiscountCard card) {
         service.add(card);
@@ -55,15 +51,12 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/update", method = PUT)
-    @RequiresAuthentication
-    @RequiresRoles(value = {"ADMIN", "USER"}, logical = Logical.OR)
     @ResponseStatus(value = OK)
     public  void update(@RequestBody DiscountCard card) {
         service.update(card);
     }
 
     @RequestMapping(path = "/delete", method = DELETE, produces = APPLICATION_JSON_VALUE)
-    @RequiresAuthentication
     public  void delete(@RequestBody DiscountCard card) {
         service.delete(card);
     }
@@ -80,7 +73,7 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/get/by/name", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
-    public ResponseEntity getByName(@RequestParam(required = true, name = "company_name") String companyName) {
+    public ResponseEntity getByName(@RequestParam(required = true, value = "company_name") String companyName) {
         Optional<List<DiscountCard>> discountCards = service.search(companyName);
         if(discountCards.isPresent()) {
             return ResponseEntity.ok(discountCards.get());
@@ -89,7 +82,6 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/get/all", method = GET)
-    @RequiresRoles("ADMIN")
     @JsonView(DiscountCardView.BasicLevel.class)
     @ResponseStatus(value = OK)
     public Page<DiscountCard> getAll(@RequestParam(defaultValue = "0", required = false) int page,
@@ -99,10 +91,14 @@ public class DiscountCardController {
         return service.getAll(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
-    @RequestMapping(path = "/get/{cardId}/available", method = GET)
+    @RequestMapping(path = "/get/{cardId}/available", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public Object findAvailable(@PathVariable long cardId) {
-        return service.findAvailable(cardId);
+    public ResponseEntity findAvailable(@PathVariable long cardId) {
+        Optional<DiscountCard> dc = service.findAvailable(cardId);
+        if(!dc.isPresent()) {
+            return ResponseEntity.status(NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(dc.get());
     }
 
 }
