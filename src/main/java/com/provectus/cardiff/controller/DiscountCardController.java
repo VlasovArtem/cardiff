@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,6 @@ import java.util.Set;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.security.access.vote.AuthenticatedVoter.IS_AUTHENTICATED_FULLY;
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 /**
@@ -38,7 +36,6 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/add", method = POST, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    @Secured({"ADMIN", "USER"})
     public void add(@RequestBody DiscountCard card) {
         service.add(card);
     }
@@ -55,13 +52,11 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/update", method = PUT)
     @ResponseStatus(value = OK)
-    @Secured(IS_AUTHENTICATED_FULLY)
     public  void update(@RequestBody DiscountCard card) {
         service.update(card);
     }
 
     @RequestMapping(path = "/delete", method = DELETE, produces = APPLICATION_JSON_VALUE)
-    @Secured("ADMIN")
     public  void delete(@RequestBody DiscountCard card) {
         service.delete(card);
     }
@@ -96,10 +91,14 @@ public class DiscountCardController {
         return service.getAll(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
-    @RequestMapping(path = "/get/{cardId}/available", method = GET)
+    @RequestMapping(path = "/get/{cardId}/available", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public Object findAvailable(@PathVariable long cardId) {
-        return service.findAvailable(cardId);
+    public ResponseEntity findAvailable(@PathVariable long cardId) {
+        Optional<DiscountCard> dc = service.findAvailable(cardId);
+        if(!dc.isPresent()) {
+            return ResponseEntity.status(NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(dc.get());
     }
 
 }

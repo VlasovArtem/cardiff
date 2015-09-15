@@ -13,8 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.vote.AuthenticatedVoter;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,7 +60,6 @@ public class PersonController {
      */
     @RequestMapping(path = "/authentication", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(value = OK)
-    @Secured(AuthenticatedVoter.IS_AUTHENTICATED_FULLY)
     public void authentication() {
         service.authentication();
     }
@@ -73,13 +70,11 @@ public class PersonController {
      */
     @RequestMapping(path = "/authenticated", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(PersonView.DiscountCardsLevel.class)
-    @Secured(AuthenticatedVoter.IS_AUTHENTICATED_FULLY)
     public ResponseEntity authenticated() {
         return ResponseEntity.ok(service.authenticated());
     }
 
     @RequestMapping(path = "/logout", method = GET)
-    @Secured(AuthenticatedVoter.IS_AUTHENTICATED_FULLY)
     public void logout() {}
 
     @RequestMapping(path = "/password/update",
@@ -87,10 +82,9 @@ public class PersonController {
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
     @ExceptionHandler(IllegalArgumentException.class)
-    @Secured(AuthenticatedVoter.IS_AUTHENTICATED_FULLY)
     public ResponseEntity changePassword(@RequestParam String oldPassword,
                                          @RequestParam String newPassword, Exception ex) {
-        if(ex != null) {
+        if(ex != null && ex.getMessage() != null) {
             return create(FORBIDDEN, ex.getMessage());
         }
         service.changePassword(oldPassword, newPassword);
@@ -98,15 +92,15 @@ public class PersonController {
     }
 
     @RequestMapping(path = "/admin/delete/{id:\\d*}", method = DELETE)
-    @ResponseStatus(value = OK)
-    @Secured("ADMIN")
-    public void delete(@PathVariable Long id, HttpServletRequest request) {
-        service.delete(id, request);
+    public ResponseEntity delete(@PathVariable Long id, HttpServletRequest request) {
+        if(service.delete(id, request)) {
+            return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("info", "Deleted current user"));
+        }
+        return ResponseEntity.status(OK).build();
     }
 
     @RequestMapping(path = "/update", method = PUT)
     @ResponseStatus(value = OK)
-    @Secured(AuthenticatedVoter.IS_AUTHENTICATED_FULLY)
     public void update(@RequestBody Person person) {
         service.update(person);
     }
@@ -122,7 +116,6 @@ public class PersonController {
     }
 
     @RequestMapping(path = "/authorized", method = GET)
-    @Secured(AuthenticatedVoter.IS_AUTHENTICATED_FULLY)
     public ResponseEntity personAuthorized(@RequestParam String hasRole) {
         if(!service.authorized(PersonRole.valueOf(hasRole))) {
             return ResponseEntity.status(FORBIDDEN).build();
@@ -132,14 +125,12 @@ public class PersonController {
 
     @RequestMapping(path = "/admin/restore/{id:\\d*}", method = PUT)
     @ResponseStatus(value = OK)
-    @Secured("ADMIN")
     public void restore(@PathVariable Long id) {
         service.restore(id);
     }
 
     @RequestMapping(path = "/admin/update/role/{id:\\d*}", method = PUT)
     @ResponseStatus(value = OK)
-    @Secured("ADMIN")
     public void changeRole(@PathVariable Long id) {
         service.changeRole(id);
     }
@@ -164,7 +155,6 @@ public class PersonController {
 
     @RequestMapping(path = "/get/{cardId}", method = GET)
     @JsonView(PersonView.BasicLevel.class)
-    @Secured(AuthenticatedVoter.IS_AUTHENTICATED_FULLY)
     public ResponseEntity find(@PathVariable long cardId) {
         Person person = service.find(cardId);
         if (person == null) {

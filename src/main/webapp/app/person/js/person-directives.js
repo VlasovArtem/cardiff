@@ -53,7 +53,7 @@ app.directive('ensureUnique', ["$http", "$location", function($http, $location) 
         require: 'ngModel',
         link: function(scope, elem, attr, ctrl) {
             scope.$watch(attr.ngModel, function(value, oldValue) {
-                if(!_.isEqual(value, oldValue) && value != oldValue) {
+                if(!_.isEqual(value, oldValue) && value != oldValue && !_.isUndefined(value) && value != 0 && value != "") {
                     ctrl.$setValidity('unique', null);
                     if (toId) clearTimeout(toId);
                     if (!ctrl.$pristine) {
@@ -156,6 +156,15 @@ app.directive('entitySorting', function($filter) {
                     return ''
                 }
             };
+        }
+    }
+});
+app.directive('windowHeight', function() {
+    return {
+        restrict: 'A',
+        compile: function(element, attr) {
+            var navBarHeight = 50;
+            element.css('min-height', window.outerHeight - navBarHeight);
         }
     }
 });

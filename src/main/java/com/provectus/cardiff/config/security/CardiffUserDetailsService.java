@@ -26,9 +26,9 @@ public class CardiffUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Person person = personRepository.findByEmailOrLogin(username, username);
+        Person person = personRepository.findByEmailOrLoginAndDeleted(username, username, false);
         if(person == null) {
-            throw new UsernameNotFoundException("Person with login data is not found");
+            throw new UsernameNotFoundException("Person with login data is not found or was deleted");
         }
         Set<GrantedAuthority> authorities = new HashSet<>(PROJECT_AUTHORITIES_COUNT);
         if(PersonRole.ADMIN.equals(person.getRole())) {

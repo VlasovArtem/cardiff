@@ -15,7 +15,7 @@
                 <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
             </li>
         </ul>
-        <div class="col-md-12 buttons">
+        <div class="col-md-12 buttons" ng-hide="true">
             <input type="button" value="Book" class="btn btn-primary"/>
             <input type="button" value="Pick" class="btn btn-success"/>
         </div>
@@ -49,7 +49,7 @@
     </article>
 </section>
 <hr class="style"/>
-<section id="comments">
+<section id="comments" ng-show="cardInfo.discount_card_comments.length > 0">
     <h2>Comments</h2>
     <div class="container">
         <div class="col-md-3 comment" ng-repeat="comment in cardInfo.discount_card_comments">

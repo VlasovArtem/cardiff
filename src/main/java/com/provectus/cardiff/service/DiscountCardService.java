@@ -22,7 +22,7 @@ public interface DiscountCardService {
 
     DiscountCard getCard (long id);
 
-    DiscountCard findAvailable(long id);
+    Optional<DiscountCard> findAvailable(long id);
 
     Optional<List<DiscountCard>> search (Set<String> tags);
 

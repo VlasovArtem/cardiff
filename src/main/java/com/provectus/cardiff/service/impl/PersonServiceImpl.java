@@ -15,7 +15,6 @@ import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -45,10 +44,7 @@ public class PersonServiceImpl implements PersonService {
      * otherwise throw Authentication exception
      */
     @Override
-    public void authentication() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication);
-    }
+    public void authentication() {}
 
     /**
      * Check if current subject is successfully login and person with authenticated credentials (id) is exists in
@@ -64,21 +60,25 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void delete(long id, HttpServletRequest servletRequest) {
+    public boolean delete(long id, HttpServletRequest servletRequest) {
         Person person = personRepository.findById(id);
         if(person != null) {
             person.setDeleted(true);
-            try {
-                servletRequest.logout();
-            } catch (ServletException e) {
-                e.printStackTrace();
+            if(person.getId() == AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()) {
+                try {
+                    servletRequest.logout();
+                } catch (ServletException e) {
+                    e.printStackTrace();
+                }
+                return true;
             }
         }
+        return false;
     }
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        if(validate(newPassword, PersonValidationInfo.PASSWORD.getPattern())) {
+        if(!validate(newPassword, PersonValidationInfo.PASSWORD.getPattern())) {
             throw new EntityValidationException(PersonValidationInfo.PASSWORD.getError());
         }
         Person user = personRepository.findById(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId());

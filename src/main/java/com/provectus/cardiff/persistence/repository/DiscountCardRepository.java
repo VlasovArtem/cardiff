@@ -17,9 +17,9 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
     DiscountCard findById(long id);
 
     @EntityGraph(value = "DiscountCard.discountCardInfo", type = EntityGraph.EntityGraphType.LOAD)
-    DiscountCard findByIdAndAvailableTrue(long id);
+    Optional<DiscountCard> findByIdAndAvailableTrue(long id);
 
-    Optional<DiscountCard> findByCardNumber(long cardNumber);
+    Optional<DiscountCard> findByCardNumberAndAvailableTrue(long cardNumber);
 
     @Query("select d.id, d.companyName, d.amountOfDiscount from DiscountCard d where lower(d.companyName) LIKE %?1%")
     Optional<List<DiscountCard>> findByCompanyName(String companyName);

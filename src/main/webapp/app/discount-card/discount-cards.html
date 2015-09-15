@@ -14,8 +14,7 @@
             <tr ng-repeat="(dcIndex, discountCard) in discountCards" class="data">
                 <td ng-bind="dcIndex + 1"></td>
                 <td ng-repeat="(dIndex, data) in head" ng-bind="setData(dIndex, dcIndex)"></td>
-
-                <td></td>
+                <td><input type="button" class="btn btn-success btn-sm" value="Show" ng-click="findDiscountCard(discountCard.id)"/></td>
             </tr>
         </table>
         <div class="row">

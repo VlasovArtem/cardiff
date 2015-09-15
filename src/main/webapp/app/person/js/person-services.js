@@ -46,8 +46,7 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 function() {
                     PersonFactory.get({
                             authorized: 'authorized',
-                            hasRole: 'ADMIN'
-                        },
+                            hasRole: 'ADMIN'},
                         function() {auth.admin = true;},
                         function() {auth.admin = false;});
                     auth.authenticated = true;
@@ -69,9 +68,9 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
                 auth.authentication();
                 $location.path(auth.homePath);
                 $route.reload();
-            }, function(data) {
+            }, function() {
                 auth.authenticated = false;
-                callback && callback(data.data.error);
+                callback && callback("You have an error in email, login, password or person deleted.");
             })
         },
         clear: function() {

@@ -17,7 +17,7 @@ public interface PersonService {
 
     void authentication();
     Person authenticated();
-    void delete(long id, HttpServletRequest request);
+    boolean delete(long id, HttpServletRequest request);
     void changePassword(String oldPassword, String newPassword);
     void registration(Person user);
     void update(Person src);

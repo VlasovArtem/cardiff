@@ -34,7 +34,10 @@ app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($sco
     };
     $scope.login = function() {
         auth.authenticate($scope.person, function(error) {
-            $scope.error = error;
+            if(error) {
+                $scope.error = error;
+                $scope.person.password = null;
+            }
         });
     };
     $scope.logout = function() {
@@ -65,9 +68,6 @@ app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassw
     $scope.errorFn = function(message) {
         $scope.error = message;
         $scope.data = null;
-        $timeout(function() {
-            $scope.error = null;
-        }, 2000);
     };
     $scope.changeData = function() {
         $location.path('/account/update')
@@ -86,7 +86,7 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
         return true;
     };
     $scope.update = function() {
-        updatePerson.updatePerson($scope.changedPerson,
+        PersonFactory.updatePerson($scope.changedPerson,
             function() {
                 alert('Person data successfully changed');
                 if($scope.data.$resolved) {
@@ -124,7 +124,13 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
             {name : 'Deleted', property: 'deleted', width: '7%'}
         ];
         $scope.removePerson = function(id) {
-            AdminPersonFactory.remove({delete: 'delete', id : id}, function() {$route.reload()});
+            AdminPersonFactory.remove({delete: 'delete', id : id},
+                function(data) {
+                    if(data.info) {
+                        $location.path('/');
+                    }
+                    $route.reload()
+                });
         };
         $scope.editPerson = function(person) {
             UpdatePerson.setPerson(person);

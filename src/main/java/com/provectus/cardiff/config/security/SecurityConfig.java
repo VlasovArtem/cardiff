@@ -76,14 +76,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/logout", "/signin", "/signup", "/cards", "/card/info").permitAll()
-                    .antMatchers("/account/update", "/account", "/card/add").hasAnyAuthority("USER", "ADMIN")
-//                    .antMatchers("/admin/persons", "/rest/person/admin/**").hasAuthority("ADMIN")
-                    .anyRequest().authenticated()
+                    .antMatchers("/", "/logout", "/signin", "/signup", "/cards", "/card/info",
+                            "/rest/location/**", "/rest/card/get/**", "/rest/person/check/**",
+                            "/rest/person/registration")
+                        .permitAll()
+                    .antMatchers("/account/update", "/account", "/card/add", "/rest/card/**")
+                        .hasAnyAuthority("USER", "ADMIN")
+                    .antMatchers("/admin/persons", "/rest/person/admin/**", "/rest/card/delete")
+                        .hasAuthority("ADMIN")
+                    .anyRequest()
+                        .authenticated()
                 .and()
                     .formLogin().loginPage("/signin").loginProcessingUrl("/rest/person/login")
-                    .passwordParameter("password").usernameParameter("loginData")
-                    .defaultSuccessUrl("/").failureUrl("/signin").permitAll()
+                    .passwordParameter("password").failureHandler(new SimpleUrlAuthenticationFailureHandler()).usernameParameter("loginData").permitAll()
                 .and()
                     .logout().logoutUrl("/rest/person/logout").logoutSuccessUrl("/");
     }
