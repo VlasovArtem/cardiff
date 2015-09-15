@@ -59,11 +59,8 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
             )
         },
         authenticate: function(credentials, callback) {
-            Login.login($.param({
-                loginData: credentials.loginData,
-                password: credentials.password,
-                rememberMe: credentials.rememberMe ? credentials.rememberMe : false
-            }), function() {
+            console.log(credentials);
+            Login.login($.param(credentials), function() {
                 auth.authenticated = true;
                 auth.authentication();
                 $location.path(auth.homePath);

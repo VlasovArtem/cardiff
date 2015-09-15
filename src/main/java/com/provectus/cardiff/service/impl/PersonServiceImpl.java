@@ -40,13 +40,6 @@ public class PersonServiceImpl implements PersonService {
     private LocationService locationService;
 
     /**
-     * Check current subject is authenticated, remembered and person that authenticated is exists in database
-     * otherwise throw Authentication exception
-     */
-    @Override
-    public void authentication() {}
-
-    /**
      * Check if current subject is successfully login and person with authenticated credentials (id) is exists in
      * database
      * @return Person that successfully authenticated in application.

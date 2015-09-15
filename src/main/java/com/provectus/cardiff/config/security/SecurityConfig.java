@@ -16,7 +16,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import javax.sql.DataSource;
 import java.util.Collections;
 
 /**
@@ -25,8 +28,11 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
-@ComponentScan("com.provectus.cardiff.config.security")
+@ComponentScan("com.provectus.cardiff.config")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
 
     @Autowired
     @Qualifier("daoAuthenticationProvider")
@@ -62,6 +68,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new SimpleUrlAuthenticationFailureHandler();
     }
 
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
+        db.setDataSource(dataSource);
+        return db;
+    }
+
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -78,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/", "/logout", "/signin", "/signup", "/cards", "/card/info",
                             "/rest/location/**", "/rest/card/get/**", "/rest/person/check/**",
-                            "/rest/person/registration")
+                            "/rest/person/registration", "/rest/person/login")
                         .permitAll()
                     .antMatchers("/account/update", "/account", "/card/add", "/rest/card/**")
                         .hasAnyAuthority("USER", "ADMIN")
@@ -91,5 +104,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .passwordParameter("password").failureHandler(new SimpleUrlAuthenticationFailureHandler()).usernameParameter("loginData").permitAll()
                 .and()
                     .logout().logoutUrl("/rest/person/logout").logoutSuccessUrl("/");
+//                .and()
+//                    .rememberMe().tokenValiditySeconds(604800).rememberMeParameter("rememberMe")
+//                    .tokenRepository(persistentTokenRepository());
     }
 }

@@ -45,7 +45,7 @@ public class PersonController {
     @ResponseStatus(value = OK)
     public void login(@RequestParam String loginData,
                       @RequestParam String password,
-                      @RequestParam(defaultValue = "false") boolean rememberMe) {}
+                      @RequestParam(required = false) boolean rememberMe) {}
 
     @RequestMapping(path = "/registration", method = POST, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity registration(@RequestBody Person person) {
@@ -60,9 +60,7 @@ public class PersonController {
      */
     @RequestMapping(path = "/authentication", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(value = OK)
-    public void authentication() {
-        service.authentication();
-    }
+    public void authentication() {}
 
     /**
      * Find authenticated person

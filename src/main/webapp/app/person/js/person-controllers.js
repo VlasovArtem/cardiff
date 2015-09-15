@@ -5,8 +5,7 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
             function() {
                 $scope.login = {
                     loginData: $scope.person.email,
-                    password: $scope.person.password,
-                    rememberMe: false
+                    password: $scope.person.password
                 };
                 auth.authenticate($scope.login, function(error) {
                     $scope.error = error;
