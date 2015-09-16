@@ -5,7 +5,6 @@ import com.provectus.cardiff.utils.exception.EntityValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
 import java.util.Random;
 
 import static com.provectus.cardiff.utils.validator.DiscountCardValidator.validate;
@@ -22,7 +21,6 @@ public class DiscountCardValidatorTest {
         discountCard = new DiscountCard();
         discountCard.setDescription("Discount card description");
         discountCard.setAmountOfDiscount(10);
-        discountCard.setExpiredDate(LocalDateTime.now().plusYears(1));
         discountCard.setCardNumber(325);
         discountCard.setCompanyName("Famous Pizza");
     }
@@ -46,12 +44,6 @@ public class DiscountCardValidatorTest {
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidCardNumberGreaterThanMaxLengthTest() {
         discountCard.setCardNumber(25635698563475211l);
-        validate(discountCard);
-    }
-
-    @Test(expected = EntityValidationException.class)
-    public void validateWithInvalidExpiredDateTest() {
-        discountCard.setExpiredDate(LocalDateTime.now().minusDays(1));
         validate(discountCard);
     }
 

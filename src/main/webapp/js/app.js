@@ -1,5 +1,5 @@
 var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
-    'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select',
+    'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select', 'nathankot.angular-salvattore',
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives']).config(
     function($routeProvider, $locationProvider) {

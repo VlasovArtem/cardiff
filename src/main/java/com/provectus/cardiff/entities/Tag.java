@@ -1,5 +1,7 @@
 package com.provectus.cardiff.entities;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,11 +14,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tag")
+@Access(AccessType.PROPERTY)
 public class Tag {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(length = 30, unique = true, nullable = false)
     private String tag;
 
     public Tag() {
@@ -26,6 +26,8 @@ public class Tag {
         this.tag = tag;
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long getId() {
     return id;
 }
@@ -34,6 +36,7 @@ public class Tag {
         this.id = id;
     }
 
+    @Column(length = 30, unique = true, nullable = false)
     public String getTag() {
         return tag;
     }

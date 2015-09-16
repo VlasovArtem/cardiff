@@ -1,5 +1,7 @@
 package com.provectus.cardiff.entities;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +14,8 @@ import javax.persistence.Table;
 @Table(name = "discount_card_comment")
 @AttributeOverride(name = "createdDate", column = @Column(name = "comment_date", insertable = false, updatable =
         false))
+@Access(AccessType.PROPERTY)
 public class DiscountCardComment extends BaseEntity{
-    @Column(name = "comment_text", length = 500, nullable = false)
     private String comment;
 
     public DiscountCardComment() {}
@@ -22,6 +24,7 @@ public class DiscountCardComment extends BaseEntity{
         this.comment = comment;
     }
 
+    @Column(name = "comment_text", length = 500, nullable = false)
     public String getComment() {
         return comment;
     }

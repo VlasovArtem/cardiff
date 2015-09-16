@@ -45,7 +45,7 @@ public class CardiffAppInitializer extends AbstractAnnotationConfigDispatcherSer
     @Override
     protected WebApplicationContext createRootApplicationContext() {
         WebApplicationContext context = super.createRootApplicationContext();
-        ((ConfigurableEnvironment) context.getEnvironment()).setActiveProfiles("production");
+        ((ConfigurableEnvironment) context.getEnvironment()).setActiveProfiles("development");
         return context;
     }
 }

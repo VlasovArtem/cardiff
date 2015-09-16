@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -52,8 +51,6 @@ public class DiscountCardValidator extends EntityValidator {
         switch (info) {
             case CARD_NUMBER:
                 return validate(String.valueOf(discountCard.getCardNumber()), info.getPattern());
-            case EXPIRED_DATE:
-                return LocalDateTime.now().isBefore(discountCard.getExpiredDate());
             case COMPANY_NAME:
                 return validate(discountCard.getCompanyName(), info.getPattern());
             case AMOUNT_OF_DISCOUNT:
@@ -73,8 +70,6 @@ public class DiscountCardValidator extends EntityValidator {
     public enum DiscountCardValidationInfo {
         CARD_NUMBER("Card number is required, should contains numbers, max - 16 and min - 1",
                 "^[1-9][0-9]{0,15}$"),
-        EXPIRED_DATE("Expire date cannot be less than current time",
-                null),
         COMPANY_NAME("Company name is requires and max length is 50",
                 "^.{1,50}$"),
         AMOUNT_OF_DISCOUNT("Amount of discount should be from 1 - 100",

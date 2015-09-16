@@ -14,12 +14,9 @@ import java.util.Set;
  */
 public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long> {
     @EntityGraph(value = "DiscountCard.discountCardInfo", type = EntityGraph.EntityGraphType.LOAD)
-    DiscountCard findById(long id);
+    Optional<DiscountCard> findById(long id);
 
-    @EntityGraph(value = "DiscountCard.discountCardInfo", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<DiscountCard> findByIdAndAvailableTrue(long id);
-
-    Optional<DiscountCard> findByCardNumberAndAvailableTrue(long cardNumber);
+    Optional<DiscountCard> findByCardNumber(long cardNumber);
 
     @Query("select d.id, d.companyName, d.amountOfDiscount from DiscountCard d where lower(d.companyName) LIKE %?1%")
     Optional<List<DiscountCard>> findByCompanyName(String companyName);

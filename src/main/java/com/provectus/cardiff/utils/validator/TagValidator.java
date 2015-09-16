@@ -13,7 +13,7 @@ import java.util.Optional;
 public class TagValidator extends EntityValidator {
     private final static String ERROR = "Tag is required, min length - 3, max length - 30 and should contains only " +
             "characters from a-z";
-    private final static String PATTERN = "^[A-Za-z]{3,30}$";
+    private final static String PATTERN = "^[A-Za-z -]{3,30}$";
 
     /**
      * Validate {@code Tag}

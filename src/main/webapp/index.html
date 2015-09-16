@@ -28,17 +28,20 @@
     <script src="app/discount-card/js/discount-card-services.js"></script>
     <script src="app/discount-card/js/discount-card-directives.js"></script>
     <script src="js/app.js"></script>
-    <script>
-        var test = function() {
-            var navBarHeight = 50;
-            $('div.view').css('min-height', window.outerHeight - navBarHeight);
-        };
-        test();
-    </script>
+    <style>
+        [ng:cloak],
+        [ng-cloak],
+        [data-ng-cloak],
+        [x-ng-cloak],
+        .ng-cloak,
+        .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
 </head>
 <body ng-cloak class="ng-cloak">
 <h1 class="hide">Cardiff Application</h1>
-<nav class="navbar navbar-default navbar-cardiff" ng-controller="NavCtrl">
+<nav class="navbar navbar-default navbar-cardiff ng-cloak" ng-controller="NavCtrl">
     <h2 class="hide">Cardiff Navigation</h2>
     <div class="container-fluid">
         <div class="navbar-header">
@@ -54,13 +57,13 @@
             </button>
             <a class="navbar-brand" href="/">Home</a>
         </div>
-        <div class="collapse navbar-collapse" id="navbar-collapse">
-            <ul class="nav navbar-nav navbar-right" ng-show="!authenticated()">
+        <div class="collapse navbar-collapse" id="navbar-collapse" ng-if="auth.authenticated != undefined">
+            <ul class="nav navbar-nav navbar-right" ng-hide="auth.authenticated">
                 <li><a href="/signin">Sign in</a></li>
                 <li><a href="/signup">Sign up</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-show="authenticated()">
-                <li class="dropdown" ng-show="adminPermission()">
+            <ul class="nav navbar-nav" ng-show="auth.authenticated">
+                <li class="dropdown" ng-show="auth.admin">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Admin <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -78,6 +81,8 @@
                 <li>
                     <a href="/account">Account</a>
                 </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-show="authenticated()">
                 <li>
                     <a href="" ng-click="logout()">Logout</a>
                 </li>

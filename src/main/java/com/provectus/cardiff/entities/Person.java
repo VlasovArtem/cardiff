@@ -7,6 +7,8 @@ import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.utils.converter.PasswordConverter;
 import com.provectus.cardiff.utils.view.PersonView;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -37,37 +39,17 @@ import java.util.Set;
                 name = "tagsGraph",
                 attributeNodes = {@NamedAttributeNode(value = "tags")})
 )
+@Access(AccessType.PROPERTY)
 public class Person extends BaseEntity {
-    @Column(length = 100)
-    @JsonView(PersonView.BasicLevel.class)
     private String name;
-    @Column(length = 100, unique = true, nullable = false)
-    @JsonView(PersonView.TableLevel.class)
     private String login;
-    @Column(nullable = false, columnDefinition = "bytea")
-    @Convert(converter = PasswordConverter.class)
     private String password;
-    @Column(length = 50, unique = true, nullable = false)
-    @JsonView(PersonView.BasicLevel.class)
     private String email;
-    @Column(name = "phone_number", nullable = false)
-    @JsonView(PersonView.BasicLevel.class)
     private long phoneNumber;
-    @Column(length = 500)
-    @JsonView(PersonView.TableLevel.class)
     private String description;
-    @Column(name = "role", columnDefinition = "varchar(9) default 'USER'")
-    @Enumerated(EnumType.STRING)
-    @JsonView(PersonView.TableLevel.class)
     private PersonRole role;
-    @JsonView(PersonView.TableLevel.class)
     private boolean deleted;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "owner")
-    @JsonView(PersonView.DiscountCardsLevel.class)
     private Set<DiscountCard> discountCards;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
-    @JsonView(PersonView.BasicLevel.class)
     private Location location;
 
     public Person() {
@@ -79,6 +61,8 @@ public class Person extends BaseEntity {
         this.password = password;
     }
 
+    @Column(length = 100)
+    @JsonView(PersonView.BasicLevel.class)
     public String getName() {
         return name;
     }
@@ -87,6 +71,8 @@ public class Person extends BaseEntity {
         this.name = name;
     }
 
+    @Column(length = 100, unique = true, nullable = false)
+    @JsonView(PersonView.TableLevel.class)
     public String getLogin() {
         return login;
     }
@@ -96,6 +82,8 @@ public class Person extends BaseEntity {
     }
 
     @JsonIgnore
+    @Column(nullable = false, columnDefinition = "bytea")
+    @Convert(converter = PasswordConverter.class)
     public String getPassword() {
         return password;
     }
@@ -105,6 +93,8 @@ public class Person extends BaseEntity {
         this.password = password;
     }
 
+    @Column(length = 50, unique = true, nullable = false)
+    @JsonView(PersonView.BasicLevel.class)
     public String getEmail() {
         return email;
     }
@@ -113,6 +103,8 @@ public class Person extends BaseEntity {
         this.email = email;
     }
 
+    @Column(name = "phone_number", nullable = false)
+    @JsonView(PersonView.BasicLevel.class)
     public long getPhoneNumber() {
         return phoneNumber;
     }
@@ -121,6 +113,8 @@ public class Person extends BaseEntity {
         this.phoneNumber = phoneNumber;
     }
 
+    @Column(length = 500)
+    @JsonView(PersonView.TableLevel.class)
     public String getDescription() {
         return description;
     }
@@ -129,6 +123,7 @@ public class Person extends BaseEntity {
         this.description = description;
     }
 
+    @JsonView(PersonView.TableLevel.class)
     public boolean isDeleted() {
         return deleted;
     }
@@ -137,6 +132,8 @@ public class Person extends BaseEntity {
         this.deleted = deleted;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "owner")
+    @JsonView(PersonView.DiscountCardsLevel.class)
     public Set<DiscountCard> getDiscountCards() {
         return discountCards;
     }
@@ -145,6 +142,9 @@ public class Person extends BaseEntity {
         this.discountCards = discountCards;
     }
 
+    @Column(name = "role", columnDefinition = "varchar(9) default 'USER'")
+    @Enumerated(EnumType.STRING)
+    @JsonView(PersonView.TableLevel.class)
     public PersonRole getRole() {
         return role;
     }
@@ -153,6 +153,9 @@ public class Person extends BaseEntity {
         this.role = role;
     }
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
+    @JsonView(PersonView.BasicLevel.class)
     public Location getLocation() {
         return location;
     }

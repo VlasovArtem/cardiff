@@ -44,25 +44,12 @@
                    class="form-control"
                    placeholder="Input discount"
                    id="amountOfDiscount"
-                   pattern="^[1-9][0-9]$|^100$"
+                   pattern="^[1-9][0-9]?$|^100$"
                    name="amountOfDiscount"
                    ng-model="card.amount_of_discount"/>
             <div validation-messages
                  model-controller="add.amountOfDiscount"
                  patter-error="Amount of discount could be only for 1 - 100%"></div>
-        </div>
-        <div class="form-group has-feedback"
-             show-errors="{ showSuccess: true }">
-            <label for="expiredDate">Expired date</label>
-            <input type="date"
-                   class="form-control"
-                   id="expiredDate"
-                   ng-min="currentDate"
-                   name="expiredDate"
-                   ng-model="card.expired_date"/>
-            <div validation-messages
-                 model-controller="add.expiredDate"
-                 min-error="Expired date should be greater than today"></div>
         </div>
         <div class="form-group">
             <label for="description">Description</label>

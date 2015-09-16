@@ -19,7 +19,6 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -37,13 +36,11 @@ import java.util.Set;
 @Access(AccessType.PROPERTY)
 public class DiscountCard extends BaseEntity {
     private long cardNumber;
-    private LocalDateTime expiredDate;
-    private boolean available;
     private String companyName;
     private int amountOfDiscount;
     private String description;
     private boolean deleted;
-    @JsonView(DiscountCardView.DiscountCardTagsLevel.class)
+    @JsonView(value = {DiscountCardView.DiscountCardTagsLevel.class, PersonView.DiscountCardsLevel.class})
     private Set<Tag> tags;
     @JsonView(value = {DiscountCardView.DiscountCardInfoLevel.class, PersonView.DiscountCardCommentsLevel.class})
     private Set<DiscountCardComment> discountCardComments;
@@ -64,24 +61,6 @@ public class DiscountCard extends BaseEntity {
 
     public void setCardNumber(long cardNumber) {
         this.cardNumber = cardNumber;
-    }
-
-    @Column(name = "expired_date")
-    public LocalDateTime getExpiredDate() {
-        return expiredDate;
-    }
-
-    public void setExpiredDate(LocalDateTime expiredDate) {
-        this.expiredDate = expiredDate;
-    }
-
-    @Column(columnDefinition = "boolean default true")
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
     }
 
     @Column(name = "company_name", nullable = false)

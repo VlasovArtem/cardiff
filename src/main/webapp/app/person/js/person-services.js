@@ -34,8 +34,6 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
         }
     };
     var auth = {
-        authenticated: false,
-        admin: false,
         resolved: false,
         loginPath: '/signin',
         logoutPath: '/logout',
@@ -59,7 +57,6 @@ service.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentic
             )
         },
         authenticate: function(credentials, callback) {
-            console.log(credentials);
             Login.login($.param(credentials), function() {
                 auth.authenticated = true;
                 auth.authentication();

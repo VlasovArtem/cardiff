@@ -1,5 +1,7 @@
 package com.provectus.cardiff.entities;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,16 +20,13 @@ import java.time.LocalDateTime;
 @Table(name = "book_card")
 @AttributeOverride(name = "createdDate",
         column = @Column(name = "book_date_start", insertable = false, updatable = false))
+@Access(AccessType.PROPERTY)
 public class BookCard extends BaseEntity {
-    @Column(name = "book_date_end")
     private LocalDateTime bookDateEnd;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
     private Person person;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "discount_card_id")
     private DiscountCard discountCard;
 
+    @Column(name = "book_date_end")
     public LocalDateTime getBookDateEnd() {
         return bookDateEnd;
     }
@@ -36,6 +35,8 @@ public class BookCard extends BaseEntity {
         this.bookDateEnd = bookDateEnd;
     }
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "person_id")
     public Person getPerson() {
         return person;
     }
@@ -44,6 +45,8 @@ public class BookCard extends BaseEntity {
         this.person = person;
     }
 
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "discount_card_id")
     public DiscountCard getDiscountCard() {
         return discountCard;
     }

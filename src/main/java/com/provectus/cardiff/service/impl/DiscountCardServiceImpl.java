@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -40,12 +39,8 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         if (discountCardRepository.existsByNumberAndCompanyName(card.getCardNumber(), card.getCompanyName())) {
             throw new EntityValidationException("Card with this company name and number already exist");
         }
-        if(card.getExpiredDate() == null) {
-            card.setExpiredDate(LocalDateTime.now().plusYears(10));
-        }
         DiscountCardValidator.validate(card);
         card.getTags().stream().forEach(TagValidator::validate);
-        card.setAvailable(true);
         Set<Tag> persistedTags = new HashSet<>(card.getTags().size());
         card.getTags().stream().forEach(t -> {
             if(t.getId() > 0) {
@@ -75,22 +70,18 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
-    public void delete (DiscountCard card) {
-        card.setDeleted(true);
+    public void delete (long cardId) {
+        discountCardRepository.findById(cardId).ifPresent(d -> d.setDeleted(true));
     }
+
     @Override
-    public DiscountCard getCard (long id) {
+    public Optional<DiscountCard> getCard (long id) {
         return discountCardRepository.findById(id);
     }
 
     @Override
-    public Optional<DiscountCard> findAvailable(long id) {
-        return discountCardRepository.findByIdAndAvailableTrue(id);
-    }
-
-    @Override
     public Optional<DiscountCard> search (long cardNumber) {
-        return discountCardRepository.findByCardNumberAndAvailableTrue(cardNumber);
+        return discountCardRepository.findByCardNumber(cardNumber);
     }
 
     @Override

@@ -9,9 +9,8 @@
         <ul class="list-group col-md-7">
             <li class="list-group-item"><b>Company:</b> {{cardInfo.company_name}}</li>
             <li class="list-group-item"><b>Description:</b> {{cardInfo.description}}</li>
-            <li class="list-group-item"><b>Discount:</b> {{cardInfo.amount_of_discount}}%</li>
-            <li class="list-group-item"><b>Expired Date:</b> {{cardInfo.expired_date | dateFilter}}</li>
-            <li class="list-group-item tags">
+            <li class="list-group-item"><b>Discount:</b> {{cardInfo.amount_of_discount > 0 ? cardInfo.amount_of_discount + '%' : 'n/a' }}</li>
+            <li class="list-group-item tags" ng-show="cardInfo.tags.length > 0">
                 <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
             </li>
         </ul>

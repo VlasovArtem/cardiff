@@ -57,8 +57,8 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/delete", method = DELETE, produces = APPLICATION_JSON_VALUE)
-    public  void delete(@RequestBody DiscountCard card) {
-        service.delete(card);
+    public  void delete(@RequestParam long cardId) {
+        service.delete(cardId);
     }
 
     @RequestMapping(path = "/get/by/tags", method = GET, produces = APPLICATION_JSON_VALUE)
@@ -91,10 +91,10 @@ public class DiscountCardController {
         return service.getAll(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
-    @RequestMapping(path = "/get/{cardId}/available", method = GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/get/{cardId}", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public ResponseEntity findAvailable(@PathVariable long cardId) {
-        Optional<DiscountCard> dc = service.findAvailable(cardId);
+        Optional<DiscountCard> dc = service.getCard(cardId);
         if(!dc.isPresent()) {
             return ResponseEntity.status(NOT_FOUND).build();
         }

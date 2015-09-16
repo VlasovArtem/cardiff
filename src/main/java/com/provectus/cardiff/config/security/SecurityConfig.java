@@ -93,19 +93,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                             "/rest/location/**", "/rest/card/get/**", "/rest/person/check/**",
                             "/rest/person/registration", "/rest/person/login")
                         .permitAll()
-                    .antMatchers("/account/update", "/account", "/card/add", "/rest/card/**")
-                        .hasAnyAuthority("USER", "ADMIN")
                     .antMatchers("/admin/persons", "/rest/person/admin/**", "/rest/card/delete")
                         .hasAuthority("ADMIN")
+                .antMatchers("/account/update", "/account", "/card/add", "/rest/card/**",
+                        "/rest/person/**")
+                        .hasAnyAuthority("USER", "ADMIN")
                     .anyRequest()
                         .authenticated()
                 .and()
                     .formLogin().loginPage("/signin").loginProcessingUrl("/rest/person/login")
                     .passwordParameter("password").failureHandler(new SimpleUrlAuthenticationFailureHandler()).usernameParameter("loginData").permitAll()
                 .and()
-                    .logout().logoutUrl("/rest/person/logout").logoutSuccessUrl("/");
-//                .and()
-//                    .rememberMe().tokenValiditySeconds(604800).rememberMeParameter("rememberMe")
-//                    .tokenRepository(persistentTokenRepository());
+                    .logout().logoutUrl("/rest/person/logout").logoutSuccessUrl("/")
+                .and()
+                    .rememberMe().tokenValiditySeconds(604800).rememberMeParameter("rememberMe")
+                    .userDetailsService(cardiffUserDetailsService()).tokenRepository(persistentTokenRepository());
     }
 }

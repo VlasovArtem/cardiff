@@ -18,11 +18,9 @@ public interface DiscountCardService {
 
     void update (DiscountCard card);
 
-    void delete (DiscountCard card);
+    void delete (long cardId);
 
-    DiscountCard getCard (long id);
-
-    Optional<DiscountCard> findAvailable(long id);
+    Optional<DiscountCard> getCard (long id);
 
     Optional<List<DiscountCard>> search (Set<String> tags);
 

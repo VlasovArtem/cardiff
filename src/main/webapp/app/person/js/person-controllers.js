@@ -24,7 +24,8 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
     $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+"
 }]);
 
-app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($scope, auth, $timeout, $route) {
+app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($scope, auth) {
+    $scope.auth = auth;
     $scope.adminPermission = function() {
         return auth.admin;
     };
@@ -46,6 +47,7 @@ app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($sco
 }]);
 app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$timeout', function($scope, $location, personData, changePassword, $timeout) {
     $scope.person = personData;
+    console.log(personData);
     $scope.changePassword = function() {
         if(!$scope.data.oldPassword || !$scope.data.newPassword) {
             $scope.errorFn('New or old password cannot be null');

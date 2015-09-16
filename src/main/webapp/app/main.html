@@ -8,7 +8,7 @@
             <ui-select-choices repeat="company in companies"
                                refresh="refreshData($select.search)"
                                refresh-delay="1000">
-                <div ng-bind="company[1] + ' - ' + company[2] + '%'"></div>
+                <div ng-bind="company[1] + ' - ' + (company[2] == 0 ? 'n/a' : company[2] + '%')"></div>
             </ui-select-choices>
         </ui-select>
     </article>

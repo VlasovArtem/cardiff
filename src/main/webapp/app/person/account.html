@@ -36,15 +36,17 @@
     </form>
 </section>
 <hr class="style col-md-offset-3 col-md-6"/>
-<section id="discount-cards" class="container" ng-if="person.discount_cards.length > 0">
+<section id="discount-cards" class="container-fluid" ng-if="person.discount_cards.length > 0">
     <h2 class="col-md-12">Your Discount cards.</h2>
-    <div class="col-md-4 person-discount-card" ng-repeat="discountCard in person.discount_cards">
+    <div class="col-md-3 person-discount-card" ng-repeat="discountCard in person.discount_cards">
         <p class="company-name" ng-bind="discountCard.company_name"></p>
         <ul class="list-group">
             <li class="list-group-item"><b>Description:</b> {{discountCard.description}}</li>
             <li class="list-group-item"><b>Card number:</b> {{discountCard.card_number}}</li>
-            <li class="list-group-item"><b>Discount:</b> {{discountCard.amount_of_discount}}%</li>
-            <li class="list-group-item"><b>Expired Date:</b> {{discountCard.expired_date | dateFilter}}</li>
+            <li class="list-group-item"><b>Discount:</b> {{discountCard.amount_of_discount > 0 ? discountCard.amount_of_discount + '%' : 'n/a' }}</li>
+            <li class="list-group-item tags" ng-show="discountCard.tags.length > 0">
+                <span class="label label-success" ng-repeat="tag in discountCard.tags" ng-bind="tag.tag"></span>
+            </li>
         </ul>
     </div>
 </section>

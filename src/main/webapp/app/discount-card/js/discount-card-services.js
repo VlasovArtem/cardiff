@@ -38,7 +38,7 @@ service.factory('DiscountCardSearchFactory', ['$resource', function($resource) {
 }]);
 
 service.factory('DiscountCardOwner', ['$resource', function($resource) {
-    return $resource('/rest/card/get/:cardId/available', {
+    return $resource('/rest/card/get/:cardId/', {
         cardId: '@cardId'
     })
 }]);
