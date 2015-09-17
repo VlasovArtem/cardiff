@@ -1,7 +1,5 @@
-/**
- * Created by artemvlasov on 10/09/15.
- */
 var app = angular.module('discount-card-directives', []);
+
 app.directive('cardSearch', ['DiscountCardSearchFactory', function(DiscountCardSearchFactory) {
     var search;
     return {

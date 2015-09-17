@@ -1,12 +1,13 @@
 var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
-    'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select', 'nathankot.angular-salvattore',
+    'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select', 'wu.masonry',
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
-    'discount-card-controllers', 'discount-card-services', 'discount-card-directives']).config(
+    'discount-card-controllers', 'discount-card-services', 'discount-card-directives',
+    'main-controllers', 'main-services', 'main-directives', 'main-filters']).config(
     function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
-                templateUrl: 'app/main.html',
+                templateUrl: 'app/main/main.html',
                 controller: 'SearchCtrl'
             }).
             when('/signin', {
@@ -97,7 +98,6 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 controller: 'DiscountCardInfoCtrl',
                 resolve: {
                     discountCardInfo: function(DiscountCardOwner, $sessionStorage, $location) {
-                        console.log($sessionStorage);
                         return DiscountCardOwner.get({cardId : $sessionStorage.cardId})
                             .$promise.then(
                             function (data) {
@@ -121,17 +121,9 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 redirectTo: '/'
             })
     });
-app.run(['$rootScope', 'auth', function($root, auth) {
+app.run(['$rootScope', 'auth', 'deviceCheck', function($root, auth, deviceCheck) {
     auth.init('/', '/signin', '/logout');
-    $root.$on('$routeChangeStart', function(event, next, current) {
-        if(next) {
-            if(_.isEqual(next.$$route.originalPath, '/')) {
-                $('body').addClass('background');
-            } else {
-                $('body').removeClass('background');
-            }
-        }
-    });
+    deviceCheck.checkIsMobile();
     $root.$on('$viewContentLoaded', function(event){
         $('.footer').fadeIn(500);
     });

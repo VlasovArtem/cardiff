@@ -1,7 +1,7 @@
 <section class="admin-persons container-fluid" entity-sorting>
-    <h2 class="col-md-12">Registered Persons</h2>
-    <div class="col-md-12">
-        <table class="table">
+    <h2 class="col-sm-12 col-xs-12 col-md-12">Registered Persons</h2>
+    <div class="col-sm-12 col-xs-12 col-md-12">
+        <table class="table" ng-hide="mobileDevice && !tabletLandscape">
             <tr>
                 <th>#</th>
                 <th ng-repeat="(index, value) in head" ng-click="sorting(value.property)" width="{{value.width}}">
@@ -20,17 +20,17 @@
                           ng-hide="person.deleted"
                           class="glyphicon glyphicon-remove button-remove"
                           ng-click="removePerson(person.id)"></span>
-                    <span tooltip="Edit person."
-                          tooltip-trigger="mouseenter"
-                          tooltip-placement="top"
-                          class="glyphicon glyphicon-edit button-edit"
-                          ng-click="editPerson(person)"></span>
                     <span tooltip="Restore deleted Person."
                           tooltip-trigger="mouseenter"
                           tooltip-placement="top"
                           class="glyphicon glyphicon-share button-restore"
                           ng-show="person.deleted"
                           ng-click="restorePerson(person.id)"></span>
+                    <span tooltip="Edit person."
+                          tooltip-trigger="mouseenter"
+                          tooltip-placement="top"
+                          class="glyphicon glyphicon-edit button-edit"
+                          ng-click="editPerson(person)"></span>
                     <span tooltip="Change Person role."
                           tooltip-trigger="mouseenter"
                           tooltip-placement="top"
@@ -40,18 +40,30 @@
                 <td></td>
             </tr>
         </table>
-        <div class="row">
-            <div class="col-md-5">
+        <div class="container cards col-sm-6 col-xs-12" ng-repeat="(pIndex, person) in persons" ng-show="mobileDevice && !tabletLandscape">
+            <ul class="mobile-table-cards" >
+                <li ng-repeat="(dIndex, data) in head"><b>{{data.name}}:</b> {{setData(dIndex, pIndex)}}</li>
+                <li class="buttons">
+                    <input type="button" class="btn btn-danger btn-sm" ng-hide="person.deleted"
+                           ng-click="removePerson(person.id)" value="Delete"/>
+                    <input type="button" class="btn btn-success btn-sm" ng-show="person.deleted"
+                           ng-click="restorePerson(person.id)" value="Restore"/>
+                    <input type="button" class="btn btn-warning btn-sm" ng-click="editPerson(person)" value="Edit"/>
+                    <input type="button" class="btn btn-primary btn-sm" ng-click="changeRole(person.id)" value="Role"/>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-12 col-xs-12 col-md-12 pagination-stack">
+            <div class="col-xs-12 col-sm-5 col-md-5">
                 <div class="form-inline">
                     <label for="size">Items per page:</label>
                     <select class="form-control"
                             id="size"
                             ng-model="currentPageSize"
-                            ng-options="size as size.label for size in pageSize"
-                            style="width: 25%"></select>
+                            ng-options="size as size.label for size in pageSize"></select>
                 </div>
             </div>
-            <div class="col-md-7" style="text-align: right;">
+            <div class="col-xs-12 col-sm-7 col-md-7">
                 <pagination
                         total-items="totalItems"
                         items-per-page="currentPageSize.value"
@@ -61,9 +73,8 @@
                         boundary-links="true"
                         rotate="false"
                         num-pages="numPages"
-                        style="margin: 0;"
                         ng-click="changePage()">
                 </pagination>
             </div>
-    </div>
+        </div>
 </section>

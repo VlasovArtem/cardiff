@@ -1,4 +1,5 @@
 var app = angular.module('person-filters', []);
+
 app.filter('accountFilter', function() {
     return function(key) {
         var withOutUnderscore = key.replace("_", " ");
@@ -6,6 +7,7 @@ app.filter('accountFilter', function() {
         return capitalized.concat(withOutUnderscore.substr(1, withOutUnderscore.length - 1));
     }
 });
+
 app.filter('phoneNumberFilter', function() {
     return function(phoneNumber) {
         if(phoneNumber != undefined) {
@@ -16,22 +18,7 @@ app.filter('phoneNumberFilter', function() {
         }
     }
 });
-app.filter('dateFilter', function() {
-    return function(date) {
-        var filteredDate = "";
-        var convertNumbers = function(date) {
-            return date > 9 ? date : "0" + date;
-        };
-        for(var i = 0; i < 3; i++) {
-            if(i == 2) {
-                filteredDate += convertNumbers(date[i]);
-            } else {
-                filteredDate += convertNumbers(date[i]) + '-';
-            }
-        }
-        return filteredDate;
-    }
-});
+
 app.filter('camelCase', function() {
     return function(input) {
         var replace = function(text) {
@@ -46,6 +33,7 @@ app.filter('camelCase', function() {
         return input;
     }
 });
+
 app.filter('accountTable', function() {
     return function(data) {
         var person = {};

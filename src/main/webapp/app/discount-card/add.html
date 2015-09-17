@@ -1,6 +1,7 @@
 <section id="add-discount-card" class="container-fluid">
     <h2 class="col-md-12">Add Discount Card</h2>
-    <form class="col-md-offset-4 col-md-4" name="add">
+    <form class="col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 col-sm-offset-2 col-sm-8 col-xs-10 col-xs-offset-1"
+          name="add">
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="cardNumber">Card Number</label>
             <input class="form-control"
@@ -83,9 +84,9 @@
                    placeholder="Input your tag"/>
             <input class="col-md-offset-1 col-md-3 btn btn-success" type="button" value="Add new"
                    ng-click="addCustomTag()" ng-disabled="add.customTag.$invalid || add.customTag.$modelValue == null"/>
-            <small class="hint col-md-12">You can add multiple custom tags by separating them with , or multiple
-                spaces</small>
         </div>
+        <small class="hint col-md-12">You can add multiple custom tags by separating them with , or multiple
+            spaces</small>
         <div class="form-group buttons">
             <input type="button" class="btn btn-success btn-lg" value="Add" ng-disabled="add.$invalid" ng-click="addNewCard()"/>
             <input type="button" class="btn btn-primary btn-lg" value="Reset" ng-click="reset()"/>

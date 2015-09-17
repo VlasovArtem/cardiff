@@ -1,112 +1,102 @@
 var app = angular.module('person-controllers', ['ngResource']);
-app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations', function($scope, $location, SignUp, auth, locations) {
-    $scope.reg = function() {
-        SignUp.registration($scope.person,
-            function() {
-                $scope.login = {
-                    loginData: $scope.person.email,
-                    password: $scope.person.password
-                };
-                auth.authenticate($scope.login, function(error) {
-                    $scope.error = error;
-                });
-            }, function(data) {
-                $scope.person.password = null;
-                $scope.error = data.data;
+app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations',
+    function($scope, $location, SignUp, auth, locations) {
+        $scope.reg = function() {
+            SignUp.registration($scope.person,
+                function() {
+                    $scope.login = {
+                        loginData: $scope.person.email,
+                        password: $scope.person.password
+                    };
+                    auth.authenticate($scope.login, function(error) {
+                        $scope.error = error;
+                    });
+                }, function(data) {
+                    $scope.person.password = null;
+                    $scope.error = data.data;
 
-            }
-        )
-    };
-    $scope.locations = locations;
-    $scope.reset = function() {
-        $scope.person = {};
-    };
-    $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+"
-}]);
-
-app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route', function($scope, auth) {
-    $scope.auth = auth;
-    $scope.adminPermission = function() {
-        return auth.admin;
-    };
-    $scope.authenticated = function () {
-        return auth.authenticated;
-    };
-    $scope.login = function() {
-        auth.authenticate($scope.person, function(error) {
-            if(error) {
-                $scope.error = error;
-                $scope.person.password = null;
-            }
-        });
-    };
-    $scope.logout = function() {
-        auth.clear();
-    };
-
-}]);
-app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$timeout', function($scope, $location, personData, changePassword, $timeout) {
-    $scope.person = personData;
-    console.log(personData);
-    $scope.changePassword = function() {
-        if(!$scope.data.oldPassword || !$scope.data.newPassword) {
-            $scope.errorFn('New or old password cannot be null');
-        } else if(_.isEqual($scope.data.oldPassword, $scope.data.newPassword)) {
-            $scope.errorFn('Old and new password is equals');
-        } else {
-            changePassword.change($.param({
-                oldPassword: $scope.data.oldPassword,
-                newPassword: $scope.data.newPassword
-            }), function() {
-                alert('Password successfully changed');
-                $scope.data = null;
-            }, function(data) {
-                $scope.errorFn(data.error);
-                $scope.data = null;
-            })
-        }
-    };
-    $scope.errorFn = function(message) {
-        $scope.error = message;
-        $scope.data = null;
-    };
-    $scope.changeData = function() {
-        $location.path('/account/update')
-    };
-    $scope.location = $location.path == '/account';
-}]);
-app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'PersonFactory', 'locations', function($scope, personData, $location, PersonFactory, locations) {
-    $scope.changedPerson = personData;
-    $scope.data = angular.copy(personData);
-    $scope.personIsEquals = function() {
-        if($scope.data != undefined && $scope.changedPerson != undefined) {
-            return _.every(["name", "login", "email", "phone_number", "location", "description"], function(data) {
-                return _.isEqual($scope.data[data], $scope.changedPerson[data]) || $scope.data[data] == $scope.changedPerson[data]
-            });
-        }
-        return true;
-    };
-    $scope.update = function() {
-        PersonFactory.updatePerson($scope.changedPerson,
-            function() {
-                alert('Person data successfully changed');
-                if($scope.data.$resolved) {
-                    $location.path('/account');
-                } else {
-                    $location.path('/admin/persons');
                 }
-            },
-            function(data) {
-                $scope.error = data.data;
-            })
-    };
-    $scope.locations = locations;
-    $scope.reset = function() {
-        $scope.changedPerson = angular.copy($scope.data);
+            )
+        };
+        $scope.locations = locations;
+        $scope.reset = function() {
+            $scope.person = {};
+        };
+        $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+"
     }
-}]);
-app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 'persons', 'AdminPersonFactory', 'UpdatePerson',
-    function($scope, $location, $filter, $route, persons, AdminPersonFactory, UpdatePerson) {
+]);
+
+app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$timeout',
+    function($scope, $location, personData, changePassword, $timeout) {
+        $scope.person = personData;
+        $scope.changePassword = function() {
+            if(!$scope.data.oldPassword || !$scope.data.newPassword) {
+                $scope.errorFn('New or old password cannot be null');
+            } else if(_.isEqual($scope.data.oldPassword, $scope.data.newPassword)) {
+                $scope.errorFn('Old and new password is equals');
+            } else {
+                changePassword.change($.param({
+                    oldPassword: $scope.data.oldPassword,
+                    newPassword: $scope.data.newPassword
+                }), function() {
+                    alert('Password successfully changed');
+                    $scope.data = null;
+                }, function(data) {
+                    $scope.errorFn(data.error);
+                    $scope.data = null;
+                })
+            }
+        };
+        $scope.errorFn = function(message) {
+            $scope.error = message;
+            $scope.data = null;
+        };
+        $scope.changeData = function() {
+            $location.path('/account/update')
+        };
+        $scope.location = $location.path == '/account';
+    }
+]);
+
+app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'PersonFactory', 'locations',
+    function($scope, personData, $location, PersonFactory, locations) {
+        $scope.changedPerson = personData;
+        $scope.data = angular.copy(personData);
+        $scope.personIsEquals = function() {
+            if($scope.data != undefined && $scope.changedPerson != undefined) {
+                return _.every(["name", "login", "email", "phone_number", "location", "description"], function(data) {
+                    return _.isEqual($scope.data[data], $scope.changedPerson[data]) || $scope.data[data] == $scope.changedPerson[data]
+                });
+            }
+            return true;
+        };
+        $scope.update = function() {
+            PersonFactory.updatePerson($scope.changedPerson,
+                function() {
+                    alert('Person data successfully changed');
+                    if($scope.data.$resolved) {
+                        $location.path('/account');
+                    } else {
+                        $location.path('/admin/persons');
+                    }
+                },
+                function(data) {
+                    $scope.error = data.data;
+                })
+        };
+        $scope.locations = locations;
+        $scope.reset = function() {
+            $scope.changedPerson = angular.copy($scope.data);
+        }
+    }
+]);
+
+app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 'persons', 'AdminPersonFactory', 'UpdatePerson', 'deviceCheck',
+    function($scope, $location, $filter, $route, persons, AdminPersonFactory, UpdatePerson, deviceCheck) {
+        var tabletLandscapeWidth = 960;
+        var currentWidth = window.outerWidth;
+        $scope.tabletLandscape = currentWidth >= tabletLandscapeWidth;
+        $scope.mobileDevice = deviceCheck.mobileDevice;
         persons.$promise.then(function(data) {
             $scope.persons = data.content;
             $scope.totalItems = data.total_elements;
@@ -158,4 +148,5 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
                 return $scope.persons[pIndex][$scope.head[dIndex].property]
             }
         }
-    }]);
+    }
+]);

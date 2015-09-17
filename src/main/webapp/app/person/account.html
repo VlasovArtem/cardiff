@@ -1,6 +1,6 @@
-<section id="personal-data">
+<section id="personal-data" class="col-md-offset-4 col-sm-offset-2 col-xs-offset-0 col-md-4 col-sm-8 col-xs-12">
     <h2 class="col-md-12">Your personal data</h2>
-    <table class="table col-md-offset-4 personal-data">
+    <table class="table personal-data">
         <tr ng-repeat="(key, data) in person | accountTable" account-data label="key"
             data="data">
         </tr>
@@ -9,11 +9,11 @@
         <input type="button" class="btn btn-danger" value="Change data" ng-click="changeData()"/>
     </div>
 </section>
-<hr class="style col-md-offset-3 col-md-6"/>
+<hr class="style col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10"/>
 <section id="change-password">
     <h2 class="col-md-12">Change password</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error"></div>
-    <form class="col-md-offset-4 col-md-4">
+    <form class="col-md-offset-4 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12">
         <div class="form-group">
             <label for="old-password">Old password</label>
             <input
@@ -38,15 +38,22 @@
 <hr class="style col-md-offset-3 col-md-6"/>
 <section id="discount-cards" class="container-fluid" ng-if="person.discount_cards.length > 0">
     <h2 class="col-md-12">Your Discount cards.</h2>
-    <div class="col-md-3 person-discount-card" ng-repeat="discountCard in person.discount_cards">
-        <p class="company-name" ng-bind="discountCard.company_name"></p>
-        <ul class="list-group">
-            <li class="list-group-item"><b>Description:</b> {{discountCard.description}}</li>
-            <li class="list-group-item"><b>Card number:</b> {{discountCard.card_number}}</li>
-            <li class="list-group-item"><b>Discount:</b> {{discountCard.amount_of_discount > 0 ? discountCard.amount_of_discount + '%' : 'n/a' }}</li>
-            <li class="list-group-item tags" ng-show="discountCard.tags.length > 0">
-                <span class="label label-success" ng-repeat="tag in discountCard.tags" ng-bind="tag.tag"></span>
-            </li>
-        </ul>
+    <div class="col-md-offset-1 col-md-10">
+        <div class="container col-md-4 col-sm-6 col-xs-12" ng-repeat="card in person.discount_cards" masonry>
+            <div class="person-discount-card">
+                <p class="company-name" ng-bind="card.company_name"></p>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>Description:</b> {{card.description}}</li>
+                    <li class="list-group-item"><b>Card number:</b> {{card.card_number}}</li>
+                    <li class="list-group-item"><b>Discount:</b> {{card.amount_of_discount > 0 ? card.amount_of_discount
+                        + '%' : 'n/a' }}</li>
+                    <li class="list-group-item tags" ng-show="card.tags.length > 0">
+                    <span class="label label-success" ng-repeat="tag in card.tags" ng-bind="tag.tag">
+                        {{tag}}
+                    </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </section>
