@@ -1,0 +1,27 @@
+<div class="col-sm-12 col-xs-12 col-md-12">
+    <div ng-include="tableInfo.dataTemplate"></div>
+    <div class="col-sm-12 col-xs-12 col-md-12 pagination-stack">
+        <div class="col-xs-12 col-sm-5 col-md-5">
+            <div class="form-inline">
+                <label for="size">Items per page:</label>
+                <select class="form-control"
+                        id="size"
+                        ng-model="currentPageSize"
+                        ng-options="size as size.label for size in pageSize"></select>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-7">
+            <pagination
+                    total-items="totalItems"
+                    items-per-page="currentPageSize.value"
+                    ng-model="currentPage"
+                    class="pagination-sm"
+                    max-size="maxSize"
+                    boundary-links="true"
+                    rotate="false"
+                    num-pages="numPages"
+                    ng-click="changePage()">
+            </pagination>
+        </div>
+    </div>
+</div>

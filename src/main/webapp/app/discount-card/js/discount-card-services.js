@@ -5,7 +5,19 @@ service.factory('AddDiscountCardFactory', ['$resource', function($resource) {
 }]);
 
 service.factory('CardsCtrl', ['$resource', function($resource) {
-    return $resource('/rest/card/get/all');
+    return $resource('/rest/card/get/all', {}, {
+        getAll: {
+            method: 'GET'
+        }
+    });
+}]);
+
+service.factory('OwnerCardsCtrl', ['$resource', function($resource) {
+    return $resource('/rest/card/owner/all', {}, {
+        getAll: {
+            method: 'GET'
+        }
+    })
 }]);
 
 service.factory('DiscountCardSearchFactory', ['$resource', function($resource) {

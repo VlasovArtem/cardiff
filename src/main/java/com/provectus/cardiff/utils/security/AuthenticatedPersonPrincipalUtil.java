@@ -24,6 +24,6 @@ public class AuthenticatedPersonPrincipalUtil {
     public static boolean containAuthorities(PersonRole... roles) {
         return SecurityContextHolder.getContext().getAuthentication().getAuthorities()
                 .stream()
-                .allMatch(p -> Arrays.asList(roles).contains(PersonRole.valueOf(p.getAuthority())));
+                .anyMatch(p -> Arrays.asList(roles).contains(PersonRole.valueOf(p.getAuthority())));
     }
 }

@@ -1,14 +1,11 @@
-/**
- * Created by artemvlasov on 17/09/15.
- */
 var app = angular.module('main-directives', []);
 
 app.directive('windowHeight', function() {
     return {
         restrict: 'A',
         compile: function(element, attr) {
-            var navBarHeight = 50;
-            element.css('min-height', window.innerHeight - navBarHeight);
+            var navBarHeight = 100;
+            element.css('min-height', window.outerHeight - navBarHeight);
         }
     }
 });
@@ -17,12 +14,12 @@ app.directive('entitySorting', function($filter) {
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
-            _.each(scope.head, function(data) {
+            _.each(scope.tableInfo.head, function(data) {
                 data.direction = 'DESC'
             });
             var dataSorting = [];
             scope.$watch("head", function() {
-                Array.prototype.push.apply(dataSorting, scope.head);
+                Array.prototype.push.apply(dataSorting, scope.tableInfo.head);
             });
             scope.currentPage = 1;
             scope.maxSize = 5;
@@ -61,7 +58,7 @@ app.directive('entitySorting', function($filter) {
                 scope.getData(pageable);
             };
             scope.selectSort = function(index) {
-                if(pageable.property == $filter('camelCase')(scope.head[index].property)) {
+                if(pageable.property == $filter('camelCase')(scope.tableInfo.head[index].property)) {
                     if(pageable.direction != 'DESC') {
                         return 'glyphicon glyphicon-sort-by-alphabet'
                     } else {
@@ -153,3 +150,59 @@ app.directive('validationMessages', function () {
         template: '<small class="help-block test" ng-repeat="message in errorMessages" ng-show= "!modelController.$pristine && $first" class="warning">{{message}}</small>'
     }
 });
+
+app.directive('contentTable',
+    function(deviceCheck) {
+        return {
+            restrict: 'E',
+            link: function(scope, element, attr) {
+                var tabletLandscapeWidth = 960;
+                var currentWidth = window.outerWidth;
+                scope.tabletLandscape = currentWidth >= tabletLandscapeWidth;
+                scope.mobileDevice = deviceCheck.mobileDevice;
+
+                scope.getData = function(pageable) {
+                    scope.tableInfo.factory.getAll(pageable).$promise.then(function(data) {
+                        scope.tableData = data.content;
+                        scope.totalItems = data.total_elements;
+                    });
+                };
+
+                scope.tableInfo.data.$promise.then(
+                    function(data) {
+                        scope.tableData = data.content;
+                        scope.totalItems = data.total_elements;
+                    }
+                );
+
+                scope.setData = function (headDataIndex, dataIndex) {
+                    var data = "";
+                    var contains = _.some(scope.tableInfo.filteredProperties, function(value) {
+                        if(scope.tableInfo.head[headDataIndex].property == value.property) {
+                            if(value.filter) {
+                                data = value.filter(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property]);
+                                return true;
+                            } else if (value.appender) {
+                                if(_.isNumber(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property])) {
+                                    if(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property] == 0) {
+                                        data = 'n/a';
+                                    } else {
+                                        data = scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property] + value.appender;
+                                    }
+                                    return true;
+                                }
+                                data = scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property] + value.appender;
+                                return true;
+                            }
+                        }
+                    });
+                    if(!contains) {
+                        data = scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property];
+                    }
+                    return data;
+                }
+            },
+            templateUrl: 'app/main/data-table-template.html'
+        }
+    }
+);

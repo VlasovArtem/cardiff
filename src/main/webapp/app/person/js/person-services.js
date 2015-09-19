@@ -85,17 +85,21 @@ service.factory('AdminPersonFactory', ['$resource',
 
 service.factory('PersonFactory', ['$resource',
     function($resource) {
-        return $resource('/rest/person/:update/:delete/:get/:authorized/:cardId/:id', {
-            update: '@update',
+        return $resource('/rest/person/:delete/:get/:authorized/:cardId/:id', {
             delete: '@delete',
             get: '@get',
             authorized: '@authorized',
             cardId: '@cardId',
             id: '@id'
-        }, {
+        })
+    }
+]);
+
+service.factory('PersonUpdateFactory', ['$resource',
+    function($resource) {
+        return $resource('/rest/person/update', {} , {
             updatePerson: {
-                method: 'PUT',
-                isArray: false
+                method: 'PUT'
             }
         })
     }

@@ -3,6 +3,7 @@ package com.provectus.cardiff.service.impl;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
+import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.service.LocationService;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntityUpdater;
@@ -38,6 +39,8 @@ public class PersonServiceImpl implements PersonService {
     private PersonRepository personRepository;
     @Autowired
     private LocationService locationService;
+    @Autowired
+    private DiscountCardService discountCardService;
 
     /**
      * Check if current subject is successfully login and person with authenticated credentials (id) is exists in
@@ -57,6 +60,7 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id);
         if(person != null) {
             person.setDeleted(true);
+            discountCardService.removeOwnerCards(id);
             if(person.getId() == AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()) {
                 try {
                     servletRequest.logout();
@@ -105,7 +109,7 @@ public class PersonServiceImpl implements PersonService {
         } else if (AuthenticatedPersonPrincipalUtil.containAuthorities(PersonRole.ADMIN)) {
             trg = personRepository.findById(src.getId());
         } else {
-            throw new PersonAuthorizationException();
+            throw new PersonAuthorizationException("Person is not authorized");
         }
         validate(src, true);
         EntityUpdater.update(Optional.ofNullable(src), Optional.ofNullable(trg));
@@ -135,6 +139,7 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id);
         if (person.isDeleted()) {
             person.setDeleted(false);
+            discountCardService.restoreOwnerCard(id);
         }
     }
 

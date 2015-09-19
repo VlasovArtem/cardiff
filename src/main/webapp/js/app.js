@@ -35,6 +35,13 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                         }, function() {
                             $location.path('/');
                         });
+                    },
+                    discountCards : function(OwnerCardsCtrl, $location) {
+                        return OwnerCardsCtrl.getAll(function(data) {
+                            return data;
+                        }, function() {
+                            $location.path('/');
+                        })
                     }
                 }
             }).
@@ -42,10 +49,9 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/person/update-account.html',
                 controller: 'UpdateAccountCtrl',
                 resolve: {
-                    personData: function(Authenticated, $location, UpdatePerson) {
-                        var person = angular.copy(UpdatePerson.getPerson());
+                    personData: function(Authenticated, $location, $sessionStorage) {
+                        var person = angular.copy($sessionStorage.updatedPerson);
                         if(person) {
-                            UpdatePerson.setPerson(null);
                             return person
                         } else {
                             return Authenticated.get().$promise.then(
@@ -121,10 +127,32 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 redirectTo: '/'
             })
     });
-app.run(['$rootScope', 'auth', 'deviceCheck', function($root, auth, deviceCheck) {
+app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', function($root, auth, deviceCheck, $sessionStorage) {
     auth.init('/', '/signin', '/logout');
     deviceCheck.checkIsMobile();
     $root.$on('$viewContentLoaded', function(event){
         $('.footer').fadeIn(500);
+    });
+    $root.$on('$routeChangeStart', function(event, next, current) {
+        if(!_.isUndefined(next)) {
+            if(next.$$route) {
+                if(next.$$route.originalPath == '/') {
+                    $('.view').removeClass('main-view');
+                } else {
+                    $('.view').addClass('main-view');
+                }
+            }
+        }
+    });
+    $root.$on('$routeChangeSuccess', function(event, current, previous) {
+        if(!_.isUndefined(current)) {
+            if(current.$$route) {
+                if(current.$$route.originalPath == '/card/info') {
+                    delete $sessionStorage.updatedPerson;
+                }
+            }
+        }
+    });
+    $root.$on('$routeChangeError', function(event, current, previous, reject) {
     });
 }]);

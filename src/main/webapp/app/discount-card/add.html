@@ -1,5 +1,6 @@
 <section id="add-discount-card" class="container-fluid">
     <h2 class="col-md-12">Add Discount Card</h2>
+    <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
     <form class="col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 col-sm-offset-2 col-sm-8 col-xs-10 col-xs-offset-1"
           name="add">
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
@@ -12,6 +13,7 @@
                    pattern="^[1-9][0-9]{0,15}$"
                    id="cardNumber"
                    name="cardNumber"
+                   autocomplete="off"
                    required
                    ng-model="card.card_number"/>
             <div validation-messages
@@ -45,7 +47,7 @@
                    class="form-control"
                    placeholder="Input discount"
                    id="amountOfDiscount"
-                   pattern="^[1-9][0-9]?$|^100$"
+                   pattern="^[0-9](?:0|$)[0-9]?$|^100$"
                    name="amountOfDiscount"
                    ng-model="card.amount_of_discount"/>
             <div validation-messages
@@ -68,25 +70,16 @@
         </div>
         <div class="form-group">
             <label>Tags</label>
-            <ui-select multiple ng-model="card.tags">
-                <ui-select-match placeholder="Select tags...">{{$item.tag}}</ui-select-match>
-                <ui-select-choices repeat="tag in tags | filter: $select.search">
-                    {{tag.tag}}
-                </ui-select-choices>
-            </ui-select>
+            <div class="add-tag">
+                <ui-select multiple ng-model="card.tags" ng-disabled="card.tags.length > 2">
+                    <ui-select-match placeholder="Select tags...">{{$item.tag}}</ui-select-match>
+                    <ui-select-choices repeat="tag in tags | filter: $select.search" >
+                        {{tag.tag}}
+                    </ui-select-choices>
+                </ui-select>
+                <input type="button" ng-click="removeLastTag()" value="Remove" class="btn btn-warning"/>
+            </div>
         </div>
-        <div class="form-group custom-tag" >
-            <label>New Tag</label>
-            <input class="form-control col-md-8"
-                   type="text"
-                   ng-model="customTag"
-                   name="customTag"
-                   placeholder="Input your tag"/>
-            <input class="col-md-offset-1 col-md-3 btn btn-success" type="button" value="Add new"
-                   ng-click="addCustomTag()" ng-disabled="add.customTag.$invalid || add.customTag.$modelValue == null"/>
-        </div>
-        <small class="hint col-md-12">You can add multiple custom tags by separating them with , or multiple
-            spaces</small>
         <div class="form-group buttons">
             <input type="button" class="btn btn-success btn-lg" value="Add" ng-disabled="add.$invalid" ng-click="addNewCard()"/>
             <input type="button" class="btn btn-primary btn-lg" value="Reset" ng-click="reset()"/>

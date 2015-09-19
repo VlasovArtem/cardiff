@@ -29,7 +29,7 @@
                    id="login"
                    ng-minlength="6"
                    ng-maxlength="100"
-                   ng-pattern="/^[A-Za-z0-9_-]{6,100}$/"
+                   ng-pattern="/^[A-Za-z0-9_-. ]+$/"
                    ng-model="person.login"
                    autocomplete="off"
                    ensure-unique
@@ -88,7 +88,7 @@
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
             <label for="phone-number">Phone number</label>
-            <input type="text"
+            <input type="number"
                    class="form-control"
                    name="phoneNumber"
                    id="phone-number"

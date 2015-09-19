@@ -19,7 +19,7 @@
             <input
                     type="password"
                     id="old-password"
-                    ng-model="data.oldPassword"
+                    ng-model="personInfo.oldPassword"
                     class="form-control"/>
         </div>
         <div class="form-group">
@@ -27,7 +27,7 @@
             <input
                     type="password"
                     id="new-password"
-                    ng-model="data.newPassword"
+                    ng-model="personInfo.newPassword"
                     class="form-control"/>
         </div>
         <div class="form-group buttons">
@@ -36,24 +36,9 @@
     </form>
 </section>
 <hr class="style col-md-offset-3 col-md-6"/>
-<section id="discount-cards" class="container-fluid" ng-if="person.discount_cards.length > 0">
+<section id="discount-cards" class="container-fluid" ng-if="tableInfo.data.content.length > 0" entity-sorting>
     <h2 class="col-md-12">Your Discount cards.</h2>
-    <div class="col-md-offset-1 col-md-10">
-        <div class="container col-md-4 col-sm-6 col-xs-12" ng-repeat="card in person.discount_cards" masonry>
-            <div class="person-discount-card">
-                <p class="company-name" ng-bind="card.company_name"></p>
-                <ul class="list-group">
-                    <li class="list-group-item"><b>Description:</b> {{card.description}}</li>
-                    <li class="list-group-item"><b>Card number:</b> {{card.card_number}}</li>
-                    <li class="list-group-item"><b>Discount:</b> {{card.amount_of_discount > 0 ? card.amount_of_discount
-                        + '%' : 'n/a' }}</li>
-                    <li class="list-group-item tags" ng-show="card.tags.length > 0">
-                    <span class="label label-success" ng-repeat="tag in card.tags" ng-bind="tag.tag">
-                        {{tag}}
-                    </span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <div class="col-md-offset-1 col-md-10 col-xs-12 col-sm-12">
+        <content-table></content-table>
     </div>
 </section>

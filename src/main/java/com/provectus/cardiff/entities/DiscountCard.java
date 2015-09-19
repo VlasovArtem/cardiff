@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.Set;
@@ -26,13 +27,22 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "discount_card")
-@NamedEntityGraph(
-        name = "DiscountCard.discountCardInfo",
-        attributeNodes = {
-                @NamedAttributeNode("discountCardComments"),
-                @NamedAttributeNode("tags")
-        }
-)
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(
+                name = "DiscountCard.discountCardInfo",
+                attributeNodes = {
+                        @NamedAttributeNode("discountCardComments"),
+                        @NamedAttributeNode("tags")
+                }
+        ),
+        @NamedEntityGraph(
+                name = "DiscountCard.discountTags",
+                attributeNodes = {
+                        @NamedAttributeNode("tags")
+                }
+        )
+})
+
 @Access(AccessType.PROPERTY)
 public class DiscountCard extends BaseEntity {
     private long cardNumber;
@@ -98,7 +108,7 @@ public class DiscountCard extends BaseEntity {
         this.deleted = deleted;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "tag_card",
             joinColumns = @JoinColumn(name = "discount_card_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))

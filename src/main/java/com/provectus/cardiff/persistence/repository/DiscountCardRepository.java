@@ -1,6 +1,8 @@
 package com.provectus.cardiff.persistence.repository;
 
 import com.provectus.cardiff.entities.DiscountCard;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Created by artemvlasov on 21/08/15.
@@ -16,13 +19,19 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
     @EntityGraph(value = "DiscountCard.discountCardInfo", type = EntityGraph.EntityGraphType.LOAD)
     Optional<DiscountCard> findById(long id);
 
+    @Override
+    @EntityGraph(value = "DiscountCard.discountTags", type = EntityGraph.EntityGraphType.LOAD)
+    Page<DiscountCard> findAll(Pageable pageable);
+
     Optional<DiscountCard> findByCardNumber(long cardNumber);
 
     @Query("select d.id, d.companyName, d.amountOfDiscount from DiscountCard d where lower(d.companyName) LIKE %?1%")
     Optional<List<DiscountCard>> findByCompanyName(String companyName);
 
-    @Query("select d from Person u JOIN u.discountCards d where u.id = ?1")
-    List<DiscountCard> findByUserId(long id);
+    @EntityGraph(value = "DiscountCard.discountTags", type = EntityGraph.EntityGraphType.LOAD)
+    Page<DiscountCard> findByOwnerId(long id, Pageable pageable);
+
+    Stream<DiscountCard> findByOwnerId(long id);
 
     @Query("select d from DiscountCard d, Tag t " +
             "where t member of d.tags " +

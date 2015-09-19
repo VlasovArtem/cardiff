@@ -1,13 +1,19 @@
 html, body {
     height: 100%;
 }
+.view > section:not(#search) {
+    margin-bottom: 40px;;
+}
 .background {
-    height: 100%;
+    height: 100vh;
     background: rgba(222, 232, 241, 1) url('../images/main-img.jpg') no-repeat center center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
+}
+.main-view {
+    margin: 0 0 50px 0;
 }
 nav {
     margin: 0 !important;
@@ -19,8 +25,7 @@ nav {
 /*}*/
 footer {
     display: none;
-    height: 15%;
-    margin: 20px 0 0 0;
+    height: 20%;
     background-color: #5A778F;
     -webkit-box-shadow: inset 0px 6px 10px -3px rgba(0,0,0,0.75);
     -moz-box-shadow: inset 0px 6px 10px -3px rgba(0,0,0,0.75);
@@ -125,7 +130,7 @@ input[type=search]:focus, .search .btn-default-focus {
     text-align: center;
 }
 .search {
-    height: 100vh;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -200,10 +205,10 @@ hr.style {
     margin: 0;
 }
 
-.admin-person-buttons {
+.table-buttons {
     text-align: center;
 }
-.admin-person-buttons span {
+.table-buttons span {
     font-size: x-large;
 }
 .admin-persons .data > td {
@@ -316,6 +321,26 @@ hr.style {
 #add-discount-card .buttons {
     padding: 30px 0 0 0;
 }
+.add-tag > div:first-child {
+    display: inline-block;
+}
+.add-tag > .ui-select-container {
+    width: 85%;
+}
+.add-tag > input {
+    float: right;
+}
+
+@media screen and (max-width: 800px) {
+    .add-tag > .ui-select-container {
+        width: 75%;
+    }
+}
+@media screen and (max-width: 414px) {
+    .add-tag > .ui-select-container {
+        width: 65%;
+    }
+}
 
 /* Toggle */
 .navbar-default .navbar-toggle {
@@ -328,19 +353,7 @@ hr.style {
     background-color: rgba(221, 221, 221, .4);
 }
 
-@media screen and (min-width: 1920px) {
-    .grid-item {
-        width: 22%;
-    }
-}
 @media screen and (min-width: 1440px) and (max-width: 1919px) {
-    .grid-item {
-        width: 30%;
-    }
-    .personal-data {
-        width: 50%;
-        margin-left: 25%;
-    }
     #change-password form {
         width: 50%;
         margin-left: 25%;
@@ -591,6 +604,10 @@ and (orientation: landscape) {
 and (min-device-width: 1200px)
 and (max-device-width: 1600px)
 and (-webkit-min-device-pixel-ratio: 1) {
+    #personal-data {
+        margin-left: 25%;
+        width: 50%;
+    }
 }
 
 /* ----------- Retina Screens ----------- */

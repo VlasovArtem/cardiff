@@ -2,7 +2,6 @@ package com.provectus.cardiff.persistence.repository;
 
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long>{
-    @EntityGraph(value = "Person.discountCards", type = EntityGraph.EntityGraphType.LOAD)
+//    @EntityGraph(value = "Person.discountCards", type = EntityGraph.EntityGraphType.LOAD)
     @Query("from Person p where p.id = ?1")
     Person findById(long id);
 

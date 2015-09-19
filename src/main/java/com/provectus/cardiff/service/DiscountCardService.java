@@ -27,4 +27,10 @@ public interface DiscountCardService {
     Optional<List<DiscountCard>> search (String name);
 
     Page<DiscountCard> getAll (Pageable pageable);
+
+    Page<DiscountCard> getAuthenticatedPersonDiscountCards(Pageable pageable);
+
+    void removeOwnerCards(long ownerId);
+
+    void restoreOwnerCard(long ownerId);
 }

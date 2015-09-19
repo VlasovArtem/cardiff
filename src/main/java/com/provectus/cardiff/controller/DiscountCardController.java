@@ -82,12 +82,13 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/get/all", method = GET)
-    @JsonView(DiscountCardView.BasicLevel.class)
+    @JsonView(DiscountCardView.DiscountCardTagsLevel.class)
     @ResponseStatus(value = OK)
-    public Page<DiscountCard> getAll(@RequestParam(defaultValue = "0", required = false) int page,
-                                     @RequestParam(defaultValue = "15", required = false) int size,
-                                     @RequestParam(defaultValue = "DESC", required = false) String direction,
-                                     @RequestParam(defaultValue = "createdDate", required = false) String property) {
+    public Page<DiscountCard> getAll(
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @RequestParam(defaultValue = "15", required = false) int size,
+            @RequestParam(defaultValue = "DESC", required = false) String direction,
+            @RequestParam(defaultValue = "createdDate", required = false) String property) {
         return service.getAll(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
@@ -101,4 +102,14 @@ public class DiscountCardController {
         return ResponseEntity.ok(dc.get());
     }
 
+    @RequestMapping(path = "/owner/all", method = GET, produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    @JsonView(DiscountCardView.DiscountCardTagsLevel.class)
+    public Page<DiscountCard> getAuthenticatedPersonDiscountCards(
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @RequestParam(defaultValue = "15", required = false) int size,
+            @RequestParam(defaultValue = "DESC", required = false) String direction,
+            @RequestParam(defaultValue = "createdDate", required = false) String property) {
+        return service.getAuthenticatedPersonDiscountCards(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
+    }
 }
