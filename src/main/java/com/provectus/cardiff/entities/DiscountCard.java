@@ -31,14 +31,7 @@ import java.util.Set;
         @NamedEntityGraph(
                 name = "DiscountCard.discountCardInfo",
                 attributeNodes = {
-                        @NamedAttributeNode("discountCardComments"),
-                        @NamedAttributeNode("tags")
-                }
-        ),
-        @NamedEntityGraph(
-                name = "DiscountCard.discountTags",
-                attributeNodes = {
-                        @NamedAttributeNode("tags")
+                        @NamedAttributeNode("discountCardComments")
                 }
         )
 })
@@ -50,7 +43,6 @@ public class DiscountCard extends BaseEntity {
     private int amountOfDiscount;
     private String description;
     private boolean deleted;
-    @JsonView(value = {DiscountCardView.DiscountCardTagsLevel.class, PersonView.DiscountCardsLevel.class})
     private Set<Tag> tags;
     @JsonView(value = {DiscountCardView.DiscountCardInfoLevel.class, PersonView.DiscountCardCommentsLevel.class})
     private Set<DiscountCardComment> discountCardComments;
@@ -108,7 +100,7 @@ public class DiscountCard extends BaseEntity {
         this.deleted = deleted;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.DETACH})
     @JoinTable(name = "tag_card",
             joinColumns = @JoinColumn(name = "discount_card_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id"))

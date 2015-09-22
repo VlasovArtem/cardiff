@@ -41,7 +41,7 @@ app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassw
             ],
             filteredProperties: [
                 {property: 'created_date', filter: $filter('dateFilter')},
-                {property: 'amount_of_discount', appender: ' %'},
+                {property: 'amount_of_discount', appender: ' %'}
             ]
         };
         $scope.person = personData;
@@ -64,8 +64,7 @@ app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassw
                     alert('Password successfully changed');
                     $scope.personInfo = null;
                 }, function(data) {
-                    $scope.errorFn(data.error);
-                    $scope.personInfo = null;
+                    $scope.errorFn(data.data.error);
                 })
             }
         };

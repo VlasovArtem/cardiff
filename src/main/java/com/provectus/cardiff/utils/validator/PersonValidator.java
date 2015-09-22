@@ -77,11 +77,11 @@ public class PersonValidator extends EntityValidator {
      */
     public enum PersonValidationInfo {
         NAME("Name should not contains any digits and length should be 6 - 100",
-                "^[\\p{L} .'-]{6,100}$"),
+                "^[\\p{L} .'\\-]{6,100}$"),
         LOGIN("Login should contains next characters: a-z 0-9 _ -. And length should be 6 - 100",
-                "^[A-Za-z0-9_-]{6,100}$"),
-        PASSWORD("Min length of password should be 8",
-                "^.{8,}$"),
+                "^[A-Za-z0-9_\\- .]{6,100}$"),
+        PASSWORD("Min length of password should be 8 and max 128",
+                "^.{8,128}$"),
         PHONE_NUMBER("Phone number should contains",
                 "[0-9]{9}"),
         DESCRIPTION("Description length should be less than 500",

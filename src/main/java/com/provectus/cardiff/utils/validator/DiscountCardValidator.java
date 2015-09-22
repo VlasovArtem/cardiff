@@ -72,8 +72,8 @@ public class DiscountCardValidator extends EntityValidator {
                 "^[1-9][0-9]{0,15}$"),
         COMPANY_NAME("Company name is requires and max length is 50",
                 "^.{1,50}$"),
-        AMOUNT_OF_DISCOUNT("Amount of discount should be from 1 - 100",
-                "^[0-9](?:0|$)[0-9]?$|^100$"),
+        AMOUNT_OF_DISCOUNT("Amount of discount should be from 0 - 100",
+                "^(?!0|$)[0-9][0-9]?$|^100$"),
         DESCRIPTION("Description length should be less than 500",
                 ".{0,500}");
         private String error;

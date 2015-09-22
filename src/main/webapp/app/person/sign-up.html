@@ -9,7 +9,7 @@
                    placeholder="Input name"
                    ng-maxlength="100"
                    ng-minlength="6"
-                   ng-pattern="/^[A-Za-z .'-]*$/"
+                   ng-pattern="/^[A-Za-z .'\-]*$/"
                    id="name"
                    name="name"
                    ng-model="person.name"/>
@@ -29,7 +29,7 @@
                    id="login"
                    ng-minlength="6"
                    ng-maxlength="100"
-                   ng-pattern="/^[A-Za-z0-9_-. ]+$/"
+                   ng-pattern="/^[A-Za-z0-9_\-. ]+$/"
                    ng-model="person.login"
                    autocomplete="off"
                    ensure-unique
@@ -50,8 +50,8 @@
                    placeholder="Input email"
                    id="email"
                    pattern="{{emailPattern}}"
-                   ng-maxlength="50"
-                   ng-minlength="3"
+                   ng-maxlength="254"
+                   ng-minlength="9"
                    name="email"
                    ng-model="person.email"
                    ensure-unique
@@ -75,8 +75,8 @@
                    id="password"
                    placeholder="Input password"
                    ng-model="person.password"
-                   ng-minlength="8"
-                   ng-maxlength="100"
+                   ng-minlength="6"
+                   ng-maxlength="128"
                    required/>
             <div validation-messages
                  model-controller="signUp.password"
@@ -88,7 +88,7 @@
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
             <label for="phone-number">Phone number</label>
-            <input type="number"
+            <input type="text"
                    class="form-control"
                    name="phoneNumber"
                    id="phone-number"

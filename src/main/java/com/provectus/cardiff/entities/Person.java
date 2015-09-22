@@ -133,7 +133,6 @@ public class Person extends BaseEntity {
     }
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true, mappedBy = "owner")
-    @JsonView(PersonView.DiscountCardsLevel.class)
     @JsonIgnore
     public Set<DiscountCard> getDiscountCards() {
         return discountCards;

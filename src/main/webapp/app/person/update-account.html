@@ -10,7 +10,7 @@
                    placeholder="Input name"
                    ng-maxlength="100"
                    ng-minlength="6"
-                   ng-pattern="/^[A-Za-z .'-]*$/"
+                   ng-pattern="/^[A-Za-z .'\-]*$/"
                    id="name"
                    name="name"
                    ng-model="changedPerson.name"/>
@@ -30,7 +30,7 @@
                id="login"
                ng-minlength="6"
                ng-maxlength="100"
-               ng-pattern="/^[A-Za-z0-9_-]{6,100}$/"
+               ng-pattern="/^[A-Za-z0-9_\- .]{6,100}$/"
                ng-model="changedPerson.login"
                autocomplete="off"
                ensure-unique
@@ -51,8 +51,8 @@
                    placeholder="Input email"
                    id="email"
                    pattern="{{emailPattern}}"
-                   ng-maxlength="50"
-                   ng-minlength="3"
+                   ng-maxlength="254"
+                   ng-minlength="9"
                    name="email"
                    ng-model="changedPerson.email"
                    ensure-unique
@@ -72,7 +72,7 @@
             <label for="phone-number">Phone number</label>
             <input type="text"
                    class="form-control"
-                   name="phone_number"
+                   name="phoneNumber"
                    id="phone-number"
                    ng-minlength="9"
                    ng-model="changedPerson.phone_number"
@@ -80,11 +80,11 @@
                    ensure-unique
                    required/>
             <div validation-messages
-                 model-controller="updateFrom.phone_number"
+                 model-controller="updateFrom.phoneNumber"
                  required-error="Phone number is required"
                  minlength-error="Phone number should 9 symbols length"
                  unique-error="Phone number is already exists"></div>
-            <form-error error="error.data.phone_number" form="updateFrom.phone_number"></form-error>
+            <form-error error="error.data.phone_number" form="updateFrom.phoneNumber"></form-error>
         </div>
         <div class="form-group">
             <label for="location">Location</label>

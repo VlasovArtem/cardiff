@@ -1,5 +1,5 @@
 var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
-    'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select', 'wu.masonry',
+    'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select',
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives',
     'main-controllers', 'main-services', 'main-directives', 'main-filters']).config(

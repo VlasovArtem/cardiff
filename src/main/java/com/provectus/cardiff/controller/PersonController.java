@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.provectus.cardiff.utils.ResponseEntityExceptionCreator.create;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -67,7 +65,6 @@ public class PersonController {
      * @return User
      */
     @RequestMapping(path = "/authenticated", method = GET, produces = APPLICATION_JSON_VALUE)
-    @JsonView(PersonView.DiscountCardsLevel.class)
     public ResponseEntity authenticated() {
         return ResponseEntity.ok(service.authenticated());
     }
@@ -79,12 +76,8 @@ public class PersonController {
             method = PUT,
             consumes = APPLICATION_FORM_URLENCODED_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity changePassword(@RequestParam String oldPassword,
-                                         @RequestParam String newPassword, Exception ex) {
-        if(ex != null && ex.getMessage() != null) {
-            return create(FORBIDDEN, ex.getMessage());
-        }
+                                         @RequestParam String newPassword) {
         service.changePassword(oldPassword, newPassword);
         return ResponseEntity.ok().build();
     }

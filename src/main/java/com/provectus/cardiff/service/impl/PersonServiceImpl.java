@@ -12,6 +12,7 @@ import com.provectus.cardiff.utils.exception.PersonAuthenticationException;
 import com.provectus.cardiff.utils.exception.PersonAuthorizationException;
 import com.provectus.cardiff.utils.exception.PersonDataUniqueException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
+import com.provectus.cardiff.utils.exception.PersonUpdateException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -82,7 +83,7 @@ public class PersonServiceImpl implements PersonService {
         if (BCrypt.checkpw(oldPassword, user.getPassword())) {
             user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt()));
         } else {
-            throw new IllegalArgumentException("Old password is not match");
+            throw new PersonUpdateException("The old password is incorrect");
         }
     }
 

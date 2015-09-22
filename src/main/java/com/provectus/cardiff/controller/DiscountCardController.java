@@ -82,8 +82,8 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/get/all", method = GET)
-    @JsonView(DiscountCardView.DiscountCardTagsLevel.class)
     @ResponseStatus(value = OK)
+    @JsonView(DiscountCardView.BasicLevel.class)
     public Page<DiscountCard> getAll(
             @RequestParam(defaultValue = "0", required = false) int page,
             @RequestParam(defaultValue = "15", required = false) int size,
@@ -104,7 +104,7 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/owner/all", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    @JsonView(DiscountCardView.DiscountCardTagsLevel.class)
+    @JsonView(DiscountCardView.BasicLevel.class)
     public Page<DiscountCard> getAuthenticatedPersonDiscountCards(
             @RequestParam(defaultValue = "0", required = false) int page,
             @RequestParam(defaultValue = "15", required = false) int size,

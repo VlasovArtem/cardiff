@@ -24,7 +24,7 @@ CREATE TABLE cardiff.person (
   name         VARCHAR(100),
   login        VARCHAR(100)       NOT NULL  UNIQUE,
   password     BYTEA              NOT NULL,
-  email        VARCHAR(50)        NOT NULL  UNIQUE,
+  email        VARCHAR(254)        NOT NULL  UNIQUE,
   created_date DATE,
   phone_number BIGINT,
   description  VARCHAR(500),

@@ -40,7 +40,11 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Ca
                 {property: 'created_date', filter: $filter('dateFilter')},
                 {property: 'phone_number', filter: $filter('phoneNumberFilter')},
                 {property: 'amount_of_discount', appender: ' %'}
-            ]
+            ],
+            dataButtons: {
+                desktop: 'app/discount-card/discount-cards-buttons.html',
+                mobile: 'app/discount-card/discount-cards-buttons.html'
+            }
         };
 
         $scope.initialSort = {

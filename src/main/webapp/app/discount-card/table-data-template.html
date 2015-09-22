@@ -13,7 +13,7 @@
             <span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>
         </td>
         <td ng-show="tableInfo.dataButtons" class="table-buttons">
-            <input type="button" class="btn btn-success btn-sm" value="Show" ng-click="findDiscountCard(data.id)"/>
+            <div ng-include="tableInfo.dataButtons.desktop"></div>
         </td>
     </tr>
 </table>
@@ -21,7 +21,7 @@
      ng-show="mobileDevice && !tabletLandscape">
     <ul class="mobile-table-cards">
         <li ng-repeat="(headDataIndex, headData) in tableInfo.head"><b>{{headData.name}}:</b> {{setData(headDataIndex, dataIndex)}}</li>
-        <li class="buttons" ng-show="tableInfo.dataButtons" class="table-buttons">
+        <li ng-show="tableInfo.dataButtons" class="buttons table-buttons">
             <div ng-include="tableInfo.dataButtons.mobile"></div>
         </li>
     </ul>
