@@ -112,4 +112,11 @@ public class DiscountCardController {
             @RequestParam(defaultValue = "createdDate", required = false) String property) {
         return service.getAuthenticatedPersonDiscountCards(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
+
+    @RequestMapping(path = "/check", method = GET)
+    @ResponseStatus(OK)
+    public void checkDiscountCard(@RequestParam long cardNumber, @RequestParam String
+            companyName) {
+        service.checkDiscountCardIsUnique(cardNumber, companyName);
+    }
 }

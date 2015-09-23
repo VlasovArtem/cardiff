@@ -79,7 +79,7 @@
                         {{tag.tag}}
                     </ui-select-choices>
                 </ui-select>
-                <input type="button" ng-click="removeLastTag()" value="Remove" class="btn btn-warning"/>
+                <input type="button" ng-disabled="card.tags.length == 0" ng-click="removeLastTag()" value="Remove" class="btn btn-warning"/>
             </div>
         </div>
         <div class="form-group buttons">

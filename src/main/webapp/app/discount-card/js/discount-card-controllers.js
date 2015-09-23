@@ -1,17 +1,28 @@
 var app = angular.module('discount-card-controllers', ['ngResource']);
 
-app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tags', '$filter',
-    function ($scope, $location, AddDiscountCardFactory, tags, $filter) {
+app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tags', '$filter', 'DiscountCardFactory',
+    function ($scope, $location, AddDiscountCardFactory, tags, $filter, DiscountCardFactory) {
         $scope.tags = tags;
         $scope.card = {};
         $scope.currentDate = new Date();
         $scope.addNewCard = function () {
-            $scope.card.company_name = $filter('camelCase')($scope.card.company_name);
-            AddDiscountCardFactory.save($scope.card, function() {
-                $location.path('/account')
-            }, function(data) {
-                $scope.error = data.data;
+            DiscountCardFactory.check({
+                cardNumber: $scope.card.card_number,
+                companyName: $scope.card.company_name
+            }, function() {
+                $scope.card.company_name = $filter('camelCase')($scope.card.company_name);
+                console.log($scope.card.company_name);
+                AddDiscountCardFactory.save($scope.card, function() {
+                    $location.path('/account')
+                }, function(data) {
+                    $scope.error = data.data.error;
+                })
+            }, function() {
+                $scope.error = {
+                    error: "Discount card with entered number and company name is already exists"
+                };
             })
+
         };
         $scope.removeLastTag = function() {
             $scope.card.tags.pop();

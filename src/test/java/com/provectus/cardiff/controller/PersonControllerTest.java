@@ -15,7 +15,7 @@ import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.exception.PersonAuthenticationException;
 import com.provectus.cardiff.utils.exception.PersonAuthorizationException;
-import com.provectus.cardiff.utils.exception.PersonDataUniqueException;
+import com.provectus.cardiff.utils.exception.DataUniqueException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import com.provectus.cardiff.utils.validator.PersonValidator;
 import com.provectus.cardiff.utils.view.PersonView;
@@ -282,7 +282,7 @@ public class PersonControllerTest {
     @Test
     public void checkEmailThrowExceptionTest() throws Exception {
         personService.checkEmail("testmail@mail.com");
-        expectLastCall().andThrow(new PersonDataUniqueException("Person with this email is already exists"));
+        expectLastCall().andThrow(new DataUniqueException("Person with this email is already exists"));
         replay(personService);
         this.mockMvc.perform(post("/rest/person/check/email").param("email", "testmail@mail.com"))
                 .andExpect(status().is4xxClientError());
@@ -299,7 +299,7 @@ public class PersonControllerTest {
     @Test
     public void checkLoginThrowExceptionTest() throws Exception {
         personService.checkLogin("testlogin");
-        expectLastCall().andThrow(new PersonDataUniqueException("Person with this login is already exists"));
+        expectLastCall().andThrow(new DataUniqueException("Person with this login is already exists"));
         replay(personService);
         this.mockMvc.perform(post("/rest/person/check/login").param("login", "testlogin"))
                 .andExpect(status().is4xxClientError());
@@ -316,7 +316,7 @@ public class PersonControllerTest {
     @Test
     public void checkPhoneNumberThrowExceptionTest() throws Exception {
         personService.checkPhoneNumber(523265669);
-        expectLastCall().andThrow(new PersonDataUniqueException("Person with this phone number is already exists"));
+        expectLastCall().andThrow(new DataUniqueException("Person with this phone number is already exists"));
         replay(personService);
         this.mockMvc.perform(post("/rest/person/check/phone").param("phone", "523265669"))
                 .andExpect(status().is4xxClientError());

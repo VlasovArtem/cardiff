@@ -10,7 +10,7 @@ import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.exception.PersonAuthenticationException;
 import com.provectus.cardiff.utils.exception.PersonAuthorizationException;
-import com.provectus.cardiff.utils.exception.PersonDataUniqueException;
+import com.provectus.cardiff.utils.exception.DataUniqueException;
 import com.provectus.cardiff.utils.exception.PersonRegistrationException;
 import com.provectus.cardiff.utils.exception.PersonUpdateException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
@@ -153,21 +153,21 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void checkLogin(String login) {
         if(personRepository.existsByLogin(login)) {
-            throw new PersonDataUniqueException("Person with this login is already exists");
+            throw new DataUniqueException("Person with this login is already exists");
         }
     }
 
     @Override
     public void checkEmail(String email) {
         if(personRepository.existsByEmail(email)) {
-            throw new PersonDataUniqueException("Person with this email is already exists");
+            throw new DataUniqueException("Person with this email is already exists");
         }
     }
 
     @Override
     public void checkPhoneNumber(long phoneNumber) {
         if(personRepository.existsByPhoneNumber(phoneNumber)) {
-            throw new PersonDataUniqueException("Person with this phone number is already exists");
+            throw new DataUniqueException("Person with this phone number is already exists");
         }
     }
 

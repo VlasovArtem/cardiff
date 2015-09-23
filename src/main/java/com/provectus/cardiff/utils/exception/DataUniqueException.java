@@ -7,23 +7,23 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Created by artemvlasov on 08/09/15.
  */
 @ResponseStatus(value = HttpStatus.CONFLICT)
-public class PersonDataUniqueException extends RuntimeException {
-    public PersonDataUniqueException() {
+public class DataUniqueException extends RuntimeException {
+    public DataUniqueException() {
     }
 
-    public PersonDataUniqueException(String message) {
+    public DataUniqueException(String message) {
         super(message);
     }
 
-    public PersonDataUniqueException(String message, Throwable cause) {
+    public DataUniqueException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public PersonDataUniqueException(Throwable cause) {
+    public DataUniqueException(Throwable cause) {
         super(cause);
     }
 
-    public PersonDataUniqueException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public DataUniqueException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

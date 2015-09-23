@@ -4,6 +4,7 @@ import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.service.DiscountCardService;
+import com.provectus.cardiff.utils.exception.DataUniqueException;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import com.provectus.cardiff.utils.validator.DiscountCardValidator;
@@ -87,5 +88,13 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     @Override
     public void restoreOwnerCard(long ownerId) {
         discountCardRepository.findByOwnerId(ownerId).forEach(d -> d.setDeleted(false));
+    }
+
+    @Override
+    public boolean checkDiscountCardIsUnique(long discountCardNumber, String companyName) {
+        if(discountCardRepository.existsByNumberAndCompanyName(discountCardNumber, companyName)) {
+            throw new DataUniqueException("Discount card with entered number and company name is already exists");
+        }
+        return true;
     }
 }

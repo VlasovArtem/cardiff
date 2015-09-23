@@ -33,6 +33,6 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
             "and t.tag in ?1")
     Optional<List<DiscountCard>> findByTags(Set<String> tags);
 
-    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.cardNumber = ?1 AND UPPER(cd.companyName) = ?2")
+    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.cardNumber = ?1 AND UPPER(cd.companyName) = UPPER(?2)")
     boolean existsByNumberAndCompanyName(long number, String companyName);
 }

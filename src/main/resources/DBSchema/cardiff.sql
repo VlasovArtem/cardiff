@@ -41,7 +41,7 @@ CREATE TABLE cardiff.person (
 
 CREATE TABLE cardiff.discount_card (
   id                 BIGSERIAL PRIMARY KEY      NOT NULL,
-  card_number        BIGINT               NOT NULL UNIQUE,
+  card_number        BIGINT               NOT NULL,
   created_date       DATE,
   company_name       VARCHAR(50)          NOT NULL,
   amount_of_discount INT                  NOT NULL,
@@ -49,7 +49,8 @@ CREATE TABLE cardiff.discount_card (
   deleted            BOOLEAN              NOT NULL,
   person_id          BIGINT REFERENCES cardiff.person (id)
   ON DELETE CASCADE
-  ON UPDATE CASCADE
+  ON UPDATE CASCADE,
+  CONSTRAINT card_number_company_name_key UNIQUE (card_number, company_name)
 );
 
 --

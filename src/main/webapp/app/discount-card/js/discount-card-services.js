@@ -4,6 +4,14 @@ service.factory('AddDiscountCardFactory', ['$resource', function($resource) {
     return $resource('/rest/card/add');
 }]);
 
+service.factory('DiscountCardFactory', ['$resource', function($resource) {
+    return $resource('/rest/card/check', {}, {
+        check: {
+            method: 'GET'
+        }
+    })
+}]);
+
 service.factory('CardsCtrl', ['$resource', function($resource) {
     return $resource('/rest/card/get/all', {}, {
         getAll: {
