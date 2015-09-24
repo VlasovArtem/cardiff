@@ -1,6 +1,7 @@
 var app = angular.module('person-controllers', ['ngResource']);
 app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations',
     function($scope, $location, SignUp, auth, locations) {
+
         $scope.reg = function() {
             SignUp.registration($scope.person,
                 function() {
@@ -23,6 +24,10 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
             $scope.person = {};
         };
         $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+"
+        $scope.changeMask = function(country) {
+            $scope.mask = $scope.phoneNumberInfo[country].mask;
+            $scope.person.phone_number = null;
+        }
     }
 ]);
 
@@ -82,6 +87,20 @@ app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassw
 
 app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'PersonFactory', 'locations', 'PersonUpdateFactory', '$sessionStorage',
     function($scope, personData, $location, PersonFactory, locations, PersonUpdateFactory, $sessionStorage) {
+        $scope.phoneNumberInfo = {
+            Ukraine: {
+                code: '+380', mask: '(S4) 444-44-44'},
+            Russia : {
+                code: '+7', mask: '(S44) 444-44-44'},
+            'United States' : {
+                code: '+1', mask: '(S44) 444-44-44'},
+            Bulgaria : {
+                code: '+359', mask: '(S4) 444-44-44'}
+        };
+        $scope.uiMaskOptions = {
+            maskDefinitions : {'4': /\d/, 'S': /[1-9]/}
+        };
+        $scope.mask = "";
         $scope.changedPerson = personData;
         $scope.data = angular.copy(personData);
         $scope.personIsEquals = function() {
@@ -92,6 +111,15 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
             }
             return true;
         };
+        $scope.changeMask = function(country) {
+            $scope.mask = $scope.phoneNumberInfo[country].mask;
+            if($scope.data.location.country != $scope.changedPerson.location.country) {
+                $scope.changedPerson.phone_number = null;
+            } else {
+                $scope.changedPerson.phone_number = $scope.data.phone_number;
+            }
+        };
+        $scope.changeMask($scope.changedPerson.location.country);
         $scope.update = function() {
             PersonUpdateFactory.updatePerson($scope.changedPerson,
                 function() {

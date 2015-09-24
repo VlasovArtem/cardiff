@@ -9,12 +9,48 @@ app.filter('accountFilter', function() {
 });
 
 app.filter('phoneNumberFilter', function() {
-    return function(phoneNumber) {
-        if(phoneNumber != undefined) {
-            var phoneNumberString = phoneNumber.toString();
-            return '+380 (' + phoneNumberString.substr(0, 2) + ') ' + phoneNumberString.substr(2, 3) + '-' + phoneNumberString.substr(5, 2) + '-' + phoneNumberString.substr(7, 2);
-        } else {
-            return "";
+    return function(phoneNumber, country) {
+        if(angular.isDefined(phoneNumber) && angular.isDefined(country)) {
+            var phoneNumberInfo = {
+                Ukraine: {
+                    code: '+380', mask: '(44) 444-44-44'
+                },
+                Russia: {
+                    code: '+7', mask: '(444) 444-44-44'
+                },
+                'United States': {
+                    code: '+1', mask: '(444) 444-44-44'
+                },
+                Bulgaria: {
+                    code: '+359', mask: '(44) 444-44-44'
+                }
+            };
+            var maskCap = [], parsedPhoneNumber = phoneNumberInfo[country].code + " ";
+
+            function getNonReplaceableAttributes(mask) {
+                var preparedMask = mask.split(''), replaceObject = '4';
+                _.each(preparedMask, function (ch, i) {
+                    if (ch == replaceObject) {
+                        maskCap.push(i);
+                    }
+                })
+            }
+
+            getNonReplaceableAttributes(phoneNumberInfo[country].mask);
+            function preparePhoneNumber() {
+                var countNonReplaceableAttributes = 0;
+                var splitPhoneNumber = phoneNumber.toString().split('');
+                _.each(phoneNumberInfo[country].mask, function (ch, i) {
+                    if (_.contains(maskCap, i)) {
+                        parsedPhoneNumber = parsedPhoneNumber.concat(splitPhoneNumber[i - countNonReplaceableAttributes]);
+                    } else {
+                        parsedPhoneNumber = parsedPhoneNumber.concat(ch);
+                        countNonReplaceableAttributes++;
+                    }
+                })
+            }
+            preparePhoneNumber();
+            return parsedPhoneNumber;
         }
     }
 });

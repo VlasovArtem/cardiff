@@ -176,6 +176,13 @@ hr.style {
     color: #3fd634
 }
 
+/* Sign up page */
+.number-info {
+    text-align: center;
+    font-size: larger;
+    color: #30601a;
+}
+
 /* Admin Person page -- Cards Page*/
 .mobile-table-cards {
     list-style: none;

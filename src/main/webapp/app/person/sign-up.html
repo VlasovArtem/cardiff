@@ -84,25 +84,7 @@
                  minlength-error="Password is too short"
                  maxlength-error="Password is too long"></div>
             <form-error error="error.data.password" form="signUp.password"></form-error>
-        </div>
-        <div class="form-group has-feedback"
-             show-errors="{ showSuccess: true }">
-            <label for="phone-number">Phone number</label>
-            <input type="text"
-                   class="form-control"
-                   name="phoneNumber"
-                   id="phone-number"
-                   ng-minlength="9"
-                   ng-model="person.phone_number"
-                   ui-mask="+380 (99) 999-99-99"
-                   ensure-unique=""
-                   required/>
-            <div validation-messages
-                 model-controller="signUp.phoneNumber"
-                 required-error="Phone number is required"
-                 minlength-error="Phone number should 9 symbols length"
-                 unique-error="Phone number is already exists"></div>
-            <form-error error="error.data.phone_number" form="signUp.phoneNumber"></form-error>
+            <span class="glyphicon form-control-feedback"></span>
         </div>
         <div class="form-group">
             <label for="location">Location</label>
@@ -111,12 +93,41 @@
                     name="location"
                     id="location"
                     ng-model="person.location"
+                    ng-change="changeMask(person.location.country)"
                     required
                     ng-options="location.city group by location.country for location in locations track by location.id">
             </select>
             <div validation-messages
                  model-controller="signUp.location"
                  required-error="Location is required"></div>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{ showSuccess: true }">
+            <div class="col-md-12 col-sm-12 number-info" ng-show="!person.location">Please choose your location before
+                input
+                number</div>
+            <label for="phone-number">Phone number</label>
+            <div class="input-group">
+                <span class="input-group-addon">{{phoneNumberInfo[person.location.country].code}}</span>
+                <input type="tel"
+                       class="form-control"
+                       name="phoneNumber"
+                       id="phone-number"
+                       ng-minlength="9"
+                       ng-model="person.phone_number"
+                       ui-mask="{{mask}}"
+                       ui-options="uiMaskOptions"
+                       ensure-unique
+                       ng-disabled="!person.location"
+                       phone-number-mask
+                       required/>
+            </div>
+            <div validation-messages
+                 model-controller="signUp.phoneNumber"
+                 required-error="Phone number is required"
+                 minlength-error="Phone number should 9 symbols length"
+                 unique-error="Phone number is already exists"></div>
+            <form-error error="error.data.phone_number" form="signUp.phoneNumber"></form-error>
         </div>
         <div class="form-group">
             <label for="description">Info</label>

@@ -29,3 +29,23 @@ app.directive('cardSearch', ['DiscountCardSearchFactory', function(DiscountCardS
         }
     }
 }]);
+
+app.directive('numberValidator', [function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+            if(_.isUndefined(modelCtrl.$validators.min)) {
+                throw new DOMException("Min input attribute is required")
+            }
+            var minNumber = modelCtrl.$validators.min.length;
+            modelCtrl.$parsers.push(function(value) {
+                if(value < minNumber) {
+                    modelCtrl.$setViewValue();
+                    modelCtrl.$render();
+                }
+                return value;
+            })
+        }
+    }
+}]);

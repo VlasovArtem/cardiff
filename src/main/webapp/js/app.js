@@ -1,7 +1,7 @@
 var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
     'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select',
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
-    'discount-card-controllers', 'discount-card-services', 'discount-card-directives',
+    'discount-card-controllers', 'discount-card-services', 'discount-card-directives', 'discount-card-filters',
     'main-controllers', 'main-services', 'main-directives', 'main-filters']).config(
     function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
@@ -62,12 +62,10 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                                 });
                         }
                     },
-                    locations: function(Locations, auth) {
-                        if(auth.authenticated) {
-                            return Locations.query().$promise.then(function (data) {
-                                return data;
-                            })
-                        }
+                    locations: function(Locations) {
+                        return Locations.query().$promise.then(function (data) {
+                            return data;
+                        })
                     }
                 }
             }).

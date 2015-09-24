@@ -78,8 +78,9 @@ app.directive('ensureUnique', ["$http", "$location", function($http, $location) 
         restrict: 'A',
         require: 'ngModel',
         link: function(scope, elem, attr, ctrl) {
+            var data;
             scope.$watch(attr.ngModel, function(value, oldValue) {
-                if(!_.isEqual(value, oldValue) && value != oldValue && !_.isUndefined(value) && value != 0 && value != "") {
+                if(!_.isEqual(value, oldValue) && value != oldValue && !_.isUndefined(value) && value != 0 && value != "" && value != null) {
                     ctrl.$setValidity('unique', null);
                     if (toId) clearTimeout(toId);
                     if (!ctrl.$pristine) {
@@ -147,7 +148,7 @@ app.directive('validationMessages', function () {
                 }
             }, true);
         },
-        template: '<small class="help-block test" ng-repeat="message in errorMessages" ng-show= "!modelController.$pristine && $first" class="warning">{{message}}</small>'
+        template: '<small class="help-block error-info" ng-repeat="message in errorMessages" ng-show= "!modelController.$pristine && $first" class="warning">{{message}}</small>'
     }
 });
 
@@ -180,7 +181,11 @@ app.directive('contentTable',
                     var contains = _.some(scope.tableInfo.filteredProperties, function(value) {
                         if(scope.tableInfo.head[headDataIndex].property == value.property) {
                             if(value.filter) {
-                                data = value.filter(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property]);
+                                if(value.property == 'phone_number') {
+                                    data = value.filter(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property], scope.tableData[dataIndex].location.country)
+                                } else {
+                                    data = value.filter(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property]);
+                                }
                                 return true;
                             } else if (value.appender) {
                                 if(_.isNumber(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property])) {

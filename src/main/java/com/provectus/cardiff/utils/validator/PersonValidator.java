@@ -83,7 +83,7 @@ public class PersonValidator extends EntityValidator {
         PASSWORD("Min length of password should be 8 and max 128",
                 "^.{8,128}$"),
         PHONE_NUMBER("Phone number should contains",
-                "[0-9]{9}"),
+                "[0-9]{9,10}"),
         DESCRIPTION("Description length should be less than 500",
                 ".{0,500}"),
         EMAIL("Email is not matches standard pattern",

@@ -7,6 +7,7 @@
             <label for="cardNumber">Card number</label>
             <input class="form-control"
                    type="number"
+                   min="1"
                    placeholder="Input card number"
                    ng-maxlength="16"
                    ng-minlength="1"
@@ -15,7 +16,8 @@
                    name="cardNumber"
                    autocomplete="off"
                    required
-                   ng-model="card.card_number"/>
+                   ng-model="card.card_number"
+                   number-validator/>
             <div validation-messages
                  model-controller="add.cardNumber"
                  minlength-error="Card number is too short"
@@ -51,10 +53,11 @@
                    max="100"
                    pattern="^(?!0|$)[0-9][0-9]?$|^100$"
                    name="amountOfDiscount"
-                   ng-model="card.amount_of_discount"/>
+                   ng-model="card.amount_of_discount"
+                   number-validator/>
             <div validation-messages
                  model-controller="add.amountOfDiscount"
-                 patter-error="Amount of discount could be only for 1 - 100%"></div>
+                 pattern-error="Amount of discount could be only for 1 - 100%"></div>
         </div>
         <div class="form-group">
             <label for="description">Description</label>

@@ -2,7 +2,7 @@
     <h2 class="col-md-12">Your personal data</h2>
     <table class="table personal-data">
         <tr ng-repeat="(key, data) in person | accountTable" account-data label="key"
-            data="data">
+            data="data" country="person.location.country">
         </tr>
     </table>
     <div class="buttons">

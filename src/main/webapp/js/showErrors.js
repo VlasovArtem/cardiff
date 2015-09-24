@@ -67,19 +67,34 @@
           }, 0, false);
         });
         return toggleClasses = function(invalid) {
-          if(invalid && (scope.data == undefined || !(_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue))) {
-            el.find("span").remove();
+          var elements = [];
+          var classes = [];
+          var removeElement = function(elements, classes) {
+            _.each(elements, function(elem) {
+              el.find(elem).remove();
+            });
+            _.each(classes, function(cla) {
+              el.removeClass(cla);
+            })
+          };
+          var convertedInputName = inputName == "phoneNumber" ? "phone_number" : inputName;
+          if(invalid && (scope.data == undefined || !(_.isEqual(scope.data[convertedInputName], formCtrl[inputName].$modelValue) || scope.data[convertedInputName] == formCtrl[inputName].$modelValue))) {
+            elements = ["span.glyphicon", ".warning"];
+            classes = ["has-warning", "has-success"];
+            removeElement(elements, classes);
             el.append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
             return el.toggleClass('has-error', invalid);
-          } else if(showWarning && (_.isEqual(scope.data[inputName], formCtrl[inputName].$modelValue) || scope.data[inputName] == formCtrl[inputName].$modelValue)) {
-            el.find("span").remove();
-            el.find(".warning").remove();
+          } else if(showWarning && (_.isEqual(scope.data[convertedInputName], formCtrl[inputName].$modelValue) || scope.data[convertedInputName] == formCtrl[inputName].$modelValue)) {
+            elements = ["span.glyphicon", ".warning", ".error-info"];
+            classes = ["has-error", "has-success"];
+            removeElement(elements, classes);
             el.append('<span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>');
             el.append('<small class="help-block warning">Current person ' + $filter('accountFilter')(inputName)  + '</small>');
             return el.toggleClass('has-warning', !invalid);
           } else if(!invalid && showSuccess) {
-            el.find("span").remove();
-            el.find(".warning").remove();
+            elements = ["span.glyphicon", ".warning", ".error-info"];
+            classes = ["has-error", "has-warning"];
+            removeElement(elements, classes);
             el.append('<span class="glyphicon glyphicon-ok form-control-feedback"></span>');
             return el.toggleClass('has-success', !invalid);
           }
