@@ -1,7 +1,6 @@
 var app = angular.module('person-controllers', ['ngResource']);
 app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations',
     function($scope, $location, SignUp, auth, locations) {
-
         $scope.reg = function() {
             SignUp.registration($scope.person,
                 function() {
@@ -23,10 +22,12 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
         $scope.reset = function() {
             $scope.person = {};
         };
-        $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+"
+        $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+";
         $scope.changeMask = function(country) {
-            $scope.mask = $scope.phoneNumberInfo[country].mask;
-            $scope.person.phone_number = null;
+            if(angular.isDefined(country)) {
+                $scope.mask = $scope.phoneNumberInfo[country].mask;
+                $scope.person.phone_number = null;
+            }
         }
     }
 ]);
