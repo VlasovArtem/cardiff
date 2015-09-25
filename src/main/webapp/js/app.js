@@ -2,7 +2,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
     'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select',
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives', 'discount-card-filters',
-    'main-controllers', 'main-services', 'main-directives', 'main-filters']).config(
+    'main-controllers', 'main-services', 'main-directives', 'main-filters',
+    'card-booking-controllers', 'card-booking-services']).config(
     function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $routeProvider

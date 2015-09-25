@@ -1,4 +1,4 @@
-package com.provectus.cardiff.utils.exception;
+package com.provectus.cardiff.utils.exception.person;
 
 import org.springframework.security.core.AuthenticationException;
 

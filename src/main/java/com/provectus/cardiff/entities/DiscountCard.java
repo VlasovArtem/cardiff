@@ -19,6 +19,7 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.util.Set;
 
@@ -35,7 +36,6 @@ import java.util.Set;
                 }
         )
 })
-
 @Access(AccessType.PROPERTY)
 public class DiscountCard extends BaseEntity {
     private long cardNumber;
@@ -47,6 +47,7 @@ public class DiscountCard extends BaseEntity {
     @JsonView(value = {DiscountCardView.DiscountCardInfoLevel.class, PersonView.DiscountCardCommentsLevel.class})
     private Set<DiscountCardComment> discountCardComments;
     private Person owner;
+    private boolean available;
 
     public DiscountCard() {
     }
@@ -131,5 +132,18 @@ public class DiscountCard extends BaseEntity {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        setAvailable(true);
     }
 }

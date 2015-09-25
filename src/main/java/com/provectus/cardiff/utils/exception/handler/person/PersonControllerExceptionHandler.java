@@ -1,12 +1,12 @@
-package com.provectus.cardiff.utils.exception.handler;
+package com.provectus.cardiff.utils.exception.handler.person;
 
 import com.provectus.cardiff.utils.exception.EntityValidationException;
-import com.provectus.cardiff.utils.exception.PersonAuthenticationException;
-import com.provectus.cardiff.utils.exception.PersonAuthorizationException;
+import com.provectus.cardiff.utils.exception.person.PersonAuthenticationException;
+import com.provectus.cardiff.utils.exception.person.PersonAuthorizationException;
 import com.provectus.cardiff.utils.exception.DataUniqueException;
-import com.provectus.cardiff.utils.exception.PersonLoginException;
-import com.provectus.cardiff.utils.exception.PersonRegistrationException;
-import com.provectus.cardiff.utils.exception.PersonUpdateException;
+import com.provectus.cardiff.utils.exception.person.PersonLoginException;
+import com.provectus.cardiff.utils.exception.person.PersonRegistrationException;
+import com.provectus.cardiff.utils.exception.person.PersonUpdateException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

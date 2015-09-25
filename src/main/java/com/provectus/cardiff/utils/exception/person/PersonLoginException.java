@@ -1,4 +1,4 @@
-package com.provectus.cardiff.utils.exception;
+package com.provectus.cardiff.utils.exception.person;
 
 /**
  * Created by artemvlasov on 28/08/15.

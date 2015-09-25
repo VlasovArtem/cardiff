@@ -71,8 +71,8 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Ca
     }
 ]);
 
-app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFactory', 'auth',
-    function($scope, discountCardInfo, PersonFactory, auth) {
+app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFactory', 'auth', '$modal',
+    function($scope, discountCardInfo, PersonFactory, auth, $modal) {
         $scope.cardInfo = discountCardInfo;
         do {
             $scope.authenticated = auth.authenticated;
@@ -88,7 +88,19 @@ app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFac
                 }
             } while (!discountCardInfo.$resolved)
         }
-
+        $scope.book = function() {
+            var modalInstance = $modal.open({
+                animation: true,
+                size: 'sm',
+                template: '<input type="date" ng-model="bookingStartDate" class="form-control"/>',
+                controller: 'CardBookingCtrl',
+                resolve: {
+                    cardId: function() {
+                        return $scope.cardInfo.id;
+                    }
+                }
+            })
+        }
     }
 ]);
 

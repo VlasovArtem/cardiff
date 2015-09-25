@@ -14,9 +14,9 @@
                 <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
             </li>
         </ul>
-        <div class="col-md-12 buttons" ng-hide="true">
-            <input type="button" value="Book" class="btn btn-primary"/>
-            <input type="button" value="Pick" class="btn btn-success"/>
+        <div class="col-md-12 buttons" ng-show="authenticated">
+            <input type="button" value="Book" class="btn btn-primary" ng-click="book()"/>
+            <input type="button" value="Pick" class="btn btn-success" ng-hide="true"/>
         </div>
     </article>
 </section>

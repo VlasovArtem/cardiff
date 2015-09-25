@@ -17,25 +17,25 @@ import java.time.LocalDateTime;
  * Created by artemvlasov on 20/08/15.
  */
 @Entity
-@Table(name = "book_card")
+@Table(name = "card_booking")
 @AttributeOverride(name = "createdDate",
-        column = @Column(name = "book_date_start", insertable = false, updatable = false))
+        column = @Column(name = "booking_start_date", insertable = false, updatable = false))
 @Access(AccessType.PROPERTY)
-public class BookCard extends BaseEntity {
-    private LocalDateTime bookDateEnd;
+public class CardBooking extends BaseEntity {
+    private LocalDateTime bookingEndDate;
     private Person person;
     private DiscountCard discountCard;
 
-    @Column(name = "book_date_end")
-    public LocalDateTime getBookDateEnd() {
-        return bookDateEnd;
+    @Column(name = "booking_end_date")
+    public LocalDateTime getBookingEndDate() {
+        return bookingEndDate;
     }
 
-    public void setBookDateEnd(LocalDateTime bookDateEnd) {
-        this.bookDateEnd = bookDateEnd;
+    public void setBookingEndDate(LocalDateTime bookingEndDate) {
+        this.bookingEndDate = bookingEndDate;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     public Person getPerson() {
         return person;
@@ -45,7 +45,7 @@ public class BookCard extends BaseEntity {
         this.person = person;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_card_id")
     public DiscountCard getDiscountCard() {
         return discountCard;
@@ -59,7 +59,7 @@ public class BookCard extends BaseEntity {
      * Set Book Date End plus 7 days from now.
      */
     @PrePersist
-    public void setBookDateEnd() {
-        bookDateEnd = getCreatedDate() == null ? LocalDateTime.now().plusDays(7l) : getCreatedDate().plusDays(7l);
+    public void setBookingEndDate() {
+        bookingEndDate = getCreatedDate() == null ? LocalDateTime.now().plusDays(7l) : getCreatedDate().plusDays(7l);
     }
 }
