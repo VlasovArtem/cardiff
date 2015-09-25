@@ -176,6 +176,11 @@ hr.style {
     color: #3fd634
 }
 
+/* Sign in page */
+input[type=password] {
+    display: inline-block !important;
+}
+
 /* Sign up page */
 .number-info {
     text-align: center;

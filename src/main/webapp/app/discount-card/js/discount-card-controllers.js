@@ -1,7 +1,7 @@
 var app = angular.module('discount-card-controllers', ['ngResource']);
 
-app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tags', '$filter', 'DiscountCardFactory',
-    function ($scope, $location, AddDiscountCardFactory, tags, $filter, DiscountCardFactory) {
+app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tags', '$filter', 'DiscountCardFactory', '$route',
+    function ($scope, $location, AddDiscountCardFactory, tags, $filter, DiscountCardFactory, $route) {
         $scope.tags = tags;
         $scope.card = {};
         $scope.currentDate = new Date();
@@ -28,7 +28,7 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
             $scope.card.tags.pop();
         };
         $scope.reset = function () {
-            $scope.card = {};
+            $route.reload()
         };
     }
 ]);

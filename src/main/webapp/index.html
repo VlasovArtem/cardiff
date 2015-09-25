@@ -80,7 +80,7 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Cards <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/cards">Show</a></li>
+                        <!--<li><a href="/cards">Show</a></li>-->
                         <li ng-show="auth.authenticated"><a href="/card/add">Add</a></li>
                     </ul>
                 </li>
@@ -102,3 +102,34 @@
 </footer>
 </body>
 </html>
+<script>
+    $(document).ready(function() {
+
+        /*
+         * Bind to capslockstate events and update display based on state
+         */
+        $(window).bind("capsOn", function(event) {
+            if ($("#Passwd:focus").length > 0) {
+                $("#capsWarning").show();
+            }
+        });
+        $(window).bind("capsOff capsUnknown", function(event) {
+            $("#capsWarning").hide();
+        });
+        $("#Passwd").bind("focusout", function(event) {
+            $("#capsWarning").hide();
+        });
+        $("#Passwd").bind("focusin", function(event) {
+            if ($(window).capslockstate("state") === true) {
+                $("#capsWarning").show();
+            }
+        });
+
+        /*
+         * Initialize the capslockstate plugin.
+         * Monitoring is happening at the window level.
+         */
+        $(window).capslockstate();
+
+    });
+</script>

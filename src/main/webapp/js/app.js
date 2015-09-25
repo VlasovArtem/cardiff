@@ -7,8 +7,7 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
-                templateUrl: 'app/main/main.html',
-                controller: 'SearchCtrl'
+                redirectTo: '/cards'
             }).
             when('/signin', {
                 templateUrl: 'app/person/sign-in.html',

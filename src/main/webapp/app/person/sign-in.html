@@ -1,7 +1,7 @@
 <section id="sign-in" class="container-fluid">
     <h2 class="col-md-12">Sign in</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error"></div>
-    <form class="col-md-4 col-md-offset-4 form-horizontal">
+    <form class="col-md-4 col-md-offset-4 form-horizontal" name="signIn">
         <div class="form-group">
             <input
                     class="form-control"
@@ -9,10 +9,11 @@
                     ng-model="person.loginData"
                     placeholder="Input login or email" autofocus/>
         </div>
-        <div class="form-group">
+        <div class="form-group has-feedback">
             <input
                     class="form-control"
                     type="password"
+                    name="password"
                     ng-model="person.password"
                     placeholder="Input password"/>
         </div>
