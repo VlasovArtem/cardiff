@@ -1,4 +1,4 @@
-<section id="personal-data" class="col-md-offset-4 col-sm-offset-2 col-xs-offset-0 col-md-4 col-sm-8 col-xs-12">
+<section id="personal-data" class="col-md-offset-4 col-sm-offset-2 col-xs-offset-0 col-md-4 col-sm-8 col-xs-12 container-fluid">
     <h2 class="col-md-12">Your personal data</h2>
     <table class="table personal-data">
         <tr ng-repeat="(key, data) in person | accountTable" account-data label="key"
@@ -10,10 +10,10 @@
     </div>
 </section>
 <hr class="style col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10"/>
-<section id="change-password">
+<section id="change-password" class="col-md-offset-4 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12 container-fluid">
     <h2 class="col-md-12">Change password</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error"></div>
-    <form class="col-md-offset-4 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12" name="change">
+    <form name="change">
         <div class="form-group">
             <label for="old-password">Old Password</label>
             <input
@@ -42,11 +42,4 @@
             <input type="submit" class="btn btn-success" value="Change password" ng-click="changePassword()" ng-disabled="change.$pristine || change.$invalid"/>
         </div>
     </form>
-</section>
-<hr class="style col-md-offset-3 col-md-6"/>
-<section id="discount-cards" class="container-fluid" ng-if="tableInfo.data.content.length > 0" entity-sorting>
-    <h2 class="col-md-12">Your Discount cards</h2>
-    <div class="col-md-offset-1 col-md-10 col-xs-12 col-sm-12">
-        <content-table></content-table>
-    </div>
 </section>

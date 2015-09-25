@@ -67,6 +67,21 @@
                  unique-error="Email is already exists"></div>
             <form-error error="error.data.email" form="updateFrom.email"></form-error>
         </div>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <select
+                    class="form-control"
+                    name="location"
+                    id="location"
+                    ng-model="changedPerson.location"
+                    ng-change="changeMask(changedPerson.location.country)"
+                    required
+                    ng-options="location.city group by location.country for location in locations track by location.id">
+            </select>
+            <div validation-messages
+                 model-controller="updateFrom.location"
+                 required-error="Location is required"></div>
+        </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true, showWarning: true }">
             <label for="phone-number">Phone number</label>
@@ -91,21 +106,6 @@
                  maxlength-error="Phone number should be maximum 10 digits long"
                  unique-error="Phone number is already exists"></div>
             <form-error error="error.data.phone_number" form="updateFrom.phoneNumber"></form-error>
-        </div>
-        <div class="form-group">
-            <label for="location">Location</label>
-            <select
-                    class="form-control"
-                    name="location"
-                    id="location"
-                    ng-model="changedPerson.location"
-                    ng-change="changeMask(changedPerson.location.country)"
-                    required
-                    ng-options="location.city group by location.country for location in locations track by location.id">
-            </select>
-            <div validation-messages
-                 model-controller="updateFrom.location"
-                 required-error="Location is required"></div>
         </div>
         <div class="form-group">
             <label for="description">Info</label>

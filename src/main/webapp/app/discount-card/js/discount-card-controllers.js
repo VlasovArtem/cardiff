@@ -11,8 +11,8 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
                 companyName: $scope.card.company_name
             }, function() {
                 $scope.card.company_name = $filter('camelCase')($scope.card.company_name);
-                console.log($scope.card.company_name);
                 AddDiscountCardFactory.save($scope.card, function() {
+                    $location.hash('discount_cards');
                     $location.path('/account')
                 }, function(data) {
                     $scope.error = data.data.error;
@@ -89,5 +89,30 @@ app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFac
             } while (!discountCardInfo.$resolved)
         }
 
+    }
+]);
+
+app.controller('AccountDiscountCardsCtrl', ['$scope', 'discountCards', 'OwnerCardsCtrl',
+    function($scope, discountCards, OwnerCardsCtrl) {
+        $scope.tableInfo = {
+            data: discountCards,
+            dataTemplate: 'app/discount-card/table-data-template.html',
+            factory: OwnerCardsCtrl,
+            head: [
+                {name: 'Card #', property: 'card_number', width: '10%'},
+                {name: 'Company', property: 'company_name', width: '20%'},
+                {name: 'Discount', property: 'amount_of_discount', width: '9%'},
+                {name: 'Description', property: 'description', width: '25%'},
+                {name: 'Created', property: 'created_date', width: '10%'}
+            ],
+            filteredProperties: [
+                {property: 'created_date', filter: $filter('dateFilter')},
+                {property: 'amount_of_discount', appender: ' %'}
+            ]
+        };
+        $scope.initialSort = {
+            direction: 'DESC',
+            property: 'createdDate'
+        };
     }
 ]);

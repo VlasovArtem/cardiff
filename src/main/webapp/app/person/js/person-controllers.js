@@ -34,28 +34,7 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
 
 app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', 'discountCards', 'OwnerCardsCtrl', '$filter', '$sessionStorage',
     function($scope, $location, personData, changePassword, discountCards, OwnerCardsCtrl, $filter, $sessionStorage) {
-        $scope.tableInfo = {
-            data: discountCards,
-            dataTemplate: 'app/discount-card/table-data-template.html',
-            factory: OwnerCardsCtrl,
-            head: [
-                {name: 'Card #', property: 'card_number', width: '10%'},
-                {name: 'Company', property: 'company_name', width: '20%'},
-                {name: 'Discount', property: 'amount_of_discount', width: '9%'},
-                {name: 'Description', property: 'description', width: '25%'},
-                {name: 'Created', property: 'created_date', width: '10%'}
-            ],
-            filteredProperties: [
-                {property: 'created_date', filter: $filter('dateFilter')},
-                {property: 'amount_of_discount', appender: ' %'}
-            ]
-        };
         $scope.person = personData;
-
-        $scope.initialSort = {
-            direction: 'DESC',
-            property: 'createdDate'
-        };
 
         $scope.changePassword = function() {
             if(!$scope.personInfo.oldPassword || !$scope.personInfo.newPassword) {

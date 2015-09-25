@@ -76,16 +76,20 @@
                         <li><a href="/admin/persons">Persons</a></li>
                     </ul>
                 </li>
-                <li class="dropdown">
+                <li class="dropdown" ng-show="auth.authenticated">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false">Cards <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <!--<li><a href="/cards">Show</a></li>-->
-                        <li ng-show="auth.authenticated"><a href="/card/add">Add</a></li>
+                        <li><a href="/card/add">Add</a></li>
                     </ul>
                 </li>
-                <li ng-show="auth.authenticated">
-                    <a href="/account">Account</a>
+                <li class="dropdown" ng-show="auth.authenticated">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                            aria-expanded="false">Account <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/account">Personal account</a></li>
+                        <li><a href="/account/cards">Discount cards</a></li>
+                    </ul>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-show="authenticated()">
@@ -96,40 +100,9 @@
         </div>
     </div>
 </nav>
-<div class="view ng-cloak" ng-view ng-cloak window-height></div>
+<div class="view ng-cloak container-fluid" ng-view ng-cloak window-height></div>
 <footer class="footer ng-cloak" ng-cloak>
     <h2 class="depth" title="Welcome to Cardiff Project">Welcome to Cardiff Project</h2>
 </footer>
 </body>
 </html>
-<script>
-    $(document).ready(function() {
-
-        /*
-         * Bind to capslockstate events and update display based on state
-         */
-        $(window).bind("capsOn", function(event) {
-            if ($("#Passwd:focus").length > 0) {
-                $("#capsWarning").show();
-            }
-        });
-        $(window).bind("capsOff capsUnknown", function(event) {
-            $("#capsWarning").hide();
-        });
-        $("#Passwd").bind("focusout", function(event) {
-            $("#capsWarning").hide();
-        });
-        $("#Passwd").bind("focusin", function(event) {
-            if ($(window).capslockstate("state") === true) {
-                $("#capsWarning").show();
-            }
-        });
-
-        /*
-         * Initialize the capslockstate plugin.
-         * Monitoring is happening at the window level.
-         */
-        $(window).capslockstate();
-
-    });
-</script>

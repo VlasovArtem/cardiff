@@ -34,14 +34,18 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                         }, function() {
                             $location.path('/');
                         });
-                    },
-                    discountCards : function(OwnerCardsCtrl, $location) {
-                        return OwnerCardsCtrl.getAll(function(data) {
-                            return data;
-                        }, function() {
-                            $location.path('/');
-                        })
                     }
+                }
+            }).
+            when('/account/cards', {
+                templateUrl: 'app/discount-card/account-discount-cards.html',
+                controller: 'AccountDiscountCardsCtrl',
+                discountCards : function(OwnerCardsCtrl, $location) {
+                    return OwnerCardsCtrl.getAll(function(data) {
+                        return data;
+                    }, function() {
+                        $location.path('/');
+                    })
                 }
             }).
             when('/account/update', {

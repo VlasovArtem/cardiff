@@ -4,6 +4,9 @@ html, body {
 .view > section:not(#search) {
     margin-bottom: 40px;;
 }
+.view {
+    height: auto;
+}
 .background {
     height: 100vh;
     background: rgba(222, 232, 241, 1) url('../images/main-img.jpg') no-repeat center center;
