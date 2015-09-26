@@ -3,7 +3,7 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives', 'discount-card-filters',
     'main-controllers', 'main-services', 'main-directives', 'main-filters',
-    'card-booking-controllers', 'card-booking-services']).config(
+    'card-booking-controllers', 'card-booking-services', 'card-booking-filters']).config(
     function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $routeProvider
@@ -41,12 +41,14 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
             when('/account/cards', {
                 templateUrl: 'app/discount-card/account-discount-cards.html',
                 controller: 'AccountDiscountCardsCtrl',
-                discountCards : function(OwnerCardsCtrl, $location) {
-                    return OwnerCardsCtrl.getAll(function(data) {
-                        return data;
-                    }, function() {
-                        $location.path('/');
-                    })
+                resolve: {
+                    discountCards: function (OwnerDiscountCardsFactory, $location) {
+                        return OwnerDiscountCardsFactory.getAll(function (data) {
+                            return data;
+                        }, function () {
+                            $location.path('/');
+                        })
+                    }
                 }
             }).
             when('/account/update', {
@@ -91,8 +93,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/discount-card/discount-cards.html',
                 controller: 'DiscountCardsCtrl',
                 resolve: {
-                    discountCards: function(CardsCtrl, $location) {
-                        return CardsCtrl.get(
+                    discountCards: function(DiscountCardsFactory, $location) {
+                        return DiscountCardsFactory.getAll(
                             function(data) {
                                 return data;
                             }, function() {

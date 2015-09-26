@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "card_booking")
 @AttributeOverride(name = "createdDate",
-        column = @Column(name = "booking_start_date", insertable = false, updatable = false))
+        column = @Column(name = "booking_start_date", updatable = false))
 @Access(AccessType.PROPERTY)
 public class CardBooking extends BaseEntity {
     private LocalDateTime bookingEndDate;

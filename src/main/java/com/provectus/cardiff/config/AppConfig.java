@@ -11,7 +11,6 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -34,7 +33,6 @@ public class AppConfig {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setPackagesToScan("com.provectus.cardiff");
         bean.setDataSource(dataSource);
-        System.out.println("Profiles" + Arrays.toString(env.getActiveProfiles()));
         Properties properties = new Properties();
         properties.put("hibernate.dialect",
                 env.getProperty("hibernate.dialect"));

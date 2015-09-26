@@ -32,8 +32,8 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
     }
 ]);
 
-app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', 'discountCards', 'OwnerCardsCtrl', '$filter', '$sessionStorage',
-    function($scope, $location, personData, changePassword, discountCards, OwnerCardsCtrl, $filter, $sessionStorage) {
+app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$filter', '$sessionStorage',
+    function($scope, $location, personData, changePassword, $filter, $sessionStorage) {
         $scope.person = personData;
 
         $scope.changePassword = function() {

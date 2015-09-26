@@ -31,10 +31,13 @@ public class CardBookingServiceImpl implements CardBookingService {
 
     @Override
     public void book(long discountCardId, LocalDateTime bookingStartDate) {
+        if(bookingStartDate != null && bookingStartDate.toLocalDate().isBefore(LocalDateTime.now().toLocalDate())) {
+            throw new CardBookingException("Booking start date, cannot be earlier than today date");
+        }
         CardBooking cardBooking = new CardBooking();
         cardBooking.setCreatedDate(bookingStartDate == null ? LocalDateTime.now() : bookingStartDate);
-        if(!discountCardRepository.exists(discountCardId)) {
-            throw new CardBookingException("Booked Discount card is not exists");
+        if(!discountCardRepository.existsByIdOrUnavailable(discountCardId)) {
+            throw new CardBookingException("Booked Discount card is not exists or unavailable");
         }
         DiscountCard discountCard = discountCardRepository.findById(discountCardId).get();
         if(bookingStartDate == null || bookingStartDate.toLocalDate().isEqual(LocalDate.now())) {

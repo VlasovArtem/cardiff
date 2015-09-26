@@ -7,10 +7,9 @@ import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.service.LocationService;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.EntityUpdater;
-import com.provectus.cardiff.utils.exception.EntityValidationException;
-import com.provectus.cardiff.utils.exception.person.PersonAuthenticationException;
-import com.provectus.cardiff.utils.exception.person.PersonAuthorizationException;
 import com.provectus.cardiff.utils.exception.DataUniqueException;
+import com.provectus.cardiff.utils.exception.EntityValidationException;
+import com.provectus.cardiff.utils.exception.person.PersonAuthorizationException;
 import com.provectus.cardiff.utils.exception.person.PersonRegistrationException;
 import com.provectus.cardiff.utils.exception.person.PersonUpdateException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
@@ -50,9 +49,6 @@ public class PersonServiceImpl implements PersonService {
      */
     @Override
     public Person authenticated() {
-        if(!AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().isPresent()) {
-            throw new PersonAuthenticationException("Person is not authenticated");
-        }
         return personRepository.findById(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId());
     }
 
@@ -70,6 +66,7 @@ public class PersonServiceImpl implements PersonService {
                 }
                 return true;
             }
+            return true;
         }
         return false;
     }

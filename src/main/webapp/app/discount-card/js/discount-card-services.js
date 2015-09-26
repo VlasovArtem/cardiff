@@ -12,7 +12,7 @@ service.factory('DiscountCardFactory', ['$resource', function($resource) {
     })
 }]);
 
-service.factory('CardsCtrl', ['$resource', function($resource) {
+service.factory('DiscountCardsFactory', ['$resource', function($resource) {
     return $resource('/rest/card/get/all', {}, {
         getAll: {
             method: 'GET'
@@ -20,7 +20,7 @@ service.factory('CardsCtrl', ['$resource', function($resource) {
     });
 }]);
 
-service.factory('OwnerCardsCtrl', ['$resource', function($resource) {
+service.factory('OwnerDiscountCardsFactory', ['$resource', function($resource) {
     return $resource('/rest/card/owner/all', {}, {
         getAll: {
             method: 'GET'

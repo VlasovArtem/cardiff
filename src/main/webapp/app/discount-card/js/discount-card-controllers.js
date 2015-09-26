@@ -33,13 +33,13 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
     }
 ]);
 
-app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'CardsCtrl', '$filter', '$sessionStorage',
-    function ($scope, $location, discountCards, CardsCtrl, $filter, $sessionStorage) {
+app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter', '$sessionStorage',
+    function ($scope, $location, discountCards, DiscountCardsFactory, $filter, $sessionStorage) {
 
         $scope.tableInfo = {
             data: discountCards,
             dataTemplate: 'app/discount-card/table-data-template.html',
-            factory: CardsCtrl,
+            factory: DiscountCardsFactory,
             head: [
                 {name: 'Card #', property: 'card_number', width: '10%'},
                 {name: 'Company', property: 'company_name', width: '20%'},
@@ -91,8 +91,7 @@ app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFac
         $scope.book = function() {
             var modalInstance = $modal.open({
                 animation: true,
-                size: 'sm',
-                template: '<input type="date" ng-model="bookingStartDate" class="form-control"/>',
+                templateUrl: 'app/card-booking/booking-modal.html',
                 controller: 'CardBookingCtrl',
                 resolve: {
                     cardId: function() {
@@ -104,12 +103,12 @@ app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFac
     }
 ]);
 
-app.controller('AccountDiscountCardsCtrl', ['$scope', 'discountCards', 'OwnerCardsCtrl',
-    function($scope, discountCards, OwnerCardsCtrl) {
+app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards', 'OwnerDiscountCardsFactory',
+    function($scope, $filter, discountCards, OwnerDiscountCardsFactory) {
         $scope.tableInfo = {
             data: discountCards,
             dataTemplate: 'app/discount-card/table-data-template.html',
-            factory: OwnerCardsCtrl,
+            factory: OwnerDiscountCardsFactory,
             head: [
                 {name: 'Card #', property: 'card_number', width: '10%'},
                 {name: 'Company', property: 'company_name', width: '20%'},

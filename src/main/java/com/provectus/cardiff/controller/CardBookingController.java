@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -22,10 +23,10 @@ public class CardBookingController {
     @Autowired
     private CardBookingService service;
 
-    @RequestMapping(value = "/book", method = POST)
+    @RequestMapping(value = "/book", method = POST, consumes = APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(OK)
-    public void book(@RequestParam long discountCardId, @RequestParam(required = false) LocalDateTime
-            bookingStartDate) {
-        service.book(discountCardId, bookingStartDate);
+    public void book(@RequestParam long discountCardId,
+                     @RequestParam(required = false) String bookingStartDate) {
+        service.book(discountCardId, LocalDateTime.parse(bookingStartDate));
     }
 }
