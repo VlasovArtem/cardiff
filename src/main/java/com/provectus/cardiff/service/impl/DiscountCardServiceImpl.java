@@ -60,12 +60,17 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
+    public List<DiscountCard> findAll() {
+        return discountCardRepository.findAll();
+    }
+
+    @Override
     public Optional<List<DiscountCard>> search (Set<String> tags) {
         return discountCardRepository.findByTags(tags);
     }
 
     @Override
-    public Optional<List<DiscountCard>> search (String name) {
+    public List<DiscountCard> search (String name) {
         return discountCardRepository.findByCompanyName(name);
     }
 

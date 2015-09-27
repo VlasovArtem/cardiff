@@ -12,21 +12,23 @@ import java.util.Set;
  * Created by Дмитрий on 27/08/15.
  */
 public interface DiscountCardService {
-    void add (DiscountCard card);
+    void add(DiscountCard card);
 
-    Optional<DiscountCard> search (long cardNumber);
+    Optional<DiscountCard> search(long cardNumber);
 
-    void update (DiscountCard card);
+    void update(DiscountCard card);
 
-    void delete (long cardId);
+    void delete(long cardId);
 
-    Optional<DiscountCard> getCard (long id);
+    Optional<DiscountCard> getCard(long id);
 
-    Optional<List<DiscountCard>> search (Set<String> tags);
+    Optional<List<DiscountCard>> search(Set<String> tags);
 
-    Optional<List<DiscountCard>> search (String name);
+    List<DiscountCard> search(String name);
 
-    Page<DiscountCard> getAll (Pageable pageable);
+    Page<DiscountCard> getAll(Pageable pageable);
+
+    List<DiscountCard> findAll();
 
     Page<DiscountCard> getAuthenticatedPersonDiscountCards(Pageable pageable);
 

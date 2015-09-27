@@ -42,10 +42,10 @@ amount_of_discount, description, deleted, person_id) VALUES
 (5, 2145000, NOW(), 'Bread', 9,'скидка', false,1),
 (6, 123, NOW(), 'PizzaStar', 10,'скидка', false,1),
 (7, 4578, NOW(), 'PizzaCheap', 5,'скидка', false,1),
-(8, 145876421, NOW(), 'Mobilochka', 3,'скидка', false,4),
+(8, 145876421, NOW(), 'Mobilochka', 3,'скидка', false,2),
 (9, 4751, NOW(), 'Tavriya', 3,'скидка', false,1),
-(10, 54576, NOW(), 'MotorStar', 6,'скидка', false,5),
-(11, 55555555, NOW(), 'STO', 5,'скидка', true,5);
+(10, 54576, NOW(), 'MotorStar', 6,'скидка', false,2),
+(11, 55555555, NOW(), 'STO', 5,'скидка', true,2);
 
 INSERT INTO cardiff.tag_card (discount_card_id, tag_id) VALUES
 (1,1),
