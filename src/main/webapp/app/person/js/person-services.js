@@ -83,6 +83,10 @@ service.factory('AdminPersonFactory', ['$resource',
     }
 ]);
 
+service.factory('AdminPersonTableFactory', ['$resource', function($resource) {
+    return $resource('/rest/person/admin/get/all')
+}]);
+
 service.factory('PersonFactory', ['$resource',
     function($resource) {
         return $resource('/rest/person/:delete/:get/:authorized/:cardId/:id', {

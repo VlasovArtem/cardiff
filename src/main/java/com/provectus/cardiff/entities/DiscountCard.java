@@ -2,6 +2,7 @@ package com.provectus.cardiff.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.provectus.cardiff.utils.view.CardBookingView;
 import com.provectus.cardiff.utils.view.DiscountCardView;
 import com.provectus.cardiff.utils.view.PersonView;
 
@@ -19,7 +20,6 @@ import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import java.util.Set;
 
@@ -44,10 +44,11 @@ public class DiscountCard extends BaseEntity {
     private String description;
     private boolean deleted;
     private Set<Tag> tags;
-    @JsonView(value = {DiscountCardView.DiscountCardInfoLevel.class, PersonView.DiscountCardCommentsLevel.class})
+    @JsonView(value = {DiscountCardView.DiscountCardInfoLevel.class, PersonView.DiscountCardCommentsLevel.class,
+            CardBookingView.InfoLevel.class})
     private Set<DiscountCardComment> discountCardComments;
     private Person owner;
-    private boolean available;
+    private boolean picked;
 
     public DiscountCard() {
     }
@@ -134,16 +135,11 @@ public class DiscountCard extends BaseEntity {
         this.owner = owner;
     }
 
-    public boolean isAvailable() {
-        return available;
+    public boolean isPicked() {
+        return picked;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
-
-    @PrePersist
-    public void prePersist() {
-        setAvailable(true);
+    public void setPicked(boolean picked) {
+        this.picked = picked;
     }
 }

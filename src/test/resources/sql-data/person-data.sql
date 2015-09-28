@@ -11,5 +11,5 @@ location_id) VALUES
     'alexandrmahnov@gmail.com', NOW(), 563256989, 'Third test person', true, 'USER', 1); /*password - testpassword3*/
 
 INSERT INTO cardiff.discount_card (id, card_number, created_date, company_name,
-amount_of_discount, description, deleted, person_id, available) VALUES
-(1, 1, NOW(), 'Cheese', 5,'скидка', false, 2, true);
+amount_of_discount, description, deleted, person_id, picked) VALUES
+(1, 1, NOW(), 'Cheese', 5,'скидка', false, 2, false);

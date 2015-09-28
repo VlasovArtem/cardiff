@@ -310,6 +310,13 @@ input[type=password] {
     text-align: center;
 }
 
+#auth-person-card {
+    display: flex;
+    height: 200px;
+    align-items: center;
+    justify-content: center;
+}
+
 /*Add Discount card page*/
 .custom-tag {
     width: 100%;
@@ -355,6 +362,15 @@ input[type=password] {
     .add-tag > .ui-select-container {
         width: 65%;
     }
+}
+
+/* Booked information */
+#bookings-info > span {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
 }
 
 /* Toggle */

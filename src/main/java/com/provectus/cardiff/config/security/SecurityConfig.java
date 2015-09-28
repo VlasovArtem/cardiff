@@ -96,7 +96,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/persons", "/rest/person/admin/**", "/rest/card/delete")
                         .hasAuthority("ADMIN")
                 .antMatchers("/account/update", "/account", "/card/add", "/rest/card/**",
-                        "/rest/person/**")
+                        "/rest/person/**", "/rest/card/booking/**")
                         .hasAnyAuthority("USER", "ADMIN")
                     .anyRequest()
                         .authenticated()

@@ -1,6 +1,7 @@
 package com.provectus.cardiff.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.utils.view.DiscountCardView;
@@ -118,5 +119,11 @@ public class DiscountCardController {
     public void checkDiscountCard(@RequestParam long cardNumber, @RequestParam String
             companyName) {
         service.checkDiscountCardIsUnique(cardNumber, companyName);
+    }
+
+    @RequestMapping(path = "/auth/{cardId}", method = GET)
+    public ResponseEntity authPersonDiscountCard(@PathVariable long cardId) {
+        return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("authPersonCard" ,service
+                .authPersonDiscountCard(cardId)));
     }
 }

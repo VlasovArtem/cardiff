@@ -35,4 +35,6 @@ public interface DiscountCardService {
     void restoreOwnerCard(long ownerId);
 
     boolean checkDiscountCardIsUnique(long discountCardNumber, String companyName);
+
+    boolean authPersonDiscountCard(long discountCardId);
 }

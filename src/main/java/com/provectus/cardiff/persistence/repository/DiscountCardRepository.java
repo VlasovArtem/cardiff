@@ -20,11 +20,11 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
     Optional<DiscountCard> findById(long id);
 
     @EntityGraph(value = "DiscountCard.discountCardInfo", type = EntityGraph.EntityGraphType.LOAD)
-    Optional<DiscountCard> findByIdAndAvailableTrue(long id);
+    Optional<DiscountCard> findByIdAndPickedFalse(long id);
 
     Optional<DiscountCard> findByCardNumber(long cardNumber);
 
-    Page<DiscountCard> findByAvailableTrue(Pageable pageable);
+    Page<DiscountCard> findByPickedFalse(Pageable pageable);
 
     @Query("select d.id, d.companyName, d.amountOfDiscount from DiscountCard d where lower(d.companyName) LIKE %?1%")
     Optional<List<DiscountCard>> findByCompanyName(String companyName);
@@ -41,6 +41,9 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
     @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.cardNumber = ?1 AND UPPER(cd.companyName) = UPPER(?2)")
     boolean existsByNumberAndCompanyName(long number, String companyName);
 
-    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.id = ?1 OR cd.available = false")
-    boolean existsByIdOrUnavailable(long id);
+    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.id = ?1 AND cd.picked = true")
+    boolean isPicked (long id);
+
+    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.id = ?1 AND cd.owner.id = ?2")
+    boolean personDiscountCard (long discountCardId, long personId);
 }

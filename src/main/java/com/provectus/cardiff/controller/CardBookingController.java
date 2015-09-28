@@ -1,16 +1,24 @@
 package com.provectus.cardiff.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.provectus.cardiff.entities.CardBooking;
 import com.provectus.cardiff.service.CardBookingService;
+import com.provectus.cardiff.utils.view.CardBookingView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
@@ -27,6 +35,28 @@ public class CardBookingController {
     @ResponseStatus(OK)
     public void book(@RequestParam long discountCardId,
                      @RequestParam(required = false) String bookingStartDate) {
-        service.book(discountCardId, LocalDateTime.parse(bookingStartDate));
+        service.book(discountCardId, LocalDate.parse(bookingStartDate));
+    }
+
+    @RequestMapping(value = "/booked", method = GET, produces = APPLICATION_JSON_VALUE)
+    @JsonView(CardBookingView.BasicLevel.class)
+    public Page<CardBooking> getBooked(
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @RequestParam(defaultValue = "15", required = false) int size,
+            @RequestParam(defaultValue = "DESC", required = false) String direction,
+            @RequestParam(defaultValue = "bookingStartDate", required = false) String property) {
+        return service.getPersonBookedDiscountCards(new PageRequest(page, size, new Sort(Sort.Direction.valueOf
+                (direction), property)));
+    }
+
+    @RequestMapping(value = "/bookings", method = GET, produces = APPLICATION_JSON_VALUE)
+    @JsonView(CardBookingView.BookingsLevel.class)
+    public Page<CardBooking> getPersonDiscountCardBookings(
+            @RequestParam(defaultValue = "0", required = false) int page,
+            @RequestParam(defaultValue = "15", required = false) int size,
+            @RequestParam(defaultValue = "DESC", required = false) String direction,
+            @RequestParam(defaultValue = "bookingStartDate", required = false) String property) {
+        return service.getPersonDiscountCardBookings(new PageRequest(page, size, new Sort(Sort.Direction.valueOf
+                (direction), property)));
     }
 }

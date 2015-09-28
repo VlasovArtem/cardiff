@@ -10,6 +10,8 @@ import com.provectus.cardiff.service.CardBookingService;
 import com.provectus.cardiff.utils.exception.card_booking.CardBookingException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,23 +32,42 @@ public class CardBookingServiceImpl implements CardBookingService {
     private DiscountCardRepository discountCardRepository;
 
     @Override
-    public void book(long discountCardId, LocalDateTime bookingStartDate) {
-        if(bookingStartDate != null && bookingStartDate.toLocalDate().isBefore(LocalDateTime.now().toLocalDate())) {
+    public void book(long discountCardId, LocalDate bookingStartDate) {
+        LocalDate startDate = bookingStartDate == null ? LocalDate.now() : bookingStartDate;
+        if(!discountCardRepository.exists(discountCardId)) {
+            throw new CardBookingException("Booked Discount card is not exists or unavailable");
+        } else if(discountCardRepository.personDiscountCard(discountCardId, AuthenticatedPersonPrincipalUtil
+                .getAuthenticationPrincipal().get().getId())) {
+            throw new CardBookingException("Booked Discount card belongs to authenticated person");
+        } else if(discountCardRepository.isPicked(discountCardId)) {
+            throw new CardBookingException("Booked Discount card is already picked");
+        } else if(startDate.isBefore(LocalDateTime.now().toLocalDate())) {
             throw new CardBookingException("Booking start date, cannot be earlier than today date");
+        } else if (cardBookingRepository.countBookedCardsBetweenDates(startDate, startDate.plusDays(7l),
+                discountCardId) > 0) {
+            throw new CardBookingException("Booking for this start and end date is not available");
         }
         CardBooking cardBooking = new CardBooking();
-        cardBooking.setCreatedDate(bookingStartDate == null ? LocalDateTime.now() : bookingStartDate);
-        if(!discountCardRepository.existsByIdOrUnavailable(discountCardId)) {
-            throw new CardBookingException("Booked Discount card is not exists or unavailable");
-        }
-        DiscountCard discountCard = discountCardRepository.findById(discountCardId).get();
-        if(bookingStartDate == null || bookingStartDate.toLocalDate().isEqual(LocalDate.now())) {
-            discountCard.setAvailable(false);
-        }
+        cardBooking.setBookingStartDate(startDate);
+
+        DiscountCard discountCard = new DiscountCard();
+        discountCard.setId(discountCardId);
         Person person = new Person();
         person.setId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId());
         cardBooking.setDiscountCard(discountCard);
         cardBooking.setPerson(person);
         cardBookingRepository.save(cardBooking);
+    }
+
+    @Override
+    public Page<CardBooking> getPersonBookedDiscountCards(Pageable pageable) {
+        return cardBookingRepository.findByPersonId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get
+                ().getId(), pageable);
+    }
+
+    @Override
+    public Page<CardBooking> getPersonDiscountCardBookings(Pageable pageable) {
+        return cardBookingRepository.personDiscountCardBookings(AuthenticatedPersonPrincipalUtil
+                .getAuthenticationPrincipal().get().getId(), pageable);
     }
 }

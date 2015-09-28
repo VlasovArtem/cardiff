@@ -51,7 +51,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public Optional<DiscountCard> getCard (long id) {
-        return discountCardRepository.findByIdAndAvailableTrue(id);
+        return discountCardRepository.findByIdAndPickedFalse(id);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public Page<DiscountCard> getAll (Pageable pageable) {
-        return discountCardRepository.findByAvailableTrue(pageable);
+        return discountCardRepository.findByPickedFalse(pageable);
     }
 
     @Override
@@ -96,5 +96,11 @@ public class DiscountCardServiceImpl implements DiscountCardService {
             throw new DataUniqueException("Discount card with entered number and company name is already exists");
         }
         return true;
+    }
+
+    @Override
+    public boolean authPersonDiscountCard(long discountCardId) {
+        return discountCardRepository.personDiscountCard(discountCardId, AuthenticatedPersonPrincipalUtil
+                .getAuthenticationPrincipal().get().getId());
     }
 }

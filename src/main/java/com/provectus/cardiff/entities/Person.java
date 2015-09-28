@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.utils.converter.PasswordConverter;
+import com.provectus.cardiff.utils.view.CardBookingView;
 import com.provectus.cardiff.utils.view.PersonView;
 
 import javax.persistence.Access;
@@ -62,7 +63,7 @@ public class Person extends BaseEntity {
     }
 
     @Column(length = 100)
-    @JsonView(PersonView.BasicLevel.class)
+    @JsonView({PersonView.BasicLevel.class, CardBookingView.BasicLevel.class})
     public String getName() {
         return name;
     }
@@ -94,7 +95,7 @@ public class Person extends BaseEntity {
     }
 
     @Column(length = 50, unique = true, nullable = false)
-    @JsonView(PersonView.BasicLevel.class)
+    @JsonView({PersonView.BasicLevel.class, CardBookingView.BasicLevel.class})
     public String getEmail() {
         return email;
     }
@@ -104,7 +105,7 @@ public class Person extends BaseEntity {
     }
 
     @Column(name = "phone_number", nullable = false)
-    @JsonView(PersonView.BasicLevel.class)
+    @JsonView({PersonView.BasicLevel.class, CardBookingView.BasicLevel.class})
     public long getPhoneNumber() {
         return phoneNumber;
     }
@@ -155,7 +156,7 @@ public class Person extends BaseEntity {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id", referencedColumnName = "id", nullable = false)
-    @JsonView(PersonView.BasicLevel.class)
+    @JsonView({PersonView.BasicLevel.class, CardBookingView.BasicLevel.class})
     public Location getLocation() {
         return location;
     }

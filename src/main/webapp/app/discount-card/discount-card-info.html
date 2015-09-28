@@ -14,13 +14,13 @@
                 <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
             </li>
         </ul>
-        <div class="col-md-12 buttons" ng-show="authenticated">
+        <div class="col-md-12 buttons" ng-show="authenticated && !authPersonDiscountCard">
             <input type="button" value="Book" class="btn btn-primary" ng-click="book()"/>
             <input type="button" value="Pick" class="btn btn-success" ng-hide="true"/>
         </div>
     </article>
 </section>
-<section ng-if="!authenticated" class="container auth-info">
+<section ng-show="!authenticated" class="container auth-info">
     <div class="col-md-8 col-md-offset-2">
         To get full information about owner of discount card and ability to book or pick card that you prefer.
         Please Sign In or Sign Up if you do not do this already.
@@ -31,7 +31,7 @@
         <a class="btn btn-primary" href="/signup">Sign Up</a>
     </div>
 </section>
-<section id="owner-card-info" ng-if="authenticated">
+<section id="owner-card-info" ng-show="authenticated && !authPersonDiscountCard">
     <h2>Owner Card Info</h2>
     <div class="col-md-12 error" ng-show="error" ng-bind="error"></div>
     <article class="well col-md-12" ng-hide="error">
@@ -47,13 +47,18 @@
         </ul>
     </article>
 </section>
-<hr class="style"/>
-<section id="comments" ng-show="cardInfo.discount_card_comments.length > 0">
+<section id="auth-person-card" class="container" ng-show="authenticated && authPersonDiscountCard">
+    <h2>This is your discount card</h2>
+</section>
+<hr class="style" ng-show="cardInfo.discount_card_comments.length > 0 && authenticated && !authPersonDiscountCard"/>
+<section id="comments" class="col-md-12" ng-show="cardInfo.discount_card_comments.length > 0 && authenticated && !authPersonDiscountCard">
     <h2>Comments</h2>
-    <div class="container">
-        <div class="col-md-3 comment" ng-repeat="comment in cardInfo.discount_card_comments">
-            <span class="col-md-12" ng-bind="comment.comment"></span>
-            <span class="col-md-12 comment-date" ng-bind="comment.created_date | dateFilter"></span>
+    <div class="container-fluid">
+        <div class="col-md-2 col-sm-3 col-xs-4" ng-repeat="comment in cardInfo.discount_card_comments">
+            <div class="col-md-offset-1 col-md-10 comment">
+                <span class="col-md-12" ng-bind="comment.comment"></span>
+                <span class="col-md-12 comment-date" ng-bind="comment.created_date | dateFilter"></span>
+            </div>
         </div>
     </div>
 </section>

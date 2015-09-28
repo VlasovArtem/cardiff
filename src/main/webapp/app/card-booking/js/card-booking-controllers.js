@@ -13,6 +13,7 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBo
         };
         CardBookingFactory.bookCard($.param(bookData),
             function () {
+                $modalInstance.dismiss('cancel');
                 $location.path('/account/booking')
             }, function(data) {
                 $scope.error = data.data.error;
@@ -44,3 +45,43 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBo
         }
     };
 }]);
+
+app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscountCardsFactory', 'PersonDiscountCardBookingsFactory', '$filter', 'booked', 'bookings',
+    function($scope, PersonBookedDiscountCardsFactory, PersonDiscountCardBookingsFactory, $filter, booked, bookings) {
+        $scope.bookedTableInfo = {
+            data: booked,
+            dataTemplate: 'app/card-booking/table-template.html',
+            factory: PersonBookedDiscountCardsFactory,
+            head: [
+                {name: 'Card #', property: 'discount_card.card_number', width: '10%'},
+                {name: 'Company', property: 'discount_card.company_name', width: '20%'},
+                {name: 'Start', property: 'booking_start_date', width: '10%'},
+                {name: 'End', property: 'booking_end_date', width: '10%'}
+            ],
+            filteredProperties: [
+                {property: 'booking_start_date', filter: $filter('dateFilter')},
+                {property: 'booking_end_date', filter: $filter('dateFilter')}
+            ]
+        };
+        $scope.cardBookingsTableInfo = {
+            data: bookings,
+            dataTemplate: 'app/card-booking/table-template.html',
+            factory: PersonDiscountCardBookingsFactory,
+            head: [
+                {name: 'Card #', property: 'discount_card.card_number', width: '10%'},
+                {name: 'Company', property: 'discount_card.company_name', width: '20%'},
+                {name: 'Person', property: 'person.name'},
+                {name: 'Start', property: 'booking_start_date', width: '10%'},
+                {name: 'End', property: 'booking_end_date', width: '10%'}
+            ],
+            filteredProperties: [
+                {property: 'booking_start_date', filter: $filter('dateFilter')},
+                {property: 'booking_end_date', filter: $filter('dateFilter')}
+            ]
+        };
+    }
+]);
+
+app.controller('PersonDiscountCardBookingsFunctionCtrl', ['$scope', function ($scope) {}]);
+
+app.controller('PersonBookedDiscountCardsFunctionCtrl', ['$scope', function ($scope) {}]);

@@ -1,0 +1,20 @@
+<section id="bookings-info" ng-show="bookedTableInfo.data.content.length == 0 && cardBookingsTableInfo.data.content.length == 0">
+    <h2 class="col-md-12 hide">Information</h2>
+    <span class="col-md-offset-2 col-md-8">
+        Oops... You has no any information about booked Discount cards by you and any of your
+        Discount cards has not been booked.</span>
+</section>
+<section id="booked-cards">
+    <h2 class="col-sm-12 col-xs-12 col-md-12">Your booked Discount Cards</h2>
+    <content-table table-info="bookedTableInfo"
+                   section-id="booked-cards"
+                   controller-name="PersonBookedDiscountCardsFunctionCtrl"
+                   class="col-md-offset-2 col-md-8 col-sm-12 col-xs-12"></content-table>
+</section>
+<section id="card-bookings">
+    <h2 class="col-sm-12 col-xs-12 col-md-12">Your Discount Cards bookings</h2>
+    <content-table table-info="cardBookingsTableInfo"
+                   section-id="card-bookings"
+                   controller-name="PersonDiscountCardBookingsFunctionCtrl"
+                   class="col-md-offset-2 col-md-8 col-sm-12 col-xs-12"></content-table>
+</section>

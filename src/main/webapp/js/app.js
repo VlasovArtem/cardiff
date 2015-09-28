@@ -42,12 +42,20 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/discount-card/account-discount-cards.html',
                 controller: 'AccountDiscountCardsCtrl',
                 resolve: {
-                    discountCards: function (OwnerDiscountCardsFactory, $location) {
-                        return OwnerDiscountCardsFactory.getAll(function (data) {
-                            return data;
-                        }, function () {
-                            $location.path('/');
-                        })
+                    discountCards: function (OwnerDiscountCardsFactory) {
+                        return OwnerDiscountCardsFactory.get().$promise;
+                    }
+                }
+            }).
+            when('/account/bookings', {
+                templateUrl: 'app/card-booking/person-card-bookings.html',
+                controller: 'PersonDiscountCardBookingsCtrl',
+                resolve: {
+                    booked: function(PersonBookedDiscountCardsFactory) {
+                        return PersonBookedDiscountCardsFactory.get().$promise;
+                    },
+                    bookings: function(PersonDiscountCardBookingsFactory) {
+                        return PersonDiscountCardBookingsFactory.get().$promise;
                     }
                 }
             }).
@@ -79,8 +87,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/person/admin-panel.html',
                 controller: 'AdminPersonsCtrl',
                 resolve: {
-                    persons: function(AdminPersonFactory) {
-                        return AdminPersonFactory.getAll();
+                    persons: function(AdminPersonTableFactory) {
+                        return AdminPersonTableFactory.get().$promise;
                     },
                     admin: function(PersonFactory) {
                         return PersonFactory.get({
@@ -93,13 +101,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/discount-card/discount-cards.html',
                 controller: 'DiscountCardsCtrl',
                 resolve: {
-                    discountCards: function(DiscountCardsFactory, $location) {
-                        return DiscountCardsFactory.getAll(
-                            function(data) {
-                                return data;
-                            }, function() {
-                                $location.path('/');
-                            })
+                    discountCards: function(DiscountCardsFactory) {
+                        return DiscountCardsFactory.get().$promise;
                     }
                 }
             }).
@@ -107,14 +110,11 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
                 templateUrl: 'app/discount-card/discount-card-info.html',
                 controller: 'DiscountCardInfoCtrl',
                 resolve: {
-                    discountCardInfo: function(DiscountCardOwner, $sessionStorage, $location) {
-                        return DiscountCardOwner.get({cardId : $sessionStorage.cardId})
-                            .$promise.then(
-                            function (data) {
-                                return data;
-                            }, function () {
-                                $location.path('/');
-                            })
+                    discountCardInfo: function(DiscountCardOwner, $sessionStorage) {
+                        return DiscountCardOwner.get({cardId : $sessionStorage.cardId}).$promise;
+                    },
+                    authPersonDiscountCard: function(AuthDiscountCardFactory, $sessionStorage) {
+                        return AuthDiscountCardFactory.get({cardId: $sessionStorage.cardId}).$promise;
                     }
                 }
             }).

@@ -19,3 +19,11 @@ app.factory('CardBookingFactory', ['$resource', function($resource) {
         }
     })
 }]);
+
+app.factory('PersonBookedDiscountCardsFactory', ['$resource', function($resource) {
+    return $resource('/rest/card/booking/booked')
+}]);
+
+app.factory('PersonDiscountCardBookingsFactory', ['$resource', function($resource) {
+    return $resource('/rest/card/booking/bookings')
+}]);

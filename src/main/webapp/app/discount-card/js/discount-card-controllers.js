@@ -33,9 +33,8 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
     }
 ]);
 
-app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter', '$sessionStorage',
-    function ($scope, $location, discountCards, DiscountCardsFactory, $filter, $sessionStorage) {
-
+app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter',
+    function ($scope, $location, discountCards, DiscountCardsFactory, $filter) {
         $scope.tableInfo = {
             data: discountCards,
             dataTemplate: 'app/discount-card/table-data-template.html',
@@ -57,22 +56,21 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
                 mobile: 'app/discount-card/discount-cards-buttons.html'
             }
         };
+    }
+]);
 
-        $scope.initialSort = {
-            direction: 'DESC',
-            property: 'createdDate'
-        };
-
+app.controller('DiscountCardsFunctionCtrl', ['$scope', '$sessionStorage', '$location',
+    function($scope, $sessionStorage, $location) {
         $scope.findDiscountCard = function(discountCardId) {
             $sessionStorage.cardId = discountCardId;
             $location.path('/card/info');
         };
-
     }
 ]);
 
-app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFactory', 'auth', '$modal',
-    function($scope, discountCardInfo, PersonFactory, auth, $modal) {
+app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFactory', 'auth', '$modal', 'authPersonDiscountCard',
+    function($scope, discountCardInfo, PersonFactory, auth, $modal, authPersonDiscountCard) {
+        $scope.authPersonDiscountCard = authPersonDiscountCard.authPersonCard;
         $scope.cardInfo = discountCardInfo;
         do {
             $scope.authenticated = auth.authenticated;
@@ -121,9 +119,7 @@ app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards'
                 {property: 'amount_of_discount', appender: ' %'}
             ]
         };
-        $scope.initialSort = {
-            direction: 'DESC',
-            property: 'createdDate'
-        };
     }
 ]);
+
+app.controller('AccountDiscountCardsFunctionCtrl', ['$scope', function($scope) {}]);

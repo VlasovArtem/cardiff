@@ -122,13 +122,13 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
     }
 ]);
 
-app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 'persons', 'AdminPersonFactory', '$sessionStorage',
-    function($scope, $location, $filter, $route, persons, AdminPersonFactory, $sessionStorage) {
+app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 'persons', 'AdminPersonFactory', 'AdminPersonTableFactory', '$sessionStorage',
+    function($scope, $location, $filter, $route, persons, AdminPersonFactory, AdminPersonTableFactory, $sessionStorage) {
 
         $scope.tableInfo = {
             data: persons,
             dataTemplate: 'app/person/table-data-template.html',
-            factory: AdminPersonFactory,
+            factory: AdminPersonTableFactory,
             head: [
                 {name : 'Name', property : 'name', width: '15%'},
                 {name : 'Login', property: 'login', width: '10%'},
@@ -146,32 +146,31 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
                 mobile: 'app/person/table-buttons-mobile.html'}
         };
 
-        $scope.initialSort = {
-            direction: 'DESC',
-            property: 'createdDate'
-        };
 
-        $scope.removePerson = function(id) {
-            AdminPersonFactory.remove({delete: 'delete', id : id},
-                function(data) {
-                    if(data.info) {
-                        $location.path('/');
-                    }
-                    $route.reload()
-                });
-        };
-
-        $scope.editPerson = function(person) {
-            $sessionStorage.updatedPerson = person;
-            $location.path('/account/update');
-        };
-
-        $scope.restorePerson = function(personId) {
-            AdminPersonFactory.restore({id: personId}, function() {$route.reload()});
-        };
-
-        $scope.changeRole = function(personId) {
-            AdminPersonFactory.updateRole({id: personId}, function() {$route.reload()});
-        };
     }
 ]);
+
+app.controller('AdminPersonFunctionCtrl', ['$scope', '$sessionStorage', '$location', '$route', 'AdminPersonFactory', function($scope, $sessionStorage, $location, $route, AdminPersonFactory) {
+    $scope.removePerson = function(id) {
+        AdminPersonFactory.remove({delete: 'delete', id : id},
+            function(data) {
+                if(data.info) {
+                    $location.path('/');
+                }
+                $route.reload()
+            });
+    };
+
+    $scope.editPerson = function(person) {
+        $sessionStorage.updatedPerson = person;
+        $location.path('/account/update');
+    };
+
+    $scope.restorePerson = function(personId) {
+        AdminPersonFactory.restore({id: personId}, function() {$route.reload()});
+    };
+
+    $scope.changeRole = function(personId) {
+        AdminPersonFactory.updateRole({id: personId}, function() {$route.reload()});
+    };
+}])

@@ -19,7 +19,7 @@ public class CardBookingValidator {
      */
     public static boolean validate(Optional<CardBooking> cardBooking) {
         if(cardBooking.isPresent()) {
-            if(cardBooking.get().getCreatedDate().toLocalDate().isBefore(LocalDate.now())) {
+            if(cardBooking.get().getBookingStartDate().isBefore(LocalDate.now())) {
                 throw new EntityValidationException(ERROR);
             }
             return true;

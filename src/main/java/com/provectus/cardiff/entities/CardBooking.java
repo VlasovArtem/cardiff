@@ -1,42 +1,87 @@
 package com.provectus.cardiff.entities;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.provectus.cardiff.utils.view.CardBookingView;
+
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.AttributeOverride;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
+import javax.persistence.NamedEntityGraphs;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * Created by artemvlasov on 20/08/15.
  */
 @Entity
 @Table(name = "card_booking")
-@AttributeOverride(name = "createdDate",
-        column = @Column(name = "booking_start_date", updatable = false))
 @Access(AccessType.PROPERTY)
-public class CardBooking extends BaseEntity {
-    private LocalDateTime bookingEndDate;
+@JsonAutoDetect
+@NamedEntityGraphs(value = {
+        @NamedEntityGraph(
+                name = "CardBooking.personBookedTable",
+                attributeNodes = {
+                        @NamedAttributeNode("discountCard")
+                }
+        ),@NamedEntityGraph(
+                name = "CardBooking.personBookingsTable",
+                attributeNodes = {
+                        @NamedAttributeNode("person"),
+                        @NamedAttributeNode("discountCard")
+                }
+        )
+})
+public class CardBooking {
+
+    private long id;
+    private LocalDate bookingStartDate;
+    private LocalDate bookingEndDate;
     private Person person;
     private DiscountCard discountCard;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Column(name = "booking_start_date")
+    public LocalDate getBookingStartDate() {
+        return bookingStartDate;
+    }
+
+    public void setBookingStartDate(LocalDate bookingStartDate) {
+        this.bookingStartDate = bookingStartDate;
+    }
+
     @Column(name = "booking_end_date")
-    public LocalDateTime getBookingEndDate() {
+    public LocalDate getBookingEndDate() {
         return bookingEndDate;
     }
 
-    public void setBookingEndDate(LocalDateTime bookingEndDate) {
+    public void setBookingEndDate(LocalDate bookingEndDate) {
         this.bookingEndDate = bookingEndDate;
     }
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
+    @JsonView(CardBookingView.BookingsLevel.class)
     public Person getPerson() {
         return person;
     }
@@ -60,6 +105,6 @@ public class CardBooking extends BaseEntity {
      */
     @PrePersist
     public void setBookingEndDate() {
-        bookingEndDate = getCreatedDate() == null ? LocalDateTime.now().plusDays(7l) : getCreatedDate().plusDays(7l);
+        bookingEndDate = bookingStartDate == null ? LocalDate.now().plusDays(7l) : bookingStartDate.plusDays(7l);
     }
 }

@@ -1,7 +1,5 @@
 package com.provectus.cardiff.persistence.repository;
 
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
-import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.provectus.cardiff.config.AppConfig;
 import com.provectus.cardiff.config.DevelopmentDataSourceConfig;
 import com.provectus.cardiff.config.RootContextConfig;
@@ -13,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import java.util.List;
 
@@ -30,11 +26,10 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DevelopmentDataSourceConfig.class, AppConfig.class, RootContextConfig.class})
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class,
-        DbUnitTestExecutionListener.class })
-@DatabaseSetup("/META-INF/dbtest/person-data.xml")
+@SqlGroup(value = {
+        @Sql("/sql-data/drop-data.sql"),
+        @Sql("/sql-data/person-data.sql")
+})
 @ActiveProfiles(profiles = "development")
 public class PersonRepositoryTest {
     @Qualifier("personRepository")
@@ -213,7 +208,6 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    @DatabaseSetup("/META-INF/dbtest/empty-database.xml")
     public void saveTest() {
         Person person = new Person();
         person.setPhoneNumber(563256963);

@@ -10,68 +10,6 @@ app.directive('windowHeight', function() {
     }
 });
 
-app.directive('entitySorting', function($filter) {
-    return {
-        restrict: 'A',
-        link: function(scope, element, attrs) {
-            _.each(scope.tableInfo.head, function(data) {
-                data.direction = 'DESC'
-            });
-            var dataSorting = [];
-            scope.$watch("head", function() {
-                Array.prototype.push.apply(dataSorting, scope.tableInfo.head);
-            });
-            scope.currentPage = 1;
-            scope.maxSize = 5;
-            scope.pageSize = [
-                {label: '15', value: 15},
-                {label: '25', value: 25},
-                {label: '50', value: 50},
-                {label: '100', value: 100}
-            ];
-            scope.currentPageSize = scope.pageSize[0];
-            var pageable = {
-                direction: scope.initialSort.direction,
-                property: scope.initialSort.property,
-                size: scope.currentPageSize.value,
-                page: scope.currentPage - 1
-            };
-            scope.$watch(
-                "currentPageSize.value",
-                function(newValue, oldValue) {
-                    if(newValue === oldValue) return;
-                    pageable.size = newValue;
-                    scope.getData(pageable);
-                }
-            );
-            scope.changePage = function() {
-                pageable.page = scope.currentPage - 1;
-                scope.getData(pageable);
-            };
-            scope.sorting = function(type){
-                if(pageable.property == $filter('camelCase')(type)) {
-                    pageable.direction = pageable.direction == 'ASC' ? 'DESC' : 'ASC';
-                } else {
-                    pageable.property = $filter('camelCase')(type);
-                    pageable.direction = 'DESC';
-                }
-                scope.getData(pageable);
-            };
-            scope.selectSort = function(index) {
-                if(pageable.property == $filter('camelCase')(scope.tableInfo.head[index].property)) {
-                    if(pageable.direction != 'DESC') {
-                        return 'glyphicon glyphicon-sort-by-alphabet'
-                    } else {
-                        return 'glyphicon glyphicon-sort-by-alphabet-alt'
-                    }
-                } else {
-                    return ''
-                }
-            };
-        }
-    }
-});
-
 app.directive('ensureUnique', ["$http", "$location", function($http, $location) {
     var toId;
     return {
@@ -153,36 +91,73 @@ app.directive('validationMessages', function () {
 });
 
 app.directive('contentTable',
-    function(deviceCheck) {
+    function(deviceCheck, $filter) {
         return {
             restrict: 'E',
+            scope: {
+                sectionId: '@',
+                tableInfo: '='
+            },
+            controller: '@',
+            name: "controllerName",
             link: function(scope, element, attr) {
-                var tabletLandscapeWidth = 960;
-                var currentWidth = window.outerWidth;
+                if(scope.tableInfo.data.content.length == 0) {
+                    angular.element("#" + scope.sectionId).hide();
+                }
+                scope.currentPage = 1;
+                scope.maxSize = 5;
+                scope.pageSize = [
+                    {label: '15', value: 15},
+                    {label: '25', value: 25},
+                    {label: '50', value: 50},
+                    {label: '100', value: 100}
+                ];
+                scope.currentPageSize = scope.pageSize[0];
+                scope.tableData = scope.tableInfo.data.content;
+                scope.totalItems = scope.tableInfo.data.total_elements;
+                var tabletLandscapeWidth = 960,
+                    currentWidth = window.outerWidth,
+                    sortInfo = scope.tableInfo.data.sort[0],
+                    dataSorting = [],
+                    pageable = {
+                        direction: sortInfo.direction,
+                        property: sortInfo.property,
+                        size: scope.currentPageSize.value,
+                        page: scope.currentPage - 1
+                    };
                 scope.tabletLandscape = currentWidth >= tabletLandscapeWidth;
                 scope.mobileDevice = deviceCheck.mobileDevice;
 
-                scope.getData = function(pageable) {
-                    scope.tableInfo.factory.getAll(pageable).$promise.then(function(data) {
+                var getData = function(pageable) {
+                    scope.tableInfo.factory.get(pageable).$promise.then(function(data) {
+                        console.log(data);
                         scope.tableData = data.content;
                         scope.totalItems = data.total_elements;
                     });
                 };
 
-                scope.tableInfo.data.$promise.then(
-                    function(data) {
-                        scope.tableData = data.content;
-                        scope.totalItems = data.total_elements;
-                    }
-                );
+                function getNestedData(dataIndex, property) {
+                    var nestedProperties = property.split(".");
+                    var data = scope.tableData[dataIndex][nestedProperties[0]];
+                    _.each(nestedProperties, function(property, index) {
+                        if(index != 0) {
+                            data = data[property]
+                        }
+                    });
+                    return data;
+                }
 
                 scope.setData = function (headDataIndex, dataIndex) {
                     var data = "";
                     var contains = _.some(scope.tableInfo.filteredProperties, function(value) {
                         if(scope.tableInfo.head[headDataIndex].property == value.property) {
                             if(value.filter) {
-                                if(value.property == 'phone_number') {
-                                    data = value.filter(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property], scope.tableData[dataIndex].location.country)
+                                if(value.property.indexOf('phone_number') > -1) {
+                                    if(value.property.indexOf('.') > -1) {
+                                        data = value.filter(getNestedData(dataIndex, value.property), getNestedData(dataIndex, value.property.split(".")[0].concat(".location.country")))
+                                    } else {
+                                        data = value.filter(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property], scope.tableData[dataIndex].location.country);
+                                    }
                                 } else {
                                     data = value.filter(scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property]);
                                 }
@@ -202,10 +177,54 @@ app.directive('contentTable',
                         }
                     });
                     if(!contains) {
-                        data = scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property];
+                        if(scope.tableInfo.head[headDataIndex].property.indexOf(".") > -1) {
+                            data = getNestedData(dataIndex, scope.tableInfo.head[headDataIndex].property);
+                        } else {
+                            data = scope.tableData[dataIndex][scope.tableInfo.head[headDataIndex].property];
+                        }
                     }
                     return data;
-                }
+                };
+
+                _.each(scope.tableInfo.head, function (data) {
+                    data.direction = 'DESC'
+                });
+
+                scope.$watch("head", function () {
+                    Array.prototype.push.apply(dataSorting, scope.tableInfo.head);
+                });
+
+                scope.selectSort = function (index) {
+                    if (pageable.property == $filter('camelCase')(scope.tableInfo.head[index].property)) {
+                        if (pageable.direction != 'DESC') {
+                            return 'glyphicon glyphicon-sort-by-alphabet'
+                        } else {
+                            return 'glyphicon glyphicon-sort-by-alphabet-alt'
+                        }
+                    } else {
+                        return ''
+                    }
+                };
+
+                /* Functions to get new data */
+                scope.changePageSize = function(value) {
+                    pageable.size = value;
+                    getData(pageable);
+                };
+                scope.changePage = function() {
+                    pageable.page = scope.currentPage - 1;
+                    getData(pageable);
+                };
+                scope.sorting = function(type){
+                    if(pageable.property == $filter('camelCase')(type)) {
+                        pageable.direction = pageable.direction == 'ASC' ? 'DESC' : 'ASC';
+                    } else {
+                        pageable.property = $filter('camelCase')(type);
+                        pageable.direction = 'DESC';
+                    }
+                    getData(pageable);
+                };
+
             },
             templateUrl: 'app/main/data-table-template.html'
         }

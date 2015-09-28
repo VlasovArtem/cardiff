@@ -5,7 +5,7 @@ import com.provectus.cardiff.utils.exception.EntityValidationException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static com.provectus.cardiff.utils.validator.CardBookingValidator.validate;
@@ -21,8 +21,8 @@ public class CardBookingValidatorTest {
     @Before
     public void setup() {
         cardBooking = new CardBooking();
-        cardBooking.setCreatedDate(LocalDateTime.now());
-        cardBooking.setBookingEndDate(LocalDateTime.now().plusDays(7l));
+        cardBooking.setBookingStartDate(LocalDate.now());
+        cardBooking.setBookingEndDate(LocalDate.now().plusDays(7l));
     }
 
     @Test
@@ -32,7 +32,7 @@ public class CardBookingValidatorTest {
 
     @Test(expected = EntityValidationException.class)
     public void validateWithInvalidCreatedDateTest() {
-        cardBooking.setCreatedDate(LocalDateTime.now().minusDays(1));
+        cardBooking.setBookingStartDate(LocalDate.now().minusDays(1));
         validate(Optional.ofNullable(cardBooking));
     }
 
