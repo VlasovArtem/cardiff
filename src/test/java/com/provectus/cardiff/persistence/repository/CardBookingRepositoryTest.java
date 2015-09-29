@@ -3,9 +3,13 @@ package com.provectus.cardiff.persistence.repository;
 import com.provectus.cardiff.config.AppConfig;
 import com.provectus.cardiff.config.DevelopmentDataSourceConfig;
 import com.provectus.cardiff.config.RootContextConfig;
+import com.provectus.cardiff.entities.CardBooking;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -14,7 +18,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 
 /**
  * Created by artemvlasov on 26/09/15.
@@ -70,5 +75,43 @@ public class CardBookingRepositoryTest {
                 LocalDate.of(2015, 11, 2),
                 LocalDate.of(2015, 11, 9), 1l);
         assertEquals(0, availableBookings);
+    }
+
+    @Test
+    public void findByPersonIdTest() {
+        Page<CardBooking> bookingPage = cardBookingRepository.findByPersonId(1l, new PageRequest(0, 15, new Sort(Sort
+                .Direction.DESC, "bookingStartDate")));
+        assertNotNull(bookingPage);
+        assertThat(bookingPage.getTotalElements(), is(1l));
+        assertThat(bookingPage.getContent().get(0).getId(), is(1l));
+    }
+
+    @Test
+    public void findByPersonIdWithoutCardBookingsTest() {
+        Page<CardBooking> bookingPage = cardBookingRepository.findByPersonId(2l, new PageRequest(0, 15, new Sort(Sort
+                .Direction.DESC, "bookingStartDate")));
+        assertThat(bookingPage.getTotalElements(), is(0l));
+    }
+
+    @Test
+    public void personDiscountCardBookingsTest() {
+        Page<CardBooking> bookingPage = cardBookingRepository.personDiscountCardBookings(1l, new PageRequest(0, 15, new Sort(Sort
+                .Direction.DESC, "bookingStartDate")));
+        assertThat(bookingPage.getTotalElements(), is(1l));
+        assertThat(bookingPage.getContent().get(0).getPerson().getEmail(), is("dmitriyvalnov@gmail.com"));
+    }
+
+    @Test
+    public void bookingAvailableBetweenDatesTest() {
+        boolean available = cardBookingRepository.bookingAvailableBetweenDates(LocalDate.of(2015, 10, 17), LocalDate
+                .of(2015, 10, 24), 1l);
+        assertTrue(available);
+    }
+
+    @Test
+    public void bookingAvailableBetweenDatesInvalidDatesTest() {
+        boolean available = cardBookingRepository.bookingAvailableBetweenDates(LocalDate.of(2015, 10, 19), LocalDate
+                .of(2015, 10, 26), 1l);
+        assertFalse(available);
     }
 }

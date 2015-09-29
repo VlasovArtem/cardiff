@@ -1,4 +1,4 @@
-var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage',
+var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSanitize',
     'ui.bootstrap.showErrors', 'ui.mask', 'ui.bootstrap', 'ui.select',
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives', 'discount-card-filters',

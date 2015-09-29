@@ -230,3 +230,21 @@ app.directive('contentTable',
         }
     }
 );
+
+app.directive('compileHtml', function($parse, $sce, $compile) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+            var expression = $sce.parseAsHtml(attr.compileHtml);
+
+            var getResult = function() {
+                return expression(scope);
+            };
+
+            scope.$watch(getResult, function(newValue) {
+                var linker = $compile(newValue);
+                element.append(linker(scope))
+            })
+        }
+    }
+});

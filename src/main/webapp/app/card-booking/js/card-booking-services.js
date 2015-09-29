@@ -4,8 +4,12 @@
 var app = angular.module('card-booking-services', ['ngResource']);
 
 app.factory('CardBookingFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/booking/:book', {
-        book: '@book'
+    return $resource('/rest/card/booking/:book/:cancel/:picked/:returned/:bookingId', {
+        book: '@book',
+        cancel: '@cancel',
+        picked: '@picked',
+        returned: '@returned',
+        bookingId: '@bookingId'
     }, {
         bookCard: {
             method: 'POST',
@@ -15,6 +19,24 @@ app.factory('CardBookingFactory', ['$resource', function($resource) {
             },
             params: {
                 book: 'book'
+            }
+        },
+        cancel: {
+            method: 'PUT',
+            params: {
+                cancel: 'cancel'
+            }
+        },
+        picked: {
+            method: 'PUT',
+            params: {
+                picked: 'picked'
+            }
+        },
+        returned: {
+            method: 'PUT',
+            params: {
+                returned: 'returned'
             }
         }
     })

@@ -9,7 +9,8 @@ import java.util.List;
  * Created by artemvlasov on 21/08/15.
  */
 public interface DiscountCardHistoryRepository extends JpaRepository<DiscountCardHistory, Long> {
-    DiscountCardHistory findById(long id);
-    List<DiscountCardHistory> findByDiscountCardId(long id);
-    List<DiscountCardHistory> findByPersonId(long id);
+    DiscountCardHistory findById (long id);
+    List<DiscountCardHistory> findByDiscountCardId (long id);
+    List<DiscountCardHistory> findByPersonId (long id);
+    DiscountCardHistory findByPersonIdAndDiscountCardIdAndReturnDateIsNull (long personId, long discountCardId);
 }

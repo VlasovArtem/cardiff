@@ -84,9 +84,7 @@ public class PersonController {
 
     @RequestMapping(path = "/admin/delete/{id:\\d*}", method = DELETE)
     public ResponseEntity delete(@PathVariable Long id, HttpServletRequest request) {
-        if(service.delete(id, request)) {
-            return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("info", "Deleted current user"));
-        }
+        service.delete(id, request);
         return ResponseEntity.status(OK).build();
     }
 

@@ -17,14 +17,14 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "discount_card_history")
-@AttributeOverride(name = "createdDate", column = @Column(name = "picked_date", insertable = false, updatable = false))
+@AttributeOverride(name = "createdDate", column = @Column(name = "picked_date", updatable = false))
 @Access(AccessType.PROPERTY)
 public class DiscountCardHistory extends BaseEntity {
     private Person person;
     private DiscountCard discountCard;
     private LocalDateTime returnDate;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id")
     public Person getPerson() {
         return person;
@@ -34,7 +34,7 @@ public class DiscountCardHistory extends BaseEntity {
         this.person = person;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_card_id")
     public DiscountCard getDiscountCard() {
         return discountCard;

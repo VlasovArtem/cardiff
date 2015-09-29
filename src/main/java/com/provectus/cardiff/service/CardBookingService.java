@@ -10,7 +10,10 @@ import java.time.LocalDate;
  * Created by artemvlasov on 25/09/15.
  */
 public interface CardBookingService {
-    void book(long discountCardId, LocalDate bookingStartDate);
-    Page<CardBooking> getPersonBookedDiscountCards(Pageable pageable);
-    Page<CardBooking> getPersonDiscountCardBookings(Pageable pageable);
+    void book (long discountCardId, LocalDate bookingStartDate);
+    void cancel (long bookingId);
+    void picked (long bookingId);
+    void returned (long bookingId);
+    Page<CardBooking> getPersonBookedDiscountCards (Pageable pageable);
+    Page<CardBooking> getPersonDiscountCardBookings (Pageable pageable);
 }

@@ -33,11 +33,10 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
     }
 ]);
 
-app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter',
-    function ($scope, $location, discountCards, DiscountCardsFactory, $filter) {
+app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter', '$sce',
+    function ($scope, $location, discountCards, DiscountCardsFactory, $filter, $sce) {
         $scope.tableInfo = {
             data: discountCards,
-            dataTemplate: 'app/discount-card/table-data-template.html',
             factory: DiscountCardsFactory,
             head: [
                 {name: 'Card #', property: 'card_number', width: '10%'},
@@ -52,10 +51,16 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
                 {property: 'amount_of_discount', appender: ' %'}
             ],
             dataButtons: {
-                desktop: 'app/discount-card/discount-cards-buttons.html',
-                mobile: 'app/discount-card/discount-cards-buttons.html'
-            }
+                desktop: 'app/discount-card/discount-cards-buttons.html'
+            },
+            htmlBinding: [{
+                head: 'Tags',
+                desktopClass: 'tags',
+                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>'),
+                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>')
+            }]
         };
+
     }
 ]);
 
@@ -101,8 +106,8 @@ app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFac
     }
 ]);
 
-app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards', 'OwnerDiscountCardsFactory',
-    function($scope, $filter, discountCards, OwnerDiscountCardsFactory) {
+app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards', 'OwnerDiscountCardsFactory', '$sce',
+    function($scope, $filter, discountCards, OwnerDiscountCardsFactory, $sce) {
         $scope.tableInfo = {
             data: discountCards,
             dataTemplate: 'app/discount-card/table-data-template.html',
@@ -117,7 +122,13 @@ app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards'
             filteredProperties: [
                 {property: 'created_date', filter: $filter('dateFilter')},
                 {property: 'amount_of_discount', appender: ' %'}
-            ]
+            ],
+            htmlBinding: [{
+                head: 'Tags',
+                desktopClass: 'tags',
+                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>'),
+                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>')
+            }]
         };
     }
 ]);

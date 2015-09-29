@@ -124,7 +124,7 @@ public class DiscountCard extends BaseEntity {
         this.discountCardComments = discountCardComments;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     @JsonIgnore
     public Person getOwner() {

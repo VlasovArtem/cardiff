@@ -56,12 +56,16 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
                 {name: 'Card #', property: 'discount_card.card_number', width: '10%'},
                 {name: 'Company', property: 'discount_card.company_name', width: '20%'},
                 {name: 'Start', property: 'booking_start_date', width: '10%'},
-                {name: 'End', property: 'booking_end_date', width: '10%'}
+                {name: 'End', property: 'booking_end_date', width: '10%'},
+                {name: 'Picked', property: 'discount_card.picked'}
             ],
             filteredProperties: [
                 {property: 'booking_start_date', filter: $filter('dateFilter')},
                 {property: 'booking_end_date', filter: $filter('dateFilter')}
-            ]
+            ],
+            dataButtons: {
+                desktop: 'app/card-booking/booked-buttons.html'
+            }
         };
         $scope.cardBookingsTableInfo = {
             data: bookings,
@@ -72,16 +76,37 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
                 {name: 'Company', property: 'discount_card.company_name', width: '20%'},
                 {name: 'Person', property: 'person.name'},
                 {name: 'Start', property: 'booking_start_date', width: '10%'},
-                {name: 'End', property: 'booking_end_date', width: '10%'}
+                {name: 'End', property: 'booking_end_date', width: '10%'},
+                {name: 'Picked', property: 'discount_card.picked'}
             ],
             filteredProperties: [
                 {property: 'booking_start_date', filter: $filter('dateFilter')},
                 {property: 'booking_end_date', filter: $filter('dateFilter')}
-            ]
+            ],
+            dataButtons: {
+                desktop: 'app/card-booking/bookings-buttons.html'
+            }
         };
     }
 ]);
 
-app.controller('PersonDiscountCardBookingsFunctionCtrl', ['$scope', function ($scope) {}]);
+app.controller('BookingsFunctionCtrl', ['$scope', 'CardBookingFactory', '$route', function ($scope, CardBookingFactory, $route) {
+    $scope.cancel = function(bookingId) {
+        CardBookingFactory.cancel({bookingId: bookingId}, function() {
+            $route.reload();
+        });
+    };
 
-app.controller('PersonBookedDiscountCardsFunctionCtrl', ['$scope', function ($scope) {}]);
+    $scope.picked = function(bookingId) {
+        CardBookingFactory.picked({bookingId: bookingId}, function() {
+            $route.reload();
+        });
+    };
+
+    $scope.returned = function(bookingId) {
+        CardBookingFactory.returned({bookingId: bookingId}, function() {
+            $route.reload();
+        });
+    }
+
+}]);

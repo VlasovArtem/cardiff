@@ -1,0 +1,6 @@
+<input type="button" class="btn btn-danger btn-sm" ng-hide="data.deleted"
+       ng-click="removePerson(data.id)" value="Delete"/>
+<input type="button" class="btn btn-success btn-sm" ng-show="data.deleted"
+       ng-click="restorePerson(data.id)" value="Restore"/>
+<input type="button" class="btn btn-warning btn-sm" ng-click="editPerson(data)" value="Edit"/>
+<input type="button" class="btn btn-primary btn-sm" ng-click="changeRole(data.id)" value="Role"/>

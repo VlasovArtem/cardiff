@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -20,6 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * Created by artemvlasov on 25/09/15.
@@ -58,5 +60,23 @@ public class CardBookingController {
             @RequestParam(defaultValue = "bookingStartDate", required = false) String property) {
         return service.getPersonDiscountCardBookings(new PageRequest(page, size, new Sort(Sort.Direction.valueOf
                 (direction), property)));
+    }
+
+    @RequestMapping(value = "/cancel/{bookingId}", method = PUT)
+    @ResponseStatus(OK)
+    public void cancel(@PathVariable long bookingId) {
+        service.cancel(bookingId);
+    }
+
+    @RequestMapping(value = "/picked/{bookingId}", method = PUT)
+    @ResponseStatus(OK)
+    public void picked(@PathVariable long bookingId) {
+        service.picked(bookingId);
+    }
+
+    @RequestMapping(value = "/returned/{bookingId}", method = PUT)
+    @ResponseStatus(OK)
+    public void returned(@PathVariable long bookingId) {
+        service.returned(bookingId);
     }
 }

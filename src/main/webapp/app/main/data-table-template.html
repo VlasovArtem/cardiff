@@ -1,5 +1,36 @@
 <div class="col-sm-12 col-xs-12 col-md-12">
-    <div ng-include="tableInfo.dataTemplate"></div>
+    <table class="table" ng-hide="mobileDevice && !tabletLandscape">
+        <tr>
+            <th ng-repeat="(index, value) in tableInfo.head"  width="{{value.width}}" ng-click="sorting(value.property)">
+                {{value.name}}
+                <span ng-class="selectSort(index)"></span>
+            </th>
+            <th ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding" ng-bind="binding.head">
+            </th>
+            <th colspan="2" ng-show="tableInfo.dataButtons"></th>
+        </tr>
+        <tr ng-repeat="(dataIndex, data) in tableData" class="data">
+            <td ng-repeat="(headDataIndex, headData) in tableInfo.head" ng-bind="setData(headDataIndex, dataIndex)"></td>
+            <td ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding"
+                ng-class="binding.desktopClass" compile-html="binding.desktop">
+            </td>
+            <td ng-show="tableInfo.dataButtons" class="table-buttons">
+                <div ng-include="tableInfo.dataButtons.desktop"></div>
+            </td>
+        </tr>
+    </table>
+    <div class="container cards col-sm-6 col-xs-12" ng-repeat="(dataIndex, data) in tableData"
+         ng-show="mobileDevice && !tabletLandscape">
+        <ul class="mobile-table-cards">
+            <li ng-repeat="(headDataIndex, headData) in tableInfo.head"><b>{{headData.name}}:</b> {{setData(headDataIndex, dataIndex)}}</li>
+            <li ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding"
+                ng-class="binding.desktopClass" compile-html="binding.mobile"></li>
+            <hr class="style"/>
+            <li ng-show="tableInfo.dataButtons" class="buttons table-buttons">
+                <div ng-include="tableInfo.dataButtons.mobile ? tableInfo.dataButtons.mobile : tableInfo.dataButtons.desktop"></div>
+            </li>
+        </ul>
+    </div>
     <div class="col-sm-12 col-xs-12 col-md-12 pagination-stack">
         <div class="col-xs-12 col-sm-5 col-md-5">
             <div class="form-inline">

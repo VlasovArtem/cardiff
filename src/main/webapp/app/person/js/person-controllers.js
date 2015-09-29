@@ -153,10 +153,7 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
 app.controller('AdminPersonFunctionCtrl', ['$scope', '$sessionStorage', '$location', '$route', 'AdminPersonFactory', function($scope, $sessionStorage, $location, $route, AdminPersonFactory) {
     $scope.removePerson = function(id) {
         AdminPersonFactory.remove({delete: 'delete', id : id},
-            function(data) {
-                if(data.info) {
-                    $location.path('/');
-                }
+            function() {
                 $route.reload()
             });
     };
@@ -173,4 +170,4 @@ app.controller('AdminPersonFunctionCtrl', ['$scope', '$sessionStorage', '$locati
     $scope.changeRole = function(personId) {
         AdminPersonFactory.updateRole({id: personId}, function() {$route.reload()});
     };
-}])
+}]);
