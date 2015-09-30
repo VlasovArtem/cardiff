@@ -9,7 +9,7 @@
             </th>
             <th colspan="2" ng-show="tableInfo.dataButtons"></th>
         </tr>
-        <tr ng-repeat="(dataIndex, data) in tableData orderBy : " class="data">
+        <tr ng-repeat="(dataIndex, data) in tableData" class="data">
             <td ng-repeat="(headDataIndex, headData) in tableInfo.head" ng-bind="setData(headDataIndex, dataIndex)"></td>
             <td ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding"
                 ng-class="binding.desktopClass" compile-html="binding.desktop">

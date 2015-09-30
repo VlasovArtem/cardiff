@@ -163,7 +163,7 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', function($root,
     auth.init('/', '/signin', '/logout');
     deviceCheck.checkIsMobile();
     $root.$on('$viewContentLoaded', function(event){
-        $('.footer').fadeIn(500);
+        $('.footer').fadeIn(2000);
     });
     $root.$on('$routeChangeStart', function(event, next, current) {
         if(!_.isUndefined(next)) {
