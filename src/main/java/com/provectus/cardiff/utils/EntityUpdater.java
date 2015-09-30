@@ -61,7 +61,7 @@ public class EntityUpdater {
         List<String> updatedFields = null;
         switch(className) {
             case "Person":
-                updatedFields = Arrays.asList("name", "login", "email", "phoneNumber", "description");
+                updatedFields = Arrays.asList("name", "login", "email", "phoneNumber", "description", "location");
                 break;
         }
         return updatedFields;
