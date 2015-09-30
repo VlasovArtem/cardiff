@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.service.DiscountCardService;
+import com.provectus.cardiff.utils.SearchEngine;
 import com.provectus.cardiff.utils.view.DiscountCardView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -75,9 +76,10 @@ public class DiscountCardController {
     @RequestMapping(path = "/get/by/name", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
     public ResponseEntity getByName(@RequestParam(required = true, value = "company_name") String companyName) {
-        Optional<List<DiscountCard>> discountCards = service.search(companyName);
-        if(discountCards.isPresent()) {
-            return ResponseEntity.ok(discountCards.get());
+        List<DiscountCard> discountCards = SearchEngine.search(service.findAll(), companyName, service.search(companyName));
+
+        if(discountCards.size() > 0) {
+            return ResponseEntity.ok(discountCards);
         }
         return ResponseEntity.status(NOT_FOUND).build();
     }

@@ -26,8 +26,8 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
 
     Page<DiscountCard> findByPickedFalse(Pageable pageable);
 
-    @Query("select d.id, d.companyName, d.amountOfDiscount from DiscountCard d where lower(d.companyName) LIKE %?1%")
-    Optional<List<DiscountCard>> findByCompanyName(String companyName);
+    @Query("select d from DiscountCard d where lower(d.companyName) LIKE %?1%")
+    List<DiscountCard> findByCompanyName(String companyName);
 
     Page<DiscountCard> findByOwnerId(long id, Pageable pageable);
 

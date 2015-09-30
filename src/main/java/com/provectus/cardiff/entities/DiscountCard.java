@@ -21,6 +21,7 @@ import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedEntityGraphs;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -141,5 +142,19 @@ public class DiscountCard extends BaseEntity {
 
     public void setPicked(boolean picked) {
         this.picked = picked;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiscountCard that = (DiscountCard) o;
+        return Objects.equals(cardNumber, that.cardNumber) &&
+                Objects.equals(companyName, that.companyName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(cardNumber, companyName);
     }
 }

@@ -24,17 +24,19 @@ public interface DiscountCardService {
 
     Optional<List<DiscountCard>> search (Set<String> tags);
 
-    Optional<List<DiscountCard>> search (String name);
+    List<DiscountCard> search(String name);
 
-    Page<DiscountCard> getAll (Pageable pageable);
+    Page<DiscountCard> getAll(Pageable pageable);
 
-    Page<DiscountCard> getAuthenticatedPersonDiscountCards(Pageable pageable);
+    List<DiscountCard> findAll();
 
-    void removeOwnerCards(long ownerId);
+    Page<DiscountCard> getAuthenticatedPersonDiscountCards (Pageable pageable);
 
-    void restoreOwnerCard(long ownerId);
+    void removeOwnerCards (long ownerId);
 
-    boolean checkDiscountCardIsUnique(long discountCardNumber, String companyName);
+    void restoreOwnerCard (long ownerId);
 
-    boolean authPersonDiscountCard(long discountCardId);
+    boolean checkDiscountCardIsUnique (long discountCardNumber, String companyName);
+
+    boolean authPersonDiscountCard (long discountCardId);
 }
