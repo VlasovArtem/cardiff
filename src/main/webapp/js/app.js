@@ -27,7 +27,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
         var spinnerFunction = function spinnerFunction(data, headersGetter) {
             $('nav').addClass('blurred');
             $('.view').addClass('blurred');
-            $('footer').addClass('blurred');
+            var footer = $('footer');
+            footer.addClass('blurred');
             $('.loading-img').show();
             return data;
         };

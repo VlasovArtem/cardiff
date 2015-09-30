@@ -130,7 +130,6 @@ app.directive('contentTable',
 
                 var getData = function(pageable) {
                     scope.tableInfo.factory.get(pageable).$promise.then(function(data) {
-                        console.log(data);
                         scope.tableData = data.content;
                         scope.totalItems = data.total_elements;
                     });

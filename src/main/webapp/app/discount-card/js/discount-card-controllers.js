@@ -35,6 +35,7 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
 
 app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter', '$sce',
     function ($scope, $location, discountCards, DiscountCardsFactory, $filter, $sce) {
+        console.log(discountCards);
         $scope.tableInfo = {
             data: discountCards,
             factory: DiscountCardsFactory,
@@ -56,8 +57,8 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
             htmlBinding: [{
                 head: 'Tags',
                 desktopClass: 'tags',
-                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>'),
-                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>')
+                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy :\'id\'" ng-bind="tag.tag"></span>'),
+                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy : \'id\'" ng-bind="tag.tag"></span>')
             }]
         };
 
@@ -126,8 +127,8 @@ app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards'
             htmlBinding: [{
                 head: 'Tags',
                 desktopClass: 'tags',
-                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>'),
-                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags" ng-bind="tag.tag"></span>')
+                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy : \'id\'" ng-bind="tag.tag"></span>'),
+                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy : \'id\'" ng-bind="tag.tag"></span>')
             }]
         };
     }
