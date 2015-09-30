@@ -46,7 +46,7 @@ public class CardBookingServiceImpl implements CardBookingService {
             throw new CardBookingException("Booked Discount card belongs to authenticated person");
         } else if(discountCardRepository.isPicked(discountCardId)) {
             throw new CardBookingException("Booked Discount card is already picked");
-        } else if(startDate.isBefore(LocalDateTime.now().toLocalDate())) {
+        } else if(startDate.isBefore(LocalDate.now())) {
             throw new CardBookingException("Booking start date, cannot be earlier than today date");
         } else if (cardBookingRepository.countBookedCardsBetweenDates(startDate, startDate.plusDays(7l),
                 discountCardId) > 0) {
@@ -54,7 +54,6 @@ public class CardBookingServiceImpl implements CardBookingService {
         }
         CardBooking cardBooking = new CardBooking();
         cardBooking.setBookingStartDate(startDate);
-
         DiscountCard discountCard = new DiscountCard();
         discountCard.setId(discountCardId);
         Person person = new Person();
@@ -66,7 +65,7 @@ public class CardBookingServiceImpl implements CardBookingService {
 
     @Override
     public void cancel (long bookingId) {
-        if(cardBookingRepository.checkPersonBookingCancel(bookingId, AuthenticatedPersonPrincipalUtil
+        if(!cardBookingRepository.checkPersonBookingCancel(bookingId, AuthenticatedPersonPrincipalUtil
                 .getAuthenticationPrincipal().get().getId()) && !AuthenticatedPersonPrincipalUtil.containAuthorities
                 (PersonRole.ADMIN)) {
             LOG.info(String.format("Person with id - %d, try to remove booking with id - %d, without permission.",
@@ -112,6 +111,11 @@ public class CardBookingServiceImpl implements CardBookingService {
         cardBookingRepository.delete(bookingId);
     }
 
+    /**
+     * Return all {@link CardBooking} that was booked by authenticated {@link Person}.
+     * @param pageable paging parameters.
+     * @return {@link Page<CardBooking>}
+     */
     @Override
     public Page<CardBooking> getPersonBookedDiscountCards(Pageable pageable) {
         return cardBookingRepository.findByPersonId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get

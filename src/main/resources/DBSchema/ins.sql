@@ -34,18 +34,18 @@ INSERT INTO cardiff.tag (id, tag) VALUES
 
 
 INSERT INTO cardiff.discount_card (id, card_number, created_date, company_name,
-amount_of_discount, description, deleted, person_id) VALUES
-(1, 1, NOW(), 'Cheese', 5,'скидка', false,1),
-(2, 445, NOW(), 'Kiss', 7,'скидка', false,3),
-(3, 11, NOW(), 'MusicTools', 8,'скидка', true,2),
-(4, 2, NOW(), 'DjStar', 4,'скидка', false,2),
-(5, 2145000, NOW(), 'Bread', 9,'скидка', false,1),
-(6, 123, NOW(), 'PizzaStar', 10,'скидка', false,1),
-(7, 4578, NOW(), 'PizzaCheap', 5,'скидка', false,1),
-(8, 145876421, NOW(), 'Mobilochka', 3,'скидка', false,4),
-(9, 4751, NOW(), 'Tavriya', 3,'скидка', false,1),
-(10, 54576, NOW(), 'MotorStar', 6,'скидка', false,5),
-(11, 55555555, NOW(), 'STO', 5,'скидка', true,5);
+amount_of_discount, description, deleted, person_id, picked) VALUES
+(1, 1, NOW(), 'Cheese', 5,'скидка', false, 1, false),
+(2, 445, NOW(), 'Kiss', 7,'скидка', false, 3, false),
+(3, 11, NOW(), 'MusicTools', 8,'скидка', true, 2, false),
+(4, 2, NOW(), 'DjStar', 4,'скидка', false, 2, false),
+(5, 2145000, NOW(), 'Bread', 9,'скидка', false, 1, false),
+(6, 123, NOW(), 'PizzaStar', 10,'скидка', false, 1, false),
+(7, 4578, NOW(), 'PizzaCheap', 5,'скидка', false, 1, false),
+(8, 145876421, NOW(), 'Mobilochka', 3,'скидка', false, 4, false),
+(9, 4751, NOW(), 'Tavriya', 3,'скидка', false, 1, true),
+(10, 54576, NOW(), 'MotorStar', 6,'скидка', false, 5, true),
+(11, 55555555, NOW(), 'STO', 5,'скидка', true, 5, true);
 
 INSERT INTO cardiff.tag_card (discount_card_id, tag_id) VALUES
 (1,1),
@@ -69,7 +69,7 @@ INSERT INTO cardiff.tag_card (discount_card_id, tag_id) VALUES
 (11,9),
 (10,11);
 
-INSERT INTO cardiff.book_card (id, book_date_start, book_date_end, discount_card_id, person_id) VALUES
+INSERT INTO cardiff.card_booking (id, booking_start_date, booking_end_date, discount_card_id, person_id) VALUES
 (1, '06/10/2015','06/12/2015',2,9),
 (2, '01/01/2010','06/10/2015',2,8),
 (3, '08/20/2015','08/23/2015',6,3),
@@ -82,7 +82,7 @@ INSERT INTO cardiff.book_card (id, book_date_start, book_date_end, discount_card
 (10, '08/30/2015','01/10/2015',3,9);
 
 
-INSERT INTO cardiff.discount_card_comment (comment_text, comment_date, discount_card_id, person_id) VALUES
+INSERT INTO cardiff.discount_card_comment (id, comment_text, comment_date, discount_card_id, person_id) VALUES
 (1, 'They sell fake phones','08/02/2015',7,1),
 (2, 'Cruel store','02/20/2014',9,2),
 (3, 'Good shop','08/15/2015',3,2),
@@ -95,7 +95,7 @@ INSERT INTO cardiff.discount_card_comment (comment_text, comment_date, discount_
 (10, 'there are beautiful assistans','08/20/2015',4,10);
 
 
-INSERT INTO cardiff.discount_card_history (picked_date, return_date, discount_card_id, person_id) VALUES
+INSERT INTO cardiff.discount_card_history (id, picked_date, return_date, discount_card_id, person_id) VALUES
 (1, '06/10/2015','06/12/2015',2,9),
 (2, '01/01/2010','06/10/2014',2,8),
 (3, '08/20/2014','08/23/2014',6,3),

@@ -1,4 +1,4 @@
-<div class="col-sm-12 col-xs-12 col-md-12">
+<div class="col-sm-12 col-xs-12 col-md-12" ng-show="tableInfo.data.$resolved">
     <table class="table" ng-hide="mobileDevice && !tabletLandscape">
         <tr>
             <th ng-repeat="(index, value) in tableInfo.head"  width="{{value.width}}" ng-click="sorting(value.property)">

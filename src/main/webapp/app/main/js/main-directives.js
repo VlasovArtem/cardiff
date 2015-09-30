@@ -248,3 +248,13 @@ app.directive('compileHtml', function($parse, $sce, $compile) {
         }
     }
 });
+
+app.directive('loading', function($location, $timeout) {
+    return {
+        restrict: 'E',
+        link: function (scope, element, attr) {
+            element.show();
+        },
+        templateUrl: 'app/main/loading.html'
+    }
+});

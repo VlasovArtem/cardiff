@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.time.LocalDate;
 
@@ -26,11 +28,13 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {DevelopmentDataSourceConfig.class, AppConfig.class, RootContextConfig.class})
+@ActiveProfiles(profiles = "development")
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
         @Sql("/sql-data/card-booking-data.sql")
 })
-@ActiveProfiles(profiles = "development")
+@DirtiesContext
+@WebAppConfiguration
 public class CardBookingRepositoryTest {
     @Autowired
     private CardBookingRepository cardBookingRepository;
@@ -88,7 +92,7 @@ public class CardBookingRepositoryTest {
 
     @Test
     public void findByPersonIdWithoutCardBookingsTest() {
-        Page<CardBooking> bookingPage = cardBookingRepository.findByPersonId(2l, new PageRequest(0, 15, new Sort(Sort
+        Page<CardBooking> bookingPage = cardBookingRepository.findByPersonId(4l, new PageRequest(0, 15, new Sort(Sort
                 .Direction.DESC, "bookingStartDate")));
         assertThat(bookingPage.getTotalElements(), is(0l));
     }
@@ -102,9 +106,16 @@ public class CardBookingRepositoryTest {
     }
 
     @Test
-    public void bookingAvailableBetweenDatesTest() {
+    public void bookingAvailableBetweenDatesLessThanBookingStartDateTest() {
         boolean available = cardBookingRepository.bookingAvailableBetweenDates(LocalDate.of(2015, 10, 17), LocalDate
                 .of(2015, 10, 24), 1l);
+        assertTrue(available);
+    }
+
+    @Test
+    public void bookingAvailableBetweenDateGreaterThanBookingEndDateTest() {
+        boolean available = cardBookingRepository.bookingAvailableBetweenDates(LocalDate.of(2015, 11, 2), LocalDate
+                .of(2015, 11, 9), 1l);
         assertTrue(available);
     }
 
@@ -113,5 +124,31 @@ public class CardBookingRepositoryTest {
         boolean available = cardBookingRepository.bookingAvailableBetweenDates(LocalDate.of(2015, 10, 19), LocalDate
                 .of(2015, 10, 26), 1l);
         assertFalse(available);
+    }
+
+    @Test
+    public void checkPersonBookingCancelTest() {
+        assertTrue(cardBookingRepository.checkPersonBookingCancel(1l, 1l));
+        assertTrue(cardBookingRepository.checkPersonBookingCancel(1l, 2l));
+    }
+
+    @Test
+    public void bookingDiscountCardIsPickedTest() {
+        assertTrue(cardBookingRepository.bookingDiscountCardIsPicked(1l));
+    }
+
+    @Test
+    public void bookingDiscountCardIsPickedNotTest() {
+        assertFalse(cardBookingRepository.bookingDiscountCardIsPicked(2l));
+    }
+
+    @Test
+    public void checkPersonDiscountCardPickTest() {
+        assertTrue(cardBookingRepository.checkPersonDiscountCardPick(1l, 2l));
+    }
+
+    @Test
+    public void checkPersonDiscountCardPickNotMathcesDataTest() {
+        assertFalse(cardBookingRepository.checkPersonDiscountCardPick(1l, 1l));
     }
 }

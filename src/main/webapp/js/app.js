@@ -4,7 +4,34 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives', 'discount-card-filters',
     'main-controllers', 'main-services', 'main-directives', 'main-filters',
     'card-booking-controllers', 'card-booking-services', 'card-booking-filters']).config(
-    function($routeProvider, $locationProvider) {
+    function($routeProvider, $locationProvider, $httpProvider, $provide) {
+        $provide.factory('myHttpInterceptor', function($q) {
+            return {
+                'response': function(response) {
+                    $('nav').removeClass('blurred');
+                    $('.view').removeClass('blurred');
+                    $('footer').removeClass('blurred');
+                    $(".loading-img").hide();
+                    return response;
+                },
+                'responseError': function(rejection) {
+                    $('nav').removeClass('blurred');
+                    $('.view').removeClass('blurred');
+                    $('footer').removeClass('blurred');
+                    $(".loading-img").hide();
+                    return $q.reject(rejection);
+                }
+            }
+        });
+        $httpProvider.interceptors.push('myHttpInterceptor');
+        var spinnerFunction = function spinnerFunction(data, headersGetter) {
+            $('nav').addClass('blurred');
+            $('.view').addClass('blurred');
+            $('footer').addClass('blurred');
+            $('.loading-img').show();
+            return data;
+        };
+        $httpProvider.defaults.transformRequest.push(spinnerFunction);
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {

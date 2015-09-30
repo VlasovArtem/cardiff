@@ -53,11 +53,19 @@ public interface CardBookingRepository extends JpaRepository<CardBooking, Long> 
      */
 
     @Query("SELECT CASE WHEN (COUNT(cb) > 0) THEN true ELSE false END FROM CardBooking cb WHERE cb.id = ?1 and (cb.person.id = ?2 or cb.discountCard.owner.id = ?2)")
-    boolean checkPersonBookingCancel(long bookingId, long personId);
+    boolean checkPersonBookingCancel (long bookingId, long personId);
 
     @Query("SELECT CASE WHEN (COUNT(cb) > 0) THEN true ELSE false END FROM CardBooking cb WHERE cb.discountCard.picked = true and cb.id = ?1")
-    boolean bookingDiscountCardIsPicked(long bookingId);
+    boolean bookingDiscountCardIsPicked (long bookingId);
+
+    /**
+     * Check {@link CardBooking} before pick operation. {@link DiscountCard}, that associated with CardBooking, owner
+     * should matches with person that call picked function.
+     * @param bookingId
+     * @param personId
+     * @return boolean
+     */
 
     @Query("SELECT CASE WHEN (COUNT(cb) > 0) THEN true ELSE false END FROM CardBooking cb WHERE cb.discountCard.owner.id = ?2 and cb.id = ?1")
-    boolean checkPersonDiscountCardPick(long bookingId, long personId);
+    boolean checkPersonDiscountCardPick (long bookingId, long personId);
 }
