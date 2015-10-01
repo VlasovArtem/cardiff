@@ -84,7 +84,7 @@ public class DiscountCardController {
         return ResponseEntity.status(NOT_FOUND).build();
     }
 
-    @RequestMapping(path = "/get/all", method = GET)
+    @RequestMapping(path = "/get/page", method = GET)
     @ResponseStatus(value = OK)
     @JsonView(DiscountCardView.BasicLevel.class)
     public Page<DiscountCard> getAll(
@@ -105,7 +105,7 @@ public class DiscountCardController {
         return ResponseEntity.ok(dc.get());
     }
 
-    @RequestMapping(path = "/owner/all", method = GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/owner/page", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     @JsonView(DiscountCardView.BasicLevel.class)
     public Page<DiscountCard> getAuthenticatedPersonDiscountCards(

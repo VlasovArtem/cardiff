@@ -43,9 +43,9 @@ app.factory('CardBookingFactory', ['$resource', function($resource) {
 }]);
 
 app.factory('PersonBookedDiscountCardsFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/booking/booked')
+    return $resource('/rest/card/booking/booked/page')
 }]);
 
 app.factory('PersonDiscountCardBookingsFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/booking/bookings')
+    return $resource('/rest/card/booking/bookings/page')
 }]);

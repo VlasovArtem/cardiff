@@ -40,7 +40,7 @@ public class CardBookingController {
         service.book(discountCardId, LocalDate.parse(bookingStartDate));
     }
 
-    @RequestMapping(value = "/booked", method = GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/booked/page", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(CardBookingView.BasicLevel.class)
     public Page<CardBooking> getBooked(
             @RequestParam(defaultValue = "0", required = false) int page,
@@ -51,7 +51,7 @@ public class CardBookingController {
                 (direction), property)));
     }
 
-    @RequestMapping(value = "/bookings", method = GET, produces = APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/bookings/page", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(CardBookingView.BookingsLevel.class)
     public Page<CardBooking> getPersonDiscountCardBookings(
             @RequestParam(defaultValue = "0", required = false) int page,

@@ -94,7 +94,7 @@ public class PersonController {
         service.update(person);
     }
 
-    @RequestMapping(path = "/admin/get/all", method = GET)
+    @RequestMapping(path = "/admin/get/page", method = GET)
     @JsonView(PersonView.TableLevel.class)
     @ResponseStatus(value = OK)
     public Page<Person> getAll(@RequestParam(defaultValue = "0", required = false) int page,

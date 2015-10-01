@@ -13,11 +13,11 @@ service.factory('DiscountCardFactory', ['$resource', function($resource) {
 }]);
 
 service.factory('DiscountCardsFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/get/all');
+    return $resource('/rest/card/get/page');
 }]);
 
 service.factory('OwnerDiscountCardsFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/owner/all')
+    return $resource('/rest/card/owner/page')
 }]);
 
 service.factory('AuthDiscountCardFactory', ['$resource', function($resource) {

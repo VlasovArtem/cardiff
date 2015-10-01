@@ -50,9 +50,8 @@ service.factory('changePassword', ['$resource',
 
 service.factory('AdminPersonFactory', ['$resource',
     function($resource) {
-        return $resource('/rest/person/admin/:get/:all/:delete/:update/:role/:restore/:id', {
+        return $resource('/rest/person/admin/:get/:delete/:update/:role/:restore/:id', {
             get: '@get',
-            all: '@all',
             delete: '@delete',
             update: '@update',
             role: '@role',
@@ -71,20 +70,13 @@ service.factory('AdminPersonFactory', ['$resource',
                     update: 'update',
                     role: 'role'
                 }
-            },
-            getAll: {
-                method: 'GET',
-                params: {
-                    get: 'get',
-                    all: 'all'
-                }
             }
         })
     }
 ]);
 
 service.factory('AdminPersonTableFactory', ['$resource', function($resource) {
-    return $resource('/rest/person/admin/get/all')
+    return $resource('/rest/person/admin/get/page')
 }]);
 
 service.factory('PersonFactory', ['$resource',

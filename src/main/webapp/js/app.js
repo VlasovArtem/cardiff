@@ -5,34 +5,37 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
     'main-controllers', 'main-services', 'main-directives', 'main-filters',
     'card-booking-controllers', 'card-booking-services', 'card-booking-filters']).config(
     function($routeProvider, $locationProvider, $httpProvider, $provide) {
+        var addLoading = function() {
+            $('nav').addClass('blurred');
+            $('.view').addClass('blurred');
+            $('footer').addClass('blurred');
+            $('.loading-img').show();
+        };
+        var removeLoading = function() {
+            $('nav').removeClass('blurred');
+            $('.view').removeClass('blurred');
+            $('footer').removeClass('blurred');
+            $(".loading-img").hide();
+        };
         $provide.factory('myHttpInterceptor', function($q) {
             return {
                 'response': function(response) {
-                    $('nav').removeClass('blurred');
-                    $('.view').removeClass('blurred');
-                    $('footer').removeClass('blurred');
-                    $(".loading-img").hide();
+                    removeLoading();
                     return response;
                 },
                 'responseError': function(rejection) {
-                    $('nav').removeClass('blurred');
-                    $('.view').removeClass('blurred');
-                    $('footer').removeClass('blurred');
-                    $(".loading-img").hide();
+                    removeLoading();
                     return $q.reject(rejection);
+                },
+                'request': function(config) {
+                    if(config.url.indexOf('page') > -1) {
+                        addLoading();
+                    }
+                    return config;
                 }
             }
         });
         $httpProvider.interceptors.push('myHttpInterceptor');
-        var spinnerFunction = function spinnerFunction(data, headersGetter) {
-            $('nav').addClass('blurred');
-            $('.view').addClass('blurred');
-            var footer = $('footer');
-            footer.addClass('blurred');
-            $('.loading-img').show();
-            return data;
-        };
-        $httpProvider.defaults.transformRequest.push(spinnerFunction);
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
@@ -166,6 +169,7 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', function($root,
         $('.footer').fadeIn(2000);
     });
     $root.$on('$routeChangeStart', function(event, next, current) {
+        $('.footer').hide();
         if(!_.isUndefined(next)) {
             if(next.$$route) {
                 if(next.$$route.originalPath == '/') {
@@ -177,6 +181,7 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', function($root,
         }
     });
     $root.$on('$routeChangeSuccess', function(event, current, previous) {
+        $('.footer').fadeIn(2000);
         if(!_.isUndefined(current)) {
             if(current.$$route) {
                 if(current.$$route.originalPath == '/card/info') {
