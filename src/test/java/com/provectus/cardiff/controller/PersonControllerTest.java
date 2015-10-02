@@ -250,7 +250,7 @@ public class PersonControllerTest {
         expect(personService.getAll(pageable))
                 .andReturn(page);
         replay(personService);
-        this.mockMvc.perform(get("/rest/person/admin/get/all"))
+        this.mockMvc.perform(get("/rest/person/admin/get/page"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(page)));
     }

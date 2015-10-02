@@ -7,7 +7,7 @@ import com.provectus.cardiff.utils.validator.TagValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,21 +23,18 @@ import java.util.stream.Collectors;
 public class TagServiceImpl implements TagService {
     private final static Logger LOGGER = LogManager.getLogger(TagServiceImpl.class);
 
-    @Qualifier("tagRepository")
     @Autowired
-    TagRepository tagRepository;
+    private TagRepository tagRepository;
 
     @Override
     public Tag getTag(Long id) {
-        LOGGER.error("get tag");
-
-        LOGGER.error("id=" + id);
         return tagRepository.findById(id);
     }
 
     @Override
     public Set<Tag> findAll() {
-        return tagRepository.findAll().stream().collect(Collectors.toSet());
+        Sort sort = new Sort(Sort.Direction.DESC, "tag");
+        return tagRepository.findAll(sort).stream().collect(Collectors.toSet());
     }
 
 

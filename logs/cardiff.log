@@ -67,3 +67,9 @@
 2015-10-01 16:50:26,283 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person with id - 1, try to remove booking with id - 3, without permission.
 2015-10-01 16:50:26,395 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
 2015-10-01 16:50:26,534 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)
+2015-10-02 05:45:48,955 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-02 05:45:49,058 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
+2015-10-02 05:45:49,196 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)
+2015-10-02 05:49:51,180 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-02 05:49:51,299 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
+2015-10-02 05:49:51,452 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)

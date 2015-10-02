@@ -4,6 +4,7 @@ import com.provectus.cardiff.entities.Location;
 import com.provectus.cardiff.persistence.repository.LocationRepository;
 import com.provectus.cardiff.service.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,8 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> getAll() {
-        return repository.findAll();
+        Sort sort = new Sort(Sort.Direction.DESC, "country", "city");
+        return repository.findAll(sort);
     }
 
     @Override
