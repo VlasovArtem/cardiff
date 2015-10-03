@@ -21,7 +21,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public List<Location> getAll() {
-        Sort sort = new Sort(Sort.Direction.DESC, "country", "city");
+        Sort sort = new Sort(Sort.Direction.ASC, "country", "city");
         return repository.findAll(sort);
     }
 

@@ -2,7 +2,7 @@ html, body {
     height: 100%;
 }
 .view > section:not(#search) {
-    margin-bottom: 40px;;
+    margin-bottom: 40px;
 }
 .blurred {
     -webkit-filter: blur(5px);
@@ -150,6 +150,9 @@ input[type=search]:focus, .search .btn-default-focus {
 }
 .personal-data .key {
     font-weight: bold;
+}
+#booking > .date {
+    margin-bottom: 10px;
 }
 hr.style {
     border: 0;

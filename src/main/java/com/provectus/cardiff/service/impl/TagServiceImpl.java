@@ -11,7 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -32,9 +32,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Set<Tag> findAll() {
-        Sort sort = new Sort(Sort.Direction.DESC, "tag");
-        return tagRepository.findAll(sort).stream().collect(Collectors.toSet());
+    public List<Tag> findAll() {
+        Sort sort = new Sort(Sort.Direction.ASC, "tag");
+        return tagRepository.findAll(sort);
     }
 
 

@@ -73,3 +73,10 @@
 2015-10-02 05:49:51,180 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person with id - 1, try to remove booking with id - 3, without permission.
 2015-10-02 05:49:51,299 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
 2015-10-02 05:49:51,452 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)
+2015-10-02 18:49:46,916 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-02 18:49:47,085 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
+2015-10-02 18:49:47,350 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)
+2015-10-02 21:12:48,603 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-02 21:12:48,741 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
+2015-10-02 21:12:48,906 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)
+2015-10-02 21:12:48,940 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Discount card with id - 1, successfully booked by person with id - 2

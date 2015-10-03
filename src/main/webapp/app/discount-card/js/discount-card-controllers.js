@@ -4,7 +4,7 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
     function ($scope, $location, AddDiscountCardFactory, tags, $filter, DiscountCardFactory, $route) {
         $scope.tags = tags;
         $scope.card = {};
-        $scope.currentDate = new Date();
+        $scope.today = new Date();
         $scope.addNewCard = function () {
             DiscountCardFactory.check({
                 cardNumber: $scope.card.card_number,

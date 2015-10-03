@@ -17,6 +17,4 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Tag t WHERE t.tag = ?1")
     boolean existsByTag(String tag);
-
-    List<Tag> findAll();
 }

@@ -52,6 +52,7 @@ public class CardBookingServiceImpl implements CardBookingService {
                 discountCardId) > 0) {
             throw new CardBookingException("Booking for this start and end date is not available");
         }
+        LOG.info(String.format("Discount card with id - %d, successfully booked by person with id - %d", discountCardId, AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()));
         CardBooking cardBooking = new CardBooking();
         cardBooking.setBookingStartDate(startDate);
         DiscountCard discountCard = new DiscountCard();
