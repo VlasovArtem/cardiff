@@ -78,6 +78,8 @@
                    ng-model="person.password"
                    ng-minlength="6"
                    ng-maxlength="128"
+                   ng-focus="focus = true"
+                   ng-blur="focus = false"
                    required/>
             <div validation-messages
                  model-controller="signUp.password"
@@ -85,6 +87,7 @@
                  minlength-error="Password is too short"
                  maxlength-error="Password is too long"></div>
             <form-error error="error.data.password" form="signUp.password"></form-error>
+            <span class="caps form-control-feedback" ng-show="isCapsLockOn && focus && !isMacintosh"></span>
             <span class="glyphicon form-control-feedback"></span>
         </div>
         <div class="form-group">

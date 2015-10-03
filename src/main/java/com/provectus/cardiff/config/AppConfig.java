@@ -38,7 +38,9 @@ public class AppConfig {
         Properties properties = new Properties();
         properties.put("hibernate.dialect",
                 env.getProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", env.getProperty("show_sql"));
+        if(env.acceptsProfiles("development")) {
+            properties.put("hibernate.show_sql", env.getProperty("show_sql"));
+        }
         bean.setJpaProperties(properties);
         bean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         return bean;

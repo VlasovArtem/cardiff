@@ -4,8 +4,7 @@ import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.TagService;
 import com.provectus.cardiff.utils.validator.TagValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class TagServiceImpl implements TagService {
-    private final static Logger LOGGER = LogManager.getLogger(TagServiceImpl.class);
+    private final static Logger LOGGER = Logger.getLogger(TagServiceImpl.class);
 
     @Autowired
     private TagRepository tagRepository;

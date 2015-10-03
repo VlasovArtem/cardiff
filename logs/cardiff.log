@@ -80,3 +80,106 @@
 2015-10-02 21:12:48,741 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
 2015-10-02 21:12:48,906 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)
 2015-10-02 21:12:48,940 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Discount card with id - 1, successfully booked by person with id - 2
+2015-10-03 17:58:16,416 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-03 17:58:16,550 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 3) delete booking (id - 2)
+2015-10-03 17:58:16,723 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Person (id - 1) delete booking (id - 2)
+2015-10-03 17:58:16,761 INFO com.provectus.cardiff.service.impl.CardBookingServiceImpl [main] Discount card with id - 1, successfully booked by person with id - 2
+2015-10-03 18:45:20 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 18:45:21 INFO  Version:54 - HHH000412: Hibernate Core {4.3.11.Final}
+2015-10-03 18:45:21 INFO  Environment:239 - HHH000206: hibernate.properties not found
+2015-10-03 18:45:21 INFO  Environment:346 - HHH000021: Bytecode provider name : javassist
+2015-10-03 18:45:21 INFO  Version:66 - HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+2015-10-03 18:45:22 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 18:45:22 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 18:45:22 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 18:45:26 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 18:45:26 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 18:45:26 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 18:45:26 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 18:45:27 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 18:45:27 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 18:45:27 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 18:45:27 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 18:45:28 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 18:45:29 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 18:45:29 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 18:45:29 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 18:45:29 WARN  EntityManagerFactoryRegistry:80 - HHH000436: Entity manager factory name (default) is already registered.  If entity manager will be clustered or passivated, specify a unique value for property 'hibernate.ejb.entitymanager_factory_name'
+2015-10-03 18:45:30 WARN  CardBookingServiceImpl:72 - Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-03 18:45:30 INFO  CardBookingServiceImpl:78 - Person (id - 3) delete booking (id - 2)
+2015-10-03 18:45:30 INFO  CardBookingServiceImpl:78 - Person (id - 1) delete booking (id - 2)
+2015-10-03 18:45:30 INFO  CardBookingServiceImpl:55 - Discount card with id - 1, successfully booked by person with id - 2
+2015-10-03 19:11:35 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 19:11:35 INFO  Version:54 - HHH000412: Hibernate Core {4.3.11.Final}
+2015-10-03 19:11:35 INFO  Environment:239 - HHH000206: hibernate.properties not found
+2015-10-03 19:11:35 INFO  Environment:346 - HHH000021: Bytecode provider name : javassist
+2015-10-03 19:11:35 INFO  Version:66 - HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+2015-10-03 19:11:36 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 19:11:36 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 19:11:36 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 19:11:39 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 19:11:40 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 19:11:40 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 19:11:40 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 19:11:41 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 19:11:41 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 19:11:41 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 19:11:41 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 19:11:42 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 19:11:42 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 19:11:42 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 19:11:42 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 19:11:43 WARN  EntityManagerFactoryRegistry:80 - HHH000436: Entity manager factory name (default) is already registered.  If entity manager will be clustered or passivated, specify a unique value for property 'hibernate.ejb.entitymanager_factory_name'
+2015-10-03 19:11:43 WARN  CardBookingServiceImpl:72 - Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-03 19:11:43 INFO  CardBookingServiceImpl:78 - Person (id - 3) delete booking (id - 2)
+2015-10-03 19:11:44 INFO  CardBookingServiceImpl:78 - Person (id - 1) delete booking (id - 2)
+2015-10-03 19:11:44 INFO  CardBookingServiceImpl:55 - Discount card with id - 1, successfully booked by person with id - 2
+2015-10-03 20:29:05 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 20:29:05 INFO  Version:54 - HHH000412: Hibernate Core {4.3.11.Final}
+2015-10-03 20:29:05 INFO  Environment:239 - HHH000206: hibernate.properties not found
+2015-10-03 20:29:05 INFO  Environment:346 - HHH000021: Bytecode provider name : javassist
+2015-10-03 20:29:05 INFO  Version:66 - HCANN000001: Hibernate Commons Annotations {4.0.5.Final}
+2015-10-03 20:29:06 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 20:29:06 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 20:29:07 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 20:29:12 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 20:29:12 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 20:29:12 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 20:29:12 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 20:29:14 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 20:29:14 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 20:29:14 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 20:29:14 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 20:29:16 INFO  LogHelper:46 - HHH000204: Processing PersistenceUnitInfo [
+	name: default
+	...]
+2015-10-03 20:29:16 INFO  Dialect:145 - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL9Dialect
+2015-10-03 20:29:16 INFO  LobCreatorBuilder:123 - HHH000424: Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
+2015-10-03 20:29:16 INFO  ASTQueryTranslatorFactory:47 - HHH000397: Using ASTQueryTranslatorFactory
+2015-10-03 20:29:16 WARN  EntityManagerFactoryRegistry:80 - HHH000436: Entity manager factory name (default) is already registered.  If entity manager will be clustered or passivated, specify a unique value for property 'hibernate.ejb.entitymanager_factory_name'
+2015-10-03 20:29:18 WARN  CardBookingServiceImpl:72 - Person with id - 1, try to remove booking with id - 3, without permission.
+2015-10-03 20:29:18 INFO  CardBookingServiceImpl:78 - Person (id - 3) delete booking (id - 2)
+2015-10-03 20:29:18 INFO  CardBookingServiceImpl:78 - Person (id - 1) delete booking (id - 2)
+2015-10-03 20:29:18 INFO  CardBookingServiceImpl:55 - Discount card with id - 1, successfully booked by person with id - 2

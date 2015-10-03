@@ -24,9 +24,6 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
             })
 
         };
-        $scope.removeLastTag = function() {
-            $scope.card.tags.pop();
-        };
         $scope.reset = function () {
             $route.reload()
         };

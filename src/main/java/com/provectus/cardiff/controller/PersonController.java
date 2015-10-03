@@ -6,8 +6,7 @@ import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.service.PersonService;
 import com.provectus.cardiff.utils.view.PersonView;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +34,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.*;
 public class PersonController {
     @Autowired
     private PersonService service;
-    private final static Logger LOGGER = LogManager.getLogger(PersonController.class);
+    private final static Logger LOGGER = Logger.getLogger(PersonController.class);
 
     @RequestMapping(path = "/login",
             method = POST,

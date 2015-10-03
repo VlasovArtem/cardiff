@@ -11,8 +11,7 @@ import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.service.CardBookingService;
 import com.provectus.cardiff.utils.exception.card_booking.CardBookingException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,7 @@ import java.util.List;
 @Service
 @Transactional
 public class CardBookingServiceImpl implements CardBookingService {
-    private final static Logger LOG = LogManager.getLogger(CardBookingServiceImpl.class);
+    private final static Logger LOGGER = org.apache.log4j.Logger.getLogger(CardBookingServiceImpl.class);
     @Autowired
     private CardBookingRepository cardBookingRepository;
     @Autowired
@@ -53,7 +52,7 @@ public class CardBookingServiceImpl implements CardBookingService {
                 discountCardId) > 0) {
             throw new CardBookingException("Booking for this start and end date is not available");
         }
-        LOG.info(String.format("Discount card with id - %d, successfully booked by person with id - %d", discountCardId, AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()));
+        LOGGER.info(String.format("Discount card with id - %d, successfully booked by person with id - %d", discountCardId, AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()));
         CardBooking cardBooking = new CardBooking();
         cardBooking.setBookingStartDate(startDate);
         DiscountCard discountCard = new DiscountCard();
@@ -70,13 +69,13 @@ public class CardBookingServiceImpl implements CardBookingService {
         if(!cardBookingRepository.checkPersonBookingCancel(bookingId, AuthenticatedPersonPrincipalUtil
                 .getAuthenticationPrincipal().get().getId()) && !AuthenticatedPersonPrincipalUtil.containAuthorities
                 (PersonRole.ADMIN)) {
-            LOG.info(String.format("Person with id - %d, try to remove booking with id - %d, without permission.",
+            LOGGER.warn(String.format("Person with id - %d, try to remove booking with id - %d, without permission.",
                     AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId(), bookingId));
             throw new CardBookingException("Person has no permission to cancel booking");
         } else if (cardBookingRepository.bookingDiscountCardIsPicked(bookingId)) {
             throw new CardBookingException("Canceled booking Discount card is already picked");
         }
-        LOG.info(String.format("Person (id - %d) delete booking (id - %d)", AuthenticatedPersonPrincipalUtil
+        LOGGER.info(String.format("Person (id - %d) delete booking (id - %d)", AuthenticatedPersonPrincipalUtil
                 .getAuthenticationPrincipal().get().getId(), bookingId));
         cardBookingRepository.delete(bookingId);
     }
@@ -137,6 +136,6 @@ public class CardBookingServiceImpl implements CardBookingService {
 
     @Override
     public void deleteBookCardById(long id) {
-        cardBookingRepository.deleteById(id);
+        cardBookingRepository.delete(id);
     }
 }

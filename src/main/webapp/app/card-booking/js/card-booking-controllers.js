@@ -20,6 +20,7 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBo
             };
             CardBookingFactory.bookCard($.param(bookData),
                 function () {
+                    alert('Discount card successfully booked');
                     $modalInstance.dismiss('cancel');
                     $location.path('/account/booking')
                 }, function(data) {
@@ -52,6 +53,7 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBo
                 }
             }
         };
+        $scope.changeDate();
         $scope.open = function($event) {
             $scope.status.opened = true;
         }

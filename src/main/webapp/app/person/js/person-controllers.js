@@ -1,6 +1,7 @@
 var app = angular.module('person-controllers', ['ngResource']);
 app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations',
     function($scope, $location, SignUp, auth, locations) {
+        $scope.isMacintosh = window.navigator.appVersion.indexOf('Macintosh') > -1;
         $scope.reg = function() {
             SignUp.registration($scope.person,
                 function() {
@@ -20,18 +21,18 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
         $scope.locations = locations;
         $scope.reset = function() {
             _.each(angular.element.find('.form-control-feedback'), function(elem) {
-                                           elem.remove();
-                                       });
-                               _.each($scope.signUp, function(value) {
-                                   if(angular.isDefined(value)) {
-                                       if(value.$name) {
-                                           value.$setViewValue(undefined, undefined);
-                                           value.$setPristine();
-                                           value.$render();
-                                       }
-                                   }
-                               });
-                               $scope.mask = "";
+                elem.remove();
+            });
+            _.each($scope.signUp, function(value) {
+                if(angular.isDefined(value)) {
+                    if(value.$name) {
+                        value.$setViewValue(undefined, undefined);
+                        value.$setPristine();
+                        value.$render();
+                    }
+                }
+            });
+            $scope.mask = "";
         };
         $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+";
         $scope.changeMask = function(country) {
@@ -39,7 +40,7 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
                 $scope.mask = $scope.phoneNumberInfo[country].mask;
                 $scope.person.phone_number = null;
             }
-        }
+        };
     }
 ]);
 

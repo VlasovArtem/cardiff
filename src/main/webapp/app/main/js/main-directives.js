@@ -257,3 +257,40 @@ app.directive('loading', function($location, $timeout) {
         templateUrl: 'app/main/loading.html'
     }
 });
+
+app.directive('uiSelect', function (){
+    return {
+        restrict: 'EA',
+        require: 'uiSelect',
+        link: function($scope, $element, $attributes, ctrl) {
+            $scope.$select.limit = (angular.isDefined($attributes.limit)) ? parseInt($attributes.limit, 10) : undefined;
+            var superSelect = ctrl.select;
+            ctrl.select = function() {
+                if(ctrl.multiple && ctrl.limit !== undefined && ctrl.selected.length >= ctrl.limit) {
+                    console.log("booooo");
+                } else {
+                    superSelect.apply(ctrl, arguments);
+                    if(ctrl.multiple && ctrl.limit !== undefined && ctrl.selected.length >= ctrl.limit) {
+                        $(".open > .dropdown-menu").addClass('hide');
+                    }
+                }
+            };
+        }
+    }
+});
+
+app.directive('uiSelectMultiple', function () {
+    return {
+        restrict: 'EA',
+        require: 'uiSelectMultiple',
+        link: function($scope, $element, $attributes, ctrl) {
+            var superRemove = ctrl.removeChoice;
+            ctrl.removeChoice = function() {
+                if($scope.$select.limit !== undefined && $scope.$select.selected.length >= $scope.$select.limit) {
+                    $(".open > .dropdown-menu").removeClass('hide');
+                }
+                superRemove.apply(ctrl, arguments);
+            }
+        }
+    }
+});
