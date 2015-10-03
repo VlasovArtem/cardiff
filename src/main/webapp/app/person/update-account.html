@@ -29,8 +29,8 @@
                placeholder="Input login"
                id="login"
                ng-minlength="6"
-               ng-maxlength="100"
-               ng-pattern="/^[A-Za-z0-9_\- .]{6,100}$/"
+               ng-maxlength="20"
+               ng-pattern="/^[A-Za-z0-9_\- .]*$/"
                ng-model="changedPerson.login"
                autocomplete="off"
                ensure-unique
@@ -40,7 +40,9 @@
              minlength-error="Login is too short"
              maxlength-error="Login is too long"
              required-error="Login is required"
-             unique-error="Login is already exists"></div>
+             unique-error="Login is already exists"
+             pattern-error="Name should contains a - z (in lower or upper case) and symbols - .'-">
+        </div>
         <form-error error="error.data.login" form="updateFrom.login"></form-error>
         </div>
         <div class="form-group has-feedback"

@@ -16,6 +16,8 @@ import java.time.LocalDate;
  */
 public interface CardBookingRepository extends JpaRepository<CardBooking, Long> {
 
+    void deleteById(long id);
+
     @Query("select count(cb) from CardBooking cb where (cb.bookingEndDate between ?1 and ?2 or cb.bookingEndDate between ?1 and ?2 or ?1 between cb.bookingStartDate and cb.bookingEndDate or ?2 between cb.bookingStartDate and cb.bookingEndDate) and cb.discountCard.id = ?3")
     long countBookedCardsBetweenDates(LocalDate bookingStartDate, LocalDate bookingEndDate, long discountCardId);
 

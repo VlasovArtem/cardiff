@@ -14,13 +14,24 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
                 }, function(data) {
                     $scope.person.password = null;
                     $scope.error = data.data;
-
                 }
             )
         };
         $scope.locations = locations;
         $scope.reset = function() {
-            $scope.person = {};
+            _.each(angular.element.find('.form-control-feedback'), function(elem) {
+                                           elem.remove();
+                                       });
+                               _.each($scope.signUp, function(value) {
+                                   if(angular.isDefined(value)) {
+                                       if(value.$name) {
+                                           value.$setViewValue(undefined, undefined);
+                                           value.$setPristine();
+                                           value.$render();
+                                       }
+                                   }
+                               });
+                               $scope.mask = "";
         };
         $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+";
         $scope.changeMask = function(country) {

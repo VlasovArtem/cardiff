@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by artemvlasov on 25/09/15.
@@ -127,5 +128,15 @@ public class CardBookingServiceImpl implements CardBookingService {
     public Page<CardBooking> getPersonDiscountCardBookings(Pageable pageable) {
         return cardBookingRepository.personDiscountCardBookings(AuthenticatedPersonPrincipalUtil
                 .getAuthenticationPrincipal().get().getId(), pageable);
+    }
+
+    @Override
+    public List<CardBooking> getAll() {
+        return cardBookingRepository.findAll();
+    }
+
+    @Override
+    public void deleteBookCardById(long id) {
+        cardBookingRepository.deleteById(id);
     }
 }
