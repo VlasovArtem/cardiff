@@ -409,10 +409,10 @@ input[type=password] {
 }
 
 @media screen and (min-width: 1440px) and (max-width: 1919px) {
-    #change-password form {
-        width: 50%;
-        margin-left: 25%;
-    }
+    /*#change-password form {*/
+        /*width: 50%;*/
+        /*margin-left: 25%;*/
+    /*}*/
     #add-discount-card form {
         width: 50%;
         margin-left: 25%;

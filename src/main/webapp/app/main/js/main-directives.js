@@ -294,3 +294,16 @@ app.directive('uiSelectMultiple', function () {
         }
     }
 });
+
+
+app.directive('capsLock', function($compile) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attributes, ctrl) {
+            scope.isMacintosh = window.navigator.appVersion.indexOf('Macintosh') > -1;
+            var el = '<span class="caps form-control-feedback" ng-show="isCapsLockOn &&' + attributes.ngFocus.toString().split(" ")[0] + '&& !isMacintosh"></span>';
+            element.after(el);
+            $compile(angular.element('.caps'))(scope);
+        }
+    }
+});

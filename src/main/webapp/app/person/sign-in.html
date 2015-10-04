@@ -14,11 +14,10 @@
                     class="form-control"
                     type="password"
                     name="password"
+                    ng-model="person.password"
                     ng-focus="focus = true"
                     ng-blur="focus = false"
-                    ng-model="person.password"
-                    placeholder="Input password"/>
-            <span class="caps form-control-feedback" ng-show="isCapsLockOn && focus && !isMacintosh"></span>
+                    placeholder="Input password" caps-lock/>
         </div>
         <div class="form-group">
             <div class="form-inline">

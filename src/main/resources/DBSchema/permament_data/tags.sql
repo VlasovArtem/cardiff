@@ -9,4 +9,4 @@ INSERT INTO tag(id, tag) VALUES
     (8, 'pizzeria'),
     (9, 'bowling'),
     (10, 'beauty'),
-    (11, 'food'),
+    (11, 'food');
