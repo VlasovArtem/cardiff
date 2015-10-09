@@ -299,3 +299,21 @@ app.directive('capsLock', function($compile) {
         }
     }
 });
+
+app.directive('boolean', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            value: '@'
+        },
+        link: function(scope, element, attr) {
+            if(scope.value == 'true') {
+                element.append('<span class="paid glyphicon glyphicon-ok"></span>')
+            } else {
+                element.append('<span class="unpaid glyphicon glyphicon-remove"></span>')
+            }
+        }
+
+    }
+});

@@ -43,6 +43,10 @@ html, body {
 nav {
     margin: 0 !important;
 }
+
+table tr > th {
+    cursor: pointer;
+}
 /*.view {*/
     /*height: auto;*/
     /*margin: 0 auto -200px;*/

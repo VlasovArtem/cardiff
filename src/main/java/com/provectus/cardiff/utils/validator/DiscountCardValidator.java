@@ -6,6 +6,7 @@ import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -57,6 +58,9 @@ public class DiscountCardValidator extends EntityValidator {
                 return discountCard.getAmountOfDiscount() == 0 ||
                         validate(String.valueOf(discountCard.getAmountOfDiscount()), info.getPattern());
             case DESCRIPTION:
+                if(Objects.equals(discountCard.getDescription(), "")) {
+                    discountCard.setDescription(null);
+                }
                 return discountCard.getDescription() == null ||
                         validate(discountCard.getDescription(), info.getPattern());
             default:

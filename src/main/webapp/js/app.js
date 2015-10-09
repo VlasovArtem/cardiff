@@ -4,7 +4,7 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives', 'discount-card-filters',
     'main-controllers', 'main-services', 'main-directives', 'main-filters',
     'card-booking-controllers', 'card-booking-services', 'card-booking-filters']).config(
-    function($routeProvider, $locationProvider, $httpProvider, $provide) {
+    function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
@@ -112,9 +112,6 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                 resolve: {
                     discountCardInfo: function(DiscountCardOwner, $sessionStorage) {
                         return DiscountCardOwner.get({cardId : $sessionStorage.cardId}).$promise;
-                    },
-                    authPersonDiscountCard: function(AuthDiscountCardFactory, $sessionStorage) {
-                        return AuthDiscountCardFactory.get({cardId: $sessionStorage.cardId}).$promise;
                     }
                 }
             }).

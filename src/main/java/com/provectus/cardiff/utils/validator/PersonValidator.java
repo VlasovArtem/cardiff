@@ -7,6 +7,7 @@ import com.provectus.cardiff.utils.exception.EntityValidationException;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -54,6 +55,9 @@ public class PersonValidator extends EntityValidator {
     private static boolean validate(PersonValidationInfo info, Person person) {
         switch (info) {
             case NAME:
+                if(Objects.equals(person.getName(), "")) {
+                    person.setName(null);
+                }
                 return person.getName() == null ||
                         validate(person.getName(), info.pattern);
             case LOGIN:
@@ -63,6 +67,9 @@ public class PersonValidator extends EntityValidator {
             case PHONE_NUMBER:
                 return validate(String.valueOf(person.getPhoneNumber()), info.pattern);
             case DESCRIPTION:
+                if(Objects.equals(person.getDescription(), "")) {
+                    person.setDescription(null);
+                }
                 return person.getDescription() == null ||
                         validate(String.valueOf(person.getDescription()), info.pattern);
             case EMAIL:

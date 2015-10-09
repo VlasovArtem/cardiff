@@ -70,9 +70,11 @@ app.controller('DiscountCardsFunctionCtrl', ['$scope', '$sessionStorage', '$loca
     }
 ]);
 
-app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFactory', 'auth', '$modal', 'authPersonDiscountCard',
-    function($scope, discountCardInfo, PersonFactory, auth, $modal, authPersonDiscountCard) {
-        $scope.authPersonDiscountCard = authPersonDiscountCard.authPersonCard;
+app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFactory', 'auth', '$modal', 'AuthDiscountCardFactory', '$sessionStorage',
+    function($scope, discountCardInfo, PersonFactory, auth, $modal, AuthDiscountCardFactory, $sessionStorage) {
+        AuthDiscountCardFactory.get({cardId: $sessionStorage.cardId}, function(data) {
+            $scope.authPersonDiscountCard = data.authPersonCard;
+        });
         $scope.cardInfo = discountCardInfo;
         do {
             $scope.authenticated = auth.authenticated;

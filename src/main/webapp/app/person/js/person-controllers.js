@@ -3,6 +3,7 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
     function($scope, $location, SignUp, auth, locations, $route) {
         $scope.isMacintosh = window.navigator.appVersion.indexOf('Macintosh') > -1;
         $scope.reg = function() {
+            console.log($scope.person);
             SignUp.registration($scope.person,
                 function() {
                     $scope.login = {
@@ -105,6 +106,9 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
             return true;
         };
         $scope.changeMask = function(country) {
+            if($scope.updateForm) {
+                $scope.updateForm.phoneNumber.$setPristine();
+            }
             if(angular.isDefined(country)) {
                 $scope.mask = $scope.phoneNumberInfo[country].mask;
                 if ($scope.data.location.country != $scope.changedPerson.location.country) {
