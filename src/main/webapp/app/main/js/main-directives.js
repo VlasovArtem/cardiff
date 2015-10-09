@@ -248,16 +248,6 @@ app.directive('compileHtml', function($parse, $sce, $compile) {
     }
 });
 
-app.directive('loading', function($location, $timeout) {
-    return {
-        restrict: 'E',
-        link: function (scope, element, attr) {
-            element.show();
-        },
-        templateUrl: 'app/main/loading.html'
-    }
-});
-
 app.directive('uiSelect', function (){
     return {
         restrict: 'EA',
@@ -271,7 +261,7 @@ app.directive('uiSelect', function (){
                 } else {
                     superSelect.apply(ctrl, arguments);
                     if(ctrl.multiple && ctrl.limit !== undefined && ctrl.selected.length >= ctrl.limit) {
-                        $(".open > .dropdown-menu").addClass('hide');
+                        $(".ui-select-dropdown").addClass('hide');
                     }
                 }
             };
@@ -286,8 +276,10 @@ app.directive('uiSelectMultiple', function () {
         link: function($scope, $element, $attributes, ctrl) {
             var superRemove = ctrl.removeChoice;
             ctrl.removeChoice = function() {
+                console.log($scope.$select.limit);
+                console.log($scope.$select.selected.length);
                 if($scope.$select.limit !== undefined && $scope.$select.selected.length >= $scope.$select.limit) {
-                    $(".open > .dropdown-menu").removeClass('hide');
+                    $(".ui-select-dropdown").removeClass('hide');
                 }
                 superRemove.apply(ctrl, arguments);
             }

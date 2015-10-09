@@ -1,6 +1,6 @@
 var app = angular.module('person-controllers', ['ngResource']);
-app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations',
-    function($scope, $location, SignUp, auth, locations) {
+app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'locations', '$route',
+    function($scope, $location, SignUp, auth, locations, $route) {
         $scope.isMacintosh = window.navigator.appVersion.indexOf('Macintosh') > -1;
         $scope.reg = function() {
             SignUp.registration($scope.person,
@@ -20,19 +20,7 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
         };
         $scope.locations = locations;
         $scope.reset = function() {
-            _.each(angular.element.find('.form-control-feedback'), function(elem) {
-                elem.remove();
-            });
-            _.each($scope.signUp, function(value) {
-                if(angular.isDefined(value)) {
-                    if(value.$name) {
-                        value.$setViewValue(undefined, undefined);
-                        value.$setPristine();
-                        value.$render();
-                    }
-                }
-            });
-            $scope.mask = "";
+            $route.reload();
         };
         $scope.emailPattern = "[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+";
         $scope.changeMask = function(country) {
@@ -92,23 +80,38 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
         $scope.uiMaskOptions = {
             maskDefinitions : {'4': /\d/, 'S': /[1-9]/}
         };
+        var wipeFormInfo = function () {
+            _.each(angular.element.find('.form-control-feedback'), function(elem) {
+                elem.remove();
+            });
+            _.each($scope.updateFrom, function(value) {
+                if(angular.isDefined(value)) {
+                    if(value.$name) {
+                        value.$setPristine();
+                        value.$render();
+                    }
+                }
+            });
+        };
         $scope.mask = "";
         $scope.changedPerson = personData;
         $scope.data = angular.copy(personData);
         $scope.personIsEquals = function() {
             if($scope.data != undefined && $scope.changedPerson != undefined) {
-                return _.every(["name", "login", "email", "phone_number", "location", "description"], function(data) {
+                return _.every(["name", "login", "email", "phone_number", "location", "description"], function (data) {
                     return _.isEqual($scope.data[data], $scope.changedPerson[data]) || $scope.data[data] == $scope.changedPerson[data]
                 });
             }
             return true;
         };
         $scope.changeMask = function(country) {
-            $scope.mask = $scope.phoneNumberInfo[country].mask;
-            if($scope.data.location.country != $scope.changedPerson.location.country) {
-                $scope.changedPerson.phone_number = null;
-            } else {
-                $scope.changedPerson.phone_number = $scope.data.phone_number;
+            if(angular.isDefined(country)) {
+                $scope.mask = $scope.phoneNumberInfo[country].mask;
+                if ($scope.data.location.country != $scope.changedPerson.location.country) {
+                    $scope.changedPerson.phone_number = null;
+                } else {
+                    $scope.changedPerson.phone_number = $scope.data.phone_number;
+                }
             }
         };
         $scope.changeMask($scope.changedPerson.location.country);
@@ -129,8 +132,9 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
         };
         $scope.locations = locations;
         $scope.reset = function() {
+            wipeFormInfo();
             $scope.changedPerson = angular.copy($scope.data);
-        }
+        };
     }
 ]);
 

@@ -5,37 +5,6 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
     'main-controllers', 'main-services', 'main-directives', 'main-filters',
     'card-booking-controllers', 'card-booking-services', 'card-booking-filters']).config(
     function($routeProvider, $locationProvider, $httpProvider, $provide) {
-        var addLoading = function() {
-            $('nav').addClass('blurred');
-            $('.view').addClass('blurred');
-            $('footer').addClass('blurred');
-            $('.loading-img').show();
-        };
-        var removeLoading = function() {
-            $('nav').removeClass('blurred');
-            $('.view').removeClass('blurred');
-            $('footer').removeClass('blurred');
-            $(".loading-img").hide();
-        };
-        $provide.factory('myHttpInterceptor', function($q) {
-            return {
-                'response': function(response) {
-                    removeLoading();
-                    return response;
-                },
-                'responseError': function(rejection) {
-                    removeLoading();
-                    return $q.reject(rejection);
-                },
-                'request': function(config) {
-                    if(config.url.indexOf('page') > -1) {
-                        addLoading();
-                    }
-                    return config;
-                }
-            }
-        });
-        $httpProvider.interceptors.push('myHttpInterceptor');
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
