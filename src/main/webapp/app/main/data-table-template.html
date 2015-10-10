@@ -1,16 +1,16 @@
 <div class="col-sm-12 col-xs-12 col-md-12" ng-show="tableInfo.data.$resolved">
     <table class="table" ng-hide="mobileDevice && !tabletLandscape">
         <tr>
-            <th ng-repeat="(index, value) in tableInfo.head"  width="{{value.width}}" ng-click="sorting(value.property)">
+            <th ng-repeat="(index, value) in tableInfo.head"  width="{{value.width}}" ng-click="sorting(value.property)" ng-class="value.class">
                 {{value.name}}
                 <span ng-class="selectSort(index)"></span>
             </th>
-            <th ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding" ng-bind="binding.head">
+            <th ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding" ng-bind="binding.head" width="{{binding.width}}" ng-class="binding.desktopClass">
             </th>
             <th colspan="2" ng-show="tableInfo.dataButtons"></th>
         </tr>
-        <tr ng-repeat="(dataIndex, data) in tableData" class="data">
-            <td ng-repeat="(headDataIndex, headData) in tableInfo.head" ng-bind="setData(headDataIndex, dataIndex)"></td>
+        <tr ng-repeat="(dataIndex, data) in tableData" class="data" ng-class="(tableInfo.rowClass && data.picked ? 'unavailable' : '')">
+            <td ng-repeat="(headDataIndex, headData) in tableInfo.head" ng-bind="setData(headDataIndex, dataIndex)" ng-class="headData.class"></td>
             <td ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding"
                 ng-class="binding.desktopClass" compile-html="binding.desktop">
             </td>

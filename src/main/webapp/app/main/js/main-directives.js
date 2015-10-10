@@ -309,9 +309,9 @@ app.directive('boolean', function() {
         },
         link: function(scope, element, attr) {
             if(scope.value == 'true') {
-                element.append('<span class="paid glyphicon glyphicon-ok"></span>')
+                element.append('<span class="picked glyphicon glyphicon-ok"></span>')
             } else {
-                element.append('<span class="unpaid glyphicon glyphicon-remove"></span>')
+                element.append('<span class="not-picked glyphicon glyphicon-remove"></span>')
             }
         }
 

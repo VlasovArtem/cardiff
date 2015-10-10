@@ -51,7 +51,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public Optional<DiscountCard> getCard (long id) {
-        return discountCardRepository.findByIdAndPickedFalse(id);
+        return discountCardRepository.findById(id);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public Page<DiscountCard> getAll (Pageable pageable) {
-        return discountCardRepository.findByPickedFalse(pageable);
+        return discountCardRepository.findAll(pageable);
     }
 
     @Override

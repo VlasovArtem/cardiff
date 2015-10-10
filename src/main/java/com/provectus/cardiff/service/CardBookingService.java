@@ -19,4 +19,5 @@ public interface CardBookingService {
     Page<CardBooking> getPersonDiscountCardBookings (Pageable pageable);
     List<CardBooking> getAll();
     void deleteBookCardById(long id);
+    LocalDate getAvailableBookingDate(long discountCardId);
 }

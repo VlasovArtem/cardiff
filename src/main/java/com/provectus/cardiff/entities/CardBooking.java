@@ -101,10 +101,10 @@ public class CardBooking {
     }
 
     /**
-     * Set Book Date End plus 7 days from now.
+     * Set Book Date End plus 6 days from now.
      */
     @PrePersist
     public void setBookingEndDate() {
-        bookingEndDate = bookingStartDate == null ? LocalDate.now().plusDays(7l) : bookingStartDate.plusDays(7l);
+        bookingEndDate = bookingStartDate == null ? LocalDate.now().plusDays(6l) : bookingStartDate.plusDays(6l);
     }
 }

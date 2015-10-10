@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,11 +45,13 @@ public class CardBookingServiceImpl implements CardBookingService {
         } else if(discountCardRepository.personDiscountCard(discountCardId, AuthenticatedPersonPrincipalUtil
                 .getAuthenticationPrincipal().get().getId())) {
             throw new CardBookingException("Booked Discount card belongs to authenticated person");
+        } else if(cardBookingRepository.countByPersonIdAndDiscountCardId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId(), discountCardId) > 0) {
+            throw new CardBookingException("Discount card is already booked by authenticated person");
         } else if(discountCardRepository.isPicked(discountCardId)) {
             throw new CardBookingException("Booked Discount card is already picked");
         } else if(startDate.isBefore(LocalDate.now())) {
             throw new CardBookingException("Booking start date, cannot be earlier than today date");
-        } else if (cardBookingRepository.countBookedCardsBetweenDates(startDate, startDate.plusDays(7l),
+        } else if (cardBookingRepository.countBookedCardsBetweenDates(startDate, startDate.plusDays(6l),
                 discountCardId) > 0) {
             throw new CardBookingException("Booking for this start and end date is not available");
         }
@@ -137,5 +140,26 @@ public class CardBookingServiceImpl implements CardBookingService {
     @Override
     public void deleteBookCardById(long id) {
         cardBookingRepository.delete(id);
+    }
+
+    @Override
+    public LocalDate getAvailableBookingDate(long discountCardId) {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate bookingEndDate = currentDate.plusDays(6l);
+        List<CardBooking> cardBookings = cardBookingRepository.findByDiscountCardIdOrderByBookingStartDateAsc(discountCardId);
+        if(cardBookings.size() == 0 ) {
+            return currentDate;
+        } else if(cardBookings.get(0).getBookingStartDate().isBefore(bookingEndDate)) {
+            return currentDate;
+        }
+        LocalDate availableBookingDate = null;
+        int countOfCardBookings = 0;
+        do {
+            if(Duration.between(cardBookings.get(countOfCardBookings).getBookingEndDate(), cardBookings.get(countOfCardBookings + 1).getBookingStartDate()).toDays() > 8) {
+                availableBookingDate = cardBookings.get(countOfCardBookings).getBookingEndDate().plusDays(1l);
+            }
+            countOfCardBookings++;
+        } while (availableBookingDate == null && countOfCardBookings < cardBookings.size() - 1);
+        return availableBookingDate == null ? cardBookings.get(cardBookings.size() - 1).getBookingEndDate().plusDays(1l) : availableBookingDate;
     }
 }

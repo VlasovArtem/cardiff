@@ -1,21 +1,21 @@
 <section id="booking" class="container-fluid">
     <h2>Choose Booking Start date</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
-    <div class="form-group" ng-hide="typeDateNotSupported">
-        <input type="date" ng-model="bookingStartDate" name="booking-start-date" class="form-control"
-               min="{{minDate}}" ng-change="changeDate()"/>
+    <div class="available-date">
+        Closest available booking start date: {{availableDate | date: 'dd/MM/yyyy'}}
     </div>
     <div class="container-fluid date">
-        <div class="input-group" ng-show="typeDateNotSupported">
-            <input type="text" ng-model="bookingStartDate" class="form-control" datepicker-popup="dd/MM/yyyy" min-date="today" is-open="status.opened" ng-required="true" close-text="Close"
-                    ng-change="changeDate()">
+        <div class="input-group">
+            <input type="text" ng-model="bookingStartDate" class="form-control" datepicker-popup="dd/MM/yyyy" min-date="availableDate" is-open="status.opened" ng-required="true" close-text="Close"
+                   ng-change="changeDate()">
         <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
         </span>
         </div>
     </div>
     <div class="form-group buttons">
-        <input type="button" value="Book" ng-click="book()" class="btn btn-success" ng-disabled="!isValidDate() && !typeDateNotSupported"/>
+        <input type="button" value="Book" ng-click="book()" class="btn btn-success" ng-disabled="!isValidDate()"/>
         <input type="button" value="Close" ng-click="close()" class="btn btn-warning"/>
     </div>
+    <span class="glyphicon glyphicon-question-sign page-info"></span>
 </section>

@@ -14,9 +14,12 @@
                 <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
             </li>
         </ul>
-        <div class="col-md-12 buttons" ng-show="authenticated && !authPersonDiscountCard">
+        <div class="col-md-12 buttons" ng-show="authenticated && !authPersonDiscountCard && !cardInfo.picked">
             <input type="button" value="Book" class="btn btn-primary" ng-click="book()"/>
             <input type="button" value="Pick" class="btn btn-success" ng-hide="true"/>
+        </div>
+        <div class="col-md-12 center" ng-show="cardInfo.picked && !authPersonDiscountCard">
+            <span class="picked-info">This discount is already picked</span>
         </div>
     </article>
 </section>

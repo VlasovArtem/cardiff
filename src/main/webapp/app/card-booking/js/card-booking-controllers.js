@@ -3,16 +3,14 @@
  */
 var app = angular.module('card-booking-controllers', []);
 
-app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBookingFactory', '$filter', '$location',
-    function($scope, $modalInstance, cardId, CardBookingFactory, $filter, $location) {
-        $scope.typeDateNotSupported = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0 || typeof InstallTrigger !== 'undefined';
-        $scope.today = new Date();
-        $scope.bookingStartDate = new Date();
+app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'availableDate', 'CardBookingFactory', '$filter', '$location',
+    function($scope, $modalInstance, cardId, availableDate, CardBookingFactory, $filter, $location) {
+        $scope.availableDate = $filter('ToDateFilter')(availableDate);
+        $scope.bookingStartDate = angular.copy($scope.availableDate);
         $scope.status = {
             opened: false
         };
         var pickedDate;
-        $scope.today.setHours(0, 0, 0, 0);
         $scope.book = function() {
             var bookData = {
                 discountCardId: cardId,
@@ -33,7 +31,7 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBo
         };
         $scope.isValidDate = function() {
             if(angular.isDefined(pickedDate)) {
-                var valid = pickedDate.getTime() >= $scope.today.getTime();
+                var valid = pickedDate.getTime() >= $scope.availableDate.getTime();
                 if (valid) {
                     $scope.error = null;
                 }
@@ -47,7 +45,7 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBo
         $scope.changeDate = function() {
             pickedDate = new Date($scope.bookingStartDate);
             pickedDate.setHours(0, 0, 0, 0);
-            if(pickedDate.getTime() < $scope.today.getTime()) {
+            if(pickedDate.getTime() < $scope.availableDate.getTime()) {
                 $scope.error = {
                     error: 'Booking start date, cannot be less than today'
                 }
@@ -59,8 +57,8 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'CardBo
         }
     }]);
 
-app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscountCardsFactory', 'PersonDiscountCardBookingsFactory', '$filter', 'booked', 'bookings',
-    function($scope, PersonBookedDiscountCardsFactory, PersonDiscountCardBookingsFactory, $filter, booked, bookings) {
+app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscountCardsFactory', 'PersonDiscountCardBookingsFactory', '$filter', 'booked', 'bookings', '$sce',
+    function($scope, PersonBookedDiscountCardsFactory, PersonDiscountCardBookingsFactory, $filter, booked, bookings, $sce) {
         $scope.bookedTableInfo = {
             data: booked,
             dataTemplate: 'app/card-booking/table-template.html',
@@ -68,9 +66,8 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
             head: [
                 {name: 'Card #', property: 'discount_card.card_number', width: '10%'},
                 {name: 'Company', property: 'discount_card.company_name', width: '20%'},
-                {name: 'Start', property: 'booking_start_date', width: '10%'},
-                {name: 'End', property: 'booking_end_date', width: '10%'},
-                {name: 'Picked', property: 'discount_card.picked'}
+                {name: 'Start', property: 'booking_start_date', width: '15%', class: 'center'},
+                {name: 'End', property: 'booking_end_date', width: '15%', class: 'center'}
             ],
             filteredProperties: [
                 {property: 'booking_start_date', filter: $filter('dateFilter')},
@@ -78,7 +75,13 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
             ],
             dataButtons: {
                 desktop: 'app/card-booking/booked-buttons.html'
-            }
+            },
+            htmlBinding: [{
+                head: 'Picked',
+                width: '5%',
+                desktopClass: 'center',
+                desktop: $sce.trustAsHtml('<boolean value="data.discount_card.picked"></boolean>')
+            }]
         };
         $scope.cardBookingsTableInfo = {
             data: bookings,
@@ -88,9 +91,8 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
                 {name: 'Card #', property: 'discount_card.card_number', width: '10%'},
                 {name: 'Company', property: 'discount_card.company_name', width: '20%'},
                 {name: 'Person', property: 'person.name'},
-                {name: 'Start', property: 'booking_start_date', width: '10%'},
-                {name: 'End', property: 'booking_end_date', width: '10%'},
-                {name: 'Picked', property: 'discount_card.picked'}
+                {name: 'Start', property: 'booking_start_date', width: '10%', class: 'center'},
+                {name: 'End', property: 'booking_end_date', width: '10%', class: 'center'}
             ],
             filteredProperties: [
                 {property: 'booking_start_date', filter: $filter('dateFilter')},
@@ -98,7 +100,13 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
             ],
             dataButtons: {
                 desktop: 'app/card-booking/bookings-buttons.html'
-            }
+            },
+            htmlBinding: [{
+                head: 'Picked',
+                width: '5%',
+                desktopClass: 'center',
+                desktop: $sce.trustAsHtml('<boolean value="data.discount_card.picked"></boolean>')
+            }]
         };
     }
 ]);

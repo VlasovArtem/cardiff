@@ -1,6 +1,8 @@
 package com.provectus.cardiff.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.databind.node.JsonNodeCreator;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.CardBooking;
 import com.provectus.cardiff.service.CardBookingService;
 import com.provectus.cardiff.utils.view.CardBookingView;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -78,5 +81,11 @@ public class CardBookingController {
     @ResponseStatus(OK)
     public void returned(@PathVariable long bookingId) {
         service.returned(bookingId);
+    }
+
+    @RequestMapping(value = "/get/available/start", method = GET)
+    @ResponseStatus(OK)
+    public ResponseEntity<LocalDate> getAvailableBookingStartDate(@RequestParam long discountCardId) {
+        return ResponseEntity.status(OK).body(service.getAvailableBookingDate(discountCardId));
     }
 }

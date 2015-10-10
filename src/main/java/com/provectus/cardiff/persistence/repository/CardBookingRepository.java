@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by artemvlasov on 21/08/15.
@@ -40,9 +41,19 @@ public interface CardBookingRepository extends JpaRepository<CardBooking, Long> 
     @Query("select cb from CardBooking cb, DiscountCard dc where cb.discountCard = dc and dc.owner.id = ?1")
     Page<CardBooking> personDiscountCardBookings(long personId, Pageable pageable);
 
+    /**
+     * Check if available booking of discount card between bookingStartDate and bookingEndDate
+     * @param bookingStartDate booking start date
+     * @param bookingEndDate booking end start, seven days after booking start date
+     * @param discountCardId id of booked discount card
+     * @return true if there is no any booking of discount card between booking start date and booking end date otherwise false.
+     */
+
     @Query("SELECT CASE WHEN (COUNT(cb) > 0) THEN true ELSE false END FROM CardBooking cb WHERE " +
             "((cb.bookingStartDate > ?1 and cb.bookingStartDate > ?2) OR (cb.bookingEndDate < ?1 and cb.bookingEndDate < ?2)) AND cb.discountCard.id = ?3")
     boolean bookingAvailableBetweenDates(LocalDate bookingStartDate, LocalDate bookingEndDate, long discountCardId);
+
+    long countByPersonIdAndDiscountCardId (long personId, long discountCardId);
 
     /**
      * Return true if bookingId is exists in database and person id is the id of owner of booking or owner of
@@ -68,4 +79,6 @@ public interface CardBookingRepository extends JpaRepository<CardBooking, Long> 
 
     @Query("SELECT CASE WHEN (COUNT(cb) > 0) THEN true ELSE false END FROM CardBooking cb WHERE cb.discountCard.owner.id = ?2 and cb.id = ?1")
     boolean checkPersonDiscountCardPick (long bookingId, long personId);
+
+    List<CardBooking> findByDiscountCardIdOrderByBookingStartDateAsc(long discountCardId);
 }

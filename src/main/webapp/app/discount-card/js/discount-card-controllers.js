@@ -35,16 +35,16 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
         $scope.tableInfo = {
             data: discountCards,
             factory: DiscountCardsFactory,
+            rowClass: 'unavailable',
             head: [
                 {name: 'Card #', property: 'card_number', width: '10%'},
                 {name: 'Company', property: 'company_name', width: '20%'},
-                {name: 'Discount', property: 'amount_of_discount', width: '9%'},
+                {name: 'Discount', property: 'amount_of_discount', width: '9%', class: 'center'},
                 {name: 'Description', property: 'description', width: '25%'},
-                {name: 'Created', property: 'created_date', width: '10%'}
+                {name: 'Created', property: 'created_date', width: '10%', class: 'center'}
             ],
             filteredProperties: [
                 {property: 'created_date', filter: $filter('dateFilter')},
-                {property: 'phone_number', filter: $filter('phoneNumberFilter')},
                 {property: 'amount_of_discount', appender: ' %'}
             ],
             dataButtons: {
@@ -98,6 +98,9 @@ app.controller('DiscountCardInfoCtrl', ['$scope', 'discountCardInfo', 'PersonFac
                 resolve: {
                     cardId: function() {
                         return $scope.cardInfo.id;
+                    },
+                    availableDate: function(CardBookingFactory) {
+                        return CardBookingFactory.query({get: 'get', available: 'available', start: 'start', discountCardId: $scope.cardInfo.id}).$promise;
                     }
                 }
             })
@@ -114,9 +117,9 @@ app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards'
             head: [
                 {name: 'Card #', property: 'card_number', width: '10%'},
                 {name: 'Company', property: 'company_name', width: '20%'},
-                {name: 'Discount', property: 'amount_of_discount', width: '9%'},
+                {name: 'Discount', property: 'amount_of_discount', width: '9%', class: 'center'},
                 {name: 'Description', property: 'description', width: '25%'},
-                {name: 'Created', property: 'created_date', width: '10%'}
+                {name: 'Created', property: 'created_date', width: '10%', class: 'center'}
             ],
             filteredProperties: [
                 {property: 'created_date', filter: $filter('dateFilter')},

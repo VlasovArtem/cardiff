@@ -154,9 +154,9 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
                 {name : 'Login', property: 'login', width: '10%'},
                 {name : 'Email', property: 'email', width: '18%'},
                 {name : 'Phone', property: 'phone_number', width: '15%'},
-                {name : 'Role', property: 'role', width: '7%'},
+                {name : 'Role', property: 'role', width: '7%', class: 'center'},
                 {name : 'Created', property: 'created_date', width: '10%'},
-                {name : 'Deleted', property: 'deleted', width: '7%'}
+                {name : 'Deleted', property: 'deleted', width: '7%', class: 'center'}
             ],
             filteredProperties: [
                 {property: 'created_date', filter: $filter('dateFilter')},

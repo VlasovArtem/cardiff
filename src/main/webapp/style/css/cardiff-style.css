@@ -47,6 +47,19 @@ nav {
 table tr > th {
     cursor: pointer;
 }
+.picked {
+    color: green;
+}
+
+.not-picked {
+    color: red;
+}
+.center {
+    text-align: center;
+}
+.unavailable {
+    background-color: rgba(192, 192, 192, .2);
+}
 /*.view {*/
     /*height: auto;*/
     /*margin: 0 auto -200px;*/
@@ -345,6 +358,12 @@ input[type=password] {
     justify-content: center;
 }
 
+.picked-info {
+    color: #007FBB;
+    font-size: x-large;
+    font-weight: bold;
+}
+
 /*Add Discount card page*/
 .custom-tag {
     width: 100%;
@@ -399,6 +418,18 @@ input[type=password] {
     align-items: center;
     justify-content: center;
     font-size: 25px;
+}
+
+/* Card Booking */
+.available-date {
+    font-weight: bold;
+    padding: 10px 0;
+}
+.page-info {
+    position: relative;
+    float: right;
+    padding-bottom: 10px;
+    font-size: x-large;
 }
 
 /* Toggle */

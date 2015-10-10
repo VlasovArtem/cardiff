@@ -4,7 +4,7 @@
 var app = angular.module('card-booking-services', ['ngResource']);
 
 app.factory('CardBookingFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/booking/:book/:cancel/:picked/:returned/:bookingId', {
+    return $resource('/rest/card/booking/:book/:cancel/:picked/:returned/:bookingId/:get/:available/:start', {
         book: '@book',
         cancel: '@cancel',
         picked: '@picked',

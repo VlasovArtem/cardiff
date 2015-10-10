@@ -13,3 +13,11 @@ app.filter('ToLocalDateFilter', function() {
         }
     }
 });
+
+app.filter('ToDateFilter', function() {
+    return function(date) {
+        if(_.isArray(date)) {
+            return new Date(date[0], date[1] - 1, date[2], 0, 0, 0, 0);
+        }
+    }
+});
