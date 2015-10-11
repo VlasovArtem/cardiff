@@ -54,7 +54,7 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'availa
         $scope.changeDate();
         $scope.open = function($event) {
             $scope.status.opened = true;
-        }
+        };
     }]);
 
 app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscountCardsFactory', 'PersonDiscountCardBookingsFactory', '$filter', 'booked', 'bookings', '$sce',
