@@ -1,0 +1,12 @@
+<section class="admin-tags container-fluid">
+    <h2 class="col-sm-12 col-xs-12 col-md-12">Unverified tags</h2>
+    <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
+    <article class="exist-tags col-md-12" ng-show="tableInfo.data.content.length > 0">
+        <h3>Exist tags</h3>
+        <span ng-repeat="tag in tags" class="label label-info">{{tag.tag}}</span>
+    </article>
+    <content-table table-info="tableInfo" controller-name="AdminTagFunctionCtrl" ng-show="tableInfo.data.content.length > 0"></content-table>
+    <article class="col-md-12 custom-tag-info" ng-hide="tableInfo.data.content.length > 0">
+        <h3>There is no unverified custom tags... Wait for it... Oh, sorry there is no one. Come back later.</h3>
+    </article>
+</section>

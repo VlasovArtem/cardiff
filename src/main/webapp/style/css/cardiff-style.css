@@ -432,6 +432,32 @@ input[type=password] {
     font-size: x-large;
 }
 
+/* Custom tag */
+#add-custom-tag .help {
+    font-style: italic;
+    color: grey;
+    padding-bottom: 20px;
+}
+
+.admin-tags {
+    height: 100%;
+}
+
+.exist-tags {
+    padding-bottom: 20px;
+}
+.exist-tags > .label {
+    margin-right: 5px;
+    margin-bottom: 5px;
+    font-size: small;
+}
+.custom-tag-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+}
+
 /* Toggle */
 .navbar-default .navbar-toggle {
     border-color: transparent;

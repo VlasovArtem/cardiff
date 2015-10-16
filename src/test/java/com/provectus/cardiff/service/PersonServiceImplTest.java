@@ -129,7 +129,7 @@ public class PersonServiceImplTest {
         person.setPassword("password");
         person.setEmail("newaemail@mail.com");
         person.setName("new user");
-        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
+        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
         service.registration(person);
         assertThat(personRepository.count(), is(4l));
     }
@@ -147,7 +147,7 @@ public class PersonServiceImplTest {
         person.setPhoneNumber(562354869l);
         person.setPassword("password");
         person.setEmail("dmitriyvalnov@gmail.com");
-        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
+        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
         person.setName("new user");
         service.registration(person);
     }
@@ -160,7 +160,7 @@ public class PersonServiceImplTest {
         person.setPhoneNumber(562354869l);
         person.setPassword("password");
         person.setEmail("newaemail@mail.com");
-        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
+        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
         person.setName("new user");
         service.registration(person);
     }

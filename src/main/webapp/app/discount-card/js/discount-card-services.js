@@ -60,7 +60,3 @@ service.factory('DiscountCardOwner', ['$resource', function($resource) {
         cardId: '@cardId'
     })
 }]);
-
-service.factory('TagFactory', ['$resource', function($resource) {
-    return $resource('/rest/tag/get/all')
-}]);

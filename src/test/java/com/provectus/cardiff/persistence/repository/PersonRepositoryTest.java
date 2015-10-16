@@ -216,7 +216,7 @@ public class PersonRepositoryTest {
         person.setEmail("testemail@email.com");
         person.setLogin("testlogin");
         person.setPassword("testpassword");
-        person.setLocation(locationRepository.findByCityAndCountry("Odessa", "Ukraine"));
+        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
         personRepository.save(person);
         long personCount = personRepository.count();
         assertThat(personCount, is(4l));

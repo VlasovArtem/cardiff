@@ -27,7 +27,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag getTag(Long id) {
-        return tagRepository.findById(id);
+        return tagRepository.findOne(id);
     }
 
     @Override
@@ -45,12 +45,12 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Tag updateTag(Long id, String tag) {
-        tagRepository.findById(id).setTag(tag);
-        return tagRepository.findById(id);
+        tagRepository.findOne(id).setTag(tag);
+        return tagRepository.findOne(id);
     }
 
     @Override
     public void deleteTag(Long id) {
-        tagRepository.deleteById(id);
+        tagRepository.delete(id);
     }
 }

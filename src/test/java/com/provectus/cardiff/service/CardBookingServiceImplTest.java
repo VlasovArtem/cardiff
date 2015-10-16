@@ -64,17 +64,17 @@ public class CardBookingServiceImplTest {
     @WithMockCardiffPerson(value = "dmitriyvalnov")
     public void bookTest() {
         long bookingCount = cardBookingRepository.count();
-        service.book(1l, LocalDate.of(2015, 11, 2));
+        service.book(5l, LocalDate.of(2015, 11, 2));
         assertThat(cardBookingRepository.count(), is(bookingCount + 1));
         List<CardBooking> cardBookingList = cardBookingRepository.findAll();
         CardBooking cardBooking = cardBookingList.get(cardBookingList.size() - 1);
-        assertThat(cardBooking.getDiscountCard().getId(), is(1l));
+        assertThat(cardBooking.getDiscountCard().getId(), is(5l));
         assertThat(cardBooking.getPerson().getId(), is(2l));
     }
 
     @Test(expected = CardBookingException.class)
     public void bookWithNotExistsDiscountCardNumberTest() {
-        service.book(5l, LocalDate.now());
+        service.book(6l, LocalDate.now());
     }
 
     @Test(expected = CardBookingException.class)

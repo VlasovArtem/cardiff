@@ -317,3 +317,38 @@ app.directive('boolean', function() {
 
     }
 });
+
+app.directive('adminNav', function() {
+    var controller = ['$scope', 'CustomTagFactory', function($scope, CustomTagFactory) {
+        CustomTagFactory.get({admin: 'admin', count: 'count'}, function (data) {
+            $scope.unacceptedTags = data.count;
+        });
+    }];
+    return {
+        replace: true,
+        controller: controller,
+        templateUrl: 'app/main/admin-navigation.html'
+    }
+});
+
+app.directive('personNav', function() {
+    var controller = ['$scope', function($scope) {}];
+    return {
+        replace: true,
+        controller: controller,
+        templateUrl: 'app/main/person-navigation.html'
+    }
+});
+
+app.directive('regNav', function() {
+    return {
+        replace: true,
+        template:
+            '<div class="navigation-bar">' +
+                '<ul class="nav navbar-nav navbar-right">' +
+                    '<li><a href="/signin">Sign in</a></li>' +
+                    '<li><a href="/signup">Sign up</a></li>' +
+                '</ul>' +
+            '</div>'
+    }
+});

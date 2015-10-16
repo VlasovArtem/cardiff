@@ -1,4 +1,5 @@
 DELETE FROM discount_card;
+DELETE FROM custom_tag;
 DELETE FROM person;
 DELETE FROM location;
 DELETE FROM card_booking;

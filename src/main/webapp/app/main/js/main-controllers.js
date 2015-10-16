@@ -3,9 +3,16 @@
  */
 var app = angular.module('main-controllers', []);
 
-app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route',
-    function($scope, auth) {
+app.controller('NavCtrl', ['$scope', 'auth', '$modal',
+    function($scope, auth, $modal) {
         $scope.auth = auth;
+        $scope.showCustomTagModal = function() {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'app/tag/add-custom-tag-modal.html',
+                controller: 'AddCustomTagCtrl'
+            })
+        };
         $scope.adminPermission = function() {
             return auth.admin;
         };
@@ -13,9 +20,9 @@ app.controller('NavCtrl', ['$scope', 'auth', '$timeout', '$route',
             return auth.authenticated;
         };
         $scope.login = function() {
-            auth.authenticate($scope.person, function(error) {
-                if(error) {
-                    $scope.error = error;
+            auth.authenticate($scope.person, function(callback) {
+                if(callback) {
+                    $scope.error = callback;
                     $scope.person.password = null;
                 }
             });
