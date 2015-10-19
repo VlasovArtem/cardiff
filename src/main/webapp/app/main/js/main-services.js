@@ -1,6 +1,6 @@
 var app = angular.module('main-services', ['ngResource']);
 
-app.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authentication', 'PersonFactory', '$sessionStorage',
+app.service('auth', ['$resource', '$location', '$route', 'Login', 'Authentication', 'PersonFactory', '$sessionStorage',
     function($resource, $location, $route, Login, Authentication, PersonFactory, $sessionStorage) {
         var enter = function() {
             if($location.path() != auth.loginPath) {
@@ -18,12 +18,11 @@ app.factory('auth', ['$resource', '$location', '$route', 'Login', 'Authenticatio
             error: null,
             authentication: function() {
                 Authentication.get(
-                    function() {
-                        PersonFactory.get({
-                                authorized: 'authorized',
-                                hasRole: 'ADMIN'},
-                            function() {auth.admin = true;},
-                            function() {auth.admin = false; delete $sessionStorage.updatedPerson});
+                    function(data) {
+                        auth.admin = data.role == "ADMIN";
+                        if(!auth.admin) {
+                            delete $sessionStorage.updatedPerson
+                        }
                         auth.authenticated = true;
                         auth.resolved = true;
                     },

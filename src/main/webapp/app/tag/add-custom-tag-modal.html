@@ -1,0 +1,49 @@
+<section id="add-custom-tag" class="container-fluid">
+    <h2>Add Custom tag</h2>
+    <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
+    <form name="addCustomTag">
+        <div class="form-group">
+            <label for="tagName">Tag</label>
+            <input
+                    type="text"
+                    id="tagName"
+                    name="tagName"
+                    minlength="3"
+                    placeholder="Input tag..."
+                    ng-model="customTag.tag"
+                    class="form-control"
+                    maxlength="20"
+                    autocomplete="off"
+                    pattern="[a-zA-z ]{3,20}"
+                    required>
+            <div validation-messages
+                 model-controller="addCustomTag.tagName"
+                 minlength-error="Min length of the tag is 3 letters"
+                 maxlength-error="Max length of the tag is 20 letters"
+                 required-error="Tag is required"
+                 pattern-error="Tag should contains only letters"></div>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input
+                    type="text"
+                    id="description"
+                    placeholder="Input description..."
+                    ng-model="customTag.description"
+                    name="description"
+                    maxlength="50"
+                    autocomplete="off"
+                    class="form-control">
+            <div validation-messages
+                 model-controller="addCustomTag.description"
+                 maxlength-error="Max length of the description is 50 letters"></div>
+        </div>
+        <div class="center help">
+            <small>Custom will added to database after validation. Please be patient...</small>
+        </div>
+        <div class="form-group buttons">
+            <input type="button" class="btn btn-success" value="Add" ng-click="saveCustomTag()">
+            <input type="button" class="btn btn-danger" value="Close" ng-click="closeModal()">
+        </div>
+    </form>
+</section>

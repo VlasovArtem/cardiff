@@ -32,6 +32,6 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public Location find(String city, String country) {
-        return repository.findByCityAndCountry(city, country);
+        return repository.findByCityAndCountryIgnoreCase(city, country);
     }
 }

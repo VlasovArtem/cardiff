@@ -74,7 +74,7 @@ public class CardBookingServiceImplTest {
 
     @Test(expected = CardBookingException.class)
     public void bookWithNotExistsDiscountCardNumberTest() {
-        service.book(5l, LocalDate.now());
+        service.book(6l, LocalDate.now());
     }
 
     @Test(expected = CardBookingException.class)

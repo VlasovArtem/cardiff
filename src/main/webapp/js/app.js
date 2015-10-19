@@ -3,7 +3,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
     'person-controllers', 'person-services', 'person-directives', 'person-filters',
     'discount-card-controllers', 'discount-card-services', 'discount-card-directives', 'discount-card-filters',
     'main-controllers', 'main-services', 'main-directives', 'main-filters',
-    'card-booking-controllers', 'card-booking-services', 'card-booking-filters']).config(
+    'card-booking-controllers', 'card-booking-services', 'card-booking-filters',
+    'tag-controllers', 'tag-services']).config(
     function($routeProvider, $locationProvider) {
         $locationProvider.html5Mode(true);
         $routeProvider
@@ -84,7 +85,7 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                 }
             }).
             when('/admin/persons', {
-                templateUrl: 'app/person/admin-panel.html',
+                templateUrl: 'app/person/custom-tag-admin-panel.html',
                 controller: 'AdminPersonsCtrl',
                 resolve: {
                     persons: function(AdminPersonTableFactory) {
@@ -120,7 +121,19 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                 controller: 'AddCtrl',
                 resolve: {
                     tags: function(TagFactory) {
-                        return TagFactory.query();
+                        return TagFactory.query().$promise;
+                    }
+                }
+            }).
+            when('/admin/tags', {
+                templateUrl: 'app/tag/custom-tag-admin-panel.html',
+                controller: 'AdminTagCtrl',
+                resolve: {
+                    customTags: function(AdminCustomTagFactory) {
+                        return AdminCustomTagFactory.get().$promise;
+                    },
+                    tags: function(TagFactory) {
+                        return TagFactory.query().$promise;
                     }
                 }
             }).
@@ -128,34 +141,35 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                 redirectTo: '/'
             })
     });
-app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', function($root, auth, deviceCheck, $sessionStorage) {
-    auth.init('/', '/signin', '/logout');
-    deviceCheck.checkIsMobile();
-    $root.$on('$viewContentLoaded', function(event){
-        $('.footer').fadeIn(2000);
-    });
-    $root.$on('$routeChangeStart', function(event, next, current) {
-        $('.footer').hide();
-        if(!_.isUndefined(next)) {
-            if(next.$$route) {
-                if(next.$$route.originalPath == '/') {
-                    $('.view').removeClass('main-view');
-                } else {
-                    $('.view').addClass('main-view');
+app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', 'Authentication', '$compile',
+    function($root, auth, deviceCheck, $sessionStorage, Authentication, $compile) {
+        auth.init('/', '/signin', '/logout');
+        deviceCheck.checkIsMobile();
+        $root.$on('$viewContentLoaded', function(event){
+            $('.footer').fadeIn(2000);
+        });
+        $root.$on('$routeChangeStart', function(event, next, current) {
+            $('.footer').hide();
+            if(!_.isUndefined(next)) {
+                if(next.$$route) {
+                    if(next.$$route.originalPath == '/') {
+                        $('.view').removeClass('main-view');
+                    } else {
+                        $('.view').addClass('main-view');
+                    }
                 }
             }
-        }
-    });
-    $root.$on('$routeChangeSuccess', function(event, current, previous) {
-        $('.footer').fadeIn(2000);
-        if(!_.isUndefined(current)) {
-            if(current.$$route) {
-                if(current.$$route.originalPath == '/card/info') {
-                    delete $sessionStorage.updatedPerson;
+        });
+        $root.$on('$routeChangeSuccess', function(event, current, previous) {
+            $('.footer').fadeIn(2000);
+            if(!_.isUndefined(current)) {
+                if(current.$$route) {
+                    if(current.$$route.originalPath == '/card/info') {
+                        delete $sessionStorage.updatedPerson;
+                    }
                 }
             }
-        }
-    });
-    $root.$on('$routeChangeError', function(event, current, previous, reject) {
-    });
-}]);
+        });
+        $root.$on('$routeChangeError', function(event, current, previous, reject) {
+        });
+    }]);

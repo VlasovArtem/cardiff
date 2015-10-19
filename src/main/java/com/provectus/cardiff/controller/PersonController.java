@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.enums.PersonRole;
 import com.provectus.cardiff.service.PersonService;
+import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import com.provectus.cardiff.utils.view.PersonView;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,7 +59,13 @@ public class PersonController {
      */
     @RequestMapping(path = "/authentication", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(value = OK)
-    public void authentication() {}
+    public ResponseEntity authentication() {
+        if(AuthenticatedPersonPrincipalUtil.containAuthorities(PersonRole.ADMIN)) {
+            return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("role", "ADMIN"));
+        } else {
+            return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("role", "USER"));
+        }
+    }
 
     /**
      * Find authenticated person
