@@ -61,15 +61,15 @@ public class CardBookingServiceImplTest {
     private DiscountCardRepository discountCardRepository;
 
     @Test
-    @WithMockCardiffPerson(value = "dmitriyvalnov")
+    @WithMockCardiffPerson(value = "vadimguliaev")
     public void bookTest() {
         long bookingCount = cardBookingRepository.count();
-        service.book(1l, LocalDate.of(2015, 11, 2));
+        service.book(4l, LocalDate.of(2015, 11, 2));
         assertThat(cardBookingRepository.count(), is(bookingCount + 1));
         List<CardBooking> cardBookingList = cardBookingRepository.findAll();
         CardBooking cardBooking = cardBookingList.get(cardBookingList.size() - 1);
-        assertThat(cardBooking.getDiscountCard().getId(), is(1l));
-        assertThat(cardBooking.getPerson().getId(), is(2l));
+        assertThat(cardBooking.getDiscountCard().getId(), is(4l));
+        assertThat(cardBooking.getPerson().getId(), is(1l));
     }
 
     @Test(expected = CardBookingException.class)

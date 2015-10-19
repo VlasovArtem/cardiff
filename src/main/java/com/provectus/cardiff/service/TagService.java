@@ -13,7 +13,7 @@ public interface TagService {
 
     void addTag(Tag tag);
 
-    Tag updateTag(Long id, String tag);
+    void updateTag(Long id, String tag);
 
     void deleteTag(Long id);
 

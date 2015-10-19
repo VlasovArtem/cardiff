@@ -33,8 +33,6 @@ import static org.junit.Assert.*;
         @Sql("/sql-data/drop-data.sql"),
         @Sql("/sql-data/card-booking-data.sql")
 })
-@DirtiesContext
-@WebAppConfiguration
 public class CardBookingRepositoryTest {
     @Autowired
     private CardBookingRepository cardBookingRepository;
