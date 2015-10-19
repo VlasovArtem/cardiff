@@ -28,7 +28,7 @@ public class CustomTagController {
 
     @RequestMapping(path = "/add", method = POST)
     @ResponseStatus(OK)
-    public void addTag(@RequestBody CustomTag customTag) {
+    public void addTag (@RequestBody CustomTag customTag) {
         service.addTag(customTag);
     }
 
@@ -48,6 +48,7 @@ public class CustomTagController {
     public void acceptTag(@PathVariable long tagId) {
         service.acceptTag(tagId);
     }
+
     @RequestMapping(path = "/admin/delete/{tagId}", method = DELETE, produces = APPLICATION_JSON_VALUE)
     public  void delete(@RequestParam long tagId) {
         service.delete(tagId);

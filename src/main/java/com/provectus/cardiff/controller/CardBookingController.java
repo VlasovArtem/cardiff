@@ -38,7 +38,7 @@ public class CardBookingController {
 
     @RequestMapping(value = "/book", method = POST, consumes = APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(OK)
-    public void book(@RequestParam long discountCardId,
+    public void book (@RequestParam long discountCardId,
                      @RequestParam(required = false) String bookingStartDate) {
         service.book(discountCardId, LocalDate.parse(bookingStartDate));
     }
