@@ -1,2 +1,3 @@
-INSERT INTO tag (id, tag) values
-(1, 'test');
+INSERT INTO tag(id, tag) VALUES
+(1, 'test'),
+(2, 'exist tag');

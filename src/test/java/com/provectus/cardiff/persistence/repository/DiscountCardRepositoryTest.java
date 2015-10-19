@@ -34,7 +34,11 @@ import static org.junit.Assert.*;
 @ActiveProfiles(profiles = "development")
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
-        @Sql("/sql-data/discount-card-data.sql")
+        @Sql("/sql-data/location-data.sql"),
+        @Sql("/sql-data/person-data.sql"),
+        @Sql("/sql-data/discount-card-data.sql"),
+        @Sql("/sql-data/tag-data.sql"),
+        @Sql("/sql-data/discount-card-tag-data.sql")
 })
 @DirtiesContext
 @WebAppConfiguration
@@ -71,28 +75,28 @@ public class DiscountCardRepositoryTest {
     @Test
     public void findByPickedFalseTest() {
         Pageable pageable = new PageRequest(0, 15, Sort.Direction.DESC, "createdDate");
-        assertThat(discountCardRepository.findByPickedFalse(pageable).getTotalElements(), is(2l));
+        assertThat(discountCardRepository.findByPickedFalse(pageable).getTotalElements(), is(3l));
     }
 
     @Test
     public void findByCompanyNameWithFullMatchTest() {
-        assertThat(discountCardRepository.findByCompanyName("Test1".toLowerCase()).size(), is(1));
+        assertThat(discountCardRepository.findByCompanyName("Test2".toLowerCase()).size(), is(1));
     }
 
     @Test
     public void findByCompanyNameWithPartialMatchTest() {
-        assertThat(discountCardRepository.findByCompanyName("Test".toLowerCase()).size(), is(3));
+        assertThat(discountCardRepository.findByCompanyName("Test".toLowerCase()).size(), is(4));
     }
 
     @Test
     public void findByOwnerIdTest() {
         Pageable pageable = new PageRequest(0, 15, Sort.Direction.DESC, "createdDate");
-        assertThat(discountCardRepository.findByOwnerId(2l, pageable).getTotalElements(), is(3l));
+        assertThat(discountCardRepository.findByOwnerId(2l, pageable).getTotalElements(), is(2l));
     }
 
     @Test
     public void findByOwnerIdStreamTest() {
-        assertThat(discountCardRepository.findByOwnerId(2l).count(), is(3l));
+        assertThat(discountCardRepository.findByOwnerId(2l).count(), is(2l));
     }
 
     @Test
@@ -102,7 +106,7 @@ public class DiscountCardRepositoryTest {
 
     @Test
     public void existsByNumberAndCompanyNameTest() {
-        assertTrue(discountCardRepository.existsByNumberAndCompanyName(1, "Test1"));
+        assertTrue(discountCardRepository.existsByNumberAndCompanyName(2, "Test"));
     }
 
     @Test
@@ -122,11 +126,11 @@ public class DiscountCardRepositoryTest {
 
     @Test
     public void personDiscountCardTest() {
-        assertTrue(discountCardRepository.personDiscountCard(1, 2));
+        assertTrue(discountCardRepository.personDiscountCard(2, 1));
     }
 
     @Test
     public void personDiscountCardWithNotMatchesTest() {
-        assertFalse(discountCardRepository.personDiscountCard(1, 1));
+        assertFalse(discountCardRepository.personDiscountCard(1, 2));
     }
 }

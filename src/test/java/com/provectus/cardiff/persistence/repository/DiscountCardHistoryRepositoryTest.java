@@ -7,13 +7,11 @@ import com.provectus.cardiff.entities.DiscountCardHistory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertNotNull;
@@ -27,6 +25,9 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles(profiles = "development")
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
+        @Sql("/sql-data/location-data.sql"),
+        @Sql("/sql-data/person-data.sql"),
+        @Sql("/sql-data/discount-card-data.sql"),
         @Sql("/sql-data/discount-card-history-data.sql")
 })
 public class DiscountCardHistoryRepositoryTest {

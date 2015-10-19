@@ -31,6 +31,9 @@ import static org.junit.Assert.*;
 @ActiveProfiles(profiles = "development")
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
+        @Sql("/sql-data/location-data.sql"),
+        @Sql("/sql-data/person-data.sql"),
+        @Sql("/sql-data/discount-card-data.sql"),
         @Sql("/sql-data/custom-tag-data.sql")
 })
 @DirtiesContext

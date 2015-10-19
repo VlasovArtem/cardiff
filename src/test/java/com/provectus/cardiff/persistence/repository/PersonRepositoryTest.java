@@ -28,6 +28,7 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = {DevelopmentDataSourceConfig.class, AppConfig.class, RootContextConfig.class})
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
+        @Sql("/sql-data/location-data.sql"),
         @Sql("/sql-data/person-data.sql")
 })
 @ActiveProfiles(profiles = "development")
