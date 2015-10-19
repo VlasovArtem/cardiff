@@ -55,7 +55,9 @@ import static org.junit.Assert.*;
 @WebAppConfiguration
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
-        @Sql("/sql-data/person-data.sql")
+        @Sql("/sql-data/location-data.sql"),
+        @Sql("/sql-data/person-data.sql"),
+        @Sql("/sql-data/discount-card-data.sql"),
 })
 public class PersonServiceImplTest {
     @Autowired
@@ -278,11 +280,11 @@ public class PersonServiceImplTest {
     public void findTest() {
         Person person = service.find(1l);
         assertNotNull(person);
-        assertThat(person.getEmail(), is("dmitriyvalnov@gmail.com"));
+        assertThat(person.getEmail(), is("vadimguliaev@gmail.com"));
     }
 
     @Test
     public void findNotExistsTest() {
-        assertNull(service.find(2l));
+        assertNull(service.find(6l));
     }
 }

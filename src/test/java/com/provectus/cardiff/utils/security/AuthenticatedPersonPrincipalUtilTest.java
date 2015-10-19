@@ -7,7 +7,6 @@ import com.provectus.cardiff.config.DevelopmentDataSourceConfig;
 import com.provectus.cardiff.config.RootContextConfig;
 import com.provectus.cardiff.config.security.SecurityConfig;
 import com.provectus.cardiff.enums.PersonRole;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,9 +15,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by artemvlasov on 19/10/15.
@@ -33,6 +32,7 @@ import static org.junit.Assert.*;
 @WebAppConfiguration
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
+        @Sql("/sql-data/location-data.sql"),
         @Sql("/sql-data/person-data.sql")
 })
 public class AuthenticatedPersonPrincipalUtilTest {

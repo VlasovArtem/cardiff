@@ -45,7 +45,7 @@ public class DiscountCardController {
     @RequestMapping(path = "/get/by/number", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
     public ResponseEntity getByCardNumber(@RequestParam(required = true) long number) {
-        Optional<DiscountCard> discountCards = service.search(number);
+        Optional<DiscountCard> discountCards = service.searchByCardNumber (number);
         if(discountCards.isPresent()) {
             return ResponseEntity.ok(discountCards);
         }
@@ -66,7 +66,7 @@ public class DiscountCardController {
     @RequestMapping(path = "/get/by/tags", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
     public ResponseEntity getByTags(@RequestParam(required = true) Set<String> tags) {
-        Optional<List<DiscountCard>> discountCards = service.search(tags);
+        Optional<List<DiscountCard>> discountCards = service.searchByTags(tags);
         if(discountCards.isPresent()) {
             return ResponseEntity.ok(discountCards);
         }
@@ -76,7 +76,8 @@ public class DiscountCardController {
     @RequestMapping(path = "/get/by/name", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
     public ResponseEntity getByName(@RequestParam(required = true, value = "company_name") String companyName) {
-        List<DiscountCard> discountCards = SearchEngine.search(service.findAll(), companyName, service.search(companyName));
+        List<DiscountCard> discountCards = SearchEngine.search(service.findAll(), companyName, service
+                .searchByCompanyName (companyName));
 
         if(discountCards.size() > 0) {
             return ResponseEntity.ok(discountCards);

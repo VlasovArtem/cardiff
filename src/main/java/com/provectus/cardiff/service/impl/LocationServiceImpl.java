@@ -20,18 +20,18 @@ public class LocationServiceImpl implements LocationService {
     private LocationRepository repository;
 
     @Override
-    public List<Location> getAll() {
+    public List<Location> getAll () {
         Sort sort = new Sort(Sort.Direction.ASC, "country", "city");
         return repository.findAll(sort);
     }
 
     @Override
-    public boolean exists(String city, String country) {
+    public boolean exists (String city, String country) {
         return repository.existsByCityAndCountry(city, country);
     }
 
     @Override
-    public Location find(String city, String country) {
+    public Location find (String city, String country) {
         return repository.findByCityAndCountryIgnoreCase(city, country);
     }
 }

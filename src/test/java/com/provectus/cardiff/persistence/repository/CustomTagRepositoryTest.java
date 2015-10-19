@@ -34,6 +34,7 @@ import static org.junit.Assert.*;
         @Sql("/sql-data/location-data.sql"),
         @Sql("/sql-data/person-data.sql"),
         @Sql("/sql-data/discount-card-data.sql"),
+        @Sql("/sql-data/tag-data.sql"),
         @Sql("/sql-data/custom-tag-data.sql")
 })
 @DirtiesContext
@@ -61,7 +62,7 @@ public class CustomTagRepositoryTest {
 
     @Test
     public void existsByTagTest() {
-        assertTrue(customTagRepository.existsByTag("test"));
+        assertTrue(customTagRepository.existsByTag("custom test"));
     }
 
     @Test

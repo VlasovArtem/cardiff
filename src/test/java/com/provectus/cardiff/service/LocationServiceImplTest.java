@@ -1,10 +1,10 @@
 package com.provectus.cardiff.service;
 
 import com.provectus.cardiff.config.AppConfig;
+import com.provectus.cardiff.config.CardiffAppInitializer;
 import com.provectus.cardiff.config.DevelopmentDataSourceConfig;
 import com.provectus.cardiff.config.RootContextConfig;
-import com.provectus.cardiff.entities.Tag;
-import com.provectus.cardiff.utils.exception.EntityValidationException;
+import com.provectus.cardiff.config.security.SecurityConfig;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,51 +26,39 @@ import static org.junit.Assert.*;
  * Created by artemvlasov on 19/10/15.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {DevelopmentDataSourceConfig.class, AppConfig.class, RootContextConfig.class})
+@ContextConfiguration(classes = {
+        DevelopmentDataSourceConfig.class,
+        CardiffAppInitializer.class,
+        AppConfig.class,
+        RootContextConfig.class, SecurityConfig.class})
 @ActiveProfiles(profiles = "development")
+@WebAppConfiguration
+@DirtiesContext
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
-        @Sql("/sql-data/tag-data.sql")
+        @Sql("/sql-data/location-data.sql")
 })
-@DirtiesContext
-@WebAppConfiguration
-@Transactional
-public class TagServiceImplTest {
+public class LocationServiceImplTest {
     @Autowired
-    private TagService tagService;
+    private LocationService locationService;
 
     @Test
-    public void getTagTest() {
-        assertNotNull(tagService.getTag(1l));
+    public void getAllTest() {
+        assertThat(locationService.getAll().size(), is(1));
     }
 
     @Test
-    public void findAllTest() {
-        assertThat(tagService.findAll().size(), is(2));
+    public void existsTest() {
+        assertTrue(locationService.exists("Odessa", "Ukraine"));
     }
 
     @Test
-    public void addTagTest() {
-        Tag newTag = new Tag("new tag");
-        tagService.addTag(newTag);
-        assertThat(tagService.findAll().size(), is(3));
-    }
-
-    @Test(expected = EntityValidationException.class)
-    public void addTagWithInvalidTagTest() {
-        Tag invalidTag = new Tag("ta");
-        tagService.addTag(invalidTag);
+    public void existsWithoutExistsCityTest() {
+        assertFalse(locationService.exists("Kiev", "Ukraine"));
     }
 
     @Test
-    public void updateTagTest() {
-        tagService.updateTag(1l, "update");
-        assertThat(tagService.getTag(1l).getTag(), is("update"));
-    }
-
-    @Test
-    public void deleteTagTest() {
-        tagService.deleteTag(1l);
-        assertThat(tagService.findAll().size(), is(1));
+    public void findTest() {
+        assertNotNull(locationService.find("Odessa", "Ukraine"));
     }
 }

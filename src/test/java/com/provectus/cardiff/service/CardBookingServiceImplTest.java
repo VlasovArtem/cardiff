@@ -48,6 +48,9 @@ import static org.junit.Assert.*;
 @WebAppConfiguration
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
+        @Sql("/sql-data/location-data.sql"),
+        @Sql("/sql-data/person-data.sql"),
+        @Sql("/sql-data/discount-card-data.sql"),
         @Sql("/sql-data/card-booking-data.sql")
 })
 public class CardBookingServiceImplTest {
@@ -110,7 +113,7 @@ public class CardBookingServiceImplTest {
     }
 
     @Test
-    @WithMockCardiffPerson(value = "alexandrmahnov")
+    @WithMockCardiffPerson(value = "dmitriyvalnov")
     public void cancelWithAdminPermissionTest() {
         long bookingCount = cardBookingRepository.count();
         service.cancel(2l);

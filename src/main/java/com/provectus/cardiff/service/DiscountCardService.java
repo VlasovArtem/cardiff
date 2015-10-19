@@ -14,7 +14,7 @@ import java.util.Set;
 public interface DiscountCardService {
     void add (DiscountCard card);
 
-    Optional<DiscountCard> search (long cardNumber);
+    Optional<DiscountCard> searchByCardNumber (long cardNumber);
 
     void update (DiscountCard card);
 
@@ -22,13 +22,13 @@ public interface DiscountCardService {
 
     Optional<DiscountCard> getCard (long id);
 
-    Optional<List<DiscountCard>> search (Set<String> tags);
+    Optional<List<DiscountCard>> searchByTags (Set<String> tags);
 
-    List<DiscountCard> search(String name);
+    List<DiscountCard> searchByCompanyName (String companyName);
 
-    Page<DiscountCard> getAll(Pageable pageable);
+    Page<DiscountCard> getAll (Pageable pageable);
 
-    List<DiscountCard> findAll();
+    List<DiscountCard> findAll ();
 
     Page<DiscountCard> getAuthenticatedPersonDiscountCards (Pageable pageable);
 

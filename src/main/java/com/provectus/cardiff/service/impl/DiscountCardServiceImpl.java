@@ -32,7 +32,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     @Override
     public void add (DiscountCard card) {
         if (discountCardRepository.existsByNumberAndCompanyName(card.getCardNumber(), card.getCompanyName())) {
-            throw new EntityValidationException("Card with this company name or number already exist");
+            throw new EntityValidationException("Card with this company companyName or number already exist");
         }
         DiscountCardValidator.validate(card);
         card.setOwner(personRepository.findById(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()));
@@ -55,23 +55,23 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
-    public Optional<DiscountCard> search (long cardNumber) {
-        return discountCardRepository.findByCardNumber(cardNumber);
-    }
-
-    @Override
     public List<DiscountCard> findAll() {
         return discountCardRepository.findAll();
     }
 
     @Override
-    public Optional<List<DiscountCard>> search (Set<String> tags) {
+    public Optional<List<DiscountCard>> searchByTags (Set<String> tags) {
         return discountCardRepository.findByTags(tags);
     }
 
     @Override
-    public List<DiscountCard> search (String name) {
-        return discountCardRepository.findByCompanyName(name);
+    public List<DiscountCard> searchByCompanyName (String companyName) {
+        return discountCardRepository.findByCompanyName(companyName.toLowerCase());
+    }
+
+    @Override
+    public Optional<DiscountCard> searchByCardNumber (long cardNumber) {
+        return discountCardRepository.findByCardNumber(cardNumber);
     }
 
     @Override
@@ -86,19 +86,23 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
-    public void removeOwnerCards(long ownerId) {
-        discountCardRepository.findByOwnerId(ownerId).forEach(d -> d.setDeleted(true));
+    public void removeOwnerCards (long ownerId) {
+        discountCardRepository.findByOwnerId(ownerId).forEach(d -> {
+            if(!d.isPicked()) {
+                d.setDeleted(true);
+            }
+        });
     }
 
     @Override
-    public void restoreOwnerCard(long ownerId) {
+    public void restoreOwnerCard (long ownerId) {
         discountCardRepository.findByOwnerId(ownerId).forEach(d -> d.setDeleted(false));
     }
 
     @Override
     public boolean checkDiscountCardIsUnique(long discountCardNumber, String companyName) {
         if(discountCardRepository.existsByNumberAndCompanyName(discountCardNumber, companyName)) {
-            throw new DataUniqueException("Discount card with entered number and company name is already exists");
+            throw new DataUniqueException("Discount card with entered number and company companyName is already exists");
         }
         return true;
     }

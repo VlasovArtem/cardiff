@@ -53,6 +53,10 @@ import static org.junit.Assert.*;
 @DirtiesContext
 @SqlGroup(value = {
         @Sql("/sql-data/drop-data.sql"),
+        @Sql("/sql-data/location-data.sql"),
+        @Sql("/sql-data/person-data.sql"),
+        @Sql("/sql-data/discount-card-data.sql"),
+        @Sql("/sql-data/tag-data.sql"),
         @Sql("/sql-data/custom-tag-data.sql")
 })
 @Transactional
@@ -122,7 +126,7 @@ public class CustomTagServiceImplTest {
     public void acceptTagTest() {
         customTagService.acceptTag(1);
         assertThat(customTagRepository.count(), is(0l));
-        assertThat(tagRepository.count(), is(2l));
+        assertThat(tagRepository.count(), is(3l));
     }
 
     @Test(expected = NullPointerException.class)
