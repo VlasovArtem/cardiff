@@ -57,6 +57,7 @@ public class CustomTagServiceImpl implements CustomTagService {
         CustomTagValidator.validate(tag);
         Person author = new Person();
         author.setId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId());
+        tag.setAuthor(author);
         customTagRepository.save(tag);
     }
 

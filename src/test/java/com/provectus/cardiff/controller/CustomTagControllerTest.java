@@ -48,7 +48,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         DevelopmentDataSourceConfig.class,
         CardiffAppInitializer.class,
         AppConfig.class,
-        RootContextConfig.class, SecurityConfig.class})
+        RootContextConfig.class,
+        SecurityConfig.class})
 @ActiveProfiles(profiles = "development")
 @DirtiesContext
 @WebAppConfiguration

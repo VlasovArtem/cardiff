@@ -50,7 +50,7 @@ public class CustomTagController {
     }
 
     @RequestMapping(path = "/admin/delete/{tagId}", method = DELETE, produces = APPLICATION_JSON_VALUE)
-    public void delete (@RequestParam long tagId) {
+    public void delete (@PathVariable long tagId) {
         service.delete(tagId);
     }
 
