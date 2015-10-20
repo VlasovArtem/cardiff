@@ -10,14 +10,7 @@ import com.provectus.cardiff.entities.CustomTag;
 import com.provectus.cardiff.entities.Person;
 import com.provectus.cardiff.persistence.repository.CustomTagRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
-import jdk.nashorn.internal.ir.annotations.Ignore;
-import org.easymock.EasyMock;
-import org.easymock.EasyMockRule;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
-import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Rule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.easymock.EasyMock.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * Created by artemvlasov on 16/10/15.
@@ -77,7 +66,8 @@ public class CustomTagServiceImplTest {
 
     @Test
     @WithMockCardiffPerson(value = "vadimguliaev")
-    @Ignore //Issue with author add to custom tag during test
+    @Ignore
+    //Issue with author add to custom tag during test
     public void addTagTest() {
         CustomTag customTag = new CustomTag("new tag");
         customTag.setId(2);
