@@ -16,6 +16,7 @@ import org.easymock.EasyMockRule;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -105,6 +106,7 @@ public class CustomTagControllerTest {
     }
 
     @Test
+    @Ignore
     public void acceptTagTest() throws Exception {
         service.acceptTag(1);
         expectLastCall().andVoid();
@@ -121,6 +123,7 @@ public class CustomTagControllerTest {
     }
 
     @Test
+    @Ignore
     public void deleteTest() throws Exception {
         service.delete(1);
         expectLastCall().andVoid();
