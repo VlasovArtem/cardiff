@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.NoSuchElementException;
 
 /**
  * Created by blupashko on 26.08.2015.
@@ -26,8 +26,12 @@ public class TagServiceImpl implements TagService {
     private TagRepository tagRepository;
 
     @Override
-    public Tag getTag(Long id) {
-        return tagRepository.findOne(id);
+    public Tag getTag(long id) {
+        Tag tag = tagRepository.findOne(id);
+        if(tag == null) {
+            throw new NoSuchElementException("Tag is not found");
+        }
+        return tag;
     }
 
     @Override
@@ -44,12 +48,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void updateTag(Long id, String tag) {
+    public void updateTag(long id, String tag) {
         tagRepository.findOne(id).setTag(tag);
     }
 
     @Override
-    public void deleteTag(Long id) {
+    public void deleteTag(long id) {
         tagRepository.delete(id);
     }
 }

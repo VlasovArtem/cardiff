@@ -71,7 +71,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public Optional<DiscountCard> searchByCardNumber (long cardNumber) {
-        return discountCardRepository.findByCardNumber(cardNumber);
+        return discountCardRepository.findByCardNumber (cardNumber);
     }
 
     @Override

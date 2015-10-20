@@ -38,44 +38,44 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/add", method = POST, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public void add(@RequestBody DiscountCard card) {
+    public void add (@RequestBody DiscountCard card) {
         service.add(card);
     }
 
     @RequestMapping(path = "/get/by/number", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
-    public ResponseEntity getByCardNumber(@RequestParam(required = true) long number) {
+    public ResponseEntity getByCardNumber (@RequestParam(required = true) long number) {
         Optional<DiscountCard> discountCards = service.searchByCardNumber (number);
         if(discountCards.isPresent()) {
-            return ResponseEntity.ok(discountCards);
+            return ResponseEntity.ok(discountCards.get());
         }
         return ResponseEntity.status(NOT_FOUND).build();
     }
 
     @RequestMapping(path = "/update", method = PUT)
     @ResponseStatus(value = OK)
-    public  void update(@RequestBody DiscountCard card) {
+    public void update (@RequestBody DiscountCard card) {
         service.update(card);
     }
 
     @RequestMapping(path = "/delete", method = DELETE, produces = APPLICATION_JSON_VALUE)
-    public  void delete(@RequestParam long cardId) {
+    public void delete (@RequestParam long cardId) {
         service.delete(cardId);
     }
 
     @RequestMapping(path = "/get/by/tags", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
-    public ResponseEntity getByTags(@RequestParam(required = true) Set<String> tags) {
+    public ResponseEntity getByTags (@RequestParam(required = true) Set<String> tags) {
         Optional<List<DiscountCard>> discountCards = service.searchByTags(tags);
         if(discountCards.isPresent()) {
-            return ResponseEntity.ok(discountCards);
+            return ResponseEntity.ok(discountCards.get());
         }
         return ResponseEntity.status(NOT_FOUND).build();
     }
 
     @RequestMapping(path = "/get/by/name", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
-    public ResponseEntity getByName(@RequestParam(required = true, value = "company_name") String companyName) {
+    public ResponseEntity getByName (@RequestParam(required = true, value = "company_name") String companyName) {
         List<DiscountCard> discountCards = SearchEngine.search(service.findAll(), companyName, service
                 .searchByCompanyName (companyName));
 
@@ -98,7 +98,7 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/get/{cardId}", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public ResponseEntity findAvailable(@PathVariable long cardId) {
+    public ResponseEntity findAvailable (@PathVariable long cardId) {
         Optional<DiscountCard> dc = service.getCard(cardId);
         if(!dc.isPresent()) {
             return ResponseEntity.status(NOT_FOUND).build();
@@ -109,7 +109,7 @@ public class DiscountCardController {
     @RequestMapping(path = "/owner/page", method = GET, produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     @JsonView(DiscountCardView.BasicLevel.class)
-    public Page<DiscountCard> getAuthenticatedPersonDiscountCards(
+    public Page<DiscountCard> getAuthenticatedPersonDiscountCards (
             @RequestParam(defaultValue = "0", required = false) int page,
             @RequestParam(defaultValue = "15", required = false) int size,
             @RequestParam(defaultValue = "DESC", required = false) String direction,
@@ -119,7 +119,7 @@ public class DiscountCardController {
 
     @RequestMapping(path = "/check", method = GET)
     @ResponseStatus(OK)
-    public void checkDiscountCard(@RequestParam long cardNumber, @RequestParam String
+    public void checkDiscountCard (@RequestParam long cardNumber, @RequestParam String
             companyName) {
         service.checkDiscountCardIsUnique(cardNumber, companyName);
     }

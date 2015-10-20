@@ -12,6 +12,11 @@ public class Location extends BaseEntity {
     protected String city;
     protected String country;
 
+    public Location(String city, String country) {
+        this.city = city;
+        this.country = country;
+    }
+
     public String getCity() {
         return city;
     }

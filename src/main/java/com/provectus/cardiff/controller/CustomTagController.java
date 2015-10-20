@@ -35,7 +35,7 @@ public class CustomTagController {
     @RequestMapping(path = "/admin/get/page", method = GET)
     @ResponseStatus(value = OK)
     @JsonView(PersonView.TableLevel.class)
-    public Page<CustomTag> getAll(
+    public Page<CustomTag> getAll (
             @RequestParam(defaultValue = "0", required = false) int page,
             @RequestParam(defaultValue = "15", required = false) int size,
             @RequestParam(defaultValue = "DESC", required = false) String direction,
@@ -45,17 +45,17 @@ public class CustomTagController {
 
     @RequestMapping(path = "/admin/accept/{tagId}", method = PUT, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public void acceptTag(@PathVariable long tagId) {
+    public void acceptTag (@PathVariable long tagId) {
         service.acceptTag(tagId);
     }
 
     @RequestMapping(path = "/admin/delete/{tagId}", method = DELETE, produces = APPLICATION_JSON_VALUE)
-    public  void delete(@RequestParam long tagId) {
+    public void delete (@RequestParam long tagId) {
         service.delete(tagId);
     }
 
     @RequestMapping(path = "/admin/count", method = GET)
-    public ResponseEntity countUnAcceptedTags() {
+    public ResponseEntity countUnAcceptedTags () {
         return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("count",service.countUnacceptedTags()));
     }
 }

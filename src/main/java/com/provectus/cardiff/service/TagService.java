@@ -9,13 +9,13 @@ import java.util.List;
  */
 public interface TagService {
 
-    Tag getTag (Long id);
+    Tag getTag (long id);
 
     void addTag(Tag tag);
 
-    void updateTag(Long id, String tag);
+    void updateTag(long id, String tag);
 
-    void deleteTag(Long id);
+    void deleteTag(long id);
 
     List findAll();
 }
