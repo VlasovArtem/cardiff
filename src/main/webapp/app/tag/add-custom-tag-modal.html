@@ -39,10 +39,10 @@
                  maxlength-error="Max length of the description is 50 letters"></div>
         </div>
         <div class="center help">
-            <small>Custom will added to database after validation. Please be patient...</small>
+            <small>Your tag will added to database after validation. Please be patient...</small>
         </div>
         <div class="form-group buttons">
-            <input type="button" class="btn btn-success" value="Add" ng-click="saveCustomTag()">
+            <input type="button" class="btn btn-success" value="Add" ng-click="saveCustomTag()" ng-disabled="addCustomTag.$invalid">
             <input type="button" class="btn btn-danger" value="Close" ng-click="closeModal()">
         </div>
     </form>
