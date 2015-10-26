@@ -193,8 +193,8 @@ app.directive('contentTable',
                     Array.prototype.push.apply(dataSorting, scope.tableInfo.head);
                 });
 
-                scope.selectSort = function (index) {
-                    if (pageable.property == $filter('camelCase')(scope.tableInfo.head[index].property)) {
+                scope.selectSort = function (property) {
+                    if (pageable.property == property) {
                         if (pageable.direction != 'DESC') {
                             return 'glyphicon glyphicon-sort-by-alphabet'
                         } else {
@@ -215,10 +215,10 @@ app.directive('contentTable',
                     getData(pageable);
                 };
                 scope.sorting = function(type){
-                    if(pageable.property == $filter('camelCase')(type)) {
+                    if(pageable.property == type) {
                         pageable.direction = pageable.direction == 'ASC' ? 'DESC' : 'ASC';
                     } else {
-                        pageable.property = $filter('camelCase')(type);
+                        pageable.property = type;
                         pageable.direction = 'DESC';
                     }
                     getData(pageable);

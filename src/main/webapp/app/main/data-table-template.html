@@ -1,11 +1,26 @@
 <div class="col-sm-12 col-xs-12 col-md-12" ng-show="tableInfo.data.$resolved">
     <table class="table" ng-hide="mobileDevice && !tabletLandscape">
         <tr>
-            <th ng-repeat="(index, value) in tableInfo.head"  width="{{value.width}}" ng-click="sorting(value.property)" ng-class="value.class">
+            <th ng-repeat="(index, value) in tableInfo.head"
+                width="{{value.width}}"
+                ng-click="sorting(value.property)"
+                ng-class="value.class">
                 {{value.name}}
-                <span ng-class="selectSort(index)"></span>
+                <span ng-class="selectSort(value.property)"></span>
             </th>
-            <th ng-show="tableInfo.htmlBinding" ng-repeat="binding in tableInfo.htmlBinding" ng-bind="binding.head" width="{{binding.width}}" ng-class="binding.desktopClass">
+            <th ng-show="tableInfo.htmlBinding && !binding.sorted"
+                ng-repeat="binding in tableInfo.htmlBinding"
+                ng-bind="binding.head"
+                width="{{binding.width}}"
+                ng-class="binding.desktopClass">
+            </th>
+            <th ng-show="tableInfo.htmlBinding && binding.sorted"
+                ng-repeat="binding in tableInfo.htmlBinding"
+                ng-click="sorting(binding.property)"
+                width="{{binding.width}}"
+                ng-class="binding.desktopClass">
+                {{binding.head}}
+                <span ng-class="selectSort(binding.property)"></span>
             </th>
             <th colspan="2" ng-show="tableInfo.dataButtons"></th>
         </tr>

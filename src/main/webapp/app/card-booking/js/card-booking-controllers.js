@@ -64,23 +64,25 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
             dataTemplate: 'app/card-booking/table-template.html',
             factory: PersonBookedDiscountCardsFactory,
             head: [
-                {name: 'Card #', property: 'discount_card.card_number', width: '10%'},
-                {name: 'Company', property: 'discount_card.company_name', width: '20%'},
-                {name: 'Start', property: 'booking_start_date', width: '15%', class: 'center'},
-                {name: 'End', property: 'booking_end_date', width: '15%', class: 'center'}
+                {name: 'Card #', property: 'discountCard.cardNumber', width: '10%'},
+                {name: 'Company', property: 'discountCard.companyName', width: '20%'},
+                {name: 'Start', property: 'bookingStartDate', width: '15%', class: 'center'},
+                {name: 'End', property: 'bookingEndDate', width: '15%', class: 'center'}
             ],
             filteredProperties: [
-                {property: 'booking_start_date', filter: $filter('dateFilter')},
-                {property: 'booking_end_date', filter: $filter('dateFilter')}
+                {property: 'bookingStartDate', filter: $filter('dateFilter')},
+                {property: 'bookingEndDate', filter: $filter('dateFilter')}
             ],
             dataButtons: {
                 desktop: 'app/card-booking/booked-buttons.html'
             },
             htmlBinding: [{
                 head: 'Picked',
-                width: '5%',
+                sorted: true,
+                property: 'discountCard.picked',
+                width: '10%',
                 desktopClass: 'center',
-                desktop: $sce.trustAsHtml('<boolean value="{{data.discount_card.picked}}"></boolean>')
+                desktop: $sce.trustAsHtml('<boolean value="{{data.discountCard.picked}}"></boolean>')
             }]
         };
         $scope.cardBookingsTableInfo = {
@@ -88,15 +90,15 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
             dataTemplate: 'app/card-booking/table-template.html',
             factory: PersonDiscountCardBookingsFactory,
             head: [
-                {name: 'Card #', property: 'discount_card.card_number', width: '10%'},
-                {name: 'Company', property: 'discount_card.company_name', width: '20%'},
+                {name: 'Card #', property: 'discountCard.cardNumber', width: '10%'},
+                {name: 'Company', property: 'discountCard.companyName', width: '20%'},
                 {name: 'Person', property: 'person.name'},
-                {name: 'Start', property: 'booking_start_date', width: '10%', class: 'center'},
-                {name: 'End', property: 'booking_end_date', width: '10%', class: 'center'}
+                {name: 'Start', property: 'bookingStartDate', width: '10%', class: 'center'},
+                {name: 'End', property: 'bookingEndDate', width: '10%', class: 'center'}
             ],
             filteredProperties: [
-                {property: 'booking_start_date', filter: $filter('dateFilter')},
-                {property: 'booking_end_date', filter: $filter('dateFilter')}
+                {property: 'bookingStartDate', filter: $filter('dateFilter')},
+                {property: 'bookingEndDate', filter: $filter('dateFilter')}
             ],
             dataButtons: {
                 desktop: 'app/card-booking/bookings-buttons.html'
@@ -105,7 +107,7 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
                 head: 'Picked',
                 width: '5%',
                 desktopClass: 'center',
-                desktop: $sce.trustAsHtml('<boolean value="{{data.discount_card.picked}}"></boolean>')
+                desktop: $sce.trustAsHtml('<boolean value="{{data.discountCard.picked}}"></boolean>')
             }]
         };
     }

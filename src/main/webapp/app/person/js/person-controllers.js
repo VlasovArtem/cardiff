@@ -174,6 +174,8 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
                 mobile: 'app/person/table-buttons-mobile.html'},
             htmlBinding: [{
                 head: 'Deleted',
+                sorted: true,
+                property: 'deleted',
                 width: '7%',
                 desktopClass: 'center',
                 desktop: $sce.trustAsHtml('<boolean value="{{data.deleted}}"></boolean>')
