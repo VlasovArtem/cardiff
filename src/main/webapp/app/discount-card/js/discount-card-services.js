@@ -3,11 +3,20 @@ var service = angular.module('discount-card-services', ['ngResource']);
 service.factory('AddDiscountCardFactory', ['$resource', function($resource) {
     return $resource('/rest/card/add');
 }]);
-
+service.factory('UpdateDiscountCardFactory', ['$resource', function($resource) {
+    return $resource('/rest/card/update', {}, {
+        update: {
+            method: 'PUT'
+        }
+    });
+}]);
 service.factory('DiscountCardFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/check', {}, {
+    return $resource('/rest/card/:check/:get/:cardId', {}, {
         check: {
-            method: 'GET'
+            method: 'GET',
+            params: {
+                check : 'check'
+            }
         }
     })
 }]);

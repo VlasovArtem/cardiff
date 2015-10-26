@@ -1,9 +1,9 @@
-<section id="add-discount-card" class="container-fluid">
-    <h2 class="col-md-12">Add Discount Card</h2>
+<section id="update-discount-card" class="container-fluid">
+    <h2 class="col-md-12">Update Discount Card</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
     <form class="col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 col-sm-offset-2 col-sm-8 col-xs-10 col-xs-offset-1"
-          name="add">
-        <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
+          name="updateForm">
+        <div class="form-group has-feedback" show-errors="{ showSuccess: true, showWarning: true }">
             <label for="cardNumber">Card number</label>
             <input class="form-control"
                    type="number"
@@ -13,38 +13,38 @@
                    ng-minlength="1"
                    pattern="^[1-9]\d*"
                    id="cardNumber"
-                   name="cardNumber"
+                   name="card_number"
                    autocomplete="off"
                    required
-                   ng-model="card.card_number"
+                   ng-model="updatedData.card_number"
                    number-validator/>
             <div validation-messages
-                 model-controller="add.cardNumber"
+                 model-controller="updateForm.card_number"
                  minlength-error="Card number is too short"
                  maxlength-error="Card number is too long"
                  required-error="Card number is required"
                  pattern-error="Card number should be between 1 and max number"
                  number-error="Card number should contains only numbers"></div>
         </div>
-        <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
+        <div class="form-group has-feedback" show-errors="{ showSuccess: true, showWarning: true }">
             <label for="companyName">Company name</label>
             <input type="text"
                    class="form-control"
-                   name="companyName"
+                   name="company_name"
                    placeholder="Input Company Name"
                    id="companyName"
                    ng-minlength="1"
                    ng-maxlength="50"
-                   ng-model="card.company_name"
+                   ng-model="updatedData.company_name"
                    required/>
             <div validation-messages
-                 model-controller="add.companyName"
+                 model-controller="updateForm.company_name"
                  minlength-error="Company name is too short"
                  maxlength-error="Company name is too long"
                  required-error="Company name is required"></div>
         </div>
         <div class="form-group has-feedback"
-             show-errors="{ showSuccess: true }">
+             show-errors="{ showSuccess: true, showWarning: true }">
             <label for="amountOfDiscount">Discount</label>
             <input type="number"
                    class="form-control"
@@ -53,11 +53,11 @@
                    min="0"
                    max="100"
                    pattern="^(?!0|$)[0-9][0-9]?$|^100$"
-                   name="amountOfDiscount"
-                   ng-model="card.amount_of_discount"
+                   name="amount_of_discount"
+                   ng-model="updatedData.amount_of_discount"
                    number-validator/>
             <div validation-messages
-                 model-controller="add.amountOfDiscount"
+                 model-controller="updateForm.amount_of_discount"
                  pattern-error="Amount of discount could be only for 1 - 100%"
                  number-error="Card number should contains only numbers"></div>
         </div>
@@ -70,15 +70,15 @@
                       cols="30" rows="10"
                       ng-minlength="0"
                       ng-maxlength="500"
-                      ng-model="card.description"></textarea>
+                      ng-model="updatedData.description"></textarea>
             <div validation-messages
-                 model-controller="add.description"
+                 model-controller="updateForm.description"
                  maxlength-error="Description is too long"></div>
         </div>
         <div class="form-group">
-            <label>Tags <span ng-if="card.tags.length == 3">- You exceed maximum of tags</span></label>
+            <label>Tags <span ng-if="updatedData.tags.length == 3">- You exceed maximum of tags</span></label>
             <div>
-                <ui-select multiple ng-model="card.tags" limit="3">
+                <ui-select multiple ng-model="updatedData.tags" limit="3">
                     <ui-select-match placeholder="Select tags...">{{$item.tag}}</ui-select-match>
                     <ui-select-choices repeat="tag in tags | filter: $select.search" >
                         {{tag.tag}}
@@ -87,8 +87,9 @@
             </div>
         </div>
         <div class="form-group buttons">
-            <input type="button" class="btn btn-success btn-lg" value="Add" ng-disabled="add.$invalid" ng-click="addNewCard()"/>
-            <input type="button" class="btn btn-primary btn-lg" value="Reset" ng-click="reset()"/>
+            <input type="button" class="btn btn-warning" value="Update" ng-disabled="cardIsEquals() || updateForm.$invalid"
+                   ng-click="updateCard()"/>
+            <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
         </div>
     </form>
 </section>

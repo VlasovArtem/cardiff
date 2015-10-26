@@ -41,6 +41,10 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
     @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.cardNumber = ?1 AND UPPER(cd.companyName) = UPPER(?2)")
     boolean existsByNumberAndCompanyName(long number, String companyName);
 
+    @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd " +
+            "WHERE cd.id = ?1 AND cd.owner.id = ?2")
+    boolean existsByDiscountCardIdAndOwnerId(long discountCardId, long ownerId);
+
     @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.id = ?1 AND cd.picked = true")
     boolean isPicked (long id);
 

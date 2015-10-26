@@ -4,6 +4,7 @@ import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.service.DiscountCardService;
+import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.DataUniqueException;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
@@ -41,7 +42,17 @@ public class DiscountCardServiceImpl implements DiscountCardService {
 
     @Override
     public void update (DiscountCard card) {
-        throw new UnsupportedOperationException();
+        Optional<DiscountCard> updatedCard = discountCardRepository.findById(card.getId());
+        if(!updatedCard.isPresent()) {
+            throw new EntityValidationException("Card with using discount card id is not exists");
+        } else if (discountCardRepository.existsByNumberAndCompanyName(card.getCardNumber(), card.getCompanyName())) {
+            if(!discountCardRepository.existsByDiscountCardIdAndOwnerId(card.getId(), AuthenticatedPersonPrincipalUtil
+                    .getAuthenticationPrincipal().get().getId())) {
+                throw new EntityValidationException("Card with this company companyName or number already exist");
+            }
+        }
+        DiscountCardValidator.validate(card);
+        EntityUpdater.update(Optional.of(card), updatedCard);
     }
 
     @Override

@@ -116,6 +116,18 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                     }
                 }
             }).
+            when('/card/update/:cardId', {
+                templateUrl: 'app/discount-card/update-discount-card.html',
+                controller: 'UpdateDiscountCardCtrl',
+                resolve : {
+                    discountCard: function(DiscountCardFactory, $route) {
+                        return DiscountCardFactory.get({get : 'get', cardId : $route.current.params.cardId}).$promise;
+                    },
+                    tags: function(TagFactory) {
+                        return TagFactory.query();
+                    }
+                }
+            }).
             when('/card/add', {
                 templateUrl: 'app/discount-card/add.html',
                 controller: 'AddCtrl',

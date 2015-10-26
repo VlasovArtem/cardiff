@@ -2,7 +2,7 @@ var app = angular.module('person-filters', []);
 
 app.filter('accountFilter', function() {
     return function(key) {
-        var withOutUnderscore = key.replace("_", " ");
+        var withOutUnderscore = key.replace(/_/gm, " ");
         var capitalized = withOutUnderscore.charAt(0).toUpperCase().slice(0,1);
         return capitalized.concat(withOutUnderscore.substr(1, withOutUnderscore.length - 1));
     }

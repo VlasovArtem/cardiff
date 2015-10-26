@@ -82,8 +82,18 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
             maskDefinitions : {'4': /\d/, 'S': /[1-9]/}
         };
         var wipeFormInfo = function () {
-            _.each(angular.element.find('.form-control-feedback'), function(elem) {
-                elem.remove();
+            var removableClasses = ["has-error", "has-warning", "has-success"];
+            var removableElements = [".form-control-feedback", ".help-block"];
+            _.each(removableElements, function(value) {
+                _.each(angular.element.find(value), function(elem) {
+                    elem.remove();
+                })
+            });
+            _.each(angular.element.find('div.has-feedback'), function (elem) {
+
+                _.each(removableClasses, function(removableClass) {
+                    angular.element(elem).removeClass(removableClass);
+                });
             });
             _.each($scope.updateFrom, function(value) {
                 if(angular.isDefined(value)) {

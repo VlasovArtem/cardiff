@@ -57,13 +57,19 @@ public class EntityUpdater {
      * @return List of updated fields if object class name matches with switch case.
      */
     private static List<String> getUpdatedFields(Object updatedObject) {
-        String className = updatedObject.getClass().getSimpleName();
+        UpdatedEntity updatedEntity = UpdatedEntity.valueOf(updatedObject.getClass().getSimpleName().toUpperCase());
         List<String> updatedFields = null;
-        switch(className) {
-            case "Person":
+        switch(updatedEntity) {
+            case PERSON:
                 updatedFields = Arrays.asList("name", "login", "email", "phoneNumber", "description", "location");
                 break;
+            case DISCOUNTCARD:
+                updatedFields = Arrays.asList("cardNumber", "companyName", "amountOfDiscount", "description", "tags");
         }
         return updatedFields;
+    }
+
+    private enum UpdatedEntity {
+        PERSON, DISCOUNTCARD
     }
 }
