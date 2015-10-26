@@ -52,8 +52,8 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
             htmlBinding: [{
                 head: 'Tags',
                 desktopClass: 'tags',
-                desktop: $sce.trustAsHtml('<span class="label label-success tag-label" ng-repeat="tag in data.tags | orderBy :\'id\'" ng-bind="tag.tag" ng-click="tagSearch(tag)"></span>'),
-                mobile: $sce.trustAsHtml('<span class="label label-success tag-label" ng-repeat="tag in data.tags | orderBy : \'id\'" ng-bind="tag.tag" ng-click="tagSearch(tag)"></span>')
+                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy :\'id\'" ng-bind="tag.tag"></span>'),
+                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy : \'id\'" ng-bind="tag.tag"></span>')
             }]
         };
 
@@ -66,9 +66,6 @@ app.controller('DiscountCardsFunctionCtrl', ['$scope', '$sessionStorage', '$loca
             $sessionStorage.cardId = discountCardId;
             $location.path('/card/info');
         };
-        $scope.tagSearch = function() {
-            console.log('Tag search');
-        }
     }
 ]);
 

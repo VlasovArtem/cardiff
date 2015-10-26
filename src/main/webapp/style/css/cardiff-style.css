@@ -60,11 +60,6 @@ table tr > th {
 .unavailable {
     background-color: rgba(192, 192, 192, .2);
 }
-/*.view {*/
-    /*height: auto;*/
-    /*margin: 0 auto -200px;*/
-    /*padding: 0 0 300px*/
-/*}*/
 footer {
     display: none;
     height: 20%;
@@ -87,6 +82,14 @@ footer > h2 {
 h2, .buttons {
     text-align: center;
 }
+
+.tag-label {
+    cursor: pointer;
+}
+.tag-label:hover {
+    background-color: #0a8f1b
+}
+
 .navbar-cardiff {
     background-color: rgba(72, 110, 143, 1) !important;
     border-radius: 0 !important;
