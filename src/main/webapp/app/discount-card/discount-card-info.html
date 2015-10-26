@@ -7,9 +7,10 @@
             very useful to you.
         </p>
         <ul class="list-group col-md-7">
-            <li class="list-group-item"><b>Company:</b> {{cardInfo.company_name}}</li>
+            <li class="list-group-item"><b>Company:</b> {{cardInfo.companyName}}</li>
             <li class="list-group-item"><b>Description:</b> {{cardInfo.description}}</li>
-            <li class="list-group-item"><b>Discount:</b> {{cardInfo.amount_of_discount > 0 ? cardInfo.amount_of_discount + '%' : 'n/a' }}</li>
+            <li class="list-group-item"><b>Discount:</b> {{cardInfo.amountOfDiscount > 0 ? cardInfo.amountOfDiscount
+                + '%' : 'n/a' }}</li>
             <li class="list-group-item tags" ng-show="cardInfo.tags.length > 0">
                 <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
             </li>
@@ -45,7 +46,7 @@
         <ul class="list-group col-md-7">
             <li class="list-group-item"><b>Name:</b> {{owner.name}}</li>
             <li class="list-group-item"><b>Email:</b> {{owner.email}}</li>
-            <li class="list-group-item"><b>Phone Number:</b> {{owner.phone_number | phoneNumberFilter : owner.location.country}}</li>
+            <li class="list-group-item"><b>Phone Number:</b> {{owner.phoneNumber | phoneNumberFilter : owner.location.country}}</li>
             <li class="list-group-item"><b>Location:</b> {{owner.location.city + ', ' + owner.location.country}}</li>
         </ul>
     </article>
@@ -53,14 +54,15 @@
 <section id="auth-person-card" class="container" ng-show="authenticated && authPersonDiscountCard">
     <h2>This is your discount card</h2>
 </section>
-<hr class="style" ng-show="cardInfo.discount_card_comments.length > 0 && authenticated && !authPersonDiscountCard"/>
-<section id="comments" class="col-md-12" ng-show="cardInfo.discount_card_comments.length > 0 && authenticated && !authPersonDiscountCard">
+<hr class="style" ng-show="cardInfo.discountCardComments.length > 0 && authenticated && !authPersonDiscountCard"/>
+<section id="comments" class="col-md-12"
+         ng-show="cardInfo.discountCardComments.length > 0 && authenticated && !authPersonDiscountCard">
     <h2>Comments</h2>
     <div class="container-fluid">
-        <div class="col-md-2 col-sm-3 col-xs-4" ng-repeat="comment in cardInfo.discount_card_comments">
+        <div class="col-md-2 col-sm-3 col-xs-4" ng-repeat="comment in cardInfo.discountCardComments">
             <div class="col-md-offset-1 col-md-10 comment">
                 <span class="col-md-12" ng-bind="comment.comment"></span>
-                <span class="col-md-12 comment-date" ng-bind="comment.created_date | dateFilter"></span>
+                <span class="col-md-12 comment-date" ng-bind="comment.createdDate | dateFilter"></span>
             </div>
         </div>
     </div>

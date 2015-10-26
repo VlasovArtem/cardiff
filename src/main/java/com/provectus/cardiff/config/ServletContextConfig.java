@@ -28,7 +28,6 @@ public class ServletContextConfig extends WebMvcConfigurerAdapter {
                 .json()
                 .defaultViewInclusion(true)
                 .autoDetectFields(true)
-                .propertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
                 .build();
         converters.add(new MappingJackson2HttpMessageConverter(mapper));
     }

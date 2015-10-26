@@ -13,13 +13,13 @@
                    ng-minlength="1"
                    pattern="^[1-9]\d*"
                    id="cardNumber"
-                   name="card_number"
+                   name="cardNumber"
                    autocomplete="off"
                    required
-                   ng-model="updatedData.card_number"
+                   ng-model="updatedData.cardNumber"
                    number-validator/>
             <div validation-messages
-                 model-controller="updateForm.card_number"
+                 model-controller="updateForm.cardNumber"
                  minlength-error="Card number is too short"
                  maxlength-error="Card number is too long"
                  required-error="Card number is required"
@@ -30,15 +30,15 @@
             <label for="companyName">Company name</label>
             <input type="text"
                    class="form-control"
-                   name="company_name"
+                   name="companyName"
                    placeholder="Input Company Name"
                    id="companyName"
                    ng-minlength="1"
                    ng-maxlength="50"
-                   ng-model="updatedData.company_name"
+                   ng-model="updatedData.companyName"
                    required/>
             <div validation-messages
-                 model-controller="updateForm.company_name"
+                 model-controller="updateForm.companyName"
                  minlength-error="Company name is too short"
                  maxlength-error="Company name is too long"
                  required-error="Company name is required"></div>
@@ -53,11 +53,11 @@
                    min="0"
                    max="100"
                    pattern="^(?!0|$)[0-9][0-9]?$|^100$"
-                   name="amount_of_discount"
-                   ng-model="updatedData.amount_of_discount"
+                   name="amountOfDiscount"
+                   ng-model="updatedData.amountOfDiscount"
                    number-validator/>
             <div validation-messages
-                 model-controller="updateForm.amount_of_discount"
+                 model-controller="updateForm.amountOfDiscount"
                  pattern-error="Amount of discount could be only for 1 - 100%"
                  number-error="Card number should contains only numbers"></div>
         </div>

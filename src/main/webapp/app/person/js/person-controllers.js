@@ -27,14 +27,14 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
         $scope.changeMask = function(country) {
             if(angular.isDefined(country)) {
                 $scope.mask = $scope.phoneNumberInfo[country].mask;
-                $scope.person.phone_number = null;
+                $scope.person.phoneNumber = null;
             }
         };
     }
 ]);
 
-app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$filter', '$sessionStorage',
-    function($scope, $location, personData, changePassword, $filter, $sessionStorage) {
+app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassword', '$filter', '$sessionStorage', '$route',
+    function($scope, $location, personData, changePassword, $filter, $sessionStorage, $route) {
         $scope.person = personData;
 
         $scope.changePassword = function() {
@@ -48,7 +48,7 @@ app.controller('AccountCtrl', ['$scope', '$location', 'personData', 'changePassw
                     newPassword: $scope.personInfo.newPassword
                 }), function() {
                     alert('Password successfully changed');
-                    $scope.personInfo = null;
+                    $route.reload();
                 }, function(data) {
                     $scope.errorFn(data.data.error);
                 })
@@ -109,7 +109,7 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
         $scope.data = angular.copy(personData);
         $scope.personIsEquals = function() {
             if($scope.data != undefined && $scope.changedPerson != undefined) {
-                return _.every(["name", "login", "email", "phone_number", "location", "description"], function (data) {
+                return _.every(["name", "login", "email", "phoneNumber", "location", "description"], function (data) {
                     return _.isEqual($scope.data[data], $scope.changedPerson[data]) || $scope.data[data] == $scope.changedPerson[data]
                 });
             }
@@ -122,9 +122,9 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
             if(angular.isDefined(country)) {
                 $scope.mask = $scope.phoneNumberInfo[country].mask;
                 if ($scope.data.location.country != $scope.changedPerson.location.country) {
-                    $scope.changedPerson.phone_number = null;
+                    $scope.changedPerson.phoneNumber = null;
                 } else {
-                    $scope.changedPerson.phone_number = $scope.data.phone_number;
+                    $scope.changedPerson.phoneNumber = $scope.data.phoneNumber;
                 }
             }
         };
@@ -162,13 +162,13 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
                 {name : 'Name', property : 'name', width: '15%'},
                 {name : 'Login', property: 'login', width: '10%'},
                 {name : 'Email', property: 'email', width: '18%'},
-                {name : 'Phone', property: 'phone_number', width: '15%'},
+                {name : 'Phone', property: 'phoneNumber', width: '15%'},
                 {name : 'Role', property: 'role', width: '7%', class: 'center'},
-                {name : 'Created', property: 'created_date', width: '10%'}
+                {name : 'Created', property: 'createdDate', width: '10%'}
             ],
             filteredProperties: [
-                {property: 'created_date', filter: $filter('dateFilter')},
-                {property: 'phone_number', filter: $filter('phoneNumberFilter')}
+                {property: 'createdDate', filter: $filter('dateFilter')},
+                {property: 'phoneNumber', filter: $filter('phoneNumberFilter')}
             ],
             dataButtons : {desktop: 'app/person/table-buttons-desktop.html',
                 mobile: 'app/person/table-buttons-mobile.html'},

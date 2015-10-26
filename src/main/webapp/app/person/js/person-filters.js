@@ -1,13 +1,5 @@
 var app = angular.module('person-filters', []);
 
-app.filter('accountFilter', function() {
-    return function(key) {
-        var withOutUnderscore = key.replace(/_/gm, " ");
-        var capitalized = withOutUnderscore.charAt(0).toUpperCase().slice(0,1);
-        return capitalized.concat(withOutUnderscore.substr(1, withOutUnderscore.length - 1));
-    }
-});
-
 app.filter('phoneNumberFilter', function() {
     return function(phoneNumber, country) {
         if(angular.isDefined(phoneNumber) && angular.isDefined(country)) {
@@ -55,26 +47,11 @@ app.filter('phoneNumberFilter', function() {
     }
 });
 
-app.filter('camelCase', function() {
-    return function(input) {
-        var replace = function(text) {
-            return text.replace(/_.*/g, function(txt) {
-                txt = txt.replace("_", "");
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
-            });
-        };
-        do {
-            input = replace(input)
-        } while(input.indexOf("_") > -1);
-        return input;
-    }
-});
-
 app.filter('accountTable', function() {
     return function(data) {
         var person = {};
         if(data.$resolved) {
-            var ignoredKeys = ['discount_cards', 'id', 'created_date', 'role', 'deleted'];
+            var ignoredKeys = ['discountCards', 'id', 'createdDate', 'role', 'deleted'];
             _.each(data, function(value, key) {
                 if(ignoredKeys.indexOf(key) == -1) {
                     person[key] = value;

@@ -16,3 +16,21 @@ app.filter('dateFilter', function() {
         return filteredDate;
     }
 });
+
+app.filter('camelCaseFilter', function() {
+    return function(convertedText) {
+        var returnedString = "";
+        var firstWordIsSetted = false;
+        convertedText.replace(/([A-Z][a-z]*)|([a-z]*)/g, function(text) {
+            if(text != "") {
+                if (!firstWordIsSetted) {
+                    returnedString = returnedString + text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+                    firstWordIsSetted = true;
+                } else {
+                    returnedString = returnedString + " " + text.toLowerCase();
+                }
+            }
+        });
+        return returnedString;
+    }
+});

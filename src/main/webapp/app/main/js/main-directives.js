@@ -114,7 +114,7 @@ app.directive('contentTable',
                 ];
                 scope.currentPageSize = scope.pageSize[0];
                 scope.tableData = scope.tableInfo.data.content;
-                scope.totalItems = scope.tableInfo.data.total_elements;
+                scope.totalItems = scope.tableInfo.data.totalElements;
                 var tabletLandscapeWidth = 960,
                     currentWidth = window.outerWidth,
                     sortInfo = scope.tableInfo.data.sort[0],
@@ -131,7 +131,7 @@ app.directive('contentTable',
                 var getData = function(pageable) {
                     scope.tableInfo.factory.get(pageable).$promise.then(function(data) {
                         scope.tableData = data.content;
-                        scope.totalItems = data.total_elements;
+                        scope.totalItems = data.totalElements;
                     });
                 };
 
@@ -151,7 +151,7 @@ app.directive('contentTable',
                     var contains = _.some(scope.tableInfo.filteredProperties, function(value) {
                         if(scope.tableInfo.head[headDataIndex].property == value.property) {
                             if(value.filter) {
-                                if(value.property.indexOf('phone_number') > -1) {
+                                if(value.property.indexOf('phoneNumber') > -1) {
                                     if(value.property.indexOf('.') > -1) {
                                         data = value.filter(getNestedData(dataIndex, value.property), getNestedData(dataIndex, value.property.split(".")[0].concat(".location.country")))
                                     } else {
@@ -314,7 +314,6 @@ app.directive('boolean', function() {
                 element.append('<span class="not-picked glyphicon glyphicon-remove"></span>')
             }
         }
-
     }
 });
 
@@ -328,27 +327,5 @@ app.directive('adminNav', function() {
         replace: true,
         controller: controller,
         templateUrl: 'app/main/admin-navigation.html'
-    }
-});
-
-app.directive('personNav', function() {
-    var controller = ['$scope', function($scope) {}];
-    return {
-        replace: true,
-        controller: controller,
-        templateUrl: 'app/main/person-navigation.html'
-    }
-});
-
-app.directive('regNav', function() {
-    return {
-        replace: true,
-        template:
-            '<div class="navigation-bar">' +
-                '<ul class="nav navbar-nav navbar-right">' +
-                    '<li><a href="/signin">Sign in</a></li>' +
-                    '<li><a href="/signup">Sign up</a></li>' +
-                '</ul>' +
-            '</div>'
     }
 });

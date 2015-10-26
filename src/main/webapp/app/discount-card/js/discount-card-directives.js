@@ -11,7 +11,7 @@ app.directive('cardSearch', ['DiscountCardSearchFactory', function(DiscountCardS
                     if(search) clearTimeout(search);
                     if(!ctrl.$pristine) {
                         search = setTimeout(function() {
-                            DiscountCardSearchFactory.searchByName({company_name: newValue}).$promise.then(
+                            DiscountCardSearchFactory.searchByName({companyName: newValue}).$promise.then(
                                 function(data) {
                                     scope.companies = data;
                                 },

@@ -43,7 +43,7 @@ app.controller('SearchCtrl', ['$scope', 'DiscountCardSearchFactory', '$sessionSt
         };
         $scope.refreshData = function(data) {
             if(data != "") {
-                DiscountCardSearchFactory.searchByName({company_name: data}).$promise.then(
+                DiscountCardSearchFactory.searchByName({companyName: data}).$promise.then(
                     function(data) { $scope.companies = data; },
                     function() { $scope.companies = []; })
             } else {

@@ -30,11 +30,11 @@ app.controller('AdminTagCtrl', ['$scope', '$location', 'customTags', 'tags', 'Ad
                 {name: 'Author name', property: 'author.name', width: '15%'},
                 {name: 'Author email', property: 'author.email', width: '20%'},
                 {name: 'Tag', property: 'tag', width: '10%'},
-                {name: 'Created', property: 'created_date', width: '10%'},
+                {name: 'Created', property: 'createdDate', width: '10%'},
                 {name: 'Description', property: 'description', width: '25%'}
             ],
             filteredProperties: [
-                {property: 'created_date', filter: $filter('dateFilter')}
+                {property: 'createdDate', filter: $filter('dateFilter')}
             ],
             dataButtons: {
                 desktop: 'app/tag/tag-buttons-desktop.html'

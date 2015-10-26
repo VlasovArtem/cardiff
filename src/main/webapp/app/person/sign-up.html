@@ -117,7 +117,7 @@
                        name="phoneNumber"
                        id="phone-number"
                        ng-minlength="9"
-                       ng-model="person.phone_number"
+                       ng-model="person.phoneNumber"
                        ui-mask="{{mask}}"
                        ui-options="uiMaskOptions"
                        ensure-unique
@@ -130,7 +130,7 @@
                  required-error="Phone number is required"
                  minlength-error="Phone number should 9 symbols length"
                  unique-error="Phone number is already exists"></div>
-            <form-error error="error.data.phone_number" form="signUp.phoneNumber"></form-error>
+            <form-error error="error.data.phoneNumber" form="signUp.phoneNumber"></form-error>
         </div>
         <div class="form-group">
             <label for="description">Info</label>

@@ -16,7 +16,7 @@
                    name="cardNumber"
                    autocomplete="off"
                    required
-                   ng-model="card.card_number"
+                   ng-model="card.cardNumber"
                    number-validator/>
             <div validation-messages
                  model-controller="add.cardNumber"
@@ -35,7 +35,7 @@
                    id="companyName"
                    ng-minlength="1"
                    ng-maxlength="50"
-                   ng-model="card.company_name"
+                   ng-model="card.companyName"
                    required/>
             <div validation-messages
                  model-controller="add.companyName"
@@ -54,7 +54,7 @@
                    max="100"
                    pattern="^(?!0|$)[0-9][0-9]?$|^100$"
                    name="amountOfDiscount"
-                   ng-model="card.amount_of_discount"
+                   ng-model="card.amountOfDiscount"
                    number-validator/>
             <div validation-messages
                  model-controller="add.amountOfDiscount"

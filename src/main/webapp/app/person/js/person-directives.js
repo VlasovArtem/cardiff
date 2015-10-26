@@ -10,12 +10,12 @@ app.directive('accountData',
                 country: '='
             },
             link: function(scope, element, attrs) {
-                if(scope.label == 'phone_number') {
+                if(scope.label == 'phoneNumber') {
                     scope.data = $filter('phoneNumberFilter')(scope.data, scope.country)
                 } else if(scope.label == 'location') {
                     scope.data = scope.data.city + ', ' + scope.data.country;
                 }
-                scope.label = $filter('accountFilter')(scope.label);
+                scope.label = $filter('camelCaseFilter')(scope.label);
             },
             template: '<td ng-bind="label" class="key"></td>' +
             '<td ng-bind="data"></td>'

@@ -7,13 +7,12 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
         $scope.today = new Date();
         $scope.addNewCard = function () {
             DiscountCardFactory.check({
-                cardNumber: $scope.card.card_number,
-                companyName: $scope.card.company_name
+                cardNumber: $scope.card.cardNumber,
+                companyName: $scope.card.companyName
             }, function() {
-                $scope.card.company_name = $filter('camelCase')($scope.card.company_name);
+                console.log($scope.card);
                 AddDiscountCardFactory.save($scope.card, function() {
-                    $location.hash('discount_cards');
-                    $location.path('/account')
+                    $location.path('/account');
                 }, function(data) {
                     $scope.error = data.data.error;
                 })
@@ -37,15 +36,15 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
             factory: DiscountCardsFactory,
             rowClass: 'unavailable',
             head: [
-                {name: 'Card #', property: 'card_number', width: '10%'},
-                {name: 'Company', property: 'company_name', width: '20%'},
-                {name: 'Discount', property: 'amount_of_discount', width: '9%', class: 'center'},
+                {name: 'Card #', property: 'cardNumber', width: '10%'},
+                {name: 'Company', property: 'companyName', width: '20%'},
+                {name: 'Discount', property: 'amountOfDiscount', width: '9%', class: 'center'},
                 {name: 'Description', property: 'description', width: '25%'},
-                {name: 'Created', property: 'created_date', width: '10%', class: 'center'}
+                {name: 'Created', property: 'createdDate', width: '10%', class: 'center'}
             ],
             filteredProperties: [
-                {property: 'created_date', filter: $filter('dateFilter')},
-                {property: 'amount_of_discount', appender: ' %'}
+                {property: 'createdDate', filter: $filter('dateFilter')},
+                {property: 'amountOfDiscount', appender: ' %'}
             ],
             dataButtons: {
                 desktop: 'app/discount-card/discount-cards-buttons.html'
@@ -115,15 +114,15 @@ app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards'
             dataTemplate: 'app/discount-card/table-data-template.html',
             factory: OwnerDiscountCardsFactory,
             head: [
-                {name: 'Card #', property: 'card_number', width: '10%'},
-                {name: 'Company', property: 'company_name', width: '20%'},
-                {name: 'Discount', property: 'amount_of_discount', width: '9%', class: 'center'},
+                {name: 'Card #', property: 'cardNumber', width: '10%'},
+                {name: 'Company', property: 'companyName', width: '20%'},
+                {name: 'Discount', property: 'amountOfDiscount', width: '9%', class: 'center'},
                 {name: 'Description', property: 'description', width: '25%'},
-                {name: 'Created', property: 'created_date', width: '10%', class: 'center'}
+                {name: 'Created', property: 'createdDate', width: '10%', class: 'center'}
             ],
             filteredProperties: [
-                {property: 'created_date', filter: $filter('dateFilter')},
-                {property: 'amount_of_discount', appender: ' %'}
+                {property: 'createdDate', filter: $filter('dateFilter')},
+                {property: 'amountOfDiscount', appender: ' %'}
             ],
             dataButtons: {
                 desktop: 'app/discount-card/account-discount-cards-buttons.html'
@@ -138,70 +137,73 @@ app.controller('AccountDiscountCardsCtrl', ['$scope', '$filter', 'discountCards'
     }
 ]);
 
-app.controller('AccountDiscountCardsFunctionCtrl', ['$scope', '$location', function($scope, $location) {
-    $scope.update = function(discountCardId) {
-        $location.path('/card/update/' + discountCardId);
-    }
-}]);
-
-app.controller('UpdateDiscountCardCtrl', ['$scope', 'discountCard', 'tags', 'UpdateDiscountCardFactory', '$location', function($scope, discountCard, tags, UpdateDiscountCardFactory, $location) {
-    console.log(_.isEqual("o", "O"));
-    $scope.tags = tags;
-    var wipeFormInfo = function () {
-        var removableClasses = ["has-error", "has-warning", "has-success"];
-        var removableElements = [".form-control-feedback", ".help-block"];
-        _.each(removableElements, function(value) {
-            _.each(angular.element.find(value), function(elem) {
-                elem.remove();
-            })
-        });
-        _.each(angular.element.find('div.has-feedback'), function (elem) {
-
-            _.each(removableClasses, function(removableClass) {
-                angular.element(elem).removeClass(removableClass);
-            });
-        });
-        _.each($scope.updateFrom, function(value) {
-            if(angular.isDefined(value)) {
-                if(value.$name) {
-                    value.$setPristine();
-                    value.$render();
-                }
-            }
-        });
-    };
-    $scope.updatedData = discountCard;
-    $scope.data = angular.copy(discountCard);
-    $scope.updateCard = function() {
-        UpdateDiscountCardFactory.update($scope.updatedData,
-            function() {
-                alert('Person data successfully changed');
-                $location.path('/account/cards');
-            },
-            function(data) {
-                $scope.error = data.data;
-            }
-        );
-    };
-    $scope.reset = function() {
-        wipeFormInfo();
-        $scope.updatedData = angular.copy($scope.data);
-    };
-
-    $scope.cardIsEquals = function() {
-        if($scope.data != undefined && $scope.updatedData != undefined) {
-            return _.every(["card_number", "company_name", "amount_of_discount", "description", "tags"], function (data) {
-                if(data == "tags") {
-                    return _.every($scope.updatedData.tags, function(updatedValue) {
-                        return _.some($scope.data.tags, function(reserveValue) {
-                            return _.isEqual(updatedValue.id, reserveValue.id);
-                        });
-                    })
-                } else {
-                    return _.isEqual($scope.data[data], $scope.updatedData[data]) || $scope.data[data] == $scope.updatedData[data];
-                }
-            });
+app.controller('AccountDiscountCardsFunctionCtrl', ['$scope', '$location',
+    function($scope, $location) {
+        $scope.update = function(discountCardId) {
+            $location.path('/card/update/' + discountCardId);
         }
-        return true;
-    };
-}]);
+    }
+]);
+
+app.controller('UpdateDiscountCardCtrl', ['$scope', 'discountCard', 'tags', 'UpdateDiscountCardFactory', '$location',
+    function($scope, discountCard, tags, UpdateDiscountCardFactory, $location) {
+        $scope.tags = tags;
+        var wipeFormInfo = function () {
+            var removableClasses = ["has-error", "has-warning", "has-success"];
+            var removableElements = [".form-control-feedback", ".help-block"];
+            _.each(removableElements, function(value) {
+                _.each(angular.element.find(value), function(elem) {
+                    elem.remove();
+                })
+            });
+            _.each(angular.element.find('div.has-feedback'), function (elem) {
+
+                _.each(removableClasses, function(removableClass) {
+                    angular.element(elem).removeClass(removableClass);
+                });
+            });
+            _.each($scope.updateFrom, function(value) {
+                if(angular.isDefined(value)) {
+                    if(value.$name) {
+                        value.$setPristine();
+                        value.$render();
+                    }
+                }
+            });
+        };
+        $scope.updatedData = discountCard;
+        $scope.data = angular.copy(discountCard);
+        $scope.updateCard = function() {
+            UpdateDiscountCardFactory.update($scope.updatedData,
+                function() {
+                    alert('Person data successfully changed');
+                    $location.path('/account/cards');
+                },
+                function(data) {
+                    $scope.error = data.data;
+                }
+            );
+        };
+        $scope.reset = function() {
+            wipeFormInfo();
+            $scope.updatedData = angular.copy($scope.data);
+        };
+
+        $scope.cardIsEquals = function() {
+            if($scope.data != undefined && $scope.updatedData != undefined) {
+                return _.every(["cardNumber", "companyName", "amountOfDiscount", "description", "tags"], function (data) {
+                    if(data == "tags") {
+                        return _.every($scope.updatedData.tags, function(updatedValue) {
+                            return _.some($scope.data.tags, function(reserveValue) {
+                                return _.isEqual(updatedValue.id, reserveValue.id);
+                            });
+                        })
+                    } else {
+                        return _.isEqual($scope.data[data], $scope.updatedData[data]) || $scope.data[data] == $scope.updatedData[data];
+                    }
+                });
+            }
+            return true;
+        };
+    }
+]);
