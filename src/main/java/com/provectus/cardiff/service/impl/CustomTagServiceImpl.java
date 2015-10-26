@@ -50,7 +50,7 @@ public class CustomTagServiceImpl implements CustomTagService {
             throw new IllegalArgumentException("Custom tag is already exists.");
         } else if(customTagRepository.countByAuthorId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal()
                 .get().getId()) > CUSTOM_TAG_LIMIT) {
-            throw new RuntimeException("Limit of custom tag is exceeded. Limit for custom tags is equals to 5.");
+            throw new RuntimeException("The maximum limit of custom tags has been reached. Limit for custom tags is equals to 5.");
         } else if(tagRepository.existsByTag(tag.getTag())) {
             throw new IllegalArgumentException("Tag is already exists in database");
         }

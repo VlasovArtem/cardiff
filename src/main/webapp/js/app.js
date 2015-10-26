@@ -85,7 +85,7 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                 }
             }).
             when('/admin/persons', {
-                templateUrl: 'app/person/custom-tag-admin-panel.html',
+                templateUrl: 'app/person/admin-panel.html',
                 controller: 'AdminPersonsCtrl',
                 resolve: {
                     persons: function(AdminPersonTableFactory) {

@@ -80,7 +80,7 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
                 head: 'Picked',
                 width: '5%',
                 desktopClass: 'center',
-                desktop: $sce.trustAsHtml('<boolean value="data.discount_card.picked"></boolean>')
+                desktop: $sce.trustAsHtml('<boolean value="{{data.discount_card.picked}}"></boolean>')
             }]
         };
         $scope.cardBookingsTableInfo = {
@@ -105,7 +105,7 @@ app.controller('PersonDiscountCardBookingsCtrl', ['$scope', 'PersonBookedDiscoun
                 head: 'Picked',
                 width: '5%',
                 desktopClass: 'center',
-                desktop: $sce.trustAsHtml('<boolean value="data.discount_card.picked"></boolean>')
+                desktop: $sce.trustAsHtml('<boolean value="{{data.discount_card.picked}}"></boolean>')
             }]
         };
     }

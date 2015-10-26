@@ -142,9 +142,8 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
     }
 ]);
 
-app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 'persons', 'AdminPersonFactory', 'AdminPersonTableFactory', '$sessionStorage',
-    function($scope, $location, $filter, $route, persons, AdminPersonFactory, AdminPersonTableFactory, $sessionStorage) {
-
+app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 'persons', 'AdminPersonFactory', 'AdminPersonTableFactory', '$sce',
+    function($scope, $location, $filter, $route, persons, AdminPersonFactory, AdminPersonTableFactory, $sce) {
         $scope.tableInfo = {
             data: persons,
             dataTemplate: 'app/person/table-data-template.html',
@@ -155,15 +154,20 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
                 {name : 'Email', property: 'email', width: '18%'},
                 {name : 'Phone', property: 'phone_number', width: '15%'},
                 {name : 'Role', property: 'role', width: '7%', class: 'center'},
-                {name : 'Created', property: 'created_date', width: '10%'},
-                {name : 'Deleted', property: 'deleted', width: '7%', class: 'center'}
+                {name : 'Created', property: 'created_date', width: '10%'}
             ],
             filteredProperties: [
                 {property: 'created_date', filter: $filter('dateFilter')},
                 {property: 'phone_number', filter: $filter('phoneNumberFilter')}
             ],
             dataButtons : {desktop: 'app/person/table-buttons-desktop.html',
-                mobile: 'app/person/table-buttons-mobile.html'}
+                mobile: 'app/person/table-buttons-mobile.html'},
+            htmlBinding: [{
+                head: 'Deleted',
+                width: '7%',
+                desktopClass: 'center',
+                desktop: $sce.trustAsHtml('<boolean value="{{data.deleted}}"></boolean>')
+            }]
         };
 
 
