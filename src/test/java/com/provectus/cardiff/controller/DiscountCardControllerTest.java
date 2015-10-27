@@ -84,10 +84,10 @@ public class DiscountCardControllerTest {
     @Before
     public void setUp() {
         node = JsonNodeFactory.instance.objectNode();
-        node.put("card_number", 999);
+        node.put("cardNumber", 999);
         node.put("description", "test description");
-        node.put("company_name", "test company");
-        node.put("amount_of_discount", 5);
+        node.put("companyName", "test company");
+        node.put("amountOfDiscount", 5);
         node.put("deleted", false);
         node.put("picked", false);
         discountCard = new DiscountCard();
@@ -96,8 +96,7 @@ public class DiscountCardControllerTest {
         discountCard.setDescription("test description");
         discountCard.setAmountOfDiscount(5);
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy
-                .CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        objectMapper = new ObjectMapper();
     }
 
     @Test
@@ -121,11 +120,9 @@ public class DiscountCardControllerTest {
     public void getByCardNumberTest() throws Exception {
         expect(service.searchByCardNumber(999)).andReturn(Optional.of(discountCard));
         replay(service);
-        byte[] returnedValue = mockMvc.perform(get("/rest/card/get/by/number").param("number", "999"))
+        mockMvc.perform(get("/rest/card/get/by/number").param("number", "999"))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsByteArray();
-        DiscountCard returnedDiscountCard = objectMapper.readValue(returnedValue, DiscountCard.class);
-        assertThat(returnedDiscountCard.getCardNumber(), is(discountCard.getCardNumber()));
+                .andExpect(jsonPath("$.cardNumber").value((int) discountCard.getCardNumber()));
     }
 
     @Test
@@ -157,7 +154,7 @@ public class DiscountCardControllerTest {
         replay(service);
         mockMvc.perform(get("/rest/card/get/page"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.total_elements").value(is(1)));
+                .andExpect(jsonPath("$.totalElements").value(is(1)));
     }
 
     @Test
@@ -166,7 +163,7 @@ public class DiscountCardControllerTest {
         replay(service);
         mockMvc.perform(get("/rest/card/get/{cardId}", 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.company_name").value(is("test company")));
+                .andExpect(jsonPath("$.companyName").value(is("test company")));
     }
 
     @Test
@@ -185,7 +182,7 @@ public class DiscountCardControllerTest {
         replay(service);
         mockMvc.perform(get("/rest/card/owner/page"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.total_elements").value(is(1)));
+                .andExpect(jsonPath("$.totalElements").value(is(1)));
     }
 
     @Test

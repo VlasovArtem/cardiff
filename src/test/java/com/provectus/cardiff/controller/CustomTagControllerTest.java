@@ -38,6 +38,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -99,11 +100,9 @@ public class CustomTagControllerTest {
         Page<CustomTag> customTags = new PageImpl<>(Collections.singletonList(tag));
         expect(service.getAll(pageable)).andReturn(customTags);
         replay(service);
-        byte[] returnedValue = this.mockMvc.perform(get("/rest/tag/custom/admin/get/page"))
+        this.mockMvc.perform(get("/rest/tag/custom/admin/get/page"))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsByteArray();
-        JsonNode node = objectMapper.readTree(returnedValue);
-        assertThat(node.findValue("total_elements").asLong(), is(customTags.getTotalElements()));
+                .andExpect(jsonPath("$.totalElements").value((int) customTags.getTotalElements()));
     }
 
     @Test

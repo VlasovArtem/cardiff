@@ -18,6 +18,34 @@ html, body {
     width: 20px;
     height: 20px;
 }
+.info-message {
+    position: absolute;
+    font-size: large;
+    height: 30px;
+    width: 100vw;
+    left: -15px;
+    background-color: rgba(72, 110, 143, .7);
+    color: white;
+    text-align: center;
+    z-index: -1;
+}
+.hide-message {
+    top: -30px;
+    opacity: 0;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+.show-message {
+    top: 0;
+    opacity: 1;
+    -webkit-transition: all .5s ease;
+    transition: all .5s ease;
+}
+.show-message + .additional-search {
+    padding-top: 60px;
+    -webkit-transition: padding-top .5s ease;
+    transition: padding-top .5s ease;
+}
 .caps {
     background: url("../images/caps-lock.png") no-repeat center;
     background-size: 17px;
@@ -88,6 +116,42 @@ h2, .buttons {
 }
 .tag-label:hover {
     background-color: #0a8f1b
+}
+.additional-search {
+    padding: 20px 0;
+    -webkit-transition: padding .5s ease;
+    transition: padding .5s ease;
+}
+.search-button {
+    margin: 25px 0 0 0;
+}
+.search-button > input {
+    height: 31px;
+    vertical-align: top;
+}
+.search-button:last-child {
+    text-align: right;
+}
+.search-control {
+    height: 31px;
+}
+.search-control:focus {
+    border: 1px solid #ccc;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+.remove-tags {
+    padding: 3px;
+    color: rgba(216, 28, 39, .4);
+    font-size: x-large;
+    -webkit-transition: color .5s ease;
+    transition: color .5s ease;
+    cursor: pointer;
+}
+.remove-tags:hover {
+    color: rgba(216, 28, 39, 1);
+    -webkit-transition: color .5s ease;
+    transition: color .5s ease;
 }
 
 .navbar-cardiff {

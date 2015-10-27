@@ -95,11 +95,6 @@ public class DiscountCardServiceImplTest {
         discountCardService.add(discountCard);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void updateTest() {
-        discountCardService.update(null);
-    }
-
     @Test
     public void deleteTest() {
         discountCardService.delete(1l);

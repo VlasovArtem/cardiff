@@ -3,6 +3,7 @@ package com.provectus.cardiff.service.impl;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
+import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.service.DiscountCardService;
 import com.provectus.cardiff.utils.EntityUpdater;
 import com.provectus.cardiff.utils.exception.DataUniqueException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -29,6 +31,8 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     private DiscountCardRepository discountCardRepository;
     @Autowired
     private PersonRepository personRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
     public void add (DiscountCard card) {
@@ -91,10 +95,28 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
+    public Page<DiscountCard> getAll (Set<String> tags, Pageable pageable) {
+        return discountCardRepository.findByTags(tagRepository.findByTagIn(tags), pageable);
+    }
+
+    @Override
+    public Page<DiscountCard> getAll(Set<String> tags, String companyName, Pageable pageable) {
+        if(Objects.isNull(companyName)) {
+            return discountCardRepository.findByTags(tagRepository.findByTagIn(tags), pageable);
+        } else if (Objects.isNull(tags)) {
+            return discountCardRepository.findByCompanyNameIgnoreCaseContaining(companyName.toLowerCase(), pageable);
+        } else {
+            return discountCardRepository.findByTagsAndCompanyName(tagRepository.findByTagIn(tags), companyName.toLowerCase(),
+                    pageable);
+        }
+    }
+
+    @Override
     public Page<DiscountCard> getAuthenticatedPersonDiscountCards(Pageable pageable) {
         return discountCardRepository.findByOwnerId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get
                         ().getId(), pageable);
     }
+
 
     @Override
     public void removeOwnerCards (long ownerId) {

@@ -91,13 +91,12 @@ public class PersonControllerTest {
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy
-                .CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        objectMapper = new ObjectMapper();
         personNode = JsonNodeFactory.instance.objectNode();
         personNode.put("name", "test name");
         personNode.put("login", "testlogin");
         personNode.put("email", "testemail@mail.com");
-        personNode.put("phone_number", 562356369);
+        personNode.put("phoneNumber", 562356369);
         personNode.put("password", "testpassword");
         personNode.put("description", "test person description");
         personNode.put("role", "ADMIN");

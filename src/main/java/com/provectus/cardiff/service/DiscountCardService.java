@@ -24,13 +24,17 @@ public interface DiscountCardService {
 
     Optional<List<DiscountCard>> searchByTags (Set<String> tags);
 
-    List<DiscountCard> searchByCompanyName (String companyName);
-
     Page<DiscountCard> getAll (Pageable pageable);
 
-    List<DiscountCard> findAll ();
+    Page<DiscountCard> getAll (Set<String> tags, Pageable pageable);
+
+    Page<DiscountCard> getAll (Set<String> tags, String companyName, Pageable pageable);
 
     Page<DiscountCard> getAuthenticatedPersonDiscountCards (Pageable pageable);
+
+    List<DiscountCard> searchByCompanyName (String companyName);
+
+    List<DiscountCard> findAll ();
 
     void removeOwnerCards (long ownerId);
 

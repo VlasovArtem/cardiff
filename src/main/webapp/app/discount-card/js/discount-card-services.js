@@ -22,7 +22,7 @@ service.factory('DiscountCardFactory', ['$resource', function($resource) {
 }]);
 
 service.factory('DiscountCardsFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/get/page');
+    return $resource('/rest/card/get/page/:search');
 }]);
 
 service.factory('OwnerDiscountCardsFactory', ['$resource', function($resource) {

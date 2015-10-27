@@ -91,7 +91,7 @@ app.directive('validationMessages', function () {
 });
 
 app.directive('contentTable',
-    function(deviceCheck, $filter) {
+    function(deviceCheck, $filter, $compile) {
         return {
             restrict: 'E',
             scope: {
@@ -101,9 +101,15 @@ app.directive('contentTable',
             controller: '@',
             name: "controllerName",
             link: function(scope, element, attr) {
-                if(scope.tableInfo.data.content.length == 0) {
+                if (scope.tableInfo.data.content.length == 0) {
                     angular.element("#" + scope.sectionId).hide();
                 }
+                if (scope.tableInfo.additionalSearch) {
+                    var searchElement = angular.element('.additional-search');
+                    searchElement.addClass(scope.tableInfo.additionalSearch.directive);
+                    $compile(searchElement)(scope)
+                }
+                scope.customSearch = false;
                 scope.currentPage = 1;
                 scope.maxSize = 5;
                 scope.pageSize = [
@@ -127,9 +133,13 @@ app.directive('contentTable',
                     };
                 scope.tabletLandscape = currentWidth >= tabletLandscapeWidth;
                 scope.mobileDevice = deviceCheck.mobileDevice;
-
-                var getData = function(pageable) {
-                    scope.tableInfo.factory.get(pageable).$promise.then(function(data) {
+                scope.getData = function() {
+                    var generatedPageable = angular.copy(pageable);
+                    if(scope.customSearch) {
+                        _.extend(generatedPageable, scope.requestElements);
+                        _.extend(generatedPageable, scope.search);
+                    }
+                    scope.tableInfo.factory.get(generatedPageable).$promise.then(function(data) {
                         scope.tableData = data.content;
                         scope.totalItems = data.totalElements;
                     });
@@ -208,11 +218,11 @@ app.directive('contentTable',
                 /* Functions to get new data */
                 scope.changePageSize = function(value) {
                     pageable.size = value;
-                    getData(pageable);
+                    scope.getData();
                 };
                 scope.changePage = function() {
                     pageable.page = scope.currentPage - 1;
-                    getData(pageable);
+                    scope.getData();
                 };
                 scope.sorting = function(type){
                     if(pageable.property == type) {
@@ -221,7 +231,7 @@ app.directive('contentTable',
                         pageable.property = type;
                         pageable.direction = 'DESC';
                     }
-                    getData(pageable);
+                    scope.getData();
                 };
 
             },
@@ -276,8 +286,6 @@ app.directive('uiSelectMultiple', function () {
         link: function($scope, $element, $attributes, ctrl) {
             var superRemove = ctrl.removeChoice;
             ctrl.removeChoice = function() {
-                console.log($scope.$select.limit);
-                console.log($scope.$select.selected.length);
                 if($scope.$select.limit !== undefined && $scope.$select.selected.length >= $scope.$select.limit) {
                     $(".ui-select-dropdown").removeClass('hide');
                 }

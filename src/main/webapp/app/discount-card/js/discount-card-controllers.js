@@ -49,11 +49,14 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
             dataButtons: {
                 desktop: 'app/discount-card/discount-cards-buttons.html'
             },
+            additionalSearch: {
+                directive: 'tag-search'
+            },
             htmlBinding: [{
                 head: 'Tags',
                 desktopClass: 'tags',
-                desktop: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy :\'id\'" ng-bind="tag.tag"></span>'),
-                mobile: $sce.trustAsHtml('<span class="label label-success" ng-repeat="tag in data.tags | orderBy : \'id\'" ng-bind="tag.tag"></span>')
+                desktop: $sce.trustAsHtml('<span class="label label-success tag-label" ng-repeat="tag in data.tags | orderBy :\'id\'" ng-bind="tag.tag" ng-click="chooseSearchTag(tag.tag)"></span>'),
+                mobile: $sce.trustAsHtml('<span class="label label-success tag-label" ng-repeat="tag in data.tags | orderBy : \'id\'" ng-bind="tag.tag" ng-click="chooseSearchTag(tag.tag)"></span>')
             }]
         };
 

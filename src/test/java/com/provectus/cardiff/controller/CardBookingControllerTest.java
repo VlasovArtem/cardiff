@@ -37,6 +37,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -92,20 +93,18 @@ public class CardBookingControllerTest {
     public void getBookedTest() throws Exception {
         expect(cardBookingService.getPersonBookedDiscountCards(pageable)).andReturn(cardBookings);
         replay(cardBookingService);
-        byte[] returnedValue = this.mockMvc.perform(get("/rest/card/booking/booked/page"))
+        this.mockMvc.perform(get("/rest/card/booking/booked/page"))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsByteArray();
-        assertThat(objectMapper.readTree(returnedValue).findValue("total_elements").asLong(), is(cardBookings.getTotalElements()));
+                .andExpect(jsonPath("$.totalElements").value((int) cardBookings.getTotalElements()));
     }
 
     @Test
     public void getPersonDiscountCardBookingsTest() throws Exception {
         expect(cardBookingService.getPersonDiscountCardBookings(pageable)).andReturn(cardBookings);
         replay(cardBookingService);
-        byte[] returnedValue = this.mockMvc.perform(get("/rest/card/booking/bookings/page"))
+        this.mockMvc.perform(get("/rest/card/booking/bookings/page"))
                 .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsByteArray();
-        assertThat(objectMapper.readTree(returnedValue).findValue("total_elements").asLong(), is(cardBookings.getTotalElements()));
+                .andExpect(jsonPath("$.totalElements").value((int) cardBookings.getTotalElements()));
     }
 
     @Test
