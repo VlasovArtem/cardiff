@@ -12,6 +12,7 @@ import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import com.provectus.cardiff.utils.validator.DiscountCardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     private PersonRepository personRepository;
     @Autowired
     private TagRepository tagRepository;
+    private final static int TOP_DISCOUNT_CARD_LIMIT = 5;
 
     @Override
     public void add (DiscountCard card) {
@@ -111,7 +113,6 @@ public class DiscountCardServiceImpl implements DiscountCardService {
         return discountCardRepository.findByOwnerId(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get
                         ().getId(), pageable);
     }
-
 
     @Override
     public void removeOwnerCards (long ownerId) {

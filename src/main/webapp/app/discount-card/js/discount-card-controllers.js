@@ -29,8 +29,8 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
     }
 ]);
 
-app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter', '$sce',
-    function ($scope, $location, discountCards, DiscountCardsFactory, $filter, $sce) {
+app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'DiscountCardsFactory', '$filter', '$sce', '$http',
+    function ($scope, $location, discountCards, DiscountCardsFactory, $filter, $sce, $http) {
         $scope.tableInfo = {
             data: discountCards,
             factory: DiscountCardsFactory,

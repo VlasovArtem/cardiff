@@ -32,23 +32,3 @@ app.controller('NavCtrl', ['$scope', 'auth', '$modal',
         };
     }
 ]);
-
-app.controller('SearchCtrl', ['$scope', 'DiscountCardSearchFactory', '$sessionStorage', '$location',
-    function($scope, DiscountCardSearchFactory, $sessionStorage, $location) {
-        $scope.ENTER_BUTTON = 13;
-        $scope.searchData = {};
-        $scope.search = function() {
-            $sessionStorage.cardId = $scope.searchData.selected[0];
-            $location.path('/card/info');
-        };
-        $scope.refreshData = function(data) {
-            if(data != "") {
-                DiscountCardSearchFactory.searchByName({companyName: data}).$promise.then(
-                    function(data) { $scope.companies = data; },
-                    function() { $scope.companies = []; })
-            } else {
-                $scope.companies = []
-            }
-        }
-    }
-]);

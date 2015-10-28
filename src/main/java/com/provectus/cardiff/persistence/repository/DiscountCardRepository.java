@@ -59,4 +59,7 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
 
     @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.id = ?1 AND cd.owner.id = ?2")
     boolean personDiscountCard (long discountCardId, long personId);
+
+    @Query("SELECT dc FROM DiscountCardHistory dch, DiscountCard dc WHERE dch.discountCard.id = dc.id GROUP BY dc ORDER BY COUNT(dc) DESC")
+    List<DiscountCard> findTop5DiscountCard(Pageable pageable);
 }
