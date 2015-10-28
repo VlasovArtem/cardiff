@@ -70,11 +70,13 @@ app.directive('discountCardSearch', function($sessionStorage, $timeout) {
                 scope.getData();
             };
             scope.chooseSearchTag = function(tag) {
+                console.log(scope.customSearch);
                 scope.search.tags.push(tag);
                 scope.discountCardSearch();
             };
             scope.discountCardSearch = function() {
-                scope.customSearch = scope.search.tags.length > 0 || scope.search.companyName != null || scope.search.companyName != "";
+                console.log(scope.customSearch);
+                scope.customSearch = scope.search.tags.length > 0 || (scope.search.companyName != null && scope.search.companyName != "");
                 scope.getData();
             };
         }

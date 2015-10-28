@@ -135,6 +135,7 @@ app.directive('contentTable',
                 scope.mobileDevice = deviceCheck.mobileDevice;
                 scope.getData = function() {
                     var generatedPageable = angular.copy(pageable);
+                    console.log(scope.customSearch);
                     if(scope.customSearch) {
                         _.extend(generatedPageable, scope.requestElements);
                         _.extend(generatedPageable, scope.search);
