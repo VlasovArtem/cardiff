@@ -74,12 +74,6 @@ public class DiscountCardController {
         return ResponseEntity.status(NOT_FOUND).build();
     }
 
-    @RequestMapping(path = "/get/by/tag", method = GET)
-    @JsonView(DiscountCardView.BasicLevel.class)
-    public ResponseEntity getByTag() {
-        return null;
-    }
-
     @RequestMapping(path = "/get/by/name", method = GET, produces = APPLICATION_JSON_VALUE)
     @JsonView(DiscountCardView.BasicLevel.class)
     public ResponseEntity getByName (@RequestParam(required = true, value = "company_name") String companyName) {
@@ -96,30 +90,6 @@ public class DiscountCardController {
     @ResponseStatus(value = OK)
     @JsonView(DiscountCardView.BasicLevel.class)
     public Page<DiscountCard> getAll(
-            @RequestParam(defaultValue = "0", required = false) int page,
-            @RequestParam(defaultValue = "15", required = false) int size,
-            @RequestParam(defaultValue = "DESC", required = false) String direction,
-            @RequestParam(defaultValue = "createdDate", required = false) String property) {
-        return service.getAll(new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
-    }
-
-    @RequestMapping(path = "/get/page/tags", method = GET)
-    @ResponseStatus(value = OK)
-    @JsonView(DiscountCardView.BasicLevel.class)
-    public Page<DiscountCard> getAll(
-            @RequestParam Set<String> tags,
-            @RequestParam(defaultValue = "0", required = false) int page,
-            @RequestParam(defaultValue = "15", required = false) int size,
-            @RequestParam(defaultValue = "DESC", required = false) String direction,
-            @RequestParam(defaultValue = "createdDate", required = false) String property) {
-        return service.getAll(tags, new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
-    }
-
-    @RequestMapping(path = "/get/page/company-name", method = GET)
-    @ResponseStatus(value = OK)
-    @JsonView(DiscountCardView.BasicLevel.class)
-    public Page<DiscountCard> getAll(
-            @RequestParam String companyName,
             @RequestParam(defaultValue = "0", required = false) int page,
             @RequestParam(defaultValue = "15", required = false) int size,
             @RequestParam(defaultValue = "DESC", required = false) String direction,

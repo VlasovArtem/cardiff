@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 
 /**
@@ -142,24 +143,31 @@ public class CardBookingServiceImpl implements CardBookingService {
         cardBookingRepository.delete(id);
     }
 
+    /**
+     * Return available booking start date.
+     * @param discountCardId Discount card id that should be booked
+     * @return LocalDate available booking start date.
+     */
     @Override
     public LocalDate getAvailableBookingDate(long discountCardId) {
-        LocalDate currentDate = LocalDate.now();
-        LocalDate bookingEndDate = currentDate.plusDays(6l);
         List<CardBooking> cardBookings = cardBookingRepository.findByDiscountCardIdOrderByBookingStartDateAsc(discountCardId);
         if(cardBookings.size() == 0 ) {
-            return currentDate;
-        } else if(cardBookings.get(0).getBookingStartDate().isBefore(bookingEndDate)) {
-            return currentDate;
+            return LocalDate.now();
+        } else if(cardBookings.get(0).getBookingEndDate().isBefore(LocalDate.now())) {
+            return LocalDate.now();
+        } else if(cardBookings.size() == 1) {
+            return cardBookings.get(0).getBookingEndDate().plusDays(1);
         }
         LocalDate availableBookingDate = null;
         int countOfCardBookings = 0;
         do {
-            if(Duration.between(cardBookings.get(countOfCardBookings).getBookingEndDate(), cardBookings.get(countOfCardBookings + 1).getBookingStartDate()).toDays() > 8) {
+            if(Period.between(
+                    cardBookings.get(countOfCardBookings).getBookingEndDate(),
+                    cardBookings.get(countOfCardBookings + 1).getBookingStartDate()).getDays() > 8) {
                 availableBookingDate = cardBookings.get(countOfCardBookings).getBookingEndDate().plusDays(1l);
             }
             countOfCardBookings++;
-        } while (availableBookingDate == null && countOfCardBookings < cardBookings.size() - 1);
+        } while (availableBookingDate == null && countOfCardBookings != cardBookings.size() - 1);
         return availableBookingDate == null ? cardBookings.get(cardBookings.size() - 1).getBookingEndDate().plusDays(1l) : availableBookingDate;
     }
 }

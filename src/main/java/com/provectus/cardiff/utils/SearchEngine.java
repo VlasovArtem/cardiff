@@ -10,18 +10,18 @@ import java.util.List;
  */
 public class SearchEngine {
 
-    public static List<DiscountCard> search(List<DiscountCard> discountCardList,
-                                           String input, List<DiscountCard> discountCardList1) {
+    public static List<DiscountCard> search(List<DiscountCard> allDiscountCards,
+                                           String searchField, List<DiscountCard> searchFieldDiscountCards) {
 
-        String inputTranslitereted = transliteration(input.toLowerCase());
+        String inputTranslitereted = transliteration(searchField.toLowerCase());
 
-        for (DiscountCard discountCard : discountCardList) {
-            if (!discountCardList1.contains(discountCard)
-                    && (editdist(input.toLowerCase(), discountCard.getCompanyName().toLowerCase()) < 3
+        for (DiscountCard discountCard : allDiscountCards) {
+            if (!searchFieldDiscountCards.contains(discountCard)
+                    && (editdist(searchField.toLowerCase(), discountCard.getCompanyName().toLowerCase()) < 3
                     || editdist(inputTranslitereted.toLowerCase(), discountCard.getCompanyName().toLowerCase()) < 3))
-                discountCardList1.add(discountCard);
+                searchFieldDiscountCards.add(discountCard);
         }
-        return discountCardList1;
+        return searchFieldDiscountCards;
     }
 
     private static String transliteration(String text) {

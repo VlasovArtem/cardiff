@@ -26,8 +26,6 @@ public interface DiscountCardService {
 
     Page<DiscountCard> getAll (Pageable pageable);
 
-    Page<DiscountCard> getAll (Set<String> tags, Pageable pageable);
-
     Page<DiscountCard> getAll (Set<String> tags, String companyName, Pageable pageable);
 
     Page<DiscountCard> getAuthenticatedPersonDiscountCards (Pageable pageable);

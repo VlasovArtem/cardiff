@@ -95,11 +95,6 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
-    public Page<DiscountCard> getAll (Set<String> tags, Pageable pageable) {
-        return discountCardRepository.findByTags(tagRepository.findByTagIn(tags), pageable);
-    }
-
-    @Override
     public Page<DiscountCard> getAll(Set<String> tags, String companyName, Pageable pageable) {
         if(Objects.isNull(companyName)) {
             return discountCardRepository.findByTags(tagRepository.findByTagIn(tags), pageable);

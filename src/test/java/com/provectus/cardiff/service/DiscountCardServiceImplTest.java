@@ -7,7 +7,9 @@ import com.provectus.cardiff.config.DevelopmentDataSourceConfig;
 import com.provectus.cardiff.config.RootContextConfig;
 import com.provectus.cardiff.config.security.SecurityConfig;
 import com.provectus.cardiff.entities.DiscountCard;
+import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
+import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.utils.exception.DataUniqueException;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
 import org.easymock.EasyMockRule;
@@ -31,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -62,6 +65,8 @@ public class DiscountCardServiceImplTest {
     private DiscountCardRepository discountCardRepository;
     @Autowired
     private DiscountCardService discountCardService;
+    @Autowired
+    private TagRepository tagRepository;
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
     private DiscountCard discountCard;
@@ -93,6 +98,40 @@ public class DiscountCardServiceImplTest {
     public void addWithInvalidDiscountCardDataTest() {
         discountCard.setCardNumber(-1);
         discountCardService.add(discountCard);
+    }
+
+    @Test
+    @WithMockCardiffPerson(value = "vadimguliaev")
+    public void updateTest () {
+        String newCompanyName = "new name";
+        DiscountCard discountCard = discountCardRepository.findOne(1l);
+        discountCard.setCompanyName(newCompanyName);
+        discountCardService.update(discountCard);
+        discountCardRepository.findById(1l).ifPresent(d ->
+                assertThat(d.getCompanyName(), is(newCompanyName)));
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void updateWithoutExistsDiscountCardTest () {
+        DiscountCard discountCard = new DiscountCard();
+        discountCard.setId(6l);
+        discountCardService.update(discountCard);
+    }
+
+    @Test(expected = EntityValidationException.class)
+    @WithMockCardiffPerson(value = "dmitriyvalnov")
+    public void updateWithoutMatchesPersonAndDiscountCardTest() {
+        DiscountCard discountCard = discountCardRepository.findOne(1l);
+        discountCardService.update(discountCard);
+    }
+
+    @Test(expected = EntityValidationException.class)
+    @WithMockCardiffPerson(value = "vadimguliaev")
+    public void updateWithInvalidDataTest () {
+        String newCompanyName = "";
+        DiscountCard discountCard = discountCardRepository.findOne(1l);
+        discountCard.setCompanyName(newCompanyName);
+        discountCardService.update(discountCard);
     }
 
     @Test
@@ -135,6 +174,29 @@ public class DiscountCardServiceImplTest {
         Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
         assertThat(discountCardService.getAll(pageable).getTotalElements(), is(5l));
     }
+
+    @Test
+    public void getAllByTagsTest() {
+        Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
+        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1l).getTag()), null, pageable)
+                        .getTotalElements(), is(1l));
+    }
+
+    @Test
+    public void getAllByCompanyNameTest() {
+        Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
+        assertThat(discountCardService.getAll(null, "test", pageable)
+                .getTotalElements(), is(4l));
+    }
+
+    @Test
+    public void getAllByCompanyNameAndTagsTest() {
+        Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
+        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1l).getTag()), "chee",
+                pageable)
+                .getTotalElements(), is(1l));
+    }
+
 
     @Test
     @WithMockCardiffPerson(value = "vadimguliaev")

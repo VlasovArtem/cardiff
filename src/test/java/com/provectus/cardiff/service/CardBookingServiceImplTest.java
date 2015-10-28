@@ -27,8 +27,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.smartcardio.Card;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -194,4 +196,83 @@ public class CardBookingServiceImplTest {
         assertThat(service.getPersonDiscountCardBookings(new PageRequest(0, 15, new Sort(Sort.Direction.DESC,
                 "bookingStartDate"))).getTotalElements(), is(2l));
     }
+
+    @Test
+    public void deleteBookCardById() {
+        service.deleteBookCardById(1);
+        assertThat(cardBookingRepository.count(), is(2l));
+    }
+
+    @Test
+    public void getAllTest() {
+        assertThat(service.getAll().size(), is((int) cardBookingRepository.count()));
+    }
+
+    @Test
+    public void getAvailableBookingDateTest() {
+        assertNotNull(service.getAvailableBookingDate(3));
+    }
+
+    @Test
+    public void getAvailableBookingDateWithoutBookingsTest() {
+        assertThat(service.getAvailableBookingDate(5), is(LocalDate.now()));
+    }
+
+    @Test
+    public void getAvailableBookingDateWithBookingEndDateBeforeCurrentDateTest() {
+        CardBooking cardBooking = new CardBooking();
+        cardBooking.setBookingEndDate(LocalDate.now().minusDays(1));
+        cardBooking.setBookingStartDate(cardBooking.getBookingEndDate().minusDays(6));
+        DiscountCard discountCard = new DiscountCard();
+        discountCard.setId(5);
+        cardBooking.setDiscountCard(discountCard);
+        Person person = new Person();
+        person.setId(1);
+        cardBooking.setPerson(person);
+        cardBookingRepository.save(cardBooking);
+        assertThat(service.getAvailableBookingDate(5), is(LocalDate.now()));
+    }
+
+    @Test
+    public void getAvailableBookingDateWithSeveralBookingsTest() {
+        List<CardBooking> cardBookings = cardBookingRepository.findByDiscountCardIdOrderByBookingStartDateAsc(3);
+        LocalDate newBookingStartDate;
+        if(Period.between(cardBookings.get(0).getBookingEndDate(), LocalDate.now()).getDays() <= 0) {
+            newBookingStartDate = cardBookings.get(0).getBookingEndDate().plusDays(1l);
+        } else {
+            newBookingStartDate = LocalDate.now();
+        }
+        CardBooking newCardBooking = new CardBooking();
+        newCardBooking.setPerson(cardBookings.get(0).getPerson());
+        newCardBooking.setDiscountCard(cardBookings.get(0).getDiscountCard());
+        newCardBooking.setBookingStartDate(newBookingStartDate);
+        newCardBooking.setBookingEndDate(newBookingStartDate.plusDays(6));
+        cardBookingRepository.save(newCardBooking);
+        assertThat(service.getAvailableBookingDate(newCardBooking.getDiscountCard().getId()),
+                is(newBookingStartDate.plusDays(7)));
+    }
+
+    @Test
+    public void getAvailableBookingDateWithSeveralBookingsAndPeriodMoreThanSevenDaysTest() {
+        List<CardBooking> cardBookings = cardBookingRepository.findByDiscountCardIdOrderByBookingStartDateAsc(3);
+        LocalDate newBookingStartDate;
+        LocalDate availableBookingStartDate;
+        if(Period.between(cardBookings.get(0).getBookingEndDate(), LocalDate.now()).getDays() <= 0) {
+            availableBookingStartDate = cardBookings.get(0).getBookingEndDate().plusDays(1l);
+            newBookingStartDate = cardBookings.get(0).getBookingEndDate().plusDays(12l);
+        } else {
+            availableBookingStartDate = LocalDate.now();
+            newBookingStartDate = LocalDate.now().plusDays(12l);
+        }
+        CardBooking newCardBooking = new CardBooking();
+        newCardBooking.setPerson(cardBookings.get(0).getPerson());
+        newCardBooking.setDiscountCard(cardBookings.get(0).getDiscountCard());
+        newCardBooking.setBookingStartDate(newBookingStartDate);
+        newCardBooking.setBookingEndDate(newBookingStartDate.plusDays(6));
+        cardBookingRepository.save(newCardBooking);
+        assertThat(service.getAvailableBookingDate(newCardBooking.getDiscountCard().getId()),
+                is(availableBookingStartDate));
+    }
+
+
 }
