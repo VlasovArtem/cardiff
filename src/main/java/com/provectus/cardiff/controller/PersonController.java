@@ -149,6 +149,12 @@ public class PersonController {
         service.checkPhoneNumber(phone);
     }
 
+    @RequestMapping(path = "/check/skype", method = POST)
+    @ResponseStatus(value = OK)
+    public void checkSkype(@RequestParam String skype) {
+        service.checkSkype(skype);
+    }
+
     @RequestMapping(path = "/get/{cardId}", method = GET)
     @JsonView(PersonView.BasicLevel.class)
     public ResponseEntity find(@PathVariable long cardId) {

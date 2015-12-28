@@ -26,12 +26,14 @@ public class EntityUpdaterTest {
         personSource.setLogin("personSourceLogin");
         personSource.setPassword("dsfdfasdf3224");
         personSource.setDescription("This is the source description");
+        personSource.setSkype("personSourceSkype");
         personTarget = new Person();
         personTarget.setName("Person target name");
         personTarget.setPhoneNumber(456236536l);
         personTarget.setPassword("dsfdfasdf3224");
         personTarget.setEmail("persontargetemail@mail.com");
         personTarget.setLogin("personTargetLogin");
+        personTarget.setSkype("personTargetSkype");
         personTarget.setDescription("This is the target description");
     }
 

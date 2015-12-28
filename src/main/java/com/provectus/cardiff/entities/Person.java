@@ -46,6 +46,7 @@ public class Person extends BaseEntity {
     private String login;
     private String password;
     private String email;
+    private String skype;
     private long phoneNumber;
     private String description;
     private PersonRole role;
@@ -102,6 +103,15 @@ public class Person extends BaseEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonView({PersonView.BasicLevel.class, CardBookingView.BasicLevel.class})
+    public String getSkype() {
+        return skype;
+    }
+
+    public void setSkype(String skype) {
+        this.skype = skype;
     }
 
     @Column(name = "phone_number", nullable = false)
@@ -183,9 +193,12 @@ public class Person extends BaseEntity {
         if (!login.equals(person.login)) return false;
         if (!password.equals(person.password)) return false;
         if (!email.equals(person.email)) return false;
+        if (!skype.equals(person.skype)) return false;
         if (description != null ? !description.equals(person.description) : person.description != null) return false;
         if (role != person.role) return false;
-        return !(discountCards != null ? !discountCards.equals(person.discountCards) : person.discountCards != null);
+        if (discountCards != null ? !discountCards.equals(person.discountCards) : person.discountCards != null)
+            return false;
+        return location != null ? location.equals(person.location) : person.location == null;
 
     }
 
@@ -195,11 +208,13 @@ public class Person extends BaseEntity {
         result = 31 * result + login.hashCode();
         result = 31 * result + password.hashCode();
         result = 31 * result + email.hashCode();
+        result = 31 * result + skype.hashCode();
         result = 31 * result + (int) (phoneNumber ^ (phoneNumber >>> 32));
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (deleted ? 1 : 0);
         result = 31 * result + (discountCards != null ? discountCards.hashCode() : 0);
+        result = 31 * result + (location != null ? location.hashCode() : 0);
         return result;
     }
 }

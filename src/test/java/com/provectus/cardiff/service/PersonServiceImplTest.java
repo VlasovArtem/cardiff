@@ -124,14 +124,8 @@ public class PersonServiceImplTest {
 
     @Test
     public void registrationTest() {
-        Person person = new Person();
-        person.setDescription("Registered user");
-        person.setLogin("newlogin");
-        person.setPhoneNumber(562354869l);
-        person.setPassword("password");
-        person.setEmail("newaemail@mail.com");
-        person.setName("new user");
-        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
+        Person person = createPerson("Registered user", "newlogin", 562354869L, "regMethdoTestSkype", "password",
+                "newaemail@mail.com", "new user");
         service.registration(person);
         assertThat(personRepository.count(), is(4l));
     }
@@ -143,27 +137,22 @@ public class PersonServiceImplTest {
 
     @Test(expected = PersonRegistrationException.class)
     public void registrationWithExistingEmailTest() {
-        Person person = new Person();
-        person.setDescription("Registered user");
-        person.setLogin("newlogin");
-        person.setPhoneNumber(562354869l);
-        person.setPassword("password");
-        person.setEmail("dmitriyvalnov@gmail.com");
-        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
-        person.setName("new user");
+        Person person = createPerson("Registered user", "newlogin", 562354869L, "regMethdoTestSkype", "password",
+                "dmitriyvalnov@gmail.com", "new user");
         service.registration(person);
     }
 
     @Test(expected = PersonRegistrationException.class)
     public void registrationWithExistingLoginTest() {
-        Person person = new Person();
-        person.setDescription("Registered user");
-        person.setLogin("alexandrmahnov");
-        person.setPhoneNumber(562354869l);
-        person.setPassword("password");
-        person.setEmail("newaemail@mail.com");
-        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
-        person.setName("new user");
+        Person person = createPerson("Registered user", "alexandrmahnov", 562354869L, "regMethdoTestSkype", "password",
+                "dmitriyvalnov@gmail.com", "new user");
+        service.registration(person);
+    }
+
+    @Test(expected = PersonRegistrationException.class)
+    public void registrationWithExistingSkypeTest() {
+        Person person = createPerson("Registered user", "alexandrmahnov", 562354869L, "testskype1", "password",
+                "dmitriyvalnov@gmail.com", "new user");
         service.registration(person);
     }
 
@@ -221,7 +210,7 @@ public class PersonServiceImplTest {
 
     @Test
     @WithMockCardiffPerson("vadimguliaev@gmail.com")
-    public void authorizedWithNotExistisRoleTest() {
+    public void authorizedWithNotExistsRoleTest() {
         assertFalse(service.authorized(PersonRole.ADMIN));
     }
 
@@ -286,5 +275,18 @@ public class PersonServiceImplTest {
     @Test
     public void findNotExistsTest() {
         assertNull(service.find(6l));
+    }
+
+    private Person createPerson(String description, String login, long phoneNumber, String skype, String password, String email, String name) {
+        Person person = new Person();
+        person.setDescription(description);
+        person.setLogin(login);
+        person.setPhoneNumber(phoneNumber);
+        person.setSkype(skype);
+        person.setPassword(password);
+        person.setEmail(email);
+        person.setLocation(locationRepository.findByCityAndCountryIgnoreCase("Odessa", "Ukraine"));
+        person.setName(name);
+        return person;
     }
 }

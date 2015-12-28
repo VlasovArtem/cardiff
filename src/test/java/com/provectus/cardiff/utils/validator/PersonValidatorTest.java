@@ -26,6 +26,7 @@ public class PersonValidatorTest {
         person.setPassword("testPassword");
         person.setEmail("testemail@gmail.com");
         person.setLogin("testlogin");
+        person.setSkype("testskype");
         person.setPhoneNumber(568569636);
         person.setRole(PersonRole.ADMIN);
     }
@@ -81,4 +82,32 @@ public class PersonValidatorTest {
         validate(person, false);
     }
 
+    @Test(expected = EntityValidationException.class)
+    public void validateWithNullSkypeTest () {
+        person.setSkype(null);
+        validate(person, false);
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidSkypeStartsWithNumberTest () {
+        person.setSkype("1skypetest");
+        validate(person, false);
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidSkypeLessThanMinLengthTest () {
+        person.setSkype("dgg");
+        validate(person, false);
+    }
+
+    @Test(expected = EntityValidationException.class)
+    public void validateWithInvalidSkypeGreaterThanMaxLengthTest() {
+        Random r = new Random();
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < 33; i++) {
+            builder.append((char)(r.nextInt(26) + 'a'));
+        }
+        person.setSkype(builder.toString());
+        validate(person, false);
+    }
 }

@@ -18,11 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by artemvlasov on 25/09/15.
@@ -151,9 +151,10 @@ public class CardBookingServiceImpl implements CardBookingService {
     @Override
     public LocalDate getAvailableBookingDate(long discountCardId) {
         List<CardBooking> cardBookings = cardBookingRepository.findByDiscountCardIdOrderByBookingStartDateAsc(discountCardId);
-        if(cardBookings.size() == 0 ) {
-            return LocalDate.now();
-        } else if(cardBookings.get(0).getBookingEndDate().isBefore(LocalDate.now())) {
+        cardBookings = cardBookings.stream()
+                .filter(cardBooking -> cardBooking.getBookingEndDate().isAfter(LocalDate.now()))
+                .collect(Collectors.toList());
+        if(cardBookings.size() == 0) {
             return LocalDate.now();
         } else if(cardBookings.size() == 1) {
             return cardBookings.get(0).getBookingEndDate().plusDays(1);

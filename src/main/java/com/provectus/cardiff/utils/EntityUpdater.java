@@ -61,7 +61,8 @@ public class EntityUpdater {
         List<String> updatedFields = null;
         switch(updatedEntity) {
             case PERSON:
-                updatedFields = Arrays.asList("name", "login", "email", "phoneNumber", "description", "location");
+                updatedFields = Arrays.asList("name", "login", "email", "phoneNumber", "description", "location",
+                        "skype");
                 break;
             case DISCOUNTCARD:
                 updatedFields = Arrays.asList("cardNumber", "companyName", "amountOfDiscount", "description", "tags");

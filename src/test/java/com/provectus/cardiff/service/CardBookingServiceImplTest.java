@@ -27,11 +27,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.smartcardio.Card;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.List;
+import java.util.Objects;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -69,7 +69,7 @@ public class CardBookingServiceImplTest {
     @WithMockCardiffPerson(value = "vadimguliaev")
     public void bookTest() {
         long bookingCount = cardBookingRepository.count();
-        service.book(4l, LocalDate.of(2015, 11, 2));
+        service.book(4l, LocalDate.now());
         assertThat(cardBookingRepository.count(), is(bookingCount + 1));
         List<CardBooking> cardBookingList = cardBookingRepository.findAll();
         CardBooking cardBooking = cardBookingList.get(cardBookingList.size() - 1);
@@ -236,10 +236,17 @@ public class CardBookingServiceImplTest {
     @Test
     public void getAvailableBookingDateWithSeveralBookingsTest() {
         List<CardBooking> cardBookings = cardBookingRepository.findByDiscountCardIdOrderByBookingStartDateAsc(3);
-        LocalDate newBookingStartDate;
-        if(Period.between(cardBookings.get(0).getBookingEndDate(), LocalDate.now()).getDays() <= 0) {
-            newBookingStartDate = cardBookings.get(0).getBookingEndDate().plusDays(1l);
-        } else {
+        LocalDate newBookingStartDate = null;
+        if(!cardBookings.isEmpty()) {
+            if(cardBookings.stream().anyMatch(cardBooking -> Objects.nonNull(cardBooking.getBookingEndDate()) &&
+                    cardBooking.getBookingEndDate().isAfter(LocalDate.now()) && cardBooking.getBookingEndDate()
+                    .isEqual(LocalDate.now()))) {
+                newBookingStartDate = cardBookings.get(0).getBookingStartDate().plusDays(1l);
+            } else if (Period.between(cardBookings.get(0).getBookingEndDate(), LocalDate.now()).getDays() <= 0) {
+                newBookingStartDate = cardBookings.get(0).getBookingEndDate().plusDays(1l);
+            }
+        }
+        if(Objects.isNull(newBookingStartDate)) {
             newBookingStartDate = LocalDate.now();
         }
         CardBooking newCardBooking = new CardBooking();
@@ -251,28 +258,4 @@ public class CardBookingServiceImplTest {
         assertThat(service.getAvailableBookingDate(newCardBooking.getDiscountCard().getId()),
                 is(newBookingStartDate.plusDays(7)));
     }
-
-    @Test
-    public void getAvailableBookingDateWithSeveralBookingsAndPeriodMoreThanSevenDaysTest() {
-        List<CardBooking> cardBookings = cardBookingRepository.findByDiscountCardIdOrderByBookingStartDateAsc(3);
-        LocalDate newBookingStartDate;
-        LocalDate availableBookingStartDate;
-        if(Period.between(cardBookings.get(0).getBookingEndDate(), LocalDate.now()).getDays() <= 0) {
-            availableBookingStartDate = cardBookings.get(0).getBookingEndDate().plusDays(1l);
-            newBookingStartDate = cardBookings.get(0).getBookingEndDate().plusDays(12l);
-        } else {
-            availableBookingStartDate = LocalDate.now();
-            newBookingStartDate = LocalDate.now().plusDays(12l);
-        }
-        CardBooking newCardBooking = new CardBooking();
-        newCardBooking.setPerson(cardBookings.get(0).getPerson());
-        newCardBooking.setDiscountCard(cardBookings.get(0).getDiscountCard());
-        newCardBooking.setBookingStartDate(newBookingStartDate);
-        newCardBooking.setBookingEndDate(newBookingStartDate.plusDays(6));
-        cardBookingRepository.save(newCardBooking);
-        assertThat(service.getAvailableBookingDate(newCardBooking.getDiscountCard().getId()),
-                is(availableBookingStartDate));
-    }
-
-
 }

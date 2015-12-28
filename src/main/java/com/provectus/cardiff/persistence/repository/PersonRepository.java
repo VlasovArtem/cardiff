@@ -25,6 +25,9 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Person p WHERE p.email = ?1")
     boolean existsByEmail(String email);
 
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Person p WHERE p.skype = ?1")
+    boolean existsBySkype(String skype);
+
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Person p WHERE p.phoneNumber = ?1")
     boolean existsByPhoneNumber(long phoneNumber);
 
@@ -42,8 +45,9 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
     @Query("FROM Person p WHERE (p.email = ?1 OR p.login = ?2) AND p.deleted = ?3")
     Person findByEmailOrLoginAndDeleted(String email, String login, boolean deleted);
 
-    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Person p WHERE p.login = ?1 OR p.email = ?2 OR p.phoneNumber = ?3")
-    boolean existsByLoginOrEmailOrPhoneNumber(String login, String email, long phoneNumber);
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN true ELSE false END FROM Person p WHERE p.login = ?1 OR p.email = ?2 " +
+            "OR p.phoneNumber = ?3 OR p.skype = ?4")
+    boolean existsByLoginOrEmailOrPhoneNumberOrSkype(String login, String email, long phoneNumber, String skype);
 
     /**
      * Find {@link Person} with only one {@link com.provectus.cardiff.entities.DiscountCard} in Person Discount card

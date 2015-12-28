@@ -74,6 +74,8 @@ public class PersonValidator extends EntityValidator {
                         validate(String.valueOf(person.getDescription()), info.pattern);
             case EMAIL:
                 return EmailValidator.getInstance().isValid(person.getEmail());
+            case SKYPE:
+                return validate(person.getSkype(), info.getPattern());
             default:
                 return false;
         }
@@ -94,7 +96,9 @@ public class PersonValidator extends EntityValidator {
         DESCRIPTION("Description length should be less than 500",
                 ".{0,500}"),
         EMAIL("Email is not matches standard pattern",
-                "");
+                ""),
+        SKYPE("Skype name must be between 6-32 characters, start with a letter and contain only letters and numbers " +
+                "(no spaces or special characters).", "^[A-Za-z][A-Za-z0-9]{5,31}");
         private String error;
         private String pattern;
 

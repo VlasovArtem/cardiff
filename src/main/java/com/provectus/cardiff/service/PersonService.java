@@ -37,4 +37,6 @@ public interface PersonService {
     void checkPhoneNumber(long phoneNumber);
 
     Person find (long discountCardId);
+
+    void checkSkype(String skype);
 }

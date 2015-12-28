@@ -89,24 +89,30 @@ public class PersonRepositoryTest {
     }
 
     @Test
-    public void existsByLoginOrEmailOrPhoneNumberWithExistingPhoneNumberTest() {
-        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumber(null, null, 632563263l));
+    public void existsByLoginOrEmailOrPhoneNumberOrSkypeWithExistingPhoneNumberTest() {
+        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumberOrSkype(null, null, 632563263l, null));
     }
 
     @Test
-    public void existsByLoginOrEmailOrPhoneNumberWithExistingEmailTest() {
-        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumber(null, "alexandrmahnov@gmail.com", 0));
+    public void existsByLoginOrEmailOrPhoneNumberOrSkypeWithExistingEmailTest() {
+        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumberOrSkype(null, "alexandrmahnov@gmail.com", 0,
+                null));
     }
 
     @Test
-    public void existsByLoginOrEmailOrPhoneNumberWithExistingLoginTest() {
-        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumber("vadimguliaev", null, 0));
+    public void existsByLoginOrEmailOrPhoneNumberOrSkypeWithExistingLoginTest() {
+        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumberOrSkype("vadimguliaev", null, 0, null));
     }
 
     @Test
-    public void existsByLoginOrEmailOrPhoneNumberWithoutExistingDataTest() {
-        assertFalse(personRepository.existsByLoginOrEmailOrPhoneNumber("notexistslogin", "notexists@mail.com",
-                897586890l));
+    public void existsByLoginOrEmailOrPhoneNumberOrSkypeWithoutExistingDataTest() {
+        assertFalse(personRepository.existsByLoginOrEmailOrPhoneNumberOrSkype("notexistslogin", "notexists@mail.com",
+                897586890l, null));
+    }
+
+    @Test
+    public void existsByLoginOrEmailOrPhoneNumberOrSkypeWithExistingSkypeTest () {
+        assertTrue(personRepository.existsByLoginOrEmailOrPhoneNumberOrSkype(null, null, 0, "testskype1"));
     }
 
     @Test

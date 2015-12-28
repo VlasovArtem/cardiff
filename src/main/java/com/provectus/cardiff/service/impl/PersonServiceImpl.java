@@ -88,7 +88,8 @@ public class PersonServiceImpl implements PersonService {
     public void registration(Person person) {
         validate(Optional.ofNullable(person).orElseThrow(() -> new PersonRegistrationException("Person cannot be " +
                 "null")), false);
-        if (personRepository.existsByLoginOrEmailOrPhoneNumber(person.getLogin(), person.getEmail(), person.getPhoneNumber())) {
+        if (personRepository.existsByLoginOrEmailOrPhoneNumberOrSkype(person.getLogin(), person.getEmail(), person
+                .getPhoneNumber(), person.getSkype())) {
             throw new PersonRegistrationException("Person with this email, login or phone number is already " +
                     "registered");
         }
@@ -171,5 +172,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Person find(long discountCardId) {
         return personRepository.findByDiscountCardId(discountCardId);
+    }
+
+    @Override
+    public void checkSkype(String skype) {
+        if(personRepository.existsBySkype(skype)) {
+            throw new DataUniqueException("Person with this skype is already exists");
+        }
     }
 }

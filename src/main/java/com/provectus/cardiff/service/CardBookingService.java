@@ -12,12 +12,20 @@ import java.util.List;
  */
 public interface CardBookingService {
     void book (long discountCardId, LocalDate bookingStartDate);
+
     void cancel (long bookingId);
+
     void picked (long bookingId);
+
     void returned (long bookingId);
+
     Page<CardBooking> getPersonBookedDiscountCards (Pageable pageable);
+
     Page<CardBooking> getPersonDiscountCardBookings (Pageable pageable);
+
     List<CardBooking> getAll();
+
     void deleteBookCardById(long id);
+
     LocalDate getAvailableBookingDate(long discountCardId);
 }
