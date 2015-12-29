@@ -158,7 +158,7 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', 'Authentication
         auth.init('/', '/signin', '/logout');
         deviceCheck.checkIsMobile();
         $root.$on('$viewContentLoaded', function(event){
-            $('.footer').fadeIn(2000);
+            $('.footer').fadeIn(500);
         });
         $root.$on('$routeChangeStart', function(event, next, current) {
             $('.footer').hide();

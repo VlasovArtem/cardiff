@@ -109,7 +109,7 @@ app.controller('UpdateAccountCtrl', ['$scope', 'personData', '$location', 'Perso
         $scope.data = angular.copy(personData);
         $scope.personIsEquals = function() {
             if($scope.data != undefined && $scope.changedPerson != undefined) {
-                return _.every(["name", "login", "email", "phoneNumber", "location", "description"], function (data) {
+                return _.every(["name", "login", "email", "phoneNumber", "location", "description", "skype"], function (data) {
                     return _.isEqual($scope.data[data], $scope.changedPerson[data]) || $scope.data[data] == $scope.changedPerson[data]
                 });
             }
@@ -159,10 +159,11 @@ app.controller('AdminPersonsCtrl', ['$scope', '$location', '$filter', '$route', 
             dataTemplate: 'app/person/table-data-template.html',
             factory: AdminPersonTableFactory,
             head: [
-                {name : 'Name', property : 'name', width: '15%'},
-                {name : 'Login', property: 'login', width: '10%'},
-                {name : 'Email', property: 'email', width: '18%'},
+                {name : 'Name', property : 'name', width: '7%'},
+                {name : 'Login', property: 'login', width: '7%'},
+                {name : 'Email', property: 'email', width: '20%'},
                 {name : 'Phone', property: 'phoneNumber', width: '15%'},
+                {name : 'Skype', property: 'skype', width: '15%'},
                 {name : 'Role', property: 'role', width: '7%', class: 'center'},
                 {name : 'Created', property: 'createdDate', width: '10%'}
             ],

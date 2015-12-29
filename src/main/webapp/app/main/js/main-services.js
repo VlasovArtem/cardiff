@@ -29,6 +29,7 @@ app.service('auth', ['$resource', '$location', '$route', 'Login', 'Authenticatio
                     function() {
                         auth.authenticated = false;
                         auth.resolved = true;
+                        $route.reload();
                     }
                 )
             },

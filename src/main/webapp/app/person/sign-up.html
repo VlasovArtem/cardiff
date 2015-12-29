@@ -67,6 +67,29 @@
                  unique-error="Email is already exists"></div>
             <form-error error="error.data.email" form="signUp.email"></form-error>
         </div>
+        <div class="form-group has-feedback" show-errors="{showSuccess : true}">
+            <label for="skype">Skype</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Input skype"
+                   id="skype"
+                   pattern="[A-Za-z][A-Za-z0-9]{5,31}"
+                   ng-maxlength="32"
+                   ng-minlength="6"
+                   name="skype"
+                   ng-model="person.skype"
+                   ensure-unique
+                   autocomplete="off"
+                   required>
+            <div validation-messages
+                 model-controller="signUp.skype"
+                 required-error="Skype is required"
+                 minlength="Skype is too short"
+                 maxlength="Skype is too long"
+                 pattern-error="Skype is invalid"
+                 unique-error="Skype is already exists"></div>
+            <form-error error="error.data.skype" form="signUp.skype"></form-error>
+        </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true }">
             <label for="password">Password</label>

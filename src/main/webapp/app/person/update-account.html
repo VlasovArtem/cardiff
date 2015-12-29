@@ -22,28 +22,28 @@
             <form-error error="error.data.name" form="updateForm.name"></form-error>
         </div>
         <div class="form-group has-feedback" show-errors="{ showSuccess: true, showWarning: true }">
-        <label for="login">Login</label>
-        <input type="text"
-               class="form-control"
-               name="login"
-               placeholder="Input login"
-               id="login"
-               ng-minlength="6"
-               ng-maxlength="20"
-               ng-pattern="/^[A-Za-z0-9_\- .]*$/"
-               ng-model="changedPerson.login"
-               autocomplete="off"
-               ensure-unique
-               required/>
-        <div validation-messages
-             model-controller="updateForm.login"
-             minlength-error="Login is too short"
-             maxlength-error="Login is too long"
-             required-error="Login is required"
-             unique-error="Login is already exists"
-             pattern-error="Name should contains a - z (in lower or upper case) and symbols - .'-">
-        </div>
-        <form-error error="error.data.login" form="updateForm.login"></form-error>
+            <label for="login">Login</label>
+            <input type="text"
+                   class="form-control"
+                   name="login"
+                   placeholder="Input login"
+                   id="login"
+                   ng-minlength="6"
+                   ng-maxlength="20"
+                   ng-pattern="/^[A-Za-z0-9_\- .]*$/"
+                   ng-model="changedPerson.login"
+                   autocomplete="off"
+                   ensure-unique
+                   required/>
+            <div validation-messages
+                 model-controller="updateForm.login"
+                 minlength-error="Login is too short"
+                 maxlength-error="Login is too long"
+                 required-error="Login is required"
+                 unique-error="Login is already exists"
+                 pattern-error="Name should contains a - z (in lower or upper case) and symbols - .'-">
+            </div>
+            <form-error error="error.data.login" form="updateForm.login"></form-error>
         </div>
         <div class="form-group has-feedback"
              show-errors="{ showSuccess: true, showWarning: true }">
@@ -68,6 +68,30 @@
                  pattern-error="Email is invalid"
                  unique-error="Email is already exists"></div>
             <form-error error="error.data.email" form="updateForm.email"></form-error>
+        </div>
+        <div class="form-group has-feedback"
+             show-errors="{showSuccess: true, showWarning: true}">
+            <label for="skype">Skype</label>
+            <input type="text"
+                   class="form-control"
+                   placeholder="Input skype"
+                   id="skype"
+                   pattern="[A-Za-z][A-Za-z0-9]{5,31}"
+                   ng-maxlength="32"
+                   ng-minlength="6"
+                   name="skype"
+                   ng-model="changedPerson.skype"
+                   ensure-unique
+                   autocomplete="off"
+                   required>
+            <div validation-messages
+                 model-controller="updateForm.skype"
+                 required-error="Skype is required"
+                 minlength="Skype is too short"
+                 maxlength="Skype is too long"
+                 pattern-error="Skype is invalid"
+                 unique-error="Skype is already exists"></div>
+            <form-error error="error.data.skype" form="updateForm.skype"></form-error>
         </div>
         <div class="form-group">
             <label for="location">Location</label>
@@ -123,7 +147,8 @@
                  maxlength-error="Description is too long"></div>
         </div>
         <div class="form-group buttons">
-            <input type="button" class="btn btn-success" value="Update" ng-disabled="personIsEquals() || updateForm.$invalid" ng-click="update()"/>
+            <input type="button" class="btn btn-success" value="Update"
+                   ng-disabled="personIsEquals() || updateForm.$invalid" ng-click="update()"/>
             <input type="button" class="btn btn-primary" value="Reset" ng-click="reset()"/>
         </div>
     </form>

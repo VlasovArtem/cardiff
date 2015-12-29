@@ -1,9 +1,9 @@
 html, body {
     height: 100%;
 }
-.view > section:not(#search) {
-    margin-bottom: 40px;
-}
+/*.view > section:not(#search) {*/
+    /*margin-bottom: 40px;*/
+/*}*/
 .blurred {
     -webkit-filter: blur(5px);
     -moz-filter: blur(5px);

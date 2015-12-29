@@ -46,6 +46,7 @@
         <ul class="list-group col-md-7">
             <li class="list-group-item"><b>Name:</b> {{owner.name}}</li>
             <li class="list-group-item"><b>Email:</b> {{owner.email}}</li>
+            <li class="list-group-item"><b>Skype:</b> {{owner.skype}}</li>
             <li class="list-group-item"><b>Phone Number:</b> {{owner.phoneNumber | phoneNumberFilter : owner.location.country}}</li>
             <li class="list-group-item"><b>Location:</b> {{owner.location.city + ', ' + owner.location.country}}</li>
         </ul>
