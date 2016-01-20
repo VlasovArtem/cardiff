@@ -98,7 +98,7 @@ public class PersonValidator extends EntityValidator {
         EMAIL("Email is not matches standard pattern",
                 ""),
         SKYPE("Skype name must be between 6-32 characters, start with a letter and contain only letters and numbers " +
-                "(no spaces or special characters except -_.).", "^[A-Za-z][A-Za-z0-9_-.]{5,31}");
+                "(no spaces or special characters except -_.).", "^[A-Za-z][A-Za-z0-9_\\-.]{5,31}");
         private String error;
         private String pattern;
 
