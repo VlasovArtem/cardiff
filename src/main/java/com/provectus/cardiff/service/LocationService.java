@@ -11,4 +11,6 @@ public interface LocationService {
     List<Location> getAll();
     boolean exists(String city, String country);
     Location find(String city, String country);
+    long count();
+
 }

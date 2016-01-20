@@ -165,4 +165,9 @@ public class PersonController {
             return ResponseEntity.ok(person);
         }
     }
+
+    @RequestMapping(path = "/count", method = GET)
+    public long count() {
+        return service.count();
+    }
 }

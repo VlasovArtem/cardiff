@@ -3,7 +3,6 @@ app.controller('SignUpCtrl', ['$scope', '$location', 'SignUp', 'auth', 'location
     function($scope, $location, SignUp, auth, locations, $route) {
         $scope.isMacintosh = window.navigator.appVersion.indexOf('Macintosh') > -1;
         $scope.reg = function() {
-            console.log($scope.person);
             SignUp.registration($scope.person,
                 function() {
                     $scope.login = {

@@ -19,10 +19,10 @@ app.controller('CardBookingCtrl', ['$scope', '$modalInstance', 'cardId', 'availa
             CardBookingFactory.bookCard($.param(bookData),
                 function () {
                     alert('Discount card successfully booked');
+                    $location.path('/account/bookings');
                     $modalInstance.dismiss('cancel');
-                    $location.path('/account/booking')
                 }, function(data) {
-                    $scope.error = data.data.error;
+                    $scope.booking_error = data.data.error;
                     $scope.bookingStartDate = null;
                 });
         };

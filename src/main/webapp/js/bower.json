@@ -25,6 +25,7 @@
     "ngCapsLock": "ng-caps-lock#~1.0.2",
     "ngstorage": "~0.3.9",
     "ui-select": "angular-ui-select#~0.12.1",
-    "underscore": "~1.8.3"
+    "underscore": "~1.8.3",
+    "waypoints": "~4.0.0"
   }
 }

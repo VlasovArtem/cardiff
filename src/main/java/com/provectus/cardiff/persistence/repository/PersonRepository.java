@@ -58,4 +58,6 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
     @Query("SELECT p FROM Person p, DiscountCard dc WHERE dc MEMBER OF p.discountCards AND dc.id = ?1 AND p.deleted = false")
     Person findByDiscountCardId(long discountCardId);
 
+    long countByDeletedIsFalse();
+
 }

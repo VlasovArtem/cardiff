@@ -338,3 +338,27 @@ app.directive('adminNav', function() {
         templateUrl: 'app/main/admin-navigation.html'
     }
 });
+
+app.directive('discountCard', function() {
+    return {
+        restrict: 'A',
+        replace: true,
+        scope: {
+            tags: '='
+        },
+        link: function(scope, element, attr, ctrl) {
+            var backgroundFound = _.some(scope.tags, function(tag) {
+                switch (tag.tag) {
+                    case 'pizza':
+                        element.addClass('pizza-template');
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            if(!backgroundFound) {
+               element.addClass('blank-template');
+            }
+        }
+    }
+});

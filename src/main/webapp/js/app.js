@@ -9,7 +9,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
-                redirectTo: '/cards'
+                templateUrl: 'app/main/main.html',
+                controller: 'MainCtrl'
             }).
             when('/signin', {
                 templateUrl: 'app/person/sign-in.html',
@@ -165,15 +166,17 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', 'Authentication
             if(!_.isUndefined(next)) {
                 if(next.$$route) {
                     if(next.$$route.originalPath == '/') {
-                        $('.view').removeClass('main-view');
+                        $('nav').addClass('transparent-nav');
+                        $('footer').find('.sections').show();
                     } else {
-                        $('.view').addClass('main-view');
+                        $('nav').removeClass('transparent-nav');
+                        $('footer').find('.sections').hide();
                     }
                 }
             }
         });
         $root.$on('$routeChangeSuccess', function(event, current, previous) {
-            $('.footer').fadeIn(2000);
+            $('.footer').fadeIn(500);
             if(!_.isUndefined(current)) {
                 if(current.$$route) {
                     if(current.$$route.originalPath == '/card/info') {
@@ -184,4 +187,5 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', 'Authentication
         });
         $root.$on('$routeChangeError', function(event, current, previous, reject) {
         });
-    }]);
+    }
+]);

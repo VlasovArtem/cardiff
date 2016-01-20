@@ -41,4 +41,8 @@ public interface DiscountCardService {
     boolean checkDiscountCardIsUnique (long discountCardNumber, String companyName);
 
     boolean authPersonDiscountCard (long discountCardId);
+
+    long count();
+
+    List<DiscountCard> top5 ();
 }

@@ -11,6 +11,7 @@ import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import com.provectus.cardiff.utils.validator.DiscountCardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,7 @@ import java.util.Set;
 public class DiscountCardServiceImpl implements DiscountCardService {
     @Autowired
     private DiscountCardRepository discountCardRepository;
+    @Qualifier("personRepository")
     @Autowired
     private PersonRepository personRepository;
     @Autowired
@@ -140,5 +142,15 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     public boolean authPersonDiscountCard(long discountCardId) {
         return discountCardRepository.personDiscountCard(discountCardId, AuthenticatedPersonPrincipalUtil
                 .getAuthenticationPrincipal().get().getId());
+    }
+
+    @Override
+    public long count() {
+        return discountCardRepository.countByDeletedIsFalse();
+    }
+
+    @Override
+    public List<DiscountCard> top5() {
+        return discountCardRepository.findTop5DiscountCard(new PageRequest(0, TOP_DISCOUNT_CARD_LIMIT));
     }
 }
