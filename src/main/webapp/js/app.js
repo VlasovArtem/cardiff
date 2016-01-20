@@ -166,10 +166,10 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', 'Authentication
             if(!_.isUndefined(next)) {
                 if(next.$$route) {
                     if(next.$$route.originalPath == '/') {
-                        $('nav').addClass('transparent-nav');
+                        $('header').removeClass('header-additional');
                         $('footer').find('.sections').show();
                     } else {
-                        $('nav').removeClass('transparent-nav');
+                        $('header').addClass('header-additional');
                         $('footer').find('.sections').hide();
                     }
                 }

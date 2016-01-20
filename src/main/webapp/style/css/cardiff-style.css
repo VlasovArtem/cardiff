@@ -5,6 +5,9 @@ html, body {
 /*.view > section:not(#search) {*/
     /*margin-bottom: 40px;*/
 /*}*/
+a:focus {
+    outline: none;
+}
 @-ms-keyframes opener {
     100% {
         margin-top:25px
@@ -43,7 +46,7 @@ html, body {
 .line {
     width: 0;
     height: 4px;
-    background-color: white;
+    background-color: #414141;
     margin-top: 5px;
     margin-left: 50%;
     transition: all .5s ease;
@@ -90,30 +93,33 @@ html, body {
     color: white;
 
 }
-#info-section > .content {
+#info-section .content {
     height: inherit;
 }
-#info-section > .content > .nested-content {
+#info-section .content > .nested-content {
     height: inherit;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-#info-section > .content > .title {
+#info-section .content > .title {
     padding: 100px 0 60px 0;
     text-align: center;
     font-size: 64px;
 }
-#info-section > .content > .title > .title-info {
+#info-section .content > .title > .title-info {
     text-align: center;
     color: gray;
     font-size: 12px;
 }
-#info-section > .content > .sub > p {
+#info-section .content > .sub {
+    height: 200px;
+}
+#info-section .content > .sub > p {
     text-align: center;
     font-size: 24px;
 }
-#info-section > .content > .sub > p:last-child {
+#info-section .content > .sub > p:last-child {
     font-size: 18px;
 }
 
@@ -250,11 +256,11 @@ html, body {
     background: url("../images/how_it_works_provectus_family.png") no-repeat center;
     background-size: auto 250px;
 }
-#how-it-works > .content > .info > .reg > .background {
+#how-it-works > .content > .info > .reg .background {
     background: url("../images/how_it_works_registration.png") no-repeat center;
     background-size: auto 250px;
 }
-#how-it-works > .content > .info > .exchange > .background {
+#how-it-works > .content > .info > .exchange .background {
     background: url("../images/how_it_works_cycle.png") no-repeat center;
     background-size: auto 250px;
     transform: rotate(0deg);
@@ -269,17 +275,17 @@ html, body {
     -o-animation: li1 .6s ease-in .1s forwards;
     animation: li1 .6s ease-in .1s forwards;
 }
-#how-it-works > .content > .info > .reg.anim {
+#how-it-works > .content > .info .reg.anim {
     -webkit-animation: li1 .6s ease-in .2s forwards;
     -o-animation: li1 .6s ease-in .2s forwards;
     animation: li1 .6s ease-in .2s forwards;
 }
-#how-it-works > .content > .info > .exchange.anim {
+#how-it-works > .content > .info .exchange.anim {
     -webkit-animation: li1 .6s ease-in .3s forwards;
     -o-animation: li1 .6s ease-in .3s forwards;
     animation: li1 .6s ease-in .3s forwards;
 }
-#how-it-works > .content > .info > .exchange.anim > .background {
+#how-it-works > .content > .info .exchange.anim .background {
     -webkit-animation: rotate .4s ease-in 1s forwards;
     -o-animation: rotate .4s ease-in 1s forwards;
     animation: rotate .4s ease-in 1s forwards;
@@ -332,6 +338,14 @@ html, body {
 #top-5 > .content > .cards > .card > .card-info > .discount {
     font-size: 30px;
     padding: 20px 0 0;
+}
+
+#top-5 > .content > .top5card-info {
+    color: white;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .pizza-template {
     background: url("../images/discount_cards_templates/pizza_template.png") no-repeat center;
@@ -419,16 +433,75 @@ table tr > th {
     background-color: rgba(192, 192, 192, .2);
 }
 footer {
-    display: none;
-    height: 300px;
+    position: relative;
     background-color: #7ea3bc;
-    padding-top: 20px;
+    padding-top: 50px;
     color: white;
     font-size: medium;
+}
+footer > div:first-child {
+    min-height: 180px;
 }
 footer a {
     text-decoration: none;
     color: white;
+}
+footer dt {
+    padding: 10px 0;
+}
+footer .copy {
+    position: relative;
+    z-index: 0;
+    float: left;
+}
+footer > .footer-bottom {
+    margin-top: 50px;
+    padding: 17px 0;
+    background-color: #63849d;
+}
+footer > .footer-bottom .copy {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 30px;
+}
+footer .footer-soc {
+    float: right;
+    text-align: center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: 0;
+    height: 30px;
+}
+.footer-soc li {
+    display: inline-block;
+    margin: 0 8px;
+}
+.footer-soc li a {
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url("/style/images/social-cardiff.png") no-repeat;
+    transition: background-position 300ms ease;
+}
+.footer-soc li.linked a {
+    background-position: 0 -30px;
+}
+.footer-soc li.linked a:hover {
+    background-position: 0 0;
+}
+.footer-soc li.fb a {
+    background-position: -30px -30px;
+}
+.footer-soc li.fb a:hover {
+    background-position: -30px 0;
+}
+.footer-soc li.tw a {
+    background-position: -60px -30px;
+}
+.footer-soc li.tw a:hover {
+    background-position: -60px 0;
 }
 h2, .buttons {
     text-align: center;
@@ -478,6 +551,10 @@ h2, .buttons {
 }
 
 /* Navigation */
+header {
+    position: relative;
+    padding: 18px 0 0;
+}
 .navbar a:hover > .line {
     margin-left: 0;
     width: 100%;
@@ -493,25 +570,48 @@ h2, .buttons {
     display: none;
 }
 .navbar-cardiff {
-    background-color: rgba(72, 110, 143, 1);
+    background-color: white;
     border-radius: 0 !important;
     border: none !important;
-    font-size: 20px;
+    font-size: 16px;
+}
+.header-additional {
+    background-color: #f6f6f6 !important;
+}
+.header-additional > .navbar-cardiff {
+    background-color: transparent;
+}
+.navbar-cardiff .navbar-brand {
+    padding-top: 0;
+}
+.navbar-cardiff .dropdown-menu > li {
+    height: 40px;
+    font-size: 16px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}
+.navbar-cardiff .dropdown-menu > li > a {
+    color: #414141;
+}
+.navbar-cardiff .dropdown-menu > li:hover > a {
+    color: #5a96c3;
 }
 .navbar-cardiff .navbar-brand,
-.navbar-cardiff .navbar-nav > li > a,
-.navbar-cardiff .dropdown-menu > li > a {
-    color: rgba(248, 248, 248, 1) !important;
+.navbar-cardiff .navbar-nav > li > a{
+    color: #414141 !important;
+    padding-bottom: 29px;
 }
 .navbar-cardiff .dropdown-menu {
-    background-color: rgba(72, 110, 143, 1);
+    background-color: white;
 }
 .navbar-cardiff .navbar-nav > .open > a,
 .navbar-cardiff .navbar-nav > .open > a:hover,
 .navbar-cardiff .navbar-nav > .open > a:focus,
 .navbar-cardiff .dropdown-menu > li > a:hover,
 .navbar-cardiff .dropdown-menu > li > a:focus {
-    background-color: #8b8d8f !important;
+    /*background-color: #8b8d8f !important;*/
+    background-color: transparent;
 }
 input[type=search], .search .ui-select-match > span:first-child, .search .ui-select-search {
     display: inline;
@@ -904,11 +1004,6 @@ input[type=password] {
 @media screen and (min-width: 768px) and (min-height: 1024px) {
     .search .ui-select-container {
         width: 50%;
-    }
-}
-@media screen and (min-width: 1440px) and (min-height: 900px) {
-    footer {
-        height: 20%;
     }
 }
 

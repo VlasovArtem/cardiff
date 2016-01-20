@@ -1,19 +1,64 @@
-<header id="info-section">
-    <article class="col-md-4 content">
-        <div class="title">
-            <div>Cardiff</div>
-            <div class="title-info">(Card is for friends)</div>
+<section id="info-section">
+    <div class="container">
+        <article class="col-md-6 content">
+            <div class="title">
+                <div>Cardiff</div>
+                <div class="title-info">(Card is for friends)</div>
+            </div>
+            <div class="sub"><p>Project for exchanging discount cards.</p>
+                <p>If you want save money or buying with discount, this project is for you.</p></div>
+            <div class="button">
+                <a data-goto="section#how-it-works" class="down"></a>
+            </div>
+        </article>
+    </div>
+</section>
+<section id="how-it-works">
+    <div class="content container">
+        <div class="title">How it works?</div>
+        <div class="info">
+            <div class="family">
+                <div class="background"></div>
+                <div class="cycle-info">
+                    Be a part of the Provectus big and proud family.
+                </div>
+            </div>
+            <div class="reg">
+                <a href="/signup">
+                    <div class="background"></div>
+                </a>
+                <div class="cycle-info">
+                    Fill the form and click "Sign Up"
+                </div>
+            </div>
+            <div class="exchange">
+                <a href="/cards">
+                    <div class="background"></div>
+                </a>
+                <div class="cycle-info">
+                    Start cycle of a discount cards exchange
+                </div>
+            </div>
         </div>
-        <div class="sub"><p>This project is dedicated to discount card exchange.</p>
-            <p>If you want to save some money on dinner with your wife or girlfriend or if you want to save money on
-                holiday shopping</p></div>
-        <div class="button">
+        <article class="button">
+            <a data-goto="section#summary" class="down"></a>
+        </article>
+    </div>
+</section>
+<section id="summary">
+    <div class="content container">
+        <div class="info">
+            <span class="project-name">Cardiff</span> - corporate project, that helps employees to
+            exchange discount cards between each other. If you want save some money or make your friends happier,
+            please welcome.
+        </div>
+        <article class="button">
             <a data-goto="section#project-info" class="down"></a>
-        </div>
-    </article>
-</header>
-<section id="project-info" class="container">
-    <div class="content">
+        </article>
+    </div>
+</section>
+<section id="project-info">
+    <div class="content container">
         <div class="title">Project Info</div>
         <div class="circles">
             <div class="circle first users">
@@ -39,46 +84,6 @@
             Join us! You could be one of our big family.
         </div>
         <article class="button">
-            <a data-goto="section#summary" class="down"></a>
-        </article>
-    </div>
-</section>
-<section id="summary">
-    <div class="content">
-        <div class="info">
-            <span class="project-name">Cardiff</span> - Provectus Inc. corporate project, that helps employees to
-            exchange discount cards between each other. If you want to save some money or make your friends happier,
-            please welcome.
-        </div>
-        <article class="button">
-            <a data-goto="section#how-it-works" class="down"></a>
-        </article>
-    </div>
-</section>
-<section id="how-it-works">
-    <div class="content">
-        <div class="title">How it works?</div>
-        <div class="info">
-            <div class="family">
-                <div class="background"></div>
-                <div class="cycle-info">
-                    To be a part of the Provectus big and proud family
-                </div>
-            </div>
-            <div class="reg">
-                <div class="background"></div>
-                <div class="cycle-info">
-                    Fill the form and click "Sign Up"
-                </div>
-            </div>
-            <div class="exchange">
-                <div class="background"></div>
-                <div class="cycle-info">
-                    Start cycle of a discount cards exchange
-                </div>
-            </div>
-        </div>
-        <article class="button">
             <a data-goto="section#top-5" class="down"></a>
         </article>
     </div>
@@ -86,7 +91,7 @@
 <section id="top-5">
     <div class="content container">
         <div class="title">Top 5 Cards</div>
-        <div class="cards">
+        <div class="cards" ng-if="top5Cards.length > 0">
             <div class="col-md-4 card" ng-repeat="card in top5Cards">
                 <div class="card-info" discount-card tags="card.tags">
                     <div class="col-md-9 company-name">
@@ -99,6 +104,9 @@
                     <div class="col-md-3 discount" ng-bind="card.amountOfDiscount + '%'"></div>
                 </div>
             </div>
+        </div>
+        <div class="top5card-info" ng-if="!top5Cards || top5Cards.length == 0">
+            <h2>Sorry, we have no information about most relevant discount cards.</h2>
         </div>
         <article class="button">
             <a data-goto="footer" class="down"></a>
