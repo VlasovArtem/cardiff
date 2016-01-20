@@ -76,8 +76,7 @@ public class CardBookingControllerTest {
         pageable = new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "bookingStartDate"));
         cardBookings = new PageImpl<>(Collections.singletonList(cardBooking));
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy
-                .CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        objectMapper = new ObjectMapper();
     }
 
     @Test

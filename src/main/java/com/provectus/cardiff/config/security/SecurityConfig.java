@@ -91,6 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers("/", "/logout", "/signin", "/signup", "/cards", "/test", "/card/info",
                             "/rest/location/**", "/rest/card/get/**", "/rest/person/check/**",
+                            "/rest/person/count", "/rest/card/count", "/rest/card/top",
                             "/rest/person/registration", "/rest/person/login", "/rest/tag/get/all")
                         .permitAll()
                     .antMatchers("/admin/persons", "/rest/person/admin/**", "/rest/card/delete",

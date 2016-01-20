@@ -34,4 +34,9 @@ public class LocationServiceImpl implements LocationService {
     public Location find (String city, String country) {
         return repository.findByCityAndCountryIgnoreCase(city, country);
     }
+
+    @Override
+    public long count() {
+        return repository.count();
+    }
 }

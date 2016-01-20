@@ -143,4 +143,14 @@ public class DiscountCardController {
         return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("authPersonCard" ,service
                 .authPersonDiscountCard(cardId)));
     }
+
+    @RequestMapping(path = "/count", method = GET)
+    public long count() {
+        return service.count();
+    }
+
+    @RequestMapping(path = "/top", method = GET)
+    public ResponseEntity top5() {
+        return ResponseEntity.ok(service.top5());
+    }
 }

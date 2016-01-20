@@ -81,8 +81,7 @@ public class CustomTagControllerTest {
         tag.setDescription("Description");
         tag.setId(1);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-        objectMapper = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategy
-                .CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+        objectMapper = new ObjectMapper();
     }
 
     @Test

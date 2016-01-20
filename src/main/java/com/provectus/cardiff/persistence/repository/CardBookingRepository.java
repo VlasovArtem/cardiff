@@ -81,4 +81,11 @@ public interface CardBookingRepository extends JpaRepository<CardBooking, Long> 
     boolean checkPersonDiscountCardPick (long bookingId, long personId);
 
     List<CardBooking> findByDiscountCardIdOrderByBookingStartDateAsc(long discountCardId);
+
+    /**
+     * Select all bookings with expired date. Booking end date is after today
+     * @param today today date
+     * @return List of bookings
+     */
+    List<CardBooking> findByBookingEndDateAfter (LocalDate today);
 }

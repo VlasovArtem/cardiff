@@ -14,6 +14,7 @@ import com.provectus.cardiff.utils.exception.person.PersonRegistrationException;
 import com.provectus.cardiff.utils.exception.person.PersonUpdateException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,6 +36,7 @@ import static com.provectus.cardiff.utils.validator.PersonValidator.validate;
 @Service
 @Transactional
 public class PersonServiceImpl implements PersonService {
+    @Qualifier("personRepository")
     @Autowired
     private PersonRepository personRepository;
     @Autowired
@@ -45,6 +47,7 @@ public class PersonServiceImpl implements PersonService {
     /**
      * Check if current subject is successfully login and person with authenticated credentials (id) is exists in
      * database
+     *
      * @return Person that successfully authenticated in application.
      */
     @Override
@@ -55,10 +58,10 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public boolean delete(long id, HttpServletRequest servletRequest) {
         Person person = personRepository.findById(id);
-        if(person != null) {
+        if (person != null) {
             person.setDeleted(true);
             discountCardService.removeOwnerCards(id);
-            if(person.getId() == AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()) {
+            if (person.getId() == AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId()) {
                 try {
                     servletRequest.logout();
                 } catch (ServletException e) {
@@ -73,7 +76,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void changePassword(String oldPassword, String newPassword) {
-        if(!validate(newPassword, PersonValidationInfo.PASSWORD.getPattern())) {
+        if (!validate(newPassword, PersonValidationInfo.PASSWORD.getPattern())) {
             throw new EntityValidationException(PersonValidationInfo.PASSWORD.getError());
         }
         Person user = personRepository.findById(AuthenticatedPersonPrincipalUtil.getAuthenticationPrincipal().get().getId());
@@ -121,6 +124,7 @@ public class PersonServiceImpl implements PersonService {
 
     /**
      * Check that authenticated person has authorization permission by role.
+     *
      * @param role The role for which the {@code Person} should be allowed
      */
     @Override
@@ -131,6 +135,7 @@ public class PersonServiceImpl implements PersonService {
 
     /**
      * Restore person in database set deleted field to false
+     *
      * @param id {@code Person} id that need to be restored
      */
     @Override
@@ -150,21 +155,21 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void checkLogin(String login) {
-        if(personRepository.existsByLogin(login)) {
+        if (personRepository.existsByLogin(login)) {
             throw new DataUniqueException("Person with this login is already exists");
         }
     }
 
     @Override
     public void checkEmail(String email) {
-        if(personRepository.existsByEmail(email)) {
+        if (personRepository.existsByEmail(email)) {
             throw new DataUniqueException("Person with this email is already exists");
         }
     }
 
     @Override
     public void checkPhoneNumber(long phoneNumber) {
-        if(personRepository.existsByPhoneNumber(phoneNumber)) {
+        if (personRepository.existsByPhoneNumber(phoneNumber)) {
             throw new DataUniqueException("Person with this phone number is already exists");
         }
     }
@@ -176,8 +181,13 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void checkSkype(String skype) {
-        if(personRepository.existsBySkype(skype)) {
+        if (personRepository.existsBySkype(skype)) {
             throw new DataUniqueException("Person with this skype is already exists");
         }
+    }
+
+    @Override
+    public long count() {
+        return personRepository.countByDeletedIsFalse();
     }
 }

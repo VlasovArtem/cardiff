@@ -1,0 +1,123 @@
+<section id="info-section">
+    <div class="container">
+        <article class="col-md-6 content">
+            <div class="title">
+                <div>Cardiff</div>
+                <div class="title-info">(Card is for friends)</div>
+            </div>
+            <div class="sub"><p>Project for exchanging discount cards.</p>
+                <p>If you want save money or buying with discount, this project is for you.</p></div>
+            <div class="button">
+                <a data-goto="section#how-it-works" class="down"></a>
+            </div>
+        </article>
+    </div>
+</section>
+<section id="how-it-works">
+    <div class="content container">
+        <div class="title">How it works?</div>
+        <div class="info">
+            <div class="family">
+                <div class="background"></div>
+                <div class="cycle-info">
+                    Be a part of the Provectus big and proud family.
+                </div>
+            </div>
+            <div class="reg">
+                <a href="/signup">
+                    <div class="background"></div>
+                </a>
+                <div class="cycle-info">
+                    Fill the form and click "Sign Up"
+                </div>
+            </div>
+            <div class="exchange">
+                <a href="/cards">
+                    <div class="background"></div>
+                </a>
+                <div class="cycle-info">
+                    Start cycle of a discount cards exchange
+                </div>
+            </div>
+        </div>
+        <article class="button">
+            <a data-goto="section#summary" class="down"></a>
+        </article>
+    </div>
+</section>
+<section id="summary">
+    <div class="content container">
+        <div class="info">
+            <span class="project-name">Cardiff</span> - corporate project, that helps employees to
+            exchange discount cards between each other. If you want save some money or make your friends happier,
+            please welcome.
+        </div>
+        <article class="button">
+            <a data-goto="section#project-info" class="down"></a>
+        </article>
+    </div>
+</section>
+<section id="project-info">
+    <div class="content container">
+        <div class="title">Project Info</div>
+        <div class="circles">
+            <div class="circle first users">
+                <div class="circle-info" ng-bind="userCount"></div>
+                <div class="info">
+                    Users
+                </div>
+            </div>
+            <div class="circle second discount-cards">
+                <div class="circle-info" ng-bind="cardCount"></div>
+                <div class="info">
+                    Cards
+                </div>
+            </div>
+            <div class="circle third locations">
+                <div class="circle-info" ng-bind="locationCount"></div>
+                <div class="info">
+                    Locations
+                </div>
+            </div>
+        </div>
+        <div class="sub">
+            Join us! You could be one of our big family.
+        </div>
+        <article class="button">
+            <a data-goto="section#top-5" class="down"></a>
+        </article>
+    </div>
+</section>
+<section id="top-5">
+    <div class="content container">
+        <div class="title">Top 5 Cards</div>
+        <div class="cards" ng-if="top5Cards.length > 0">
+            <div class="col-md-4 card" ng-repeat="card in top5Cards">
+                <div class="card-info" discount-card tags="card.tags">
+                    <div class="col-md-9 company-name">
+                        <div class="name col-md-8" ng-click="showDiscountCard(card.id)"
+                             ng-bind="card.companyName"></div>
+                        <div class="tags col-md-12">
+                            <span ng-repeat="tag in card.tags">{{tag.tag}}{{$last ? '' : ', '}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 discount" ng-bind="card.amountOfDiscount + '%'"></div>
+                </div>
+            </div>
+        </div>
+        <div class="top5card-info" ng-if="!top5Cards || top5Cards.length == 0">
+            <h2>Sorry, we have no information about most relevant discount cards.</h2>
+        </div>
+        <article class="button">
+            <a data-goto="footer" class="down"></a>
+        </article>
+    </div>
+</section>
+<script>
+    $(document).on('click', '[data-goto]', function (e) {
+        $('html, body').animate({
+            scrollTop: $($(this).attr('data-goto')).offset().top + 'px'
+        });
+        e.preventDefault()
+    });
+</script>

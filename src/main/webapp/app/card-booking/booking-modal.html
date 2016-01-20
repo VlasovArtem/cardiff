@@ -1,6 +1,6 @@
 <section id="booking" class="container-fluid">
     <h2>Choose Booking Start date</h2>
-    <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
+    <div class="error col-md-12" ng-if="booking_error" ng-bind="booking_error"></div>
     <div class="available-date">
         Closest available booking start date: {{availableDate | date: 'dd/MM/yyyy'}}
     </div>

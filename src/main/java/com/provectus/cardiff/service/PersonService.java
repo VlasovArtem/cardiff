@@ -39,4 +39,6 @@ public interface PersonService {
     Person find (long discountCardId);
 
     void checkSkype(String skype);
+
+    long count();
 }
