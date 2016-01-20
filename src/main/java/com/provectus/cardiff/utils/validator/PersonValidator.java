@@ -85,8 +85,8 @@ public class PersonValidator extends EntityValidator {
      * Enum contains error messages and patterns for validating data
      */
     public enum PersonValidationInfo {
-        NAME("Name should not contains any digits and length should be 6 - 100",
-                "^[\\p{L} .'\\-]{6,100}$"),
+        NAME("Name should not contains any digits and length should be 4 - 100",
+                "^[\\p{L} .'\\-]{4,100}$"),
         LOGIN("Login should contains next characters: a-z 0-9 _ -. And length should be 6 - 100",
                 "^[A-Za-z0-9_\\- .]{6,100}$"),
         PASSWORD("Min length of password should be 8 and max 128",
@@ -98,7 +98,7 @@ public class PersonValidator extends EntityValidator {
         EMAIL("Email is not matches standard pattern",
                 ""),
         SKYPE("Skype name must be between 6-32 characters, start with a letter and contain only letters and numbers " +
-                "(no spaces or special characters).", "^[A-Za-z][A-Za-z0-9]{5,31}");
+                "(no spaces or special characters except -_.).", "^[A-Za-z][A-Za-z0-9_\\-.]{5,31}");
         private String error;
         private String pattern;
 
