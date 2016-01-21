@@ -47,6 +47,7 @@ app.controller('MainCtrl', ['$scope', '$http', '$timeout', 'DiscountCardFactory'
                     projectInfo.find('.circle').addClass('anim');
                     projectInfo.find('.button').addClass('anim');
                 } else {
+                    resetCountAnimation();
                     projectInfo.find('.circle').removeClass('anim');
                     projectInfo.find('.button').removeClass('anim');
                 }
@@ -83,9 +84,6 @@ app.controller('MainCtrl', ['$scope', '$http', '$timeout', 'DiscountCardFactory'
         });
 
         var countAnimation = function () {
-            $scope.locationCount = 0;
-            $scope.userCount = 0;
-            $scope.cardCount = 0;
             var userAnim = function () {
                 if($scope.userCount == userCount) {
                     $timeout.cancel(userAnimTimeout);
@@ -114,6 +112,11 @@ app.controller('MainCtrl', ['$scope', '$http', '$timeout', 'DiscountCardFactory'
             };
             var cardAnimTimeout = $timeout(cardAnim, cardCountDelayMilliseconds * 100);
 
+        };
+        var resetCountAnimation = function () {
+            $scope.locationCount = 0;
+            $scope.userCount = 0;
+            $scope.cardCount = 0;
         };
         DiscountCardFactory.query({top : 'top'}, function(data) {
             $scope.top5Cards = data;

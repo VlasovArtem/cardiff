@@ -53,7 +53,7 @@ a:focus {
 }
 
 /*Main Section Button*/
-#info-section > .content > .button,
+#info-section .content .button,
 #project-info > .content > .button,
 #summary > .content > .button,
 #how-it-works > .content > .button,
@@ -63,7 +63,7 @@ a:focus {
     justify-content: center;
     align-items: center;
 }
-#info-section > .content .down,
+#info-section .content .down,
 #project-info > .content > .button > .down,
 #summary > .content > .button > .down,
 #how-it-works > .content > .button > .down

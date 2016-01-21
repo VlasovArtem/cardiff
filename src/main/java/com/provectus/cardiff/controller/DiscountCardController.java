@@ -150,6 +150,7 @@ public class DiscountCardController {
     }
 
     @RequestMapping(path = "/top", method = GET)
+    @JsonView(DiscountCardView.BasicLevel.class)
     public ResponseEntity top5() {
         return ResponseEntity.ok(service.top5());
     }
