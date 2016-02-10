@@ -474,6 +474,21 @@ footer .footer-soc {
     margin-bottom: 0;
     height: 30px;
 }
+.find-bug {
+    height: 30px;
+    margin-bottom: 0;
+}
+.find-bug > a {
+    float: right;
+    display: block;
+    height: 30px;
+    width: 90px;
+    transition: background-position 300ms ease;
+    background: url("/style/images/find%20bug.png") no-repeat 0 -30px;
+}
+.find-bug > a:hover {
+    background-position: 0 0;
+}
 .footer-soc li {
     display: inline-block;
     margin: 0 8px;
