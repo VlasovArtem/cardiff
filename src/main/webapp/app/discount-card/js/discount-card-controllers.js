@@ -12,7 +12,7 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
             }, function() {
                 console.log($scope.card);
                 AddDiscountCardFactory.save($scope.card, function() {
-                    $location.path('/account');
+                    $location.path('/cards');
                 }, function(data) {
                     $scope.error = data.data.error;
                 })
@@ -21,7 +21,6 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
                     error: "Discount card with entered number and company name is already exists"
                 };
             })
-
         };
         $scope.reset = function () {
             $route.reload()

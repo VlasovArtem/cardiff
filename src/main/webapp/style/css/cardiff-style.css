@@ -855,7 +855,6 @@ input[type=password] {
     padding: 10px;
 }
 #discount-card-info .buttons > input {
-    width: 5%;
     margin-right: 10px;
 }
 .auth-info > div:first-child {
