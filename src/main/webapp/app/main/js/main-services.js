@@ -37,7 +37,7 @@ app.service('auth', ['$resource', '$location', '$route', 'Login', 'Authenticatio
                 Login.login($.param(credentials), function() {
                     auth.authenticated = true;
                     auth.authentication();
-                    $location.path(auth.homePath);
+                    $location.path('/cards');
                     $route.reload();
                 }, function() {
                     auth.authenticated = false;
