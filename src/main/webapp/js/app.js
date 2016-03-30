@@ -126,6 +126,11 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                     },
                     tags: function(TagFactory) {
                         return TagFactory.query();
+                    },
+                    locations: function(Locations) {
+                        return Locations.query().$promise.then(function (data) {
+                            return data;
+                        })
                     }
                 }
             }).
@@ -135,6 +140,14 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                 resolve: {
                     tags: function(TagFactory) {
                         return TagFactory.query().$promise;
+                    },
+                    locations: function(Locations) {
+                        return Locations.query().$promise.then(function (data) {
+                            return data;
+                        })
+                    },
+                    authPersonLocation: function(Authenticated) {
+                        return Authenticated.get().$promise;
                     }
                 }
             }).

@@ -11,13 +11,10 @@ import java.util.List;
  */
 public interface DiscountCardCommentRepository extends JpaRepository<DiscountCardComment, Long> {
     DiscountCardComment findById(long id);
-    @Query("select dcc from DiscountCard dc, DiscountCardComment dcc " +
-            "where dcc member of dc.discountCardComments " +
-            "and dc.id = ?1")
+    @Query("select dcc from DiscountCard dc INNER JOIN dc.discountCardComments dcc " +
+            "WHERE dc.id = ?1")
     List<DiscountCardComment> findByDiscountCardId(long id);
-    @Query("select dcc from DiscountCard dc, DiscountCardComment dcc, Person u " +
-            "where dcc member of dc.discountCardComments " +
-            "and dc member of u.discountCards " +
-            "and u.id = ?1")
+    @Query("select dcc from DiscountCard dc INNER JOIN dc.discountCardComments dcc INNER JOIN dc.owner u " +
+            "where u.id = ?1")
     List<DiscountCardComment> findByUserId(long id);
 }

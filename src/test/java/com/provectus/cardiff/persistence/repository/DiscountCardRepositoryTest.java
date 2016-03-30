@@ -46,6 +46,8 @@ import static org.junit.Assert.*;
 public class DiscountCardRepositoryTest {
     @Autowired
     private DiscountCardRepository discountCardRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @Test
     public void findByIdTest() {
@@ -90,8 +92,7 @@ public class DiscountCardRepositoryTest {
 
     @Test
     public void findByOwnerIdTest() {
-        Pageable pageable = new PageRequest(0, 15, Sort.Direction.DESC, "createdDate");
-        assertThat(discountCardRepository.findByOwnerId(2l, pageable).getTotalElements(), is(2l));
+        assertThat(discountCardRepository.findByOwnerId(2l, createPageable()).getTotalElements(), is(2l));
     }
 
     @Test
@@ -102,6 +103,41 @@ public class DiscountCardRepositoryTest {
     @Test
     public void findByTagsTest() {
         assertThat(discountCardRepository.findByTags(Collections.singleton("test")).get().size(), is(1));
+    }
+
+    @Test
+    public void findByTagsPageableTest() {
+        assertThat(discountCardRepository.findByTags(Collections.singleton(tagRepository.findOne(1L)), createPageable()).getTotalElements(), is(1L));
+    }
+
+    @Test
+    public void findByCompanyNameIgnoreCaseContainingTest() {
+        assertThat(discountCardRepository.findByCompanyNameIgnoreCaseContaining("chee", createPageable()).getTotalElements(), is(1L));
+    }
+
+    @Test
+    public void findByLocationIdTest() {
+        assertThat(discountCardRepository.findByLocationId(1L, createPageable()).getTotalElements(), is(5L));
+    }
+
+    @Test
+    public void findByTagsAndCompanyNameTest() {
+        assertThat(discountCardRepository.findByTagsAndCompanyName(Collections.singleton(tagRepository.findOne(1L)), "chee", createPageable()).getTotalElements(), is(1L));
+    }
+
+    @Test
+    public void findByTagsAndLocationIdTest() {
+        assertThat(discountCardRepository.findByTagsAndLocationId(Collections.singleton(tagRepository.findOne(1L)), 1, createPageable()).getTotalElements(), is(1L));
+    }
+
+    @Test
+    public void findByCompanyNameAndLocationIdTest() {
+        assertThat(discountCardRepository.findByCompanyNameAndLocationId("chee", 1, createPageable()).getTotalElements(), is(1L));
+    }
+
+    @Test
+    public void findByTagsAndCompanyNameAndLocationId() {
+        assertThat(discountCardRepository.findByTagsAndCompanyNameAndLocationId(Collections.singleton(tagRepository.findOne(1L)), "chee", 1, createPageable()).getTotalElements(), is(1L));
     }
 
     @Test
@@ -132,5 +168,9 @@ public class DiscountCardRepositoryTest {
     @Test
     public void personDiscountCardWithNotMatchesTest() {
         assertFalse(discountCardRepository.personDiscountCard(1, 2));
+    }
+
+    private Pageable createPageable() {
+        return new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
     }
 }

@@ -2,6 +2,7 @@ html, body {
     height: 100%;
     font-family: 'Open Sans', sans-serif;
 }
+
 /*.view > section:not(#search) {*/
     /*margin-bottom: 40px;*/
 /*}*/
@@ -363,7 +364,7 @@ a:focus {
     filter: blur(5px);
 }
 .view {
-    height: auto;
+    min-height: 500px;
 }
 .caps-lock {
     width: 20px;

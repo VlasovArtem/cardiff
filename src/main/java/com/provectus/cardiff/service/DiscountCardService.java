@@ -1,6 +1,8 @@
 package com.provectus.cardiff.service;
 
 import com.provectus.cardiff.entities.DiscountCard;
+import com.provectus.cardiff.entities.Location;
+import com.provectus.cardiff.entities.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,7 +28,7 @@ public interface DiscountCardService {
 
     Page<DiscountCard> getAll (Pageable pageable);
 
-    Page<DiscountCard> getAll (Set<String> tags, String companyName, Pageable pageable);
+    Page<DiscountCard> getAll (Set<String> tags, String companyName, Long locationId, Pageable pageable);
 
     Page<DiscountCard> getAuthenticatedPersonDiscountCards (Pageable pageable);
 

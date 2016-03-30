@@ -103,11 +103,12 @@ public class DiscountCardController {
     public Page<DiscountCard> getAll(
             @RequestParam(required = false) Set<String> tags,
             @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) Long locationId,
             @RequestParam(defaultValue = "0", required = false) int page,
             @RequestParam(defaultValue = "15", required = false) int size,
             @RequestParam(defaultValue = "DESC", required = false) String direction,
             @RequestParam(defaultValue = "createdDate", required = false) String property) {
-        return service.getAll(tags, companyName, new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
+        return service.getAll(tags, companyName, locationId, new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
     @RequestMapping(path = "/get/{cardId}", method = GET, produces = APPLICATION_JSON_VALUE)

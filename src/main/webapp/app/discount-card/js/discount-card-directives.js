@@ -50,6 +50,9 @@ app.directive('numberValidator', [function() {
     }
 }]);
 
+/**
+ * Discount card search on the main page. Directive is responsive of reset search
+ */
 app.directive('discountCardSearch', function($sessionStorage, $timeout) {
     return {
         replace: true,
@@ -67,28 +70,36 @@ app.directive('discountCardSearch', function($sessionStorage, $timeout) {
                     tags: [],
                     companyName: null
                 };
+                scope.location = null;
                 scope.getData();
             };
             scope.chooseSearchTag = function(tag) {
-                console.log(scope.customSearch);
                 scope.search.tags.push(tag);
                 scope.discountCardSearch();
             };
             scope.discountCardSearch = function() {
-                console.log(scope.customSearch);
-                scope.customSearch = scope.search.tags.length > 0 || (scope.search.companyName != null && scope.search.companyName != "");
+                var isLocationSearch = scope.location != null && scope.location != "";
+                scope.customSearch = scope.search.tags.length > 0 || (scope.search.companyName != null && scope.search.companyName != "") || isLocationSearch;
+                if(isLocationSearch) {
+                    scope.search.locationId = scope.location.id;
+                } else {
+                    scope.search.locationId = null;
+                }
+                console.log(isLocationSearch);
+                console.log(scope.location);
                 scope.getData();
             };
         }
     }
 });
 
-app.directive('tagSearch', function(TagFactory) {
+app.directive('tagSearch', function(TagFactory, Locations) {
     return {
         replace: true,
         restrict: 'C',
         link: function(scope, element, attr) {
             scope.tags = TagFactory.query();
+            scope.locations = Locations.query();
         },
         templateUrl: '/app/discount-card/discount-card-search.html'
     }

@@ -9,6 +9,7 @@ import com.provectus.cardiff.config.security.SecurityConfig;
 import com.provectus.cardiff.entities.DiscountCard;
 import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
+import com.provectus.cardiff.persistence.repository.LocationRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
 import com.provectus.cardiff.utils.exception.DataUniqueException;
 import com.provectus.cardiff.utils.exception.EntityValidationException;
@@ -67,6 +68,8 @@ public class DiscountCardServiceImplTest {
     private DiscountCardService discountCardService;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private LocationRepository locationRepository;
     @Rule
     public EasyMockRule mocks = new EasyMockRule(this);
     private DiscountCard discountCard;
@@ -83,6 +86,7 @@ public class DiscountCardServiceImplTest {
     @Test
     @WithMockCardiffPerson(value = "vadimguliaev")
     public void addTest() {
+        discountCard.setLocation(locationRepository.findOne(1L));
         discountCardService.add(discountCard);
         assertThat(discountCardRepository.findAll().size(), is(6));
     }
@@ -104,10 +108,10 @@ public class DiscountCardServiceImplTest {
     @WithMockCardiffPerson(value = "vadimguliaev")
     public void updateTest () {
         String newCompanyName = "new name";
-        DiscountCard discountCard = discountCardRepository.findOne(1l);
+        DiscountCard discountCard = discountCardRepository.findOne(1L);
         discountCard.setCompanyName(newCompanyName);
         discountCardService.update(discountCard);
-        discountCardRepository.findById(1l).ifPresent(d ->
+        discountCardRepository.findById(1L).ifPresent(d ->
                 assertThat(d.getCompanyName(), is(newCompanyName)));
     }
 
@@ -121,7 +125,7 @@ public class DiscountCardServiceImplTest {
     @Test(expected = EntityValidationException.class)
     @WithMockCardiffPerson(value = "dmitriyvalnov")
     public void updateWithoutMatchesPersonAndDiscountCardTest() {
-        DiscountCard discountCard = discountCardRepository.findOne(1l);
+        DiscountCard discountCard = discountCardRepository.findOne(1L);
         discountCardService.update(discountCard);
     }
 
@@ -171,37 +175,69 @@ public class DiscountCardServiceImplTest {
 
     @Test
     public void getAllTest() {
-        Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
-        assertThat(discountCardService.getAll(pageable).getTotalElements(), is(5l));
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(pageable).getTotalElements(), is(5L));
+    }
+
+    @Test
+    public void getAllNullTest() {
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(null, null, 0L, pageable)
+                .getTotalElements(), is(5L));
     }
 
     @Test
     public void getAllByTagsTest() {
-        Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
-        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1l).getTag()), null, pageable)
-                        .getTotalElements(), is(1l));
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1L).getTag()), null, 0L, pageable)
+                        .getTotalElements(), is(1L));
     }
 
     @Test
     public void getAllByCompanyNameTest() {
-        Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
-        assertThat(discountCardService.getAll(null, "test", pageable)
-                .getTotalElements(), is(4l));
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(null, "test", 0L, pageable)
+                .getTotalElements(), is(4L));
+    }
+
+    @Test
+    public void getAllByLocationIdTest() {
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(null, null, 1L, pageable).getTotalElements(), is(5L));
     }
 
     @Test
     public void getAllByCompanyNameAndTagsTest() {
-        Pageable pageable = new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
-        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1l).getTag()), "chee",
-                pageable)
-                .getTotalElements(), is(1l));
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1L).getTag()), "chee", 0L, pageable)
+                .getTotalElements(), is(1L));
     }
 
+    @Test
+    public void getAllByTagsAndLocationIdTest() {
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1L).getTag()), null, 1L, pageable)
+                .getTotalElements(), is(1L));
+    }
+
+    @Test
+    public void getAllByCompanyNameAndLocationIdTest() {
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(null, "chee", 1L, pageable)
+                .getTotalElements(), is(1L));
+    }
+
+    @Test
+    public void getAllByTagsAndCompanyNameAndLocationIdTest() {
+        Pageable pageable = createPageable();
+        assertThat(discountCardService.getAll(Collections.singleton(tagRepository.findOne(1L).getTag()), "chee", 1L, pageable)
+                .getTotalElements(), is(1L));
+    }
 
     @Test
     @WithMockCardiffPerson(value = "vadimguliaev")
     public void getAuthenticatedPersonDiscountCardsTest() {
-        Pageable pageable = new PageRequest(0, 15, new Sort(Sort.Direction.DESC, "createdDate"));
+        Pageable pageable = createPageable();
         assertThat(discountCardService.getAuthenticatedPersonDiscountCards(pageable).getTotalElements(), is(3l));
     }
 
@@ -232,5 +268,9 @@ public class DiscountCardServiceImplTest {
     @WithMockCardiffPerson(value = "vadimguliaev")
     public void authPersonDiscountCardTest() {
         assertTrue(discountCardService.authPersonDiscountCard(1));
+    }
+
+    private Pageable createPageable() {
+        return new PageRequest(0, 3, new Sort(Sort.Direction.DESC, "createdDate"));
     }
 }

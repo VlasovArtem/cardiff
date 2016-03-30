@@ -12,6 +12,7 @@
                 <li class="list-group-item"><b>Description:</b> {{cardInfo.description}}</li>
                 <li class="list-group-item"><b>Discount:</b> {{cardInfo.amountOfDiscount > 0 ? cardInfo.amountOfDiscount
                     + '%' : 'n/a' }}</li>
+                <li class="list-group-item"><b>Location:</b> {{cardInfo.location.city}}, {{cardInfo.location.country}}</li>
                 <li class="list-group-item tags" ng-show="cardInfo.tags.length > 0">
                     <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
                 </li>
