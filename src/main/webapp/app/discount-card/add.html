@@ -81,9 +81,10 @@
                       id="description"
                       placeholder="Discount card description"
                       name="description"
-                      cols="30" rows="10"
+                      maxlength="150"
+                      cols="30" rows="5"
                       ng-minlength="0"
-                      ng-maxlength="500"
+                      ng-maxlength="150"
                       ng-model="card.description"></textarea>
             <div validation-messages
                  model-controller="add.description"

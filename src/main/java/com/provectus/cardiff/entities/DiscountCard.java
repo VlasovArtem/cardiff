@@ -87,7 +87,7 @@ public class DiscountCard extends BaseEntity {
         this.amountOfDiscount = amountOfDiscount;
     }
 
-    @Column(length = 500)
+    @Column(length = 150)
     public String getDescription() {
         return description;
     }

@@ -40,7 +40,7 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
                 {name: 'Card #', property: 'cardNumber', width: '10%'},
                 {name: 'Company', property: 'companyName', width: '20%'},
                 {name: 'Discount', property: 'amountOfDiscount', width: '9%', class: 'center'},
-                {name: 'Description', property: 'description', width: '25%'},
+                {name: 'Description', property: 'description', width: '25%', class: 'card-desc'},
                 {name: 'Location', property: 'location.city', width: '10%', class: 'center'}
             ],
             filteredProperties: [

@@ -8,6 +8,8 @@ import com.provectus.cardiff.utils.exception.EntityValidationException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * {@code DiscountCardValidator} validate card number, expired date, company name, amount of discount, description of
@@ -61,8 +63,18 @@ public class DiscountCardValidator extends EntityValidator {
                 if(Objects.equals(discountCard.getDescription(), "")) {
                     discountCard.setDescription(null);
                 }
-                return discountCard.getDescription() == null ||
-                        validate(discountCard.getDescription(), info.getPattern());
+                String convertedDescription;
+                if(discountCard.getDescription() != null && discountCard.getDescription().contains("\n")) {
+                    String[] sentences = discountCard.getDescription().split("\n");
+                    convertedDescription = Stream.of(sentences).collect(Collectors.joining());
+                    if(sentences.length + convertedDescription.length() > 150) {
+                        return false;
+                    }
+                } else {
+                    convertedDescription = discountCard.getDescription();
+                }
+                return convertedDescription == null ||
+                        validate(convertedDescription, info.getPattern());
             default:
                 return false;
         }
@@ -78,8 +90,8 @@ public class DiscountCardValidator extends EntityValidator {
                 "^.{1,50}$"),
         AMOUNT_OF_DISCOUNT("Amount of discount should be from 0 - 100",
                 "^(?!0|$)[0-9][0-9]?$|^100$"),
-        DESCRIPTION("Description length should be less than 500",
-                ".{0,500}");
+        DESCRIPTION("Description length should be less than 150",
+                ".{0,150}");
         private String error;
         private String pattern;
 
