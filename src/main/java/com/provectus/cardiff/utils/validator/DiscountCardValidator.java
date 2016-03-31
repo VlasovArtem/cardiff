@@ -67,7 +67,7 @@ public class DiscountCardValidator extends EntityValidator {
                 if(discountCard.getDescription() != null && discountCard.getDescription().contains("\n")) {
                     String[] sentences = discountCard.getDescription().split("\n");
                     convertedDescription = Stream.of(sentences).collect(Collectors.joining());
-                    if(sentences.length + convertedDescription.length() > 500) {
+                    if(sentences.length + convertedDescription.length() > 150) {
                         return false;
                     }
                 } else {
