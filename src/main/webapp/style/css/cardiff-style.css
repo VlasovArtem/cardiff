@@ -885,6 +885,11 @@ input[type=password] {
     font-weight: bold;
 }
 
+.card-desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /*Add Discount card page*/
 .custom-tag {
     width: 100%;
@@ -930,6 +935,14 @@ input[type=password] {
     .add-tag > .ui-select-container {
         width: 65%;
     }
+}
+
+.desc-info {
+    color: #9c9c9c;
+    padding: 5px 0;
+}
+.desc-info > span {
+    float: right;
 }
 
 /* Booked information */

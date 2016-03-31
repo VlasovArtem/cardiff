@@ -1,0 +1,1 @@
+ALTER TABLE discount_card ALTER COLUMN description TYPE VARCHAR (150)
