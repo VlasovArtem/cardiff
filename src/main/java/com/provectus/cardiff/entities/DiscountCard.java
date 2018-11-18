@@ -50,6 +50,7 @@ public class DiscountCard extends BaseEntity {
     private Set<DiscountCardComment> discountCardComments;
     private Person owner;
     private boolean picked;
+    private Location location;
 
     public DiscountCard() {
     }
@@ -86,7 +87,7 @@ public class DiscountCard extends BaseEntity {
         this.amountOfDiscount = amountOfDiscount;
     }
 
-    @Column(length = 500)
+    @Column(length = 150)
     public String getDescription() {
         return description;
     }
@@ -142,6 +143,16 @@ public class DiscountCard extends BaseEntity {
 
     public void setPicked(boolean picked) {
         this.picked = picked;
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override

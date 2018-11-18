@@ -9,7 +9,8 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
         $locationProvider.html5Mode(true);
         $routeProvider
             .when('/', {
-                redirectTo: '/cards'
+                templateUrl: 'app/main/main.html',
+                controller: 'MainCtrl'
             }).
             when('/signin', {
                 templateUrl: 'app/person/sign-in.html',
@@ -125,6 +126,11 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                     },
                     tags: function(TagFactory) {
                         return TagFactory.query();
+                    },
+                    locations: function(Locations) {
+                        return Locations.query().$promise.then(function (data) {
+                            return data;
+                        })
                     }
                 }
             }).
@@ -134,6 +140,14 @@ var app = angular.module('cardiff', ['ngRoute', 'underscore', 'ngStorage', 'ngSa
                 resolve: {
                     tags: function(TagFactory) {
                         return TagFactory.query().$promise;
+                    },
+                    locations: function(Locations) {
+                        return Locations.query().$promise.then(function (data) {
+                            return data;
+                        })
+                    },
+                    authPersonLocation: function(Authenticated) {
+                        return Authenticated.get().$promise;
                     }
                 }
             }).
@@ -165,15 +179,17 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', 'Authentication
             if(!_.isUndefined(next)) {
                 if(next.$$route) {
                     if(next.$$route.originalPath == '/') {
-                        $('.view').removeClass('main-view');
+                        $('header').removeClass('header-additional');
+                        $('footer').find('.sections').show();
                     } else {
-                        $('.view').addClass('main-view');
+                        $('header').addClass('header-additional');
+                        $('footer').find('.sections').hide();
                     }
                 }
             }
         });
         $root.$on('$routeChangeSuccess', function(event, current, previous) {
-            $('.footer').fadeIn(2000);
+            $('.footer').fadeIn(500);
             if(!_.isUndefined(current)) {
                 if(current.$$route) {
                     if(current.$$route.originalPath == '/card/info') {
@@ -184,4 +200,5 @@ app.run(['$rootScope', 'auth', 'deviceCheck', '$sessionStorage', 'Authentication
         });
         $root.$on('$routeChangeError', function(event, current, previous, reject) {
         });
-    }]);
+    }
+]);

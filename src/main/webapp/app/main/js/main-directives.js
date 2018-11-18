@@ -135,7 +135,6 @@ app.directive('contentTable',
                 scope.mobileDevice = deviceCheck.mobileDevice;
                 scope.getData = function() {
                     var generatedPageable = angular.copy(pageable);
-                    console.log(scope.customSearch);
                     if(scope.customSearch) {
                         _.extend(generatedPageable, scope.requestElements);
                         _.extend(generatedPageable, scope.search);
@@ -336,5 +335,29 @@ app.directive('adminNav', function() {
         replace: true,
         controller: controller,
         templateUrl: 'app/main/admin-navigation.html'
+    }
+});
+
+app.directive('discountCard', function() {
+    return {
+        restrict: 'A',
+        replace: true,
+        scope: {
+            tags: '='
+        },
+        link: function(scope, element, attr, ctrl) {
+            var backgroundFound = _.some(scope.tags, function(tag) {
+                switch (tag.tag) {
+                    case 'pizza':
+                        element.addClass('pizza-template');
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            if(!backgroundFound) {
+               element.addClass('blank-template');
+            }
+        }
     }
 });

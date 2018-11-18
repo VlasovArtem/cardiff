@@ -34,3 +34,9 @@ app.filter('camelCaseFilter', function() {
         return returnedString;
     }
 });
+
+app.filter('locationFilter', function() {
+    return function (location) {
+        return location.city;
+    }
+});

@@ -1,6 +1,8 @@
 package com.provectus.cardiff.service.impl;
 
 import com.provectus.cardiff.entities.DiscountCard;
+import com.provectus.cardiff.entities.Location;
+import com.provectus.cardiff.entities.Tag;
 import com.provectus.cardiff.persistence.repository.DiscountCardRepository;
 import com.provectus.cardiff.persistence.repository.PersonRepository;
 import com.provectus.cardiff.persistence.repository.TagRepository;
@@ -11,6 +13,7 @@ import com.provectus.cardiff.utils.exception.EntityValidationException;
 import com.provectus.cardiff.utils.security.AuthenticatedPersonPrincipalUtil;
 import com.provectus.cardiff.utils.validator.DiscountCardValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +33,7 @@ import java.util.Set;
 public class DiscountCardServiceImpl implements DiscountCardService {
     @Autowired
     private DiscountCardRepository discountCardRepository;
+    @Qualifier("personRepository")
     @Autowired
     private PersonRepository personRepository;
     @Autowired
@@ -97,14 +101,27 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     }
 
     @Override
-    public Page<DiscountCard> getAll(Set<String> tags, String companyName, Pageable pageable) {
-        if(Objects.isNull(companyName)) {
-            return discountCardRepository.findByTags(tagRepository.findByTagIn(tags), pageable);
-        } else if (Objects.isNull(tags)) {
-            return discountCardRepository.findByCompanyNameIgnoreCaseContaining(companyName.toLowerCase(), pageable);
+    public Page<DiscountCard> getAll(Set<String> tags, String companyName, Long locationId, Pageable pageable) {
+        boolean tagsNotEmpty = Objects.nonNull(tags) && !tags.isEmpty();
+        boolean companyNameEmpty = Objects.nonNull(companyName) && !"".equals(companyName);
+        boolean locationInNotZero = Objects.nonNull(locationId) && locationId > 0;
+        Set<Tag> dbTags = Objects.isNull(tags) ? null : tagRepository.findByTagIn(tags);
+        if(!tagsNotEmpty && !companyNameEmpty && !locationInNotZero) {
+            return discountCardRepository.findAll(pageable);
+        } else if(!companyNameEmpty && !locationInNotZero) {
+            return discountCardRepository.findByTags(dbTags, pageable);
+        } else if(!tagsNotEmpty && !locationInNotZero) {
+            return discountCardRepository.findByCompanyNameIgnoreCaseContaining(companyName, pageable);
+        } else if(!tagsNotEmpty && !companyNameEmpty) {
+            return discountCardRepository.findByLocationId(locationId, pageable);
+        } else if(tagsNotEmpty && companyNameEmpty && !locationInNotZero) {
+            return discountCardRepository.findByTagsAndCompanyName(dbTags, companyName, pageable);
+        } else if(!tagsNotEmpty) {
+            return discountCardRepository.findByCompanyNameAndLocationId(companyName, locationId, pageable);
+        } else if(!companyNameEmpty) {
+            return discountCardRepository.findByTagsAndLocationId(dbTags, locationId, pageable);
         } else {
-            return discountCardRepository.findByTagsAndCompanyName(tagRepository.findByTagIn(tags), companyName.toLowerCase(),
-                    pageable);
+            return discountCardRepository.findByTagsAndCompanyNameAndLocationId(dbTags, companyName, locationId, pageable);
         }
     }
 
@@ -140,5 +157,15 @@ public class DiscountCardServiceImpl implements DiscountCardService {
     public boolean authPersonDiscountCard(long discountCardId) {
         return discountCardRepository.personDiscountCard(discountCardId, AuthenticatedPersonPrincipalUtil
                 .getAuthenticationPrincipal().get().getId());
+    }
+
+    @Override
+    public long count() {
+        return discountCardRepository.countByDeletedIsFalse();
+    }
+
+    @Override
+    public List<DiscountCard> top5() {
+        return discountCardRepository.findTop5DiscountCard(new PageRequest(0, TOP_DISCOUNT_CARD_LIMIT));
     }
 }

@@ -1,7 +1,7 @@
-<section id="add-discount-card" class="container-fluid">
+<section id="add-discount-card" class="container">
     <h2 class="col-md-12">Add Discount Card</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error.error"></div>
-    <form class="col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 col-sm-offset-2 col-sm-8 col-xs-10 col-xs-offset-1"
+    <form class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6 col-sm-offset-1 col-sm-10 col-xs-12"
           name="add">
         <div class="form-group has-feedback" show-errors="{ showSuccess: true }">
             <label for="cardNumber">Card number</label>
@@ -62,14 +62,29 @@
                  number-error="Card number should contains only numbers"></div>
         </div>
         <div class="form-group">
+            <label for="location">Location</label>
+            <select
+                    class="form-control"
+                    name="location"
+                    id="location"
+                    ng-model="card.location"
+                    required
+                    ng-options="location.city group by location.country for location in locations track by location.id">
+            </select>
+            <div validation-messages
+                 model-controller="add.location"
+                 required-error="Location is required"></div>
+        </div>
+        <div class="form-group">
             <label for="description">Description</label>
             <textarea class="form-control"
                       id="description"
                       placeholder="Discount card description"
                       name="description"
-                      cols="30" rows="10"
+                      maxlength="150"
+                      cols="30" rows="5"
                       ng-minlength="0"
-                      ng-maxlength="500"
+                      ng-maxlength="150"
                       ng-model="card.description"></textarea>
             <div validation-messages
                  model-controller="add.description"

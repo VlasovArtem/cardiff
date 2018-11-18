@@ -55,7 +55,9 @@ public interface PersonRepository extends JpaRepository<Person, Long>{
      * @param discountCardId Id of the discount card
      * @return Return {@link Person} with one find
      */
-    @Query("SELECT p FROM Person p, DiscountCard dc WHERE dc MEMBER OF p.discountCards AND dc.id = ?1 AND p.deleted = false")
+    @Query("SELECT p FROM Person p INNER JOIN p.discountCards dc WHERE dc.id = ?1 AND p.deleted = false")
     Person findByDiscountCardId(long discountCardId);
+
+    long countByDeletedIsFalse();
 
 }

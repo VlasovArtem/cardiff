@@ -1,18 +1,20 @@
 var app = angular.module('discount-card-controllers', ['ngResource']);
 
-app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tags', '$filter', 'DiscountCardFactory', '$route',
-    function ($scope, $location, AddDiscountCardFactory, tags, $filter, DiscountCardFactory, $route) {
+app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tags', '$filter', 'DiscountCardFactory', '$route', 'locations', 'authPersonLocation',
+    function ($scope, $location, AddDiscountCardFactory, tags, $filter, DiscountCardFactory, $route, locations, authPersonLocation) {
+        $scope.locations = locations;
         $scope.tags = tags;
-        $scope.card = {};
+        $scope.card = {
+            location: authPersonLocation.location
+        };
         $scope.today = new Date();
         $scope.addNewCard = function () {
             DiscountCardFactory.check({
                 cardNumber: $scope.card.cardNumber,
                 companyName: $scope.card.companyName
             }, function() {
-                console.log($scope.card);
                 AddDiscountCardFactory.save($scope.card, function() {
-                    $location.path('/account');
+                    $location.path('/cards');
                 }, function(data) {
                     $scope.error = data.data.error;
                 })
@@ -21,7 +23,6 @@ app.controller('AddCtrl', ['$scope', '$location', 'AddDiscountCardFactory', 'tag
                     error: "Discount card with entered number and company name is already exists"
                 };
             })
-
         };
         $scope.reset = function () {
             $route.reload()
@@ -39,8 +40,8 @@ app.controller('DiscountCardsCtrl', ['$scope', '$location', 'discountCards', 'Di
                 {name: 'Card #', property: 'cardNumber', width: '10%'},
                 {name: 'Company', property: 'companyName', width: '20%'},
                 {name: 'Discount', property: 'amountOfDiscount', width: '9%', class: 'center'},
-                {name: 'Description', property: 'description', width: '25%'},
-                {name: 'Created', property: 'createdDate', width: '10%', class: 'center'}
+                {name: 'Description', property: 'description', width: '25%', class: 'card-desc'},
+                {name: 'Location', property: 'location.city', width: '10%', class: 'center'}
             ],
             filteredProperties: [
                 {property: 'createdDate', filter: $filter('dateFilter')},
@@ -148,8 +149,9 @@ app.controller('AccountDiscountCardsFunctionCtrl', ['$scope', '$location',
     }
 ]);
 
-app.controller('UpdateDiscountCardCtrl', ['$scope', 'discountCard', 'tags', 'UpdateDiscountCardFactory', '$location',
-    function($scope, discountCard, tags, UpdateDiscountCardFactory, $location) {
+app.controller('UpdateDiscountCardCtrl', ['$scope', 'discountCard', 'tags', 'UpdateDiscountCardFactory', '$location', 'locations',
+    function($scope, discountCard, tags, UpdateDiscountCardFactory, $location, locations) {
+        $scope.locations = locations;
         $scope.tags = tags;
         var wipeFormInfo = function () {
             var removableClasses = ["has-error", "has-warning", "has-success"];
@@ -194,16 +196,18 @@ app.controller('UpdateDiscountCardCtrl', ['$scope', 'discountCard', 'tags', 'Upd
 
         $scope.cardIsEquals = function() {
             if($scope.data != undefined && $scope.updatedData != undefined) {
-                return _.every(["cardNumber", "companyName", "amountOfDiscount", "description", "tags"], function (data) {
+                return _.every(["cardNumber", "companyName", "amountOfDiscount", "description", "tags", "location"], function (data) {
                     if(data == "tags") {
                         return _.every($scope.updatedData.tags, function(updatedValue) {
                             return _.some($scope.data.tags, function(reserveValue) {
                                 return _.isEqual(updatedValue.id, reserveValue.id);
                             });
                         })
+                    } else if (data == "location") {
+                        return _.isEqual($scope.updatedData.location.id, $scope.data.location.id);
                     } else {
-                        return _.isEqual($scope.data[data], $scope.updatedData[data]) || $scope.data[data] == $scope.updatedData[data];
-                    }
+                        return _.isEqual($scope.data[data], $scope.updatedData[data]) || $scope.data[data] == $scope.updatedData[data]
+                    };
                 });
             }
             return true;

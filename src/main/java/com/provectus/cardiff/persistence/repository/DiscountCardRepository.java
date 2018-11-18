@@ -1,6 +1,7 @@
 package com.provectus.cardiff.persistence.repository;
 
 import com.provectus.cardiff.entities.DiscountCard;
+import com.provectus.cardiff.entities.Location;
 import com.provectus.cardiff.entities.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,25 +28,34 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
 
     Page<DiscountCard> findByPickedFalse(Pageable pageable);
 
-    @Query("select d from DiscountCard d where lower(d.companyName) LIKE %?1%")
+    @Query("SELECT d FROM DiscountCard d WHERE LOWER(d.companyName) LIKE %?1%")
     List<DiscountCard> findByCompanyName(String companyName);
 
     Page<DiscountCard> findByOwnerId(long id, Pageable pageable);
 
     Stream<DiscountCard> findByOwnerId(long id);
 
-    @Query("select d from DiscountCard d, Tag t " +
-            "where t member of d.tags " +
-            "and t.tag in ?1")
+    @Query("SELECT d FROM DiscountCard d INNER JOIN d.tags t WHERE t.tag IN ?1")
     Optional<List<DiscountCard>> findByTags(Set<String> tags);
 
-    @Query("SELECT DISTINCT dc FROM DiscountCard dc, Tag tag WHERE tag MEMBER OF dc.tags AND tag IN ?1")
+    @Query("SELECT dc FROM DiscountCard dc INNER JOIN dc.tags tag WHERE tag IN ?1")
     Page<DiscountCard> findByTags(Set<Tag> tags, Pageable pageable);
 
     Page<DiscountCard> findByCompanyNameIgnoreCaseContaining(String companyName, Pageable pageable);
 
-    @Query("SELECT DISTINCT dc FROM DiscountCard dc, Tag t WHERE t MEMBER OF dc.tags AND t IN ?1 AND lower(dc.companyName) LIKE %?2%")
+    Page<DiscountCard> findByLocationId(long locationId, Pageable pageable);
+
+    @Query("SELECT dc FROM DiscountCard dc INNER JOIN dc.tags t WHERE t IN ?1 AND lower(dc.companyName) LIKE %?2%")
     Page<DiscountCard> findByTagsAndCompanyName (Set<Tag> tags, String companyName, Pageable pageable);
+
+    @Query("SELECT dc FROM DiscountCard dc INNER JOIN dc.tags t WHERE t IN ?1 AND dc.location.id = ?2")
+    Page<DiscountCard> findByTagsAndLocationId (Set<Tag> tags, long locationId, Pageable pageable);
+
+    @Query("SELECT dc FROM DiscountCard dc WHERE lower(dc.companyName) LIKE %?1% AND dc.location.id = ?2")
+    Page<DiscountCard> findByCompanyNameAndLocationId (String companyName, long locationId, Pageable pageable);
+
+    @Query("SELECT dc FROM DiscountCard dc INNER JOIN dc.tags t WHERE t IN ?1 AND lower(dc.companyName) LIKE %?2% AND dc.location.id = ?3")
+    Page<DiscountCard> findByTagsAndCompanyNameAndLocationId (Set<Tag> tags, String companyName, long locationId, Pageable pageable);
 
     @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.cardNumber = ?1 AND UPPER(cd.companyName) = UPPER(?2)")
     boolean existsByNumberAndCompanyName(long number, String companyName);
@@ -60,6 +70,8 @@ public interface DiscountCardRepository extends JpaRepository<DiscountCard, Long
     @Query("SELECT CASE WHEN (COUNT(cd) > 0) THEN true ELSE false END FROM DiscountCard cd WHERE cd.id = ?1 AND cd.owner.id = ?2")
     boolean personDiscountCard (long discountCardId, long personId);
 
-    @Query("SELECT dc FROM DiscountCardHistory dch, DiscountCard dc WHERE dch.discountCard.id = dc.id GROUP BY dc ORDER BY COUNT(dc) DESC")
-    List<DiscountCard> findTop5DiscountCard(Pageable pageable);
+    @Query("SELECT dc FROM DiscountCard dc WHERE dc.id IN (SELECT dch.discountCard.id FROM DiscountCardHistory dch GROUP BY dch.discountCard.id ORDER BY COUNT(*) DESC)")
+    List<DiscountCard> findTop5DiscountCard (Pageable pageable);
+
+    long countByDeletedIsFalse();
 }

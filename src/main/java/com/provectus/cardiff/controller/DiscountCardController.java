@@ -103,11 +103,12 @@ public class DiscountCardController {
     public Page<DiscountCard> getAll(
             @RequestParam(required = false) Set<String> tags,
             @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) Long locationId,
             @RequestParam(defaultValue = "0", required = false) int page,
             @RequestParam(defaultValue = "15", required = false) int size,
             @RequestParam(defaultValue = "DESC", required = false) String direction,
             @RequestParam(defaultValue = "createdDate", required = false) String property) {
-        return service.getAll(tags, companyName, new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
+        return service.getAll(tags, companyName, locationId, new PageRequest(page, size, new Sort(Sort.Direction.valueOf(direction), property)));
     }
 
     @RequestMapping(path = "/get/{cardId}", method = GET, produces = APPLICATION_JSON_VALUE)
@@ -142,5 +143,16 @@ public class DiscountCardController {
     public ResponseEntity authPersonDiscountCard(@PathVariable long cardId) {
         return ResponseEntity.ok(JsonNodeFactory.instance.objectNode().put("authPersonCard" ,service
                 .authPersonDiscountCard(cardId)));
+    }
+
+    @RequestMapping(path = "/count", method = GET)
+    public long count() {
+        return service.count();
+    }
+
+    @RequestMapping(path = "/top", method = GET)
+    @JsonView(DiscountCardView.BasicLevel.class)
+    public ResponseEntity top5() {
+        return ResponseEntity.ok(service.top5());
     }
 }

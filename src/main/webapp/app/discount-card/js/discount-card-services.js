@@ -11,7 +11,7 @@ service.factory('UpdateDiscountCardFactory', ['$resource', function($resource) {
     });
 }]);
 service.factory('DiscountCardFactory', ['$resource', function($resource) {
-    return $resource('/rest/card/:check/:get/:cardId', {}, {
+    return $resource('/rest/card/:check/:get/:cardId/:top', {}, {
         check: {
             method: 'GET',
             params: {

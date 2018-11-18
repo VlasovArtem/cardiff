@@ -1,26 +1,29 @@
 <section id="discount-card-info">
     <h2>Discount Card Info</h2>
     <article class="well col-md-12">
-        <p class="text-left col-md-3 col-md-offset-1">
-            This section contains most useful information about selected Discount Card. We think that information
-            about Company name that will give you specified amount of discount, expired date and description will be
-            very useful to you.
-        </p>
-        <ul class="list-group col-md-7">
-            <li class="list-group-item"><b>Company:</b> {{cardInfo.companyName}}</li>
-            <li class="list-group-item"><b>Description:</b> {{cardInfo.description}}</li>
-            <li class="list-group-item"><b>Discount:</b> {{cardInfo.amountOfDiscount > 0 ? cardInfo.amountOfDiscount
-                + '%' : 'n/a' }}</li>
-            <li class="list-group-item tags" ng-show="cardInfo.tags.length > 0">
-                <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
-            </li>
-        </ul>
-        <div class="col-md-12 buttons" ng-show="authenticated && !authPersonDiscountCard && !cardInfo.picked">
-            <input type="button" value="Book" class="btn btn-primary" ng-click="book()"/>
-            <input type="button" value="Pick" class="btn btn-success" ng-hide="true"/>
-        </div>
-        <div class="col-md-12 center" ng-show="cardInfo.picked && !authPersonDiscountCard">
-            <span class="picked-info">This discount is already picked</span>
+        <div class="container">
+            <p class="text-left col-md-3">
+                This section contains most useful information about selected Discount Card. We think that information
+                about Company name that will give you specified amount of discount, expired date and description will be
+                very useful to you.
+            </p>
+            <ul class="list-group col-md-offset-1 col-md-7">
+                <li class="list-group-item"><b>Company:</b> {{cardInfo.companyName}}</li>
+                <li class="list-group-item"><b>Description:</b> {{cardInfo.description}}</li>
+                <li class="list-group-item"><b>Discount:</b> {{cardInfo.amountOfDiscount > 0 ? cardInfo.amountOfDiscount
+                    + '%' : 'n/a' }}</li>
+                <li class="list-group-item"><b>Location:</b> {{cardInfo.location.city}}, {{cardInfo.location.country}}</li>
+                <li class="list-group-item tags" ng-show="cardInfo.tags.length > 0">
+                    <span class="label label-success" ng-repeat="tag in cardInfo.tags" ng-bind="tag.tag"></span>
+                </li>
+                <div class="col-md-12 buttons" ng-show="authenticated && !authPersonDiscountCard && !cardInfo.picked">
+                    <input type="button" value="Book" class="btn btn-primary" ng-click="book()"/>
+                    <input type="button" value="Pick" class="btn btn-success" ng-hide="true"/>
+                </div>
+                <div class="col-md-12 center" ng-show="cardInfo.picked && !authPersonDiscountCard">
+                    <span class="picked-info">This discount is already picked</span>
+                </div>
+            </ul>
         </div>
     </article>
 </section>
@@ -39,28 +42,30 @@
     <h2>Owner Card Info</h2>
     <div class="col-md-12 error" ng-show="error" ng-bind="error"></div>
     <article class="well col-md-12" ng-hide="error">
-        <p class="text-left col-md-3 col-md-offset-1">
-            If you already book or pick selected card, please contact with owner of the card to get complete
-            information. Thank you.
-        </p>
-        <ul class="list-group col-md-7">
-            <li class="list-group-item"><b>Name:</b> {{owner.name}}</li>
-            <li class="list-group-item"><b>Email:</b> {{owner.email}}</li>
-            <li class="list-group-item"><b>Skype:</b> {{owner.skype}}</li>
-            <li class="list-group-item"><b>Phone Number:</b> {{owner.phoneNumber | phoneNumberFilter : owner.location.country}}</li>
-            <li class="list-group-item"><b>Location:</b> {{owner.location.city + ', ' + owner.location.country}}</li>
-        </ul>
+        <div class="container">
+            <p class="text-left col-md-3">
+                If you already book or pick selected card, please contact with owner of the card to get complete
+                information. Thank you.
+            </p>
+            <ul class="list-group col-md-offset-1 col-md-7">
+                <li class="list-group-item"><b>Name:</b> {{owner.name}}</li>
+                <li class="list-group-item"><b>Email:</b> {{owner.email}}</li>
+                <li class="list-group-item"><b>Skype:</b> {{owner.skype}}</li>
+                <li class="list-group-item"><b>Phone Number:</b> {{owner.phoneNumber | phoneNumberFilter : owner.location.country}}</li>
+                <li class="list-group-item"><b>Location:</b> {{owner.location.city + ', ' + owner.location.country}}</li>
+            </ul>
+        </div>
     </article>
 </section>
 <section id="auth-person-card" class="container" ng-show="authenticated && authPersonDiscountCard">
     <h2>This is your discount card</h2>
 </section>
 <hr class="style" ng-show="cardInfo.discountCardComments.length > 0 && authenticated && !authPersonDiscountCard"/>
-<section id="comments" class="col-md-12"
+<section id="comments" class="container"
          ng-show="cardInfo.discountCardComments.length > 0 && authenticated && !authPersonDiscountCard">
     <h2>Comments</h2>
     <div class="container-fluid">
-        <div class="col-md-2 col-sm-3 col-xs-4" ng-repeat="comment in cardInfo.discountCardComments">
+        <div class="col-md-3 col-sm-4 col-xs-6" ng-repeat="comment in cardInfo.discountCardComments">
             <div class="col-md-offset-1 col-md-10 comment">
                 <span class="col-md-12" ng-bind="comment.comment"></span>
                 <span class="col-md-12 comment-date" ng-bind="comment.createdDate | dateFilter"></span>

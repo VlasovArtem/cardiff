@@ -1,6 +1,7 @@
 package com.provectus.cardiff.batchjob;
 
 import com.provectus.cardiff.entities.CardBooking;
+import com.provectus.cardiff.persistence.repository.CardBookingRepository;
 import com.provectus.cardiff.service.CardBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,16 +16,13 @@ import java.util.List;
 @Component
 public class TasksScheduler {
     @Autowired
-    private CardBookingService service;
+    private CardBookingRepository repository;
 
     @Scheduled(cron = "0 0 0 * * ?")
-    public void timer() {
-        LocalDate dateTime = LocalDate.now();
-        List<CardBooking> bookCardsList = service.getAll();
-        for (int i = 0; i < bookCardsList.size(); i++) {
-            if (dateTime.isAfter(bookCardsList.get(i).getBookingEndDate())) {
-                service.deleteBookCardById(bookCardsList.get(i).getId());
-            }
+    public void expiredCardBookingScheduler() {
+        List<CardBooking> bookCardsList = repository.findByBookingEndDateAfter(LocalDate.now());
+        if(!bookCardsList.isEmpty()) {
+            bookCardsList.stream().peek(cb -> repository.delete(cb.getId()));
         }
     }
 }

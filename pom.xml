@@ -8,10 +8,17 @@
   <name>Cardiff</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring.version>4.2.1.RELEASE</spring.version>
-    <spring.security.version>4.0.2.RELEASE</spring.security.version>
-    <jackson.version>2.6.1</jackson.version>
+    <spring.version>4.2.4.RELEASE</spring.version>
+    <spring.security.version>4.0.3.RELEASE</spring.security.version>
+    <jackson.version>2.6.4</jackson.version>
+    <junit.verison>4.12</junit.verison>
+    <hibernate-entitymanager.version>5.0.6.Final</hibernate-entitymanager.version>
+    <postgresql.version>9.4.1207.jre7</postgresql.version>
+    <commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+    <commons-validator.version>1.5.0</commons-validator.version>
+    <spring.data.commons.version>1.11.1.RELEASE</spring.data.commons.version>
   </properties>
+
   <dependencies>
 
     <!--Spring Dependencies-->
@@ -71,38 +78,63 @@
       <artifactId>spring-data-jpa</artifactId>
       <version>1.9.0.RELEASE</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-commons</artifactId>
+      <version>${spring.data.commons.version}</version>
+    </dependency>
 
     <!--JUnit-->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>${junit.verison}</version>
     </dependency>
 
     <!--Hibernate-->
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-entitymanager</artifactId>
-      <version>4.3.11.Final</version>
+      <version>${hibernate-entitymanager.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>${hibernate-entitymanager.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>3.5.6-Final</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.transaction</groupId>
+      <artifactId>jta</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.aspectj</groupId>
+      <artifactId>aspectjweaver</artifactId>
+      <version>1.8.7</version>
     </dependency>
 
     <!--Postgresql-->
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>9.4-1201-jdbc41</version>
+      <version>${postgresql.version}</version>
     </dependency>
 
     <!--Apache-->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-dbcp2</artifactId>
-      <version>2.1.1</version>
+      <version>${commons-dbcp2.version}</version>
     </dependency>
     <dependency>
       <groupId>commons-validator</groupId>
       <artifactId>commons-validator</artifactId>
-      <version>1.4.1</version>
+      <version>${commons-validator.version}</version>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>

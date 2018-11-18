@@ -1,4 +1,4 @@
-<section id="personal-data" class="col-md-offset-4 col-sm-offset-2 col-xs-offset-0 col-md-4 col-sm-8 col-xs-12 container-fluid">
+<section id="personal-data" class="col-md-offset-4 col-sm-offset-2 col-xs-offset-0 col-md-4 col-sm-8 col-xs-12 container">
     <h2 class="col-md-12">Your personal data</h2>
     <table class="table personal-data">
         <tr ng-repeat="(key, data) in person | accountTable" account-data label="key"
@@ -9,8 +9,8 @@
         <input type="button" class="btn btn-danger" value="Change data" ng-click="changeData()"/>
     </div>
 </section>
-<hr class="style col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10"/>
-<section id="change-password" class="col-md-offset-4 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12 container-fluid">
+<hr class="style col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8 col-xs-offset-1 col-xs-10 container"/>
+<section id="change-password" class="col-md-offset-4 col-md-4 col-sm-offset-2 col-sm-8 col-xs-12 container">
     <h2>Change password</h2>
     <div class="error col-md-12" ng-if="error" ng-bind="error"></div>
     <form name="change">
